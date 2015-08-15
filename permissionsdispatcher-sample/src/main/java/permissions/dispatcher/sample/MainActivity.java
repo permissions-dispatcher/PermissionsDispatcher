@@ -53,7 +53,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     void showCamera() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.sample_content_fragment, CameraPreviewFragment.newInstance())
-                .addToBackStack("contacts")
+                .addToBackStack("camera")
                 .commitAllowingStateLoss();
     }
 
