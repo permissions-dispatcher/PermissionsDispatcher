@@ -1,0 +1,26 @@
+apply plugin: 'com.android.application'
+apply plugin: 'android-apt'
+
+android {
+    compileSdkVersion "android-MNC"
+    buildToolsVersion "22.0.1"
+
+    defaultConfig {
+        applicationId "permissions.dispatcher.sample"
+        minSdkVersion "MNC"
+        targetSdkVersion "MNC"
+        versionCode 1
+        versionName "1.0"
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+}
+
+dependencies {
+    compile 'com.android.support:appcompat-v7:22.2.1'
+    compile project(':permissionsdispatcher')
+    apt project(':permissionsdispatcher-processor')
+}

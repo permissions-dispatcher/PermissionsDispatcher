@@ -1,0 +1,17 @@
+buildscript {
+    repositories {
+        jcenter()
+    }
+    dependencies {
+        // TODO: bintray-release will crash if you upgrade plugin version...
+        classpath 'com.android.tools.build:gradle:1.2.3'
+        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+        classpath 'com.novoda:bintray-release:0.3.0'
+    }
+}
+
+allprojects {
+    repositories {
+        jcenter()
+    }
+}

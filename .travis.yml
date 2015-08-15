@@ -1,0 +1,26 @@
+language: android
+
+android:
+  components:
+    - tools
+    - platform-tools
+    - build-tools-22.0.1
+    - android-22
+    - extra-google-google_play_services
+    - extra-android-m2repository
+    - extra-android-support
+    - extra-google-m2repository
+
+jdk:
+  - oraclejdk7
+  - oraclejdk8
+
+branches:
+  except:
+    - gh-pages
+
+script: ./gradlew assemble
+
+cache:
+  directories:
+    - $HOME/.m2
