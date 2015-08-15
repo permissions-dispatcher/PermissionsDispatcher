@@ -1,6 +1,7 @@
 # PermissionsDispatcher
 
 [![Build Status](https://travis-ci.org/hotchemi/PermissionsDispatcher.svg)](https://travis-ci.org/hotchemi/PermissionsDispatcher)
+[ ![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg) ](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
 
 > **PermissionsDispatcher is based on the latest [official information](https://developer.android.com/preview/overview.html). Currently preview2 is the newest but it may change drastically in the near future. 1.0 will be out after M final release.**
 
