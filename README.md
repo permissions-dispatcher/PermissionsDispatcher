@@ -2,6 +2,8 @@
 
 [![Build Status](https://travis-ci.org/hotchemi/PermissionsDispatcher.svg)](https://travis-ci.org/hotchemi/PermissionsDispatcher)
 [ ![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg) ](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
+[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-PermissionsDispatcher-green.svg?style=flat)](https://android-arsenal.com/details/1/2316)
+
 
 > **PermissionsDispatcher is based on the latest [official document](https://developer.android.com/preview/overview.html). Currently preview2 is the newest but it may change drastically in the near future. 1.0 will be out after M final release.**
 
