@@ -1,5 +1,7 @@
 # PermissionsDispatcher
 
+[![Build Status](https://travis-ci.org/hotchemi/PermissionsDispatcher.svg)](https://travis-ci.org/hotchemi/PermissionsDispatcher)
+
 > **PermissionsDispatcher is based on the latest [official information](https://developer.android.com/preview/overview.html). Currently preview2 is the newest but it may change drastically in the near future. 1.0 will be out after M final release.**
 
 PermissionsDispatcher provides simple annotation-based API to handle runtime permissions in   Android M.
