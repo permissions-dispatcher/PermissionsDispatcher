@@ -7,4 +7,3 @@ public class NotDefinedException extends RuntimeException {
     }
 
 }
-
