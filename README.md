@@ -37,7 +37,7 @@ public class MainActivity extends Activity {
     void showCamera() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.sample_content_fragment, CameraPreviewFragment.newInstance())
-                .addToBackStack("contacts")
+                .addToBackStack("camera")
                 .commitAllowingStateLoss();
     }
 
