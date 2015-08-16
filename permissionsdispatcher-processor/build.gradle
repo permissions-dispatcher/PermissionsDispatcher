@@ -4,16 +4,8 @@ apply plugin: 'com.novoda.bintray-release'
 targetCompatibility = JavaVersion.VERSION_1_7
 sourceCompatibility = JavaVersion.VERSION_1_7
 
-sourceSets {
-    main {
-        java {
-            srcDirs = ['src/main/java', '../permissionsdispatcher/src/main/java']
-        }
-    }
-}
-
 dependencies {
-    compile project(':permissionsdispatcher')
+    compile project(':permissionsdispatcher-annotations')
     compile 'com.squareup:javapoet:1.2.0'
     compile 'com.google.auto.service:auto-service:1.0-rc2'
     testCompile 'junit:junit:4.12'
