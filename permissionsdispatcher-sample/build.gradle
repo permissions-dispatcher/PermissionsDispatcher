@@ -23,5 +23,7 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile project(':permissionsdispatcher')
-    apt project(':permissionsdispatcher-processor')
+    // for non-project dependencies, you should use 'apt', but this isn't working
+    // correctly in android-apt 1.7
+    provided project(':permissionsdispatcher-processor')
 }
