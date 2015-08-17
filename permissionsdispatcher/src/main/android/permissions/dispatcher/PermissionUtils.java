@@ -51,9 +51,7 @@ public class PermissionUtils {
     }
 
     private static boolean isMNC() {
-        // TODO: Once the API has been finalised, the following code should be used:
-        // return Build.VERSION.SDK_INT == Build.VERSION_CODES.MNC
-        return "MNC".equals(Build.VERSION.CODENAME);
+         return Build.VERSION.SDK_INT == Build.VERSION_CODES.M;
     }
 
 }

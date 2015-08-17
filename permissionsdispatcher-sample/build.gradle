@@ -3,13 +3,13 @@ apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
 android {
-    compileSdkVersion "android-MNC"
+    compileSdkVersion 23
     buildToolsVersion "22.0.1"
 
     defaultConfig {
         applicationId "permissions.dispatcher.sample"
-        minSdkVersion "MNC"
-        targetSdkVersion "MNC"
+        minSdkVersion 23
+        targetSdkVersion 23
         versionCode 1
         versionName "1.0"
     }
@@ -21,6 +21,7 @@ android {
 }
 
 dependencies {
+    //noinspection GradleCompatible
     compile 'com.android.support:appcompat-v7:22.2.1'
     compile project(':permissionsdispatcher')
     apt project(':permissionsdispatcher-processor')
