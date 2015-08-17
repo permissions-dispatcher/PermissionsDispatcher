@@ -8,7 +8,7 @@ android {
 
     defaultConfig {
         applicationId "permissions.dispatcher.sample"
-        minSdkVersion 23
+        minSdkVersion 7
         targetSdkVersion 23
         versionCode 1
         versionName "1.0"
