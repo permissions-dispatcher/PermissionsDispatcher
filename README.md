@@ -108,8 +108,8 @@ buildscript {
 apply plugin: 'android-apt'
 
 dependencies {
-  compile 'com.github.hotchemi:permissionsdispatcher:0.5.0'
-  apt 'com.github.hotchemi:permissionsdispatcher-processor:0.5.0'
+  compile 'com.github.hotchemi:permissionsdispatcher:0.9.0'
+  apt 'com.github.hotchemi:permissionsdispatcher-processor:0.9.0'
 }
 ```
 
