@@ -4,16 +4,11 @@
 [ ![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg) ](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-PermissionsDispatcher-green.svg?style=flat)](https://android-arsenal.com/details/1/2316)
 
-
-> **PermissionsDispatcher is based on the latest [official document](https://developer.android.com/preview/overview.html). Currently preview2 is the newest but it may change drastically in the near future. 1.0 will be out after M final release.**
-
 PermissionsDispatcher provides simple annotation-based API to handle runtime permissions in Android M.
 
-You can be released from the burden that writing a bunch of check statements whether a permission have been granted or not. 
-
-## Motivation
-
 [Runtime permissions](https://developer.android.com/preview/features/runtime-permissions.html) is so great for users but also the hell for developers. Actually I don't want to write such a complicated [code](https://github.com/googlesamples/android-RuntimePermissions/blob/master/Application/src/main/java/com/example/android/system/runtimepermissions/MainActivity.java) anymore.
+
+You can be released from the burden that writing a bunch of check statements whether a permission have been granted or not. 
 
 ## Usage
 
