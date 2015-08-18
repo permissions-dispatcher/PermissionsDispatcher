@@ -20,7 +20,7 @@ There are only 3 annotations.
 
 - `@RuntimePermissions`: [Must] Register an Activity or Fragment to handle permissions.
 - `@NeedsPermission`: [Must] Register a method which the permission is needed.
-- `@ShowsRationale`: [Option] Register a method which explains why the permission is needed. Actually an annotated method is called when `shouldShowRequestPermissionRationale` returns true.
+- `@ShowsRationale`: [Option] Register a method which explains why the permission is needed. Actually an annotated method is called when `shouldShowRequestPermissionRationale` returns true or when uer deny a permission.
 
 > NOTE: Annotated methods must be package private or above.
 
@@ -103,10 +103,14 @@ buildscript {
 apply plugin: 'android-apt'
 
 dependencies {
-  compile 'com.github.hotchemi:permissionsdispatcher:0.9.0'
-  apt 'com.github.hotchemi:permissionsdispatcher-processor:0.9.0'
+  compile 'com.github.hotchemi:permissionsdispatcher:1.0.0'
+  apt 'com.github.hotchemi:permissionsdispatcher-processor:1.0.0'
 }
 ```
+
+## Support
+
+PermissionsDispatcher supports API level over 4, and using support v4 rev.23.
 
 ## ProGuard
 
