@@ -3,11 +3,10 @@ apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
 
 android {
-    compileSdkVersion 23
+    compileSdkVersion 4
     buildToolsVersion "22.0.1"
     defaultConfig {
         minSdkVersion 4
-        targetSdkVersion 23
     }
     compileOptions {
         sourceCompatibility JavaVersion.VERSION_1_7
@@ -29,6 +28,7 @@ android {
 }
 
 dependencies {
+    compile "com.android.support:support-v4:23.0.0"
     androidTestCompile 'junit:junit:4.12'
 }
 

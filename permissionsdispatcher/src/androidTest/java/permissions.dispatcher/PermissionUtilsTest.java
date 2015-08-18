@@ -1,7 +1,6 @@
 package permissions.dispatcher;
 
 import android.Manifest;
-import android.content.Context;
 import android.content.pm.PackageManager;
 import android.test.AndroidTestCase;
 
@@ -27,8 +26,7 @@ public class PermissionUtilsTest extends AndroidTestCase {
 
     @Test
     public void testHasSelfPermissions() {
-        Context context = getContext();
-        assertThat(hasSelfPermissions(context, Manifest.permission.CAMERA), is(false));
+        assertThat(hasSelfPermissions(getContext(), Manifest.permission.CAMERA), is(false));
     }
 
 }
