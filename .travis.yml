@@ -19,7 +19,7 @@ branches:
   except:
     - gh-pages
 
-script: ./gradlew assemble
+script: ./gradlew check
 
 cache:
   directories:
