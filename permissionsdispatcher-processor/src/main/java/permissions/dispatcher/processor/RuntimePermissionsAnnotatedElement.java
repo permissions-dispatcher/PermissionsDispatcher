@@ -12,7 +12,7 @@ import permissions.dispatcher.ShowsRationale;
 
 import static permissions.dispatcher.processor.ConstantsProvider.CLASS_SUFFIX;
 import static permissions.dispatcher.processor.Utils.findMethods;
-import static permissions.dispatcher.processor.Utils.findShowsRationalFromValue;
+import static permissions.dispatcher.processor.Utils.findShowsRationaleFromValue;
 import static permissions.dispatcher.processor.Validator.checkClassName;
 import static permissions.dispatcher.processor.Validator.checkDuplicatedPermission;
 import static permissions.dispatcher.processor.Validator.checkDuplicatedRationale;
@@ -66,8 +66,12 @@ public class RuntimePermissionsAnnotatedElement {
         return needsPermissionMethods;
     }
 
+    public List<ExecutableElement> getShowsRationaleMethods() {
+        return showsRationaleMethods;
+    }
+
     public ExecutableElement getShowsRationaleMethodFromValue(String value) {
-        return findShowsRationalFromValue(value, showsRationaleMethods);
+        return findShowsRationaleFromValue(value, showsRationaleMethods);
     }
 
 }

@@ -41,7 +41,7 @@ final class Utils {
         return methods;
     }
 
-    static ExecutableElement findShowsRationalFromValue(String value, List<ExecutableElement> elements) {
+    static ExecutableElement findShowsRationaleFromValue(String value, List<ExecutableElement> elements) {
         for (ExecutableElement element : elements) {
             ShowsRationale annotation = element.getAnnotation(ShowsRationale.class);
             if (value.equals(annotation.value())) {
