@@ -14,6 +14,7 @@ import javax.lang.model.element.Modifier;
 
 import permissions.dispatcher.NeedsPermission;
 
+import static permissions.dispatcher.processor.ConstantsProvider.ACTIVITY_COMPAT;
 import static permissions.dispatcher.processor.ConstantsProvider.METHOD_SUFFIX;
 import static permissions.dispatcher.processor.ConstantsProvider.PERMISSION_UTIL;
 import static permissions.dispatcher.processor.Utils.getFieldName;
@@ -33,28 +34,32 @@ final class JavaFileBuilder {
         for (ExecutableElement element : elements) {
             String value = element.getAnnotation(NeedsPermission.class).value();
             ExecutableElement showsRationale = clazz.getShowsRationaleMethodFromValue(value);
-            methodSpecs.add(createMethodWithCheck(clazz.getClassName(), element, showsRationale));
+            methodSpecs.add(createMethodWithCheck(clazz.getClassType(), clazz.getClassName(), element, showsRationale));
         }
         return methodSpecs;
     }
 
-    private static MethodSpec createMethodWithCheck(ClassName target, ExecutableElement needsPermission, ExecutableElement showsRationale) {
+    private static MethodSpec createMethodWithCheck(ClassType classType, ClassName target, ExecutableElement needsPermission, ExecutableElement showsRationale) {
         String methodName = needsPermission.getSimpleName().toString();
         String value = needsPermission.getAnnotation(NeedsPermission.class).value();
-        MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder(methodName + METHOD_SUFFIX)
+        String activity = classType.getActivity();
+        MethodSpec.Builder
+                methodBuilder = MethodSpec.methodBuilder(methodName + METHOD_SUFFIX)
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .returns(void.class)
                 .addParameter(target, "target")
-                .beginControlFlow("if ($T.hasSelfPermissions(target, $S))", PERMISSION_UTIL, value)
+                .beginControlFlow("if ($T.hasSelfPermissions($N, $S))", PERMISSION_UTIL, activity, value)
                 .addStatement("target.$N()", methodName)
                 .nextControlFlow("else");
 
         if (showsRationale != null) {
-            methodBuilder.beginControlFlow("if (target.shouldShowRequestPermissionRationale($S))", value)
+            methodBuilder.beginControlFlow("if ($T.shouldShowRequestPermissionRationale($N, $S))",
+                    ACTIVITY_COMPAT, activity, value)
                     .addStatement("target.$N()", showsRationale.getSimpleName())
                     .endControlFlow();
         }
-        return methodBuilder.addStatement("target.requestPermissions(new String[]{$S}, $N)", value, getFieldName(methodName))
+        return methodBuilder.addStatement("$T.requestPermissions($N, new String[]{$S}, $N)",
+                ACTIVITY_COMPAT, activity, value, getFieldName(methodName))
                 .endControlFlow()
                 .build();
     }

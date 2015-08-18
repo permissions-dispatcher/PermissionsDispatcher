@@ -25,15 +25,18 @@ public class RuntimePermissionsAnnotatedElement {
 
     private final String className;
 
+    private final ClassType classType;
+
     private final List<ExecutableElement> needsPermissionMethods;
 
     private final List<ExecutableElement> showsRationaleMethods;
 
     public RuntimePermissionsAnnotatedElement(TypeElement element) {
         String qualifiedName = element.getQualifiedName().toString();
-        packageName = Utils.getPackageName(qualifiedName);
         className = Utils.getClassName(qualifiedName);
+        packageName = Utils.getPackageName(qualifiedName);
         checkClassName(className);
+        classType = ClassType.getClassType(className);
         needsPermissionMethods = findMethods(element, NeedsPermission.class);
         checkNeedsPermissionSize(needsPermissionMethods);
         checkDuplicatedPermission(needsPermissionMethods);
@@ -49,6 +52,10 @@ public class RuntimePermissionsAnnotatedElement {
 
     public ClassName getClassName() {
         return ClassName.get(packageName, className);
+    }
+
+    public ClassType getClassType() {
+        return classType;
     }
 
     public String getDispatchClassName() {

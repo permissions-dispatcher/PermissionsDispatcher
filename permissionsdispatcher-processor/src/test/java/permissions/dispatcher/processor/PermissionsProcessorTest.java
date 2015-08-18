@@ -27,9 +27,17 @@ public class PermissionsProcessorTest {
     public ExpectedException expectedException = ExpectedException.none();
 
     @Test
-    public void onePermission() {
-        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.OnePermission.ACTUAL);
-        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.OnePermission.EXPECT);
+    public void onePermissionActivity() {
+        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.OnePermissionActivity.ACTUAL);
+        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.OnePermissionActivity.EXPECT);
+        assertJavaSource(actual, expect);
+    }
+
+    @Test
+    public void onePermissionFragment() {
+        String className = "MainFragment";
+        JavaFileObject actual = forSourceLines(className, Source.OnePermissionFragment.ACTUAL);
+        JavaFileObject expect = forSourceLines(className + CLASS_SUFFIX, Source.OnePermissionFragment.EXPECT);
         assertJavaSource(actual, expect);
     }
 
