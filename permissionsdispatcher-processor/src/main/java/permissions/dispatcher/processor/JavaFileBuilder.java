@@ -17,7 +17,6 @@ import permissions.dispatcher.NeedsPermission;
 import static permissions.dispatcher.processor.ConstantsProvider.ACTIVITY_COMPAT;
 import static permissions.dispatcher.processor.ConstantsProvider.METHOD_SUFFIX;
 import static permissions.dispatcher.processor.ConstantsProvider.PERMISSION_UTIL;
-import static permissions.dispatcher.processor.Utils.findShowsRationaleFromValue;
 import static permissions.dispatcher.processor.Utils.getFieldName;
 
 final class JavaFileBuilder {
@@ -65,7 +64,7 @@ final class JavaFileBuilder {
                 .build();
     }
 
-    private static MethodSpec createOnRequestPermissionsResult(ClassName target, List<ExecutableElement> methods, List<ExecutableElement> showsRationaleMethods) {
+    private static MethodSpec createOnRequestPermissionsResult(ClassName target, List<ExecutableElement> methods) {
         MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("onRequestPermissionsResult")
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .addParameter(target, "target")
@@ -77,18 +76,10 @@ final class JavaFileBuilder {
 
         for (ExecutableElement method : methods) {
             String methodName = method.getSimpleName().toString();
-            String value = method.getAnnotation(NeedsPermission.class).value();
-            ExecutableElement showsRationale = findShowsRationaleFromValue(value, showsRationaleMethods);
             methodBuilder
                     .addCode("case $N:\n", getFieldName(methodName))
                     .beginControlFlow("if ($T.verifyPermissions(grantResults))", PERMISSION_UTIL)
-                    .addStatement("target.$N()", methodName);
-            if (showsRationale != null) {
-                methodBuilder
-                        .nextControlFlow("else")
-                        .addStatement("target.$N()", showsRationale.getSimpleName());
-            }
-            methodBuilder
+                    .addStatement("target.$N()", methodName)
                     .endControlFlow()
                     .addStatement("break");
         }
@@ -117,13 +108,12 @@ final class JavaFileBuilder {
 
     public static JavaFile createJavaFile(RuntimePermissionsAnnotatedElement element) {
         List<ExecutableElement> needsPermissionMethods = element.getNeedsPermissionMethods();
-        List<ExecutableElement> showsRationaleMethods = element.getShowsRationaleMethods();
         TypeSpec clazz = TypeSpec.classBuilder(element.getDispatchClassName())
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addFields(createFields(needsPermissionMethods))
                 .addMethod(createConstructor())
                 .addMethods(createMethodsWithCheck(element))
-                .addMethod(createOnRequestPermissionsResult(element.getClassName(), needsPermissionMethods, showsRationaleMethods))
+                .addMethod(createOnRequestPermissionsResult(element.getClassName(), needsPermissionMethods))
                         .build();
         String packageName = element.getPackageName();
         return JavaFile.builder(packageName, clazz).build();

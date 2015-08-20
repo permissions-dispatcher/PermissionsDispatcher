@@ -66,10 +66,6 @@ public class RuntimePermissionsAnnotatedElement {
         return needsPermissionMethods;
     }
 
-    public List<ExecutableElement> getShowsRationaleMethods() {
-        return showsRationaleMethods;
-    }
-
     public ExecutableElement getShowsRationaleMethodFromValue(String value) {
         return findShowsRationaleFromValue(value, showsRationaleMethods);
     }
