@@ -103,14 +103,14 @@ buildscript {
 apply plugin: 'android-apt'
 
 dependencies {
-  compile 'com.github.hotchemi:permissionsdispatcher:1.0.0'
-  apt 'com.github.hotchemi:permissionsdispatcher-processor:1.0.0'
+  compile 'com.github.hotchemi:permissionsdispatcher:1.0.1'
+  apt 'com.github.hotchemi:permissionsdispatcher-processor:1.0.1'
 }
 ```
 
 ## Support
 
-PermissionsDispatcher supports API level over 4, and using support v4 rev.23.
+PermissionsDispatcher supports API level over 4, using support v4 rev.23.
 
 ## ProGuard
 
