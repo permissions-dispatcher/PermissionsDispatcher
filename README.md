@@ -18,10 +18,10 @@ Here's a minimum example that you register `MainActivity` which requires `Manife
 
 There are only few annotations.
 
-- `@RuntimePermissions`: [Must] Register an Activity or Fragment to handle permissions.
-- `@NeedsPermission`: [Must] Register a method which the permission is needed.
+- `@RuntimePermissions`: Register an Activity or Fragment to handle permissions.
+- `@NeedsPermission`: Register a method which the permission is needed.
     - You can use `@NeedsPermissions` for multiple requests.
-- `@ShowsRationale`: [Option] Register a method which explains why the permission is needed. Actually an annotated method is called when `shouldShowRequestPermissionRationale` returns true or when uer deny a permission.
+- `@ShowsRationale`: Register a method which explains why the permission is needed. Actually an annotated method is called when `shouldShowRequestPermissionRationale` returns true.
     - You can use `@ShowsRationales` for multiple requests.
 
 > NOTE: Annotated methods must be package private or above.
