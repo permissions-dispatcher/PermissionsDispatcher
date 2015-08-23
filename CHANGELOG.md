@@ -1,5 +1,7 @@
 # ChangeLog
 
+- 1.1.0 2015/08/24
+    - Add `@NeedsPermissions` and `@ShowRationales`.
 - 1.0.1 2015/08/20
     - Stop calling rationale methods in the OnRequestPermissionsResult.
 - 1.0.0 2015/08/19

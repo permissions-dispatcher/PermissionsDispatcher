@@ -4,9 +4,9 @@
 [ ![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg) ](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-PermissionsDispatcher-green.svg?style=flat)](https://android-arsenal.com/details/1/2316)
 
-PermissionsDispatcher provides simple annotation-based API to handle runtime permissions in Android M.
+PermissionsDispatcher provides simple annotation-based API to handle runtime permissions in Marshmallow.
 
-[Runtime permissions](https://developer.android.com/preview/features/runtime-permissions.html) is so great for users but also the hell for developers. Actually I don't want to write such a complicated [code](https://github.com/googlesamples/android-RuntimePermissions/blob/master/Application/src/main/java/com/example/android/system/runtimepermissions/MainActivity.java) anymore.
+[Runtime permissions](https://developer.android.com/preview/features/runtime-permissions.html) is so great for users but also the hell for developers.
 
 You can be released from the burden that writing a bunch of check statements whether a permission have been granted or not. 
 
@@ -16,11 +16,13 @@ Here's a minimum example that you register `MainActivity` which requires `Manife
 
 ### 1. Attach annotations
 
-There are only 3 annotations.
+There are only few annotations.
 
 - `@RuntimePermissions`: [Must] Register an Activity or Fragment to handle permissions.
 - `@NeedsPermission`: [Must] Register a method which the permission is needed.
+    - You can use `@NeedsPermissions` for multiple requests.
 - `@ShowsRationale`: [Option] Register a method which explains why the permission is needed. Actually an annotated method is called when `shouldShowRequestPermissionRationale` returns true or when uer deny a permission.
+    - You can use `@ShowsRationales` for multiple requests.
 
 > NOTE: Annotated methods must be package private or above.
 
@@ -103,8 +105,8 @@ buildscript {
 apply plugin: 'android-apt'
 
 dependencies {
-  compile 'com.github.hotchemi:permissionsdispatcher:1.0.1'
-  apt 'com.github.hotchemi:permissionsdispatcher-processor:1.0.1'
+  compile 'com.github.hotchemi:permissionsdispatcher:1.1.0'
+  apt 'com.github.hotchemi:permissionsdispatcher-processor:1.1.0'
 }
 ```
 
