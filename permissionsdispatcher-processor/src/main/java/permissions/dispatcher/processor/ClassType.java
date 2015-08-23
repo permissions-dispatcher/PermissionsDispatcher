@@ -1,6 +1,6 @@
 package permissions.dispatcher.processor;
 
-public enum ClassType {
+enum ClassType {
     ACTIVITY("target"),
     FRAGMENT("target.getActivity()");
 
@@ -10,10 +10,6 @@ public enum ClassType {
         this.activity = activity;
     }
 
-    public String getActivity() {
-        return activity;
-    }
-
     static ClassType getClassType(String className) {
         if (className.endsWith("Activity")) {
             return ACTIVITY;
@@ -21,5 +17,9 @@ public enum ClassType {
             return FRAGMENT;
         }
         return null;
+    }
+
+    public String getActivity() {
+        return activity;
     }
 }

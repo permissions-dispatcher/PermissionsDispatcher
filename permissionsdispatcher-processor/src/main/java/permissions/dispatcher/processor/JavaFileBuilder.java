@@ -33,7 +33,7 @@ final class JavaFileBuilder {
         List<ExecutableElement> elements = clazz.getNeedsPermissionMethods();
         for (ExecutableElement element : elements) {
             String value = element.getAnnotation(NeedsPermission.class).value();
-            ExecutableElement showsRationale = clazz.getShowsRationaleMethodFromValue(value);
+            ExecutableElement showsRationale = clazz.getShowsRationaleFromValue(value);
             methodSpecs.add(createMethodWithCheck(clazz.getClassType(), clazz.getClassName(), element, showsRationale));
         }
         return methodSpecs;
@@ -108,7 +108,7 @@ final class JavaFileBuilder {
 
     public static JavaFile createJavaFile(RuntimePermissionsAnnotatedElement element) {
         List<ExecutableElement> needsPermissionMethods = element.getNeedsPermissionMethods();
-        TypeSpec clazz = TypeSpec.classBuilder(element.getDispatchClassName())
+        TypeSpec clazz = TypeSpec.classBuilder(element.getDispatcherClassName())
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addFields(createFields(needsPermissionMethods))
                 .addMethod(createConstructor())

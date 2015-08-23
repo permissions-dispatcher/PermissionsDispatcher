@@ -13,7 +13,9 @@ import javax.lang.model.element.TypeElement;
 
 import permissions.dispatcher.RuntimePermissions;
 import permissions.dispatcher.ShowsRationale;
+import permissions.dispatcher.ShowsRationales;
 
+import static java.util.Arrays.deepEquals;
 import static permissions.dispatcher.processor.ConstantsProvider.FIELD_PREFIX;
 
 final class Utils {
@@ -45,6 +47,16 @@ final class Utils {
         for (ExecutableElement element : elements) {
             ShowsRationale annotation = element.getAnnotation(ShowsRationale.class);
             if (value.equals(annotation.value())) {
+                return element;
+            }
+        }
+        return null;
+    }
+
+    static ExecutableElement findShowsRationalesFromValue(String[] value, List<ExecutableElement> elements) {
+        for (ExecutableElement element : elements) {
+            ShowsRationales annotation = element.getAnnotation(ShowsRationales.class);
+            if (deepEquals(value, annotation.value())) {
                 return element;
             }
         }

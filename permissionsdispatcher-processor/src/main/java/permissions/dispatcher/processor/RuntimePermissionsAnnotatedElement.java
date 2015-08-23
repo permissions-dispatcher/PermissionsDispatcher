@@ -8,18 +8,23 @@ import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
 
 import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.NeedsPermissions;
 import permissions.dispatcher.ShowsRationale;
+import permissions.dispatcher.ShowsRationales;
 
 import static permissions.dispatcher.processor.ConstantsProvider.CLASS_SUFFIX;
 import static permissions.dispatcher.processor.Utils.findMethods;
 import static permissions.dispatcher.processor.Utils.findShowsRationaleFromValue;
+import static permissions.dispatcher.processor.Utils.findShowsRationalesFromValue;
 import static permissions.dispatcher.processor.Validator.checkClassName;
 import static permissions.dispatcher.processor.Validator.checkDuplicatedPermission;
+import static permissions.dispatcher.processor.Validator.checkDuplicatedPermissions;
 import static permissions.dispatcher.processor.Validator.checkDuplicatedRationale;
-import static permissions.dispatcher.processor.Validator.checkNeedsPermissionSize;
-import static permissions.dispatcher.processor.Validator.checkPrivateMethod;
+import static permissions.dispatcher.processor.Validator.checkDuplicatedRationales;
+import static permissions.dispatcher.processor.Validator.checkNeedsPermissionsSize;
+import static permissions.dispatcher.processor.Validator.checkPrivateMethods;
 
-public class RuntimePermissionsAnnotatedElement {
+class RuntimePermissionsAnnotatedElement {
 
     private final String packageName;
 
@@ -29,33 +34,48 @@ public class RuntimePermissionsAnnotatedElement {
 
     private final List<ExecutableElement> needsPermissionMethods;
 
+    private final List<ExecutableElement> needsPermissionsMethods;
+
     private final List<ExecutableElement> showsRationaleMethods;
 
-    public RuntimePermissionsAnnotatedElement(TypeElement element) {
+    private final List<ExecutableElement> showsRationalesMethods;
+
+    RuntimePermissionsAnnotatedElement(TypeElement element) {
         String qualifiedName = element.getQualifiedName().toString();
-        className = Utils.getClassName(qualifiedName);
-        validateClassName();
         packageName = Utils.getPackageName(qualifiedName);
+        className = Utils.getClassName(qualifiedName);
+        checkClassName(className);
         classType = ClassType.getClassType(className);
         needsPermissionMethods = findMethods(element, NeedsPermission.class);
         validateNeedsPermissionMethods();
+        needsPermissionsMethods = findMethods(element, NeedsPermissions.class);
+        validateNeedsPermissionsMethods();
         showsRationaleMethods = findMethods(element, ShowsRationale.class);
         validateShowRationaleMethods();
-    }
-
-    private void validateClassName() {
-        checkClassName(className);
+        showsRationalesMethods = findMethods(element, ShowsRationales.class);
+        validateShowRationalesMethods();
     }
 
     private void validateNeedsPermissionMethods() {
-        checkNeedsPermissionSize(needsPermissionMethods);
+        checkNeedsPermissionsSize(needsPermissionMethods);
         checkDuplicatedPermission(needsPermissionMethods);
-        checkPrivateMethod(needsPermissionMethods);
+        checkPrivateMethods(needsPermissionMethods);
     }
 
     private void validateShowRationaleMethods() {
         checkDuplicatedRationale(showsRationaleMethods);
-        checkPrivateMethod(showsRationaleMethods);
+        checkPrivateMethods(showsRationaleMethods);
+    }
+
+    private void validateNeedsPermissionsMethods() {
+        checkNeedsPermissionsSize(needsPermissionsMethods);
+        checkDuplicatedPermissions(needsPermissionsMethods);
+        checkPrivateMethods(needsPermissionsMethods);
+    }
+
+    private void validateShowRationalesMethods() {
+        checkDuplicatedRationales(showsRationalesMethods);
+        checkPrivateMethods(showsRationalesMethods);
     }
 
     public String getPackageName() {
@@ -70,7 +90,7 @@ public class RuntimePermissionsAnnotatedElement {
         return classType;
     }
 
-    public String getDispatchClassName() {
+    public String getDispatcherClassName() {
         return className + CLASS_SUFFIX;
     }
 
@@ -78,8 +98,12 @@ public class RuntimePermissionsAnnotatedElement {
         return needsPermissionMethods;
     }
 
-    public ExecutableElement getShowsRationaleMethodFromValue(String value) {
+    public ExecutableElement getShowsRationaleFromValue(String value) {
         return findShowsRationaleFromValue(value, showsRationaleMethods);
+    }
+
+    public ExecutableElement getShowsRationalesFromValue(String[] value) {
+        return findShowsRationalesFromValue(value, showsRationaleMethods);
     }
 
 }
