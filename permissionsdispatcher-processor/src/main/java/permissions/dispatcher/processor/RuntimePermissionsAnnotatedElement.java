@@ -34,14 +34,26 @@ public class RuntimePermissionsAnnotatedElement {
     public RuntimePermissionsAnnotatedElement(TypeElement element) {
         String qualifiedName = element.getQualifiedName().toString();
         className = Utils.getClassName(qualifiedName);
+        validateClassName();
         packageName = Utils.getPackageName(qualifiedName);
-        checkClassName(className);
         classType = ClassType.getClassType(className);
         needsPermissionMethods = findMethods(element, NeedsPermission.class);
+        validateNeedsPermissionMethods();
+        showsRationaleMethods = findMethods(element, ShowsRationale.class);
+        validateShowRationaleMethods();
+    }
+
+    private void validateClassName() {
+        checkClassName(className);
+    }
+
+    private void validateNeedsPermissionMethods() {
         checkNeedsPermissionSize(needsPermissionMethods);
         checkDuplicatedPermission(needsPermissionMethods);
         checkPrivateMethod(needsPermissionMethods);
-        showsRationaleMethods = findMethods(element, ShowsRationale.class);
+    }
+
+    private void validateShowRationaleMethods() {
         checkDuplicatedRationale(showsRationaleMethods);
         checkPrivateMethod(showsRationaleMethods);
     }
