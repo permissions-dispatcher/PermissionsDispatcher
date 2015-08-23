@@ -10,7 +10,7 @@ import java.util.Collections;
 import javax.lang.model.element.ExecutableElement;
 
 import static permissions.dispatcher.processor.Validator.checkClassName;
-import static permissions.dispatcher.processor.Validator.checkNeedsPermissionSize;
+import static permissions.dispatcher.processor.Validator.checkNeedsPermissionsSize;
 
 /**
  * Unit test for {@link Validator}.
@@ -22,14 +22,14 @@ public class ValidatorTest {
 
     @Test
     public void validEmpty() {
-        checkNeedsPermissionSize(Collections.singletonList(Mockito.mock(ExecutableElement.class)));
+        checkNeedsPermissionsSize(Collections.singletonList(Mockito.mock(ExecutableElement.class)));
     }
 
     @Test
     public void invalidEmpty() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("@NeedsPermission is not defined");
-        checkNeedsPermissionSize(null);
+        checkNeedsPermissionsSize(null);
     }
 
     @Test

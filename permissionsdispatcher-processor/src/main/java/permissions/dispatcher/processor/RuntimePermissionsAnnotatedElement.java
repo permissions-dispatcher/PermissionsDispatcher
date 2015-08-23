@@ -23,6 +23,7 @@ import static permissions.dispatcher.processor.Validator.checkDuplicatedRational
 import static permissions.dispatcher.processor.Validator.checkDuplicatedRationales;
 import static permissions.dispatcher.processor.Validator.checkNeedsPermissionsSize;
 import static permissions.dispatcher.processor.Validator.checkPrivateMethods;
+import static permissions.dispatcher.processor.Validator.checkShowsRationalesSize;
 
 class RuntimePermissionsAnnotatedElement {
 
@@ -64,6 +65,7 @@ class RuntimePermissionsAnnotatedElement {
 
     private void validateShowRationaleMethods() {
         checkDuplicatedRationale(showsRationaleMethods);
+        checkShowsRationalesSize(showsRationaleMethods.size(), needsPermissionMethods.size());
         checkPrivateMethods(showsRationaleMethods);
     }
 
@@ -75,6 +77,7 @@ class RuntimePermissionsAnnotatedElement {
 
     private void validateShowRationalesMethods() {
         checkDuplicatedRationales(showsRationalesMethods);
+        checkShowsRationalesSize(showsRationalesMethods.size(), needsPermissionsMethods.size());
         checkPrivateMethods(showsRationalesMethods);
     }
 

@@ -15,6 +15,7 @@ import permissions.dispatcher.ShowsRationale;
 import permissions.dispatcher.ShowsRationales;
 import permissions.dispatcher.processor.exceptions.DuplicatedValueException;
 import permissions.dispatcher.processor.exceptions.NotDefinedException;
+import permissions.dispatcher.processor.exceptions.TooManyException;
 import permissions.dispatcher.processor.exceptions.WrongClassException;
 
 import static java.util.Arrays.asList;
@@ -28,6 +29,12 @@ final class Validator {
     static void checkNeedsPermissionsSize(List<ExecutableElement> methods) {
         if (isEmpty(methods)) {
             throw new NotDefinedException("@NeedsPermission or @NeedsPermissions are not defined");
+        }
+    }
+
+    static void checkShowsRationalesSize(int rationalesSize, int permissionsSize) {
+        if (rationalesSize > permissionsSize) {
+            throw new TooManyException("Too many @ShowsRationale or @ShowsRationales are defined");
         }
     }
 
