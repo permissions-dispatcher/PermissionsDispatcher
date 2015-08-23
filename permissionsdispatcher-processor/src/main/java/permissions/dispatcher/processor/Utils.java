@@ -91,9 +91,6 @@ final class Utils {
         if (array == null)
             return null;
         int max = array.length - 1;
-        if (max == -1) {
-            return null;
-        }
         StringBuilder b = new StringBuilder();
         b.append('{');
         for (int i = 0; ; i++) {
