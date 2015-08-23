@@ -23,8 +23,6 @@ public final class Source {
                 "@ShowsRationale(Manifest.permission.CAMERA)",
                 "void showRationaleForCamera() {",
                 "}",
-                "public boolean shouldShowRequestPermissionRationale(String permission) { return true; }",
-                "public final void requestPermissions(String[] permissions, int requestCode) {}",
                 "}"};
 
         public static final String[] EXPECT = {
@@ -85,8 +83,6 @@ public final class Source {
                 "@ShowsRationale(Manifest.permission.CAMERA)",
                 "void showRationaleForCamera() {",
                 "}",
-                "public boolean shouldShowRequestPermissionRationale(String permission) { return true; }",
-                "public final void requestPermissions(String[] permissions, int requestCode) {}",
                 "}"};
 
         public static final String[] EXPECT = {
@@ -128,62 +124,6 @@ public final class Source {
         };
     }
 
-    public static class NoShowRationale {
-        public static final String[] ACTUAL = {
-                "package permissions.dispatcher.sample;",
-                "import android.Manifest;",
-                "import android.app.Activity;",
-                "import android.os.Bundle;",
-                "import android.view.Menu;",
-                "import android.view.MenuItem;",
-                "import permissions.dispatcher.NeedsPermission;",
-                "import permissions.dispatcher.RuntimePermissions;",
-                "import permissions.dispatcher.ShowsRationale;",
-                "@RuntimePermissions",
-                "public class MainActivity extends Activity {",
-                "@NeedsPermission(Manifest.permission.CAMERA)",
-                "void showCamera() {",
-                "}",
-                "public boolean shouldShowRequestPermissionRationale(String permission) { return true; }",
-                "public final void requestPermissions(String[] permissions, int requestCode) {}",
-                "}"};
-
-        public static final String[] EXPECT = {
-                "package permissions.dispatcher.sample;",
-                "\n",
-                "import android.support.v4.app.ActivityCompat;",
-                "import java.lang.String;",
-                "import permissions.dispatcher.PermissionUtils;",
-                "\n",
-                "public final class MainActivityPermissionsDispatcher {",
-                "  private static final int REQUEST_SHOWCAMERA = 0;",
-                "\n",
-                "  private MainActivityPermissionsDispatcher() {",
-                "  }",
-                "\n",
-                "  public static void showCameraWithCheck(MainActivity target) {",
-                "    if (PermissionUtils.hasSelfPermissions(target, \"android.permission.CAMERA\")) {",
-                "      target.showCamera();",
-                "    } else {",
-                "      ActivityCompat.requestPermissions(target, new String[]{\"android.permission.CAMERA\"}, REQUEST_SHOWCAMERA);",
-                "    }",
-                "  }",
-                "\n",
-                "  public static void onRequestPermissionsResult(MainActivity target, int requestCode, String[] permissions, int[] grantResults) {",
-                "    switch (requestCode) {",
-                "      case REQUEST_SHOWCAMERA:",
-                "      if (PermissionUtils.verifyPermissions(grantResults)) {",
-                "        target.showCamera();",
-                "      }",
-                "      break;",
-                "      default:",
-                "      break;",
-                "    }",
-                "  }",
-                "}"
-        };
-    }
-
     public static class TwoPermissions {
         public static final String[] ACTUAL = {
                 "package permissions.dispatcher.sample;",
@@ -193,24 +133,24 @@ public final class Source {
                 "import android.view.Menu;",
                 "import android.view.MenuItem;",
                 "import permissions.dispatcher.NeedsPermission;",
+                "import permissions.dispatcher.NeedsPermissions;",
                 "import permissions.dispatcher.RuntimePermissions;",
                 "import permissions.dispatcher.ShowsRationale;",
+                "import permissions.dispatcher.ShowsRationales;",
                 "@RuntimePermissions",
                 "public class MainActivity extends Activity {",
                 "@NeedsPermission(Manifest.permission.CAMERA)",
                 "void showCamera() {",
                 "}",
-                "@NeedsPermission(Manifest.permission.READ_CONTACTS)",
+                "@NeedsPermissions({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})",
                 "void showContact() {",
                 "}",
                 "@ShowsRationale(Manifest.permission.CAMERA)",
                 "void showRationaleForCamera() {",
                 "}",
-                "@ShowsRationale(Manifest.permission.READ_CONTACTS)",
+                "@ShowsRationales({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})",
                 "void showRationaleForContact() {",
                 "}",
-                "public boolean shouldShowRequestPermissionRationale(String permission) { return true; }",
-                "public final void requestPermissions(String[] permissions, int requestCode) {}",
                 "}"};
 
         public static final String[] EXPECT = {
@@ -240,13 +180,13 @@ public final class Source {
                 "  }",
                 "\n",
                 "  public static void showContactWithCheck(MainActivity target) {",
-                "    if (PermissionUtils.hasSelfPermissions(target, \"android.permission.READ_CONTACTS\")) {",
+                "    if (PermissionUtils.hasSelfPermissions(target, new String[] {\"android.permission.READ_CONTACTS\", \"android.permission.WRITE_CONTACTS\"})) {",
                 "      target.showContact();",
                 "    } else {",
-                "      if (ActivityCompat.shouldShowRequestPermissionRationale(target, \"android.permission.READ_CONTACTS\")) {",
+                "      if (PermissionUtils.shouldShowRequestPermissionRationale(target, new String[] {\"android.permission.READ_CONTACTS\", \"android.permission.WRITE_CONTACTS\")) {",
                 "        target.showRationaleForContact();",
                 "      }",
-                "      ActivityCompat.requestPermissions(target, new String[]{\"android.permission.READ_CONTACTS\"}, REQUEST_SHOWCONTACT);",
+                "      ActivityCompat.requestPermissions(target, new String[] {\"android.permission.READ_CONTACTS\", \"android.permission.WRITE_CONTACTS\"}, REQUEST_SHOWCONTACT);",
                 "    }",
                 "  }",
                 "\n",
@@ -270,6 +210,193 @@ public final class Source {
         };
     }
 
+    public static class NoShowRationale {
+        public static final String[] ACTUAL = {
+                "package permissions.dispatcher.sample;",
+                "import android.Manifest;",
+                "import android.app.Activity;",
+                "import android.os.Bundle;",
+                "import android.view.Menu;",
+                "import android.view.MenuItem;",
+                "import permissions.dispatcher.NeedsPermission;",
+                "import permissions.dispatcher.NeedsPermissions;",
+                "import permissions.dispatcher.RuntimePermissions;",
+                "import permissions.dispatcher.ShowsRationale;",
+                "@RuntimePermissions",
+                "public class MainActivity extends Activity {",
+                "@NeedsPermission(Manifest.permission.CAMERA)",
+                "void showCamera() {",
+                "}",
+                "@NeedsPermissions({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})",
+                "void showContact() {",
+                "}",
+                "}"};
+
+        public static final String[] EXPECT = {
+                "package permissions.dispatcher.sample;",
+                "\n",
+                "import android.support.v4.app.ActivityCompat;",
+                "import java.lang.String;",
+                "import permissions.dispatcher.PermissionUtils;",
+                "\n",
+                "public final class MainActivityPermissionsDispatcher {",
+                "  private static final int REQUEST_SHOWCAMERA = 0;",
+                "\n",
+                "  private static final int REQUEST_SHOWCONTACT = 1;",
+                "\n",
+                "  private MainActivityPermissionsDispatcher() {",
+                "  }",
+                "\n",
+                "  public static void showCameraWithCheck(MainActivity target) {",
+                "    if (PermissionUtils.hasSelfPermissions(target, \"android.permission.CAMERA\")) {",
+                "      target.showCamera();",
+                "    } else {",
+                "      ActivityCompat.requestPermissions(target, new String[]{\"android.permission.CAMERA\"}, REQUEST_SHOWCAMERA);",
+                "    }",
+                "  }",
+                "\n",
+                "  public static void showContactWithCheck(MainActivity target) {",
+                "    if (PermissionUtils.hasSelfPermissions(target, new String[] {\"android.permission.READ_CONTACTS\", \"android.permission.WRITE_CONTACTS\"})) {",
+                "      target.showContact();",
+                "    } else {",
+                "      ActivityCompat.requestPermissions(target, new String[] {\"android.permission.READ_CONTACTS\", \"android.permission.WRITE_CONTACTS\"}, REQUEST_SHOWCONTACT);",
+                "    }",
+                "  }",
+                "\n",
+                "  public static void onRequestPermissionsResult(MainActivity target, int requestCode, String[] permissions, int[] grantResults) {",
+                "    switch (requestCode) {",
+                "      case REQUEST_SHOWCAMERA:",
+                "      if (PermissionUtils.verifyPermissions(grantResults)) {",
+                "        target.showCamera();",
+                "      }",
+                "      break;",
+                "      case REQUEST_SHOWCONTACT:",
+                "      if (PermissionUtils.verifyPermissions(grantResults)) {",
+                "        target.showContact();",
+                "      }",
+                "      break;",
+                "      default:",
+                "      break;",
+                "    }",
+                "  }",
+                "}"
+        };
+    }
+
+    public static class OnePermissionAndOtherRationale {
+        public static final String[] ACTUAL = {
+                "package permissions.dispatcher.sample;",
+                "import android.Manifest;",
+                "import android.app.Activity;",
+                "import android.os.Bundle;",
+                "import android.view.Menu;",
+                "import android.view.MenuItem;",
+                "import permissions.dispatcher.NeedsPermission;",
+                "import permissions.dispatcher.RuntimePermissions;",
+                "import permissions.dispatcher.ShowsRationale;",
+                "@RuntimePermissions",
+                "public class MainActivity extends Activity {",
+                "@NeedsPermission(Manifest.permission.CAMERA)",
+                "void showCamera() {",
+                "}",
+                "@ShowsRationale(Manifest.permission.READ_CONTACTS)",
+                "void showRationaleForCamera() {",
+                "}",
+                "}"};
+
+        public static final String[] EXPECT = {
+                "package permissions.dispatcher.sample;",
+                "\n",
+                "import android.support.v4.app.ActivityCompat;",
+                "import java.lang.String;",
+                "import permissions.dispatcher.PermissionUtils;",
+                "\n",
+                "public final class MainActivityPermissionsDispatcher {",
+                "  private static final int REQUEST_SHOWCAMERA = 0;",
+                "\n",
+                "  private MainActivityPermissionsDispatcher() {",
+                "  }",
+                "\n",
+                "  public static void showCameraWithCheck(MainActivity target) {",
+                "    if (PermissionUtils.hasSelfPermissions(target, \"android.permission.CAMERA\")) {",
+                "      target.showCamera();",
+                "    } else {",
+                "      ActivityCompat.requestPermissions(target, new String[]{\"android.permission.CAMERA\"}, REQUEST_SHOWCAMERA);",
+                "    }",
+                "  }",
+                "\n",
+                "  public static void onRequestPermissionsResult(MainActivity target, int requestCode, String[] permissions, int[] grantResults) {",
+                "    switch (requestCode) {",
+                "      case REQUEST_SHOWCAMERA:",
+                "      if (PermissionUtils.verifyPermissions(grantResults)) {",
+                "        target.showCamera();",
+                "      }",
+                "      break;",
+                "      default:",
+                "      break;",
+                "    }",
+                "  }",
+                "}"
+        };
+    }
+
+    public static class OnePermissionAndOtherRationales {
+        public static final String[] ACTUAL = {
+                "package permissions.dispatcher.sample;",
+                "import android.Manifest;",
+                "import android.app.Activity;",
+                "import android.os.Bundle;",
+                "import android.view.Menu;",
+                "import android.view.MenuItem;",
+                "import permissions.dispatcher.NeedsPermissions;",
+                "import permissions.dispatcher.RuntimePermissions;",
+                "import permissions.dispatcher.ShowsRationales;",
+                "@RuntimePermissions",
+                "public class MainActivity extends Activity {",
+                "@NeedsPermissions({Manifest.permission.CAMERA})",
+                "void showCamera() {",
+                "}",
+                "@ShowsRationales({Manifest.permission.READ_CONTACTS})",
+                "void showRationaleForCamera() {",
+                "}",
+                "}"};
+
+        public static final String[] EXPECT = {
+                "package permissions.dispatcher.sample;",
+                "\n",
+                "import android.support.v4.app.ActivityCompat;",
+                "import java.lang.String;",
+                "import permissions.dispatcher.PermissionUtils;",
+                "\n",
+                "public final class MainActivityPermissionsDispatcher {",
+                "  private static final int REQUEST_SHOWCAMERA = 0;",
+                "\n",
+                "  private MainActivityPermissionsDispatcher() {",
+                "  }",
+                "\n",
+                "  public static void showCameraWithCheck(MainActivity target) {",
+                "    if (PermissionUtils.hasSelfPermissions(target, new String[]{\"android.permission.CAMERA\"})) {",
+                "      target.showCamera();",
+                "    } else {",
+                "      ActivityCompat.requestPermissions(target, new String[]{\"android.permission.CAMERA\"}, REQUEST_SHOWCAMERA);",
+                "    }",
+                "  }",
+                "\n",
+                "  public static void onRequestPermissionsResult(MainActivity target, int requestCode, String[] permissions, int[] grantResults) {",
+                "    switch (requestCode) {",
+                "      case REQUEST_SHOWCAMERA:",
+                "      if (PermissionUtils.verifyPermissions(grantResults)) {",
+                "        target.showCamera();",
+                "      }",
+                "      break;",
+                "      default:",
+                "      break;",
+                "    }",
+                "  }",
+                "}"
+        };
+    }
+
     public static class ZeroPermission {
         public static final String[] ACTUAL = {
                 "package permissions.dispatcher.sample;",
@@ -283,12 +410,10 @@ public final class Source {
                 "import permissions.dispatcher.ShowsRationale;",
                 "@RuntimePermissions",
                 "public class MainActivity extends Activity {",
-                "public boolean shouldShowRequestPermissionRationale(String permission) { return true; }",
-                "public final void requestPermissions(String[] permissions, int requestCode) {}",
                 "}"};
     }
 
-    public static class WrongFileName {
+    public static class WrongClassName {
         public static final String[] ACTUAL = {
                 "package permissions.dispatcher.sample;",
                 "import android.Manifest;",
@@ -306,8 +431,6 @@ public final class Source {
                 "@ShowsRationale(Manifest.permission.CAMERA)",
                 "void showRationaleForCamera() {",
                 "}",
-                "public boolean shouldShowRequestPermissionRationale(String permission) { return true; }",
-                "public final void requestPermissions(String[] permissions, int requestCode) {}",
                 "}"};
     }
 
@@ -330,11 +453,28 @@ public final class Source {
                 "@NeedsPermission(Manifest.permission.CAMERA)",
                 "void showContact() {",
                 "}",
-                "@ShowsRationale(Manifest.permission.READ_CONTACTS)",
-                "void showRationaleForContact() {",
+                "}"};
+    }
+
+    public static class DuplicatedPermissions {
+        public static final String[] ACTUAL = {
+                "package permissions.dispatcher.sample;",
+                "import android.Manifest;",
+                "import android.app.Activity;",
+                "import android.os.Bundle;",
+                "import android.view.Menu;",
+                "import android.view.MenuItem;",
+                "import permissions.dispatcher.NeedsPermissions;",
+                "import permissions.dispatcher.RuntimePermissions;",
+                "import permissions.dispatcher.ShowsRationale;",
+                "@RuntimePermissions",
+                "public class MainActivity extends Activity {",
+                "@NeedsPermissions({Manifest.permission.CAMERA})",
+                "void showCamera() {",
                 "}",
-                "public boolean shouldShowRequestPermissionRationale(String permission) { return true; }",
-                "public final void requestPermissions(String[] permissions, int requestCode) {}",
+                "@NeedsPermissions({Manifest.permission.CAMERA})",
+                "void showContact() {",
+                "}",
                 "}"};
     }
 
@@ -360,8 +500,31 @@ public final class Source {
                 "@ShowsRationale(Manifest.permission.READ_CONTACTS)",
                 "void showRationaleForContact() {",
                 "}",
-                "public boolean shouldShowRequestPermissionRationale(String permission) { return true; }",
-                "public final void requestPermissions(String[] permissions, int requestCode) {}",
+                "}"};
+    }
+
+    public static class DuplicatedRationales {
+        public static final String[] ACTUAL = {
+                "package permissions.dispatcher.sample;",
+                "import android.Manifest;",
+                "import android.app.Activity;",
+                "import android.os.Bundle;",
+                "import android.view.Menu;",
+                "import android.view.MenuItem;",
+                "import permissions.dispatcher.NeedsPermissions;",
+                "import permissions.dispatcher.RuntimePermissions;",
+                "import permissions.dispatcher.ShowsRationales;",
+                "@RuntimePermissions",
+                "public class MainActivity extends Activity {",
+                "@NeedsPermissions({Manifest.permission.CAMERA})",
+                "void showCamera() {",
+                "}",
+                "@ShowsRationales({Manifest.permission.READ_CONTACTS})",
+                "void showContact() {",
+                "}",
+                "@ShowsRationales({Manifest.permission.READ_CONTACTS})",
+                "void showRationaleForContact() {",
+                "}",
                 "}"};
     }
 
@@ -381,11 +544,25 @@ public final class Source {
                 "@NeedsPermission(Manifest.permission.CAMERA)",
                 "private void showCamera() {",
                 "}",
-                "@ShowsRationale(Manifest.permission.CAMERA)",
-                "void showRationaleForCamera() {",
+                "}"};
+    }
+
+    public static class NeedsPermissionsIsPrivate {
+        public static final String[] ACTUAL = {
+                "package permissions.dispatcher.sample;",
+                "import android.Manifest;",
+                "import android.app.Activity;",
+                "import android.os.Bundle;",
+                "import android.view.Menu;",
+                "import android.view.MenuItem;",
+                "import permissions.dispatcher.NeedsPermissions;",
+                "import permissions.dispatcher.RuntimePermissions;",
+                "import permissions.dispatcher.ShowsRationale;",
+                "@RuntimePermissions",
+                "public class MainActivity extends Activity {",
+                "@NeedsPermissions({Manifest.permission.CAMERA})",
+                "private void showCamera() {",
                 "}",
-                "public boolean shouldShowRequestPermissionRationale(String permission) { return true; }",
-                "public final void requestPermissions(String[] permissions, int requestCode) {}",
                 "}"};
     }
 
@@ -408,8 +585,28 @@ public final class Source {
                 "@ShowsRationale(Manifest.permission.CAMERA)",
                 "void showRationaleForCamera() {",
                 "}",
-                "public boolean shouldShowRequestPermissionRationale(String permission) { return true; }",
-                "public final void requestPermissions(String[] permissions, int requestCode) {}",
+                "}"};
+    }
+
+    public static class ShowsRationalesIsPrivate {
+        public static final String[] ACTUAL = {
+                "package permissions.dispatcher.sample;",
+                "import android.Manifest;",
+                "import android.app.Activity;",
+                "import android.os.Bundle;",
+                "import android.view.Menu;",
+                "import android.view.MenuItem;",
+                "import permissions.dispatcher.NeedsPermissions;",
+                "import permissions.dispatcher.RuntimePermissions;",
+                "import permissions.dispatcher.ShowsRationales;",
+                "@RuntimePermissions",
+                "public class MainActivity extends Activity {",
+                "@NeedsPermissions({Manifest.permission.CAMERA})",
+                "private void showCamera() {",
+                "}",
+                "@ShowsRationales({Manifest.permission.CAMERA})",
+                "void showRationaleForCamera() {",
+                "}",
                 "}"};
     }
 
