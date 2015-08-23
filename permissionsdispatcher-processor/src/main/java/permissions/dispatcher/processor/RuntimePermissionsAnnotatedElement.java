@@ -51,6 +51,7 @@ class RuntimePermissionsAnnotatedElement {
         validateNeedsPermissionMethods();
         needsPermissionsMethods = findMethods(element, NeedsPermissions.class);
         validateNeedsPermissionsMethods();
+        checkNeedsPermissionsSize(needsPermissionMethods, needsPermissionsMethods);
         showsRationaleMethods = findMethods(element, ShowsRationale.class);
         validateShowRationaleMethods();
         showsRationalesMethods = findMethods(element, ShowsRationales.class);
@@ -58,21 +59,19 @@ class RuntimePermissionsAnnotatedElement {
     }
 
     private void validateNeedsPermissionMethods() {
-        checkNeedsPermissionsSize(needsPermissionMethods);
         checkDuplicatedPermission(needsPermissionMethods);
         checkPrivateMethods(needsPermissionMethods);
+    }
+
+    private void validateNeedsPermissionsMethods() {
+        checkDuplicatedPermissions(needsPermissionsMethods);
+        checkPrivateMethods(needsPermissionsMethods);
     }
 
     private void validateShowRationaleMethods() {
         checkDuplicatedRationale(showsRationaleMethods);
         checkShowsRationalesSize(showsRationaleMethods.size(), needsPermissionMethods.size());
         checkPrivateMethods(showsRationaleMethods);
-    }
-
-    private void validateNeedsPermissionsMethods() {
-        checkNeedsPermissionsSize(needsPermissionsMethods);
-        checkDuplicatedPermissions(needsPermissionsMethods);
-        checkPrivateMethods(needsPermissionsMethods);
     }
 
     private void validateShowRationalesMethods() {

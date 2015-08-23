@@ -6,6 +6,7 @@ import org.junit.rules.ExpectedException;
 import org.mockito.Mockito;
 
 import java.util.Collections;
+import java.util.List;
 
 import javax.lang.model.element.ExecutableElement;
 
@@ -22,14 +23,15 @@ public class ValidatorTest {
 
     @Test
     public void validEmpty() {
-        checkNeedsPermissionsSize(Collections.singletonList(Mockito.mock(ExecutableElement.class)));
+        List<ExecutableElement> list = Collections.singletonList(Mockito.mock(ExecutableElement.class));
+        checkNeedsPermissionsSize(list, list);
     }
 
     @Test
     public void invalidEmpty() {
         expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("@NeedsPermission is not defined");
-        checkNeedsPermissionsSize(null);
+        expectedException.expectMessage("@NeedsPermission or @NeedsPermissions are not defined");
+        checkNeedsPermissionsSize(null, null);
     }
 
     @Test

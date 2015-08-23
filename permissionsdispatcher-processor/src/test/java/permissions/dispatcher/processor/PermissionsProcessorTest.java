@@ -13,8 +13,7 @@ import permissions.dispatcher.processor.data.Source;
 import static com.google.common.truth.Truth.assert_;
 import static com.google.testing.compile.JavaFileObjects.forSourceLines;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
-
-import static permissions.dispatcher.processor.ConstantsProvider.*;
+import static permissions.dispatcher.processor.ConstantsProvider.CLASS_SUFFIX;
 
 /**
  * Unit test for {@link PermissionsProcessor}.
@@ -25,6 +24,16 @@ public class PermissionsProcessorTest {
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
+
+    private static void assertJavaSource(JavaFileObject actual, JavaFileObject expect) {
+        assert_()
+                .about(javaSource())
+                .that(actual)
+                .processedWith(new PermissionsProcessor())
+                .compilesWithoutError()
+                .and()
+                .generatesSources(expect);
+    }
 
     @Test
     public void onePermissionActivity() {
@@ -58,7 +67,7 @@ public class PermissionsProcessorTest {
     @Test
     public void zeroPermission() {
         expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("@NeedsPermission is not defined");
+        expectedException.expectMessage("@NeedsPermission or @NeedsPermissions are not defined");
         JavaFileObject actual = forSourceLines(CLASS_NAME, Source.ZeroPermission.ACTUAL);
         JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.EMPTY);
         assertJavaSource(actual, expect);
@@ -108,16 +117,6 @@ public class PermissionsProcessorTest {
         JavaFileObject actual = forSourceLines(CLASS_NAME, Source.ShowsRationaleIsPrivate.ACTUAL);
         JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.EMPTY);
         assertJavaSource(actual, expect);
-    }
-
-    private static void assertJavaSource(JavaFileObject actual, JavaFileObject expect) {
-        assert_()
-                .about(javaSource())
-                .that(actual)
-                .processedWith(new PermissionsProcessor())
-                .compilesWithoutError()
-                .and()
-                .generatesSources(expect);
     }
 
 }

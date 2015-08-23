@@ -26,8 +26,8 @@ final class Validator {
     private Validator() {
     }
 
-    static void checkNeedsPermissionsSize(List<ExecutableElement> methods) {
-        if (isEmpty(methods)) {
+    static void checkNeedsPermissionsSize(List<ExecutableElement> permission, List<ExecutableElement> permissions) {
+        if (isEmpty(permission) && isEmpty(permissions)) {
             throw new NotDefinedException("@NeedsPermission or @NeedsPermissions are not defined");
         }
     }
