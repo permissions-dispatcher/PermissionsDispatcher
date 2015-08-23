@@ -8,10 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.RuntimePermissions;
-import permissions.dispatcher.ShowsRationale;
+import permissions.dispatcher.*;
 import permissions.dispatcher.sample.camera.CameraPreviewFragment;
 import permissions.dispatcher.sample.contacts.ContactsFragment;
 
@@ -57,7 +54,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .commitAllowingStateLoss();
     }
 
-    @NeedsPermission(Manifest.permission.READ_CONTACTS)
+    @NeedsPermissions({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})
     void showContacts() {
         getSupportFragmentManager().beginTransaction()
                 .replace(R.id.sample_content_fragment, ContactsFragment.newInstance())
@@ -70,7 +67,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(this, R.string.permission_camera_rationale, Toast.LENGTH_SHORT).show();
     }
 
-    @ShowsRationale(Manifest.permission.READ_CONTACTS)
+    @ShowsRationales({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})
     void showRationaleForContact() {
         Toast.makeText(this, R.string.permission_contacts_rationale, Toast.LENGTH_SHORT).show();
     }
