@@ -1,27 +1,21 @@
 package permissions.dispatcher.processor;
 
-import java.lang.annotation.Annotation;
-import java.util.ArrayList;
-import java.util.Collection;
-import java.util.List;
-import java.util.Set;
+import permissions.dispatcher.*;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import java.lang.annotation.Annotation;
+import java.util.*;
 
-import permissions.dispatcher.RuntimePermissions;
-import permissions.dispatcher.ShowsRationale;
-import permissions.dispatcher.ShowsRationales;
-
+import static java.util.Arrays.asList;
 import static java.util.Arrays.deepEquals;
+import static java.util.Collections.emptyList;
+import static java.util.Collections.singletonList;
 import static permissions.dispatcher.processor.ConstantsProvider.FIELD_PREFIX;
 
 final class Utils {
-
-    private Utils() {
-    }
 
     static List<RuntimePermissionsAnnotatedElement> getAnnotatedClasses(RoundEnvironment env) {
         List<RuntimePermissionsAnnotatedElement> models = new ArrayList<>();
@@ -63,6 +57,20 @@ final class Utils {
         return null;
     }
 
+    static <A extends Annotation> List<String> getValueFromAnnotation(ExecutableElement element, Class<A> clazz) {
+        if (Objects.equals(clazz, NeedsPermission.class)) {
+            return singletonList(element.getAnnotation(NeedsPermission.class).value());
+        } else if (Objects.equals(clazz, NeedsPermissions.class)) {
+            return asList(element.getAnnotation(NeedsPermissions.class).value());
+        } else if (Objects.equals(clazz, ShowsRationale.class)) {
+            return singletonList(element.getAnnotation(ShowsRationale.class).value());
+        } else if (Objects.equals(clazz, ShowsRationales.class)) {
+            return asList(element.getAnnotation(ShowsRationales.class).value());
+        } else {
+            return emptyList();
+        }
+    }
+
     static String getPackageName(String name) {
         return name.substring(0, name.lastIndexOf("."));
     }
@@ -77,6 +85,23 @@ final class Utils {
 
     static boolean isEmpty(Collection collection) {
         return collection == null || collection.isEmpty();
+    }
+
+    static String toString(String[] array) {
+        if (array == null)
+            return null;
+        int max = array.length - 1;
+        if (max == -1) {
+            return null;
+        }
+        StringBuilder b = new StringBuilder();
+        b.append('{');
+        for (int i = 0; ; i++) {
+            b.append("\"").append(array[i]).append("\"");
+            if (i == max)
+                return b.append('}').toString();
+            b.append(", ");
+        }
     }
 
 }

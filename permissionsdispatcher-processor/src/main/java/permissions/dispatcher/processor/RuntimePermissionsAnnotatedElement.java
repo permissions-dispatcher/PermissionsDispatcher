@@ -1,29 +1,18 @@
 package permissions.dispatcher.processor;
 
 import com.squareup.javapoet.ClassName;
-
-import java.util.List;
-
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.TypeElement;
-
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.NeedsPermissions;
 import permissions.dispatcher.ShowsRationale;
 import permissions.dispatcher.ShowsRationales;
 
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.TypeElement;
+import java.util.List;
+
 import static permissions.dispatcher.processor.ConstantsProvider.CLASS_SUFFIX;
-import static permissions.dispatcher.processor.Utils.findMethods;
-import static permissions.dispatcher.processor.Utils.findShowsRationaleFromValue;
-import static permissions.dispatcher.processor.Utils.findShowsRationalesFromValue;
-import static permissions.dispatcher.processor.Validator.checkClassName;
-import static permissions.dispatcher.processor.Validator.checkDuplicatedPermission;
-import static permissions.dispatcher.processor.Validator.checkDuplicatedPermissions;
-import static permissions.dispatcher.processor.Validator.checkDuplicatedRationale;
-import static permissions.dispatcher.processor.Validator.checkDuplicatedRationales;
-import static permissions.dispatcher.processor.Validator.checkNeedsPermissionsSize;
-import static permissions.dispatcher.processor.Validator.checkPrivateMethods;
-import static permissions.dispatcher.processor.Validator.checkShowsRationalesSize;
+import static permissions.dispatcher.processor.Utils.*;
+import static permissions.dispatcher.processor.Validator.*;
 
 class RuntimePermissionsAnnotatedElement {
 
@@ -59,24 +48,22 @@ class RuntimePermissionsAnnotatedElement {
     }
 
     private void validateNeedsPermissionMethods() {
-        checkDuplicatedPermission(needsPermissionMethods);
+        checkDuplicatedValue(needsPermissionMethods, NeedsPermission.class);
         checkPrivateMethods(needsPermissionMethods);
     }
 
     private void validateNeedsPermissionsMethods() {
-        checkDuplicatedPermissions(needsPermissionsMethods);
+        checkDuplicatedValue(needsPermissionsMethods, NeedsPermissions.class);
         checkPrivateMethods(needsPermissionsMethods);
     }
 
     private void validateShowRationaleMethods() {
-        checkDuplicatedRationale(showsRationaleMethods);
-        checkShowsRationalesSize(showsRationaleMethods.size(), needsPermissionMethods.size());
+        checkDuplicatedValue(showsRationaleMethods, ShowsRationale.class);
         checkPrivateMethods(showsRationaleMethods);
     }
 
     private void validateShowRationalesMethods() {
-        checkDuplicatedRationales(showsRationalesMethods);
-        checkShowsRationalesSize(showsRationalesMethods.size(), needsPermissionsMethods.size());
+        checkDuplicatedValue(showsRationalesMethods, ShowsRationales.class);
         checkPrivateMethods(showsRationalesMethods);
     }
 
@@ -100,12 +87,16 @@ class RuntimePermissionsAnnotatedElement {
         return needsPermissionMethods;
     }
 
+    public List<ExecutableElement> getNeedsPermissionsMethods() {
+        return needsPermissionsMethods;
+    }
+
     public ExecutableElement getShowsRationaleFromValue(String value) {
         return findShowsRationaleFromValue(value, showsRationaleMethods);
     }
 
-    public ExecutableElement getShowsRationalesFromValue(String[] value) {
-        return findShowsRationalesFromValue(value, showsRationaleMethods);
+    public ExecutableElement getShowsRationaleFromValue(String[] value) {
+        return findShowsRationalesFromValue(value, showsRationalesMethods);
     }
 
 }

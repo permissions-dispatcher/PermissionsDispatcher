@@ -1,13 +1,12 @@
 package permissions.dispatcher;
 
+import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
+import android.support.v4.app.ActivityCompat;
 
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
-/**
- * Utility class which provides basic helper methods about runtime permissions.
- */
 public class PermissionUtils {
 
     private PermissionUtils() {
@@ -17,7 +16,7 @@ public class PermissionUtils {
      * Checks all given permissions have been granted.
      *
      * @param grantResults results
-     * @return return true if all permissions have been granted.
+     * @return returns true if all permissions have been granted.
      */
     public static boolean verifyPermissions(int... grantResults) {
         for (int result : grantResults) {
@@ -33,7 +32,7 @@ public class PermissionUtils {
      *
      * @param context context
      * @param permissions permission list
-     * @return returns if the Activity or Fragment has access to all given permissions.
+     * @return returns true if the Activity or Fragment has access to all given permissions.
      */
     public static boolean hasSelfPermissions(Context context, String... permissions) {
         for (String permission : permissions) {
@@ -42,6 +41,22 @@ public class PermissionUtils {
             }
         }
         return true;
+    }
+
+    /**
+     * Checks given permissions are needed to show rationale.
+     *
+     * @param activity    activity
+     * @param permissions permission list
+     * @return returns true if one of the permission is needed to show rationale.
+     */
+    public static boolean shouldShowRequestPermissionRationale(Activity activity, String... permissions) {
+        for (String permission : permissions) {
+            if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+                return true;
+            }
+        }
+        return false;
     }
 
 }
