@@ -21,7 +21,7 @@ There are only few annotations.
 - `@RuntimePermissions`: Register an Activity or Fragment to handle permissions.
 - `@NeedsPermission`: Register a method which the permission is needed.
     - You can use `@NeedsPermissions` for multiple requests.
-- `@ShowsRationale`: Register a method which explains why the permission is needed. Actually an annotated method is called when `shouldShowRequestPermissionRationale` returns true.
+- `@ShowsRationale`: Register a method which explains why the permission is needed. An annotated method is called when `shouldShowRequestPermissionRationale` returns true.
     - You can use `@ShowsRationales` for multiple requests.
 
 > NOTE: Annotated methods must be package private or above.
@@ -85,7 +85,7 @@ public void onClick(View v) {
 public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
     // NOTE: delegate the permission handling to generated method
     MainActivityPermissionsDispatcher.
-            onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+            onRequestPermissionsResult(this, requestCode, grantResults);
 }
 ```
 
@@ -105,8 +105,8 @@ buildscript {
 apply plugin: 'android-apt'
 
 dependencies {
-  compile 'com.github.hotchemi:permissionsdispatcher:1.1.0'
-  apt 'com.github.hotchemi:permissionsdispatcher-processor:1.1.0'
+  compile 'com.github.hotchemi:permissionsdispatcher:1.1.1'
+  apt 'com.github.hotchemi:permissionsdispatcher-processor:1.1.1'
 }
 ```
 
