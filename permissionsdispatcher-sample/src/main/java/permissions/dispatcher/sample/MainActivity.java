@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
         // NOTE: delegate the permission handling to generated method
         MainActivityPermissionsDispatcher.
-                onRequestPermissionsResult(this, requestCode, permissions, grantResults);
+                onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     @NeedsPermission(Manifest.permission.CAMERA)
