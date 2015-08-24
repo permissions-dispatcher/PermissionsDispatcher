@@ -3,7 +3,6 @@ package permissions.dispatcher;
 import android.Manifest;
 import android.content.pm.PackageManager;
 import android.test.AndroidTestCase;
-
 import org.junit.Test;
 
 import static org.hamcrest.core.Is.is;
@@ -16,11 +15,13 @@ import static permissions.dispatcher.PermissionUtils.verifyPermissions;
  */
 public class PermissionUtilsTest extends AndroidTestCase {
 
+    private static final int GRANTED = PackageManager.PERMISSION_GRANTED;
+
     @Test
     public void testVerifyPermissions() {
-        assertThat(verifyPermissions(PackageManager.PERMISSION_GRANTED), is(true));
-        assertThat(verifyPermissions(PackageManager.PERMISSION_GRANTED, PackageManager.PERMISSION_GRANTED), is(true));
-        assertThat(verifyPermissions(1, 2, PackageManager.PERMISSION_GRANTED), is(false));
+        assertThat(verifyPermissions(GRANTED), is(true));
+        assertThat(verifyPermissions(GRANTED, GRANTED), is(true));
+        assertThat(verifyPermissions(1, 2, GRANTED), is(false));
         assertThat(verifyPermissions(1, 2, 3), is(false));
     }
 
