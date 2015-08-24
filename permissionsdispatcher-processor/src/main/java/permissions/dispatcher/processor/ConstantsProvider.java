@@ -8,6 +8,7 @@ interface ConstantsProvider {
     ClassName PERMISSION_UTILS = ClassName.get("permissions.dispatcher", "PermissionUtils");
     String CLASS_SUFFIX = "PermissionsDispatcher";
     String METHOD_SUFFIX = "WithCheck";
-    String FIELD_PREFIX = "REQUEST_";
+    String REQUEST_CODE_PREFIX = "REQUEST_";
+    String PERMISSION_PREFIX = "PERMISSION_";
 
 }

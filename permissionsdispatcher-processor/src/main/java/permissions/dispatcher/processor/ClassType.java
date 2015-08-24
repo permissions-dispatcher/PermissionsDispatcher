@@ -22,4 +22,5 @@ enum ClassType {
     public String getActivity() {
         return activity;
     }
+
 }

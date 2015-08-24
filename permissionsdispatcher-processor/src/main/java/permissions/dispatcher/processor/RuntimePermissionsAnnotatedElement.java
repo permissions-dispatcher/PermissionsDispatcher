@@ -8,6 +8,7 @@ import permissions.dispatcher.ShowsRationales;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
+import java.util.ArrayList;
 import java.util.List;
 
 import static permissions.dispatcher.processor.ConstantsProvider.CLASS_SUFFIX;
@@ -89,6 +90,15 @@ class RuntimePermissionsAnnotatedElement {
 
     public List<ExecutableElement> getNeedsPermissionsMethods() {
         return needsPermissionsMethods;
+    }
+
+    public List<ExecutableElement> getAllNeedsPermissionsMethods() {
+        return new ArrayList<ExecutableElement>() {
+            {
+                addAll(needsPermissionMethods);
+                addAll(needsPermissionsMethods);
+            }
+        };
     }
 
     public ExecutableElement getShowsRationaleFromValue(String value) {

@@ -66,11 +66,11 @@ public class UtilsTest {
     public void testGetFieldName() {
         {
             String name = "activity";
-            assertThat(getFieldName(name)).isEqualTo("REQUEST_ACTIVITY");
+            assertThat(getRequestCodeFieldName(name)).isEqualTo("REQUEST_ACTIVITY");
         }
         {
             String name = "FRAGMENT";
-            assertThat(getFieldName(name)).isEqualTo("REQUEST_FRAGMENT");
+            assertThat(getRequestCodeFieldName(name)).isEqualTo("REQUEST_FRAGMENT");
         }
     }
 
@@ -90,6 +90,7 @@ public class UtilsTest {
     @Test
     public void testToString() {
         {
+            //noinspection NullArgumentToVariableArgMethod
             assertThat(Utils.toString(null)).isNull();
         }
         {

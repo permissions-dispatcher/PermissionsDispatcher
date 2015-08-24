@@ -13,7 +13,8 @@ import static java.util.Arrays.asList;
 import static java.util.Arrays.deepEquals;
 import static java.util.Collections.emptyList;
 import static java.util.Collections.singletonList;
-import static permissions.dispatcher.processor.ConstantsProvider.FIELD_PREFIX;
+import static permissions.dispatcher.processor.ConstantsProvider.PERMISSION_PREFIX;
+import static permissions.dispatcher.processor.ConstantsProvider.REQUEST_CODE_PREFIX;
 
 final class Utils {
 
@@ -79,15 +80,19 @@ final class Utils {
         return name.substring(name.lastIndexOf(".") + 1);
     }
 
-    static String getFieldName(String name) {
-        return FIELD_PREFIX + name.toUpperCase();
+    static String getRequestCodeFieldName(String name) {
+        return REQUEST_CODE_PREFIX + name.toUpperCase();
+    }
+
+    static String getPermissionFieldName(String name) {
+        return PERMISSION_PREFIX + name.toUpperCase();
     }
 
     static boolean isEmpty(Collection collection) {
         return collection == null || collection.isEmpty();
     }
 
-    static String toString(String[] array) {
+    static String toString(String... array) {
         if (array == null)
             return null;
         int max = array.length - 1;

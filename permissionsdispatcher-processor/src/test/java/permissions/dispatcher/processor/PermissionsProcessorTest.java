@@ -21,7 +21,7 @@ import static permissions.dispatcher.processor.ConstantsProvider.CLASS_SUFFIX;
  */
 public class PermissionsProcessorTest {
 
-    private static final String CLASS_NAME = "MainActivity";
+    private static final String DEFAULT_CLASS = "MainActivity";
 
     @Rule
     public ExpectedException expectedException = ExpectedException.none();
@@ -38,8 +38,8 @@ public class PermissionsProcessorTest {
 
     @Test
     public void onePermissionActivity() {
-        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.OnePermissionActivity.ACTUAL);
-        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.OnePermissionActivity.EXPECT);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.OnePermissionActivity.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.OnePermissionActivity.EXPECT);
         assertJavaSource(actual, expect);
     }
 
@@ -53,29 +53,29 @@ public class PermissionsProcessorTest {
 
     @Test
     public void twoPermissions() {
-        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.TwoPermissions.ACTUAL);
-        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.TwoPermissions.EXPECT);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.TwoPermissions.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.TwoPermissions.EXPECT);
         assertJavaSource(actual, expect);
     }
 
     @Test
     public void noShowRationale() {
-        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.NoShowRationale.ACTUAL);
-        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.NoShowRationale.EXPECT);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.NoShowRationale.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.NoShowRationale.EXPECT);
         assertJavaSource(actual, expect);
     }
 
     @Test
     public void onePermissionAndOtherRationale() {
-        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.OnePermissionAndOtherRationale.ACTUAL);
-        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.OnePermissionAndOtherRationale.EXPECT);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.OnePermissionAndOtherRationale.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.OnePermissionAndOtherRationale.EXPECT);
         assertJavaSource(actual, expect);
     }
 
     @Test
     public void onePermissionAndOtherRationales() {
-        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.OnePermissionAndOtherRationales.ACTUAL);
-        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.OnePermissionAndOtherRationales.EXPECT);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.OnePermissionAndOtherRationales.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.OnePermissionAndOtherRationales.EXPECT);
         assertJavaSource(actual, expect);
     }
 
@@ -83,8 +83,8 @@ public class PermissionsProcessorTest {
     public void zeroPermission() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("@NeedsPermission or @NeedsPermissions are not defined");
-        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.ZeroPermission.ACTUAL);
-        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.EMPTY);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.ZeroPermission.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.EMPTY);
         assertJavaSource(actual, expect);
     }
 
@@ -102,8 +102,8 @@ public class PermissionsProcessorTest {
     public void duplicatedPermission() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("[android.permission.CAMERA] is duplicated in " + NeedsPermission.class);
-        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.DuplicatedPermission.ACTUAL);
-        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.EMPTY);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.DuplicatedPermission.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.EMPTY);
         assertJavaSource(actual, expect);
     }
 
@@ -111,8 +111,8 @@ public class PermissionsProcessorTest {
     public void duplicatedPermissions() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("[android.permission.CAMERA] is duplicated in " + NeedsPermissions.class);
-        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.DuplicatedPermissions.ACTUAL);
-        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.EMPTY);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.DuplicatedPermissions.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.EMPTY);
         assertJavaSource(actual, expect);
     }
 
@@ -120,8 +120,8 @@ public class PermissionsProcessorTest {
     public void duplicatedRationale() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("[android.permission.READ_CONTACTS] is duplicated in " + ShowsRationale.class);
-        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.DuplicatedRationale.ACTUAL);
-        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.EMPTY);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.DuplicatedRationale.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.EMPTY);
         assertJavaSource(actual, expect);
     }
 
@@ -129,8 +129,8 @@ public class PermissionsProcessorTest {
     public void duplicatedRationales() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("[android.permission.READ_CONTACTS] is duplicated in " + ShowsRationales.class);
-        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.DuplicatedRationales.ACTUAL);
-        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.EMPTY);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.DuplicatedRationales.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.EMPTY);
         assertJavaSource(actual, expect);
     }
 
@@ -138,8 +138,8 @@ public class PermissionsProcessorTest {
     public void needsPermissionIsPrivate() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("Annotated method must be package private or above");
-        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.NeedsPermissionIsPrivate.ACTUAL);
-        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.EMPTY);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.NeedsPermissionIsPrivate.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.EMPTY);
         assertJavaSource(actual, expect);
     }
 
@@ -147,8 +147,8 @@ public class PermissionsProcessorTest {
     public void needsPermissionsIsPrivate() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("Annotated method must be package private or above");
-        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.NeedsPermissionsIsPrivate.ACTUAL);
-        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.EMPTY);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.NeedsPermissionsIsPrivate.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.EMPTY);
         assertJavaSource(actual, expect);
     }
 
@@ -156,8 +156,8 @@ public class PermissionsProcessorTest {
     public void showsRationaleIsPrivate() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("Annotated method must be package private or above");
-        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.ShowsRationaleIsPrivate.ACTUAL);
-        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.EMPTY);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.ShowsRationaleIsPrivate.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.EMPTY);
         assertJavaSource(actual, expect);
     }
 
@@ -165,8 +165,8 @@ public class PermissionsProcessorTest {
     public void showsRationalesIsPrivate() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("Annotated method must be package private or above");
-        JavaFileObject actual = forSourceLines(CLASS_NAME, Source.ShowsRationalesIsPrivate.ACTUAL);
-        JavaFileObject expect = forSourceLines(CLASS_NAME + CLASS_SUFFIX, Source.EMPTY);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.ShowsRationalesIsPrivate.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.EMPTY);
         assertJavaSource(actual, expect);
     }
 

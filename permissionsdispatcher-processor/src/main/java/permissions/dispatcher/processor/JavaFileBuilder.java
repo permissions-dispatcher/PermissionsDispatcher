@@ -10,7 +10,8 @@ import java.util.ArrayList;
 import java.util.List;
 
 import static permissions.dispatcher.processor.ConstantsProvider.*;
-import static permissions.dispatcher.processor.Utils.getFieldName;
+import static permissions.dispatcher.processor.Utils.getPermissionFieldName;
+import static permissions.dispatcher.processor.Utils.getRequestCodeFieldName;
 
 final class JavaFileBuilder {
 
@@ -25,7 +26,7 @@ final class JavaFileBuilder {
             String value = element.getAnnotation(NeedsPermission.class).value();
             ExecutableElement showsRationale = clazz.getShowsRationaleFromValue(value);
             String activity = clazz.getClassType().getActivity();
-            methodSpecs.add(createNeedsPermissionMethod(activity, clazz.getClassName(), element, showsRationale));
+            methodSpecs.add(createMethodWithCheck(activity, clazz.getClassName(), element, showsRationale));
         }
         return methodSpecs;
     }
@@ -37,54 +38,30 @@ final class JavaFileBuilder {
             String[] value = element.getAnnotation(NeedsPermissions.class).value();
             ExecutableElement showsRationale = clazz.getShowsRationaleFromValue(value);
             String activity = clazz.getClassType().getActivity();
-            methodSpecs.add(createNeedsPermissionsMethod(activity, clazz.getClassName(), element, showsRationale));
+            methodSpecs.add(createMethodWithCheck(activity, clazz.getClassName(), element, showsRationale));
         }
         return methodSpecs;
     }
 
-    private static MethodSpec createNeedsPermissionMethod(String activity, ClassName target, ExecutableElement needsPermission, ExecutableElement showsRationale) {
+    private static MethodSpec createMethodWithCheck(String activity, ClassName target, ExecutableElement needsPermission, ExecutableElement showsRationale) {
         String methodName = needsPermission.getSimpleName().toString();
-        String value = needsPermission.getAnnotation(NeedsPermission.class).value();
+        String value = getPermissionFieldName(needsPermission.getSimpleName().toString());
         MethodSpec.Builder
                 methodBuilder = MethodSpec.methodBuilder(methodName + METHOD_SUFFIX)
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .returns(void.class)
                 .addParameter(target, "target")
-                .beginControlFlow("if ($T.hasSelfPermissions($N, $S))", PERMISSION_UTILS, activity, value)
+                .beginControlFlow("if ($T.hasSelfPermissions($N, $N))", PERMISSION_UTILS, activity, value)
                 .addStatement("target.$N()", methodName)
                 .nextControlFlow("else");
         if (showsRationale != null) {
-            methodBuilder.beginControlFlow("if ($T.shouldShowRequestPermissionRationale($N, $S))",
-                    ACTIVITY_COMPAT, activity, value)
+            methodBuilder.beginControlFlow("if ($T.shouldShowRequestPermissionRationale($N, $N))",
+                    PERMISSION_UTILS, activity, value)
                     .addStatement("target.$N()", showsRationale.getSimpleName())
                     .endControlFlow();
         }
-        return methodBuilder.addStatement("$T.requestPermissions($N, new String[]{$S}, $N)",
-                ACTIVITY_COMPAT, activity, value, getFieldName(methodName))
-                .endControlFlow()
-                .build();
-    }
-
-    private static MethodSpec createNeedsPermissionsMethod(String activity, ClassName target, ExecutableElement needsPermission, ExecutableElement showsRationale) {
-        String methodName = needsPermission.getSimpleName().toString();
-        String[] value = needsPermission.getAnnotation(NeedsPermissions.class).value();
-        String array = "new String[]" + Utils.toString(value);
-        MethodSpec.Builder
-                methodBuilder = MethodSpec.methodBuilder(methodName + METHOD_SUFFIX)
-                .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
-                .returns(void.class)
-                .addParameter(target, "target")
-                .beginControlFlow("if ($T.hasSelfPermissions($N, $L))", PERMISSION_UTILS, activity, array)
-                .addStatement("target.$N()", methodName)
-                .nextControlFlow("else");
-        if (showsRationale != null) {
-            methodBuilder.beginControlFlow("if ($T.shouldShowRequestPermissionRationale($N, $L))",
-                    PERMISSION_UTILS, activity, array)
-                    .addStatement("target.$N()", showsRationale.getSimpleName())
-                    .endControlFlow();
-        }
-        return methodBuilder.addStatement("$T.requestPermissions($N, $L, $N)",
-                ACTIVITY_COMPAT, activity, array, getFieldName(methodName))
+        return methodBuilder.addStatement("$T.requestPermissions($N, $N, $N)",
+                ACTIVITY_COMPAT, activity, value, getRequestCodeFieldName(methodName))
                 .endControlFlow()
                 .build();
     }
@@ -94,14 +71,13 @@ final class JavaFileBuilder {
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .addParameter(target, "target")
                 .addParameter(int.class, "requestCode")
-                .addParameter(String[].class, "permissions")
                 .addParameter(int[].class, "grantResults")
                 .returns(void.class)
                 .beginControlFlow("switch (requestCode)");
         for (ExecutableElement method : methods) {
             String methodName = method.getSimpleName().toString();
             methodBuilder
-                    .addCode("case $N:\n", getFieldName(methodName))
+                    .addCode("case $N:\n", getRequestCodeFieldName(methodName))
                     .beginControlFlow("if ($T.verifyPermissions(grantResults))", PERMISSION_UTILS)
                     .addStatement("target.$N()", methodName)
                     .endControlFlow()
@@ -118,28 +94,39 @@ final class JavaFileBuilder {
         List<FieldSpec> fieldSpecs = new ArrayList<>();
         int index = 0;
         for (ExecutableElement element : elements) {
-            String fieldName = getFieldName(element.getSimpleName().toString());
-            fieldSpecs.add(createField(fieldName, index++));
+            String requestCodeFieldName = getRequestCodeFieldName(element.getSimpleName().toString());
+            fieldSpecs.add(createRequestCodeField(requestCodeFieldName, index++));
+            String permissionFieldName = getPermissionFieldName(element.getSimpleName().toString());
+            NeedsPermission needsPermission = element.getAnnotation(NeedsPermission.class);
+            if (needsPermission != null) {
+                String value = needsPermission.value();
+                fieldSpecs.add(createPermissionField(permissionFieldName, value));
+            }
+            NeedsPermissions needsPermissions = element.getAnnotation(NeedsPermissions.class);
+            if (needsPermissions != null) {
+                String[] value = needsPermissions.value();
+                fieldSpecs.add(createPermissionField(permissionFieldName, value));
+            }
         }
         return fieldSpecs;
     }
 
-    private static FieldSpec createField(String name, int index) {
-        return FieldSpec.builder(int.class, name, Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
+    private static FieldSpec createRequestCodeField(String name, int index) {
+        return FieldSpec
+                .builder(int.class, name, Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
                 .initializer("$L", index)
                 .build();
     }
 
-    static JavaFile createJavaFile(RuntimePermissionsAnnotatedElement element) {
-        List<ExecutableElement> permissionsMethods = new ArrayList<ExecutableElement>() {
-            {
-                addAll(element.getNeedsPermissionMethods());
-            }
+    private static FieldSpec createPermissionField(String name, String... value) {
+        return FieldSpec
+                .builder(String[].class, name, Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
+                .initializer("$N", "new String[]" + Utils.toString(value))
+                .build();
+    }
 
-            {
-                addAll(element.getNeedsPermissionsMethods());
-            }
-        };
+    static JavaFile createJavaFile(RuntimePermissionsAnnotatedElement element) {
+        List<ExecutableElement> permissionsMethods = element.getAllNeedsPermissionsMethods();
         TypeSpec clazz = TypeSpec.classBuilder(element.getDispatcherClassName())
                 .addModifiers(Modifier.PUBLIC, Modifier.FINAL)
                 .addFields(createFields(permissionsMethods))
