@@ -105,8 +105,8 @@ buildscript {
 apply plugin: 'android-apt'
 
 dependencies {
-  compile 'com.github.hotchemi:permissionsdispatcher:1.1.1'
-  apt 'com.github.hotchemi:permissionsdispatcher-processor:1.1.1'
+  compile 'com.github.hotchemi:permissionsdispatcher:1.1.2'
+  apt 'com.github.hotchemi:permissionsdispatcher-processor:1.1.2'
 }
 ```
 
@@ -120,9 +120,6 @@ PermissionsDispatcher supports API level over 4, using support v4 rev.23.
 -dontwarn permissions.dispatcher.processor.**
 -keep class permissions.dispatcher.** { *; }
 -keep class **PermissionsDispatcher { *; }
--keepclasseswithmembernames class * {
-    @permissions.dispatcher.* <methods>;
-}
 ```
 
 ## License

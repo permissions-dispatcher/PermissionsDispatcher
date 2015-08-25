@@ -1,5 +1,7 @@
 # ChangeLog
 
+- 1.1.2 2015/08/26
+    - Downgrade processor jdk version to 1.7.
 - 1.1.1 2015/08/25
     - Fix some bugs.
 - 1.1.0 2015/08/24
