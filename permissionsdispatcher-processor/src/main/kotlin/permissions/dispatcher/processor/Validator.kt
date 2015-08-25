@@ -9,13 +9,10 @@ import javax.lang.model.element.Modifier
 import java.lang.invoke.WrongMethodTypeException
 import java.util.HashSet
 
-import permissions.dispatcher.processor.Utils.getValueFromAnnotation
-import permissions.dispatcher.processor.Utils.isEmpty
-
 object Validator {
 
     fun checkNeedsPermissionsSize(permission: List<ExecutableElement>, permissions: List<ExecutableElement>) {
-        if (isEmpty(permission) && isEmpty(permissions)) {
+        if (Utils.isEmpty(permission) && Utils.isEmpty(permissions)) {
             throw NotDefinedException("@NeedsPermission or @NeedsPermissions are not defined")
         }
     }
@@ -30,9 +27,9 @@ object Validator {
     fun checkDuplicatedValue(methods: List<ExecutableElement>, clazz: Class<out Annotation>) {
         val values = HashSet<String>()
         for (method in methods) {
-            val value = getValueFromAnnotation<out Annotation>(method, clazz)
+            val value = Utils.getValueFromAnnotation(method, clazz)
             if (!values.addAll(value)) {
-                throw DuplicatedValueException(value + " is duplicated in " + clazz)
+                throw DuplicatedValueException("${value} is duplicated in ${clazz}")
             }
         }
     }

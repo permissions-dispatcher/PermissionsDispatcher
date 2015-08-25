@@ -18,9 +18,6 @@ import javax.tools.Diagnostic
 
 import permissions.dispatcher.RuntimePermissions
 
-import permissions.dispatcher.processor.JavaFileBuilder.createJavaFile
-import permissions.dispatcher.processor.Utils.getAnnotatedClasses
-
 AutoService(Processor::class)
 public class PermissionsProcessor : AbstractProcessor() {
 
@@ -43,15 +40,14 @@ public class PermissionsProcessor : AbstractProcessor() {
     }
 
     override fun process(annotations: Set<TypeElement>, env: RoundEnvironment): Boolean {
-        val classes = getAnnotatedClasses(env)
+        val classes = Utils.getAnnotatedClasses(env)
         for (clazz in classes) {
-            val javaFile = createJavaFile(clazz)
+            val javaFile = JavaFileBuilder.createJavaFile(clazz)
             try {
                 javaFile.writeTo(filer)
             } catch (e: IOException) {
                 messager!!.printMessage(Diagnostic.Kind.ERROR, e.getMessage())
             }
-
         }
         return true
     }

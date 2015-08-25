@@ -24,7 +24,7 @@ public class ValidatorTest {
     @Test
     public void validEmpty() {
         List<ExecutableElement> list = Collections.singletonList(Mockito.mock(ExecutableElement.class));
-        checkNeedsPermissionsSize(list, list);
+        Validator.checkNeedsPermissionsSize(list, list);
     }
 
     @Test

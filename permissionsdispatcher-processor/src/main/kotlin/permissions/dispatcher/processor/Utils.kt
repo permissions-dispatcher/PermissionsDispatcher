@@ -12,8 +12,7 @@ import java.util.Arrays.asList
 import java.util.Arrays.deepEquals
 import java.util.Collections.emptyList
 import java.util.Collections.singletonList
-import permissions.dispatcher.processor.ConstantsProvider.PERMISSION_PREFIX
-import permissions.dispatcher.processor.ConstantsProvider.REQUEST_CODE_PREFIX
+import kotlin.platform.platformStatic
 
 object Utils {
 
@@ -29,7 +28,7 @@ object Utils {
     fun findMethods(element: Element, clazz: Class<out Annotation>): List<ExecutableElement> {
         val methods = ArrayList<ExecutableElement>()
         for (enclosedElement in element.getEnclosedElements()) {
-            val annotation = enclosedElement.getAnnotation<out Annotation>(clazz)
+            val annotation = enclosedElement.getAnnotation(clazz)
             if (annotation != null) {
                 methods.add(enclosedElement as ExecutableElement)
             }
@@ -37,20 +36,20 @@ object Utils {
         return methods
     }
 
-    fun findShowsRationaleFromValue(value: String, elements: List<ExecutableElement>): ExecutableElement? {
+    jvmStatic fun findShowsRationaleFromValue(value: String, elements: List<ExecutableElement>): ExecutableElement? {
         for (element in elements) {
             val annotation = element.getAnnotation(javaClass<ShowsRationale>())
-            if (value == annotation.value()) {
+            if (value == annotation.value) {
                 return element
             }
         }
         return null
     }
 
-    fun findShowsRationalesFromValue(value: Array<String>, elements: List<ExecutableElement>): ExecutableElement? {
+    jvmStatic fun findShowsRationalesFromValue(value: Array<String>, elements: List<ExecutableElement>): ExecutableElement? {
         for (element in elements) {
             val annotation = element.getAnnotation(javaClass<ShowsRationales>())
-            if (deepEquals(value, annotation.value())) {
+            if (deepEquals(value, annotation.value)) {
                 return element
             }
         }
@@ -59,15 +58,15 @@ object Utils {
 
     fun <A : Annotation> getValueFromAnnotation(element: ExecutableElement, clazz: Class<A>): List<String> {
         if (clazz == javaClass<NeedsPermission>()) {
-            return listOf(element.getAnnotation(javaClass<NeedsPermission>()).value())
+            return listOf(element.getAnnotation(javaClass<NeedsPermission>()).value)
         } else if (clazz == javaClass<NeedsPermissions>()) {
-            return asList(*element.getAnnotation(javaClass<NeedsPermissions>()).value())
+            return asList(*element.getAnnotation(javaClass<NeedsPermissions>()).value)
         } else if (clazz == javaClass<ShowsRationale>()) {
-            return listOf(element.getAnnotation(javaClass<ShowsRationale>()).value())
+            return listOf(element.getAnnotation(javaClass<ShowsRationale>()).value)
         } else if (clazz == javaClass<ShowsRationales>()) {
-            return asList(*element.getAnnotation(javaClass<ShowsRationales>()).value())
+            return asList(*element.getAnnotation(javaClass<ShowsRationales>()).value)
         } else {
-            return emptyList<String>()
+            return Collections.emptyList<String>()
         }
     }
 
@@ -80,11 +79,11 @@ object Utils {
     }
 
     fun getRequestCodeFieldName(name: String): String {
-        return REQUEST_CODE_PREFIX + name.toUpperCase()
+        return ConstantsProvider.REQUEST_CODE_PREFIX + name.toUpperCase()
     }
 
     fun getPermissionFieldName(name: String): String {
-        return PERMISSION_PREFIX + name.toUpperCase()
+        return ConstantsProvider.PERMISSION_PREFIX + name.toUpperCase()
     }
 
     fun isEmpty(collection: Collection<Any>?): Boolean {
@@ -92,8 +91,6 @@ object Utils {
     }
 
     fun toString(vararg array: String): String? {
-        if (array == null)
-            return null
         val max = array.size() - 1
         val b = StringBuilder()
         b.append('{')

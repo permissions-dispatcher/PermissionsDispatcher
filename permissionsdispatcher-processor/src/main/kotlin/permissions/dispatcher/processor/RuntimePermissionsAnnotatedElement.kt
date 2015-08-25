@@ -10,10 +10,6 @@ import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 import java.util.ArrayList
 
-import permissions.dispatcher.processor.ConstantsProvider.CLASS_SUFFIX
-import permissions.dispatcher.processor.Utils.*
-import permissions.dispatcher.processor.Validator.*
-
 class RuntimePermissionsAnnotatedElement(element: TypeElement) {
 
     public val packageName: String
@@ -34,37 +30,37 @@ class RuntimePermissionsAnnotatedElement(element: TypeElement) {
         val qualifiedName = element.getQualifiedName().toString()
         packageName = Utils.getPackageName(qualifiedName)
         className = Utils.getClassName(qualifiedName)
-        checkClassName(className)
-        classType = ClassType.Companion.getClassType(className)
-        needsPermissionMethods = findMethods(element, javaClass<NeedsPermission>())
+        Validator.checkClassName(className)
+        classType = ClassType.Companion.getClassType(className) as ClassType
+        needsPermissionMethods = Utils.findMethods(element, javaClass<NeedsPermission>())
         validateNeedsPermissionMethods()
-        needsPermissionsMethods = findMethods(element, javaClass<NeedsPermissions>())
+        needsPermissionsMethods = Utils.findMethods(element, javaClass<NeedsPermissions>())
         validateNeedsPermissionsMethods()
-        checkNeedsPermissionsSize(needsPermissionMethods, needsPermissionsMethods)
-        showsRationaleMethods = findMethods(element, javaClass<ShowsRationale>())
+        Validator.checkNeedsPermissionsSize(needsPermissionMethods, needsPermissionsMethods)
+        showsRationaleMethods = Utils.findMethods(element, javaClass<ShowsRationale>())
         validateShowRationaleMethods()
-        showsRationalesMethods = findMethods(element, javaClass<ShowsRationales>())
+        showsRationalesMethods = Utils.findMethods(element, javaClass<ShowsRationales>())
         validateShowRationalesMethods()
     }
 
     private fun validateNeedsPermissionMethods() {
-        checkDuplicatedValue(needsPermissionMethods, javaClass<NeedsPermission>())
-        checkPrivateMethods(needsPermissionMethods)
+        Validator.checkDuplicatedValue(needsPermissionMethods, javaClass<NeedsPermission>())
+        Validator.checkPrivateMethods(needsPermissionMethods)
     }
 
     private fun validateNeedsPermissionsMethods() {
-        checkDuplicatedValue(needsPermissionsMethods, javaClass<NeedsPermissions>())
-        checkPrivateMethods(needsPermissionsMethods)
+        Validator.checkDuplicatedValue(needsPermissionsMethods, javaClass<NeedsPermissions>())
+        Validator.checkPrivateMethods(needsPermissionsMethods)
     }
 
     private fun validateShowRationaleMethods() {
-        checkDuplicatedValue(showsRationaleMethods, javaClass<ShowsRationale>())
-        checkPrivateMethods(showsRationaleMethods)
+        Validator.checkDuplicatedValue(showsRationaleMethods, javaClass<ShowsRationale>())
+        Validator.checkPrivateMethods(showsRationaleMethods)
     }
 
     private fun validateShowRationalesMethods() {
-        checkDuplicatedValue(showsRationalesMethods, javaClass<ShowsRationales>())
-        checkPrivateMethods(showsRationalesMethods)
+        Validator.checkDuplicatedValue(showsRationalesMethods, javaClass<ShowsRationales>())
+        Validator.checkPrivateMethods(showsRationalesMethods)
     }
 
     public fun getClassName(): ClassName {
@@ -72,7 +68,7 @@ class RuntimePermissionsAnnotatedElement(element: TypeElement) {
     }
 
     public fun getDispatcherClassName(): String {
-        return className + CLASS_SUFFIX
+        return className + ConstantsProvider.CLASS_SUFFIX
     }
 
     public fun getAllNeedsPermissionsMethods(): List<ExecutableElement> {
@@ -85,11 +81,11 @@ class RuntimePermissionsAnnotatedElement(element: TypeElement) {
     }
 
     public fun getShowsRationaleFromValue(value: String): ExecutableElement {
-        return findShowsRationaleFromValue(value, showsRationaleMethods)
+        return Utils.findShowsRationaleFromValue(value, showsRationaleMethods) as ExecutableElement
     }
 
     public fun getShowsRationaleFromValue(value: Array<String>): ExecutableElement {
-        return findShowsRationalesFromValue(value, showsRationalesMethods)
+        return Utils.findShowsRationalesFromValue(value, showsRationalesMethods) as ExecutableElement
     }
 
 }
