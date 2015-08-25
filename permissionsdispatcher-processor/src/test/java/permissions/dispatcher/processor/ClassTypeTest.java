@@ -17,10 +17,10 @@ public class ClassTypeTest {
 
     @Test
     public void getClassTypeTest() {
-        assertThat(ClassType.getClassType("MainActivity")).isEqualTo(ClassType.ACTIVITY);
-        assertThat(ClassType.getClassType("MainFragment")).isEqualTo(ClassType.FRAGMENT);
-        assertThat(ClassType.getClassType("FragmentMain")).isNull();
-        assertThat(ClassType.getClassType("ActivityMain")).isNull();
+        assertThat(ClassType.Companion.getClassType("MainActivity")).isEqualTo(ClassType.ACTIVITY);
+        assertThat(ClassType.Companion.getClassType("MainFragment")).isEqualTo(ClassType.FRAGMENT);
+        assertThat(ClassType.Companion.getClassType("FragmentMain")).isNull();
+        assertThat(ClassType.Companion.getClassType("ActivityMain")).isNull();
     }
 
 }

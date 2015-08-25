@@ -91,16 +91,16 @@ public class UtilsTest {
     public void testToString() {
         {
             //noinspection NullArgumentToVariableArgMethod
-            assertThat(Utils.toString(null)).isNull();
+            assertThat(Utils.INSTANCE$.toString(null)).isNull();
         }
         {
-            assertThat(Utils.toString(new String[]{""})).isEqualTo("{\"\"}");
+            assertThat(Utils.INSTANCE$.toString(new String[]{""})).isEqualTo("{\"\"}");
         }
         {
-            assertThat(Utils.toString(new String[]{"android"})).isEqualTo("{\"android\"}");
+            assertThat(Utils.INSTANCE$.toString(new String[]{"android"})).isEqualTo("{\"android\"}");
         }
         {
-            assertThat(Utils.toString(new String[]{"android", "ios"})).isEqualTo("{\"android\", \"ios\"}");
+            assertThat(Utils.INSTANCE$.toString(new String[]{"android", "ios"})).isEqualTo("{\"android\", \"ios\"}");
         }
     }
 

@@ -11,9 +11,6 @@ sourceSets {
         kotlin {
             srcDirs = ['src/main/kotlin', '../permissionsdispatcher/src/main/java']
         }
-        java {
-            srcDirs = ['src/main/java', '../permissionsdispatcher/src/main/java']
-        }
     }
 }
 
