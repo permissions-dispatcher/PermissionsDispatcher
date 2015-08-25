@@ -1,6 +1,10 @@
 package permissions.dispatcher.processor;
 
-import permissions.dispatcher.*;
+import permissions.dispatcher.annotations.NeedsPermission;
+import permissions.dispatcher.annotations.NeedsPermissions;
+import permissions.dispatcher.annotations.RuntimePermissions;
+import permissions.dispatcher.annotations.ShowsRationale;
+import permissions.dispatcher.annotations.ShowsRationales;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;

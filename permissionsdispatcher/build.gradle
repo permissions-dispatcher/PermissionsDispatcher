@@ -15,13 +15,6 @@ android {
     defaultConfig {
         testInstrumentationRunner "android.test.InstrumentationTestRunner"
     }
-    sourceSets {
-        main {
-            java {
-                srcDirs = ['src/main/java', 'src/main/android']
-            }
-        }
-    }
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }

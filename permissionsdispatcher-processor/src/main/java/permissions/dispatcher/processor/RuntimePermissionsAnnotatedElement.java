@@ -1,10 +1,11 @@
 package permissions.dispatcher.processor;
 
 import com.squareup.javapoet.ClassName;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.NeedsPermissions;
-import permissions.dispatcher.ShowsRationale;
-import permissions.dispatcher.ShowsRationales;
+
+import permissions.dispatcher.annotations.NeedsPermission;
+import permissions.dispatcher.annotations.NeedsPermissions;
+import permissions.dispatcher.annotations.ShowsRationale;
+import permissions.dispatcher.annotations.ShowsRationales;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;

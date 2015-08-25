@@ -22,7 +22,10 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.0.0'
+    compile ('com.android.support:appcompat-v7:23.0.0') {
+        exclude module: 'support-v4'
+    }
     compile project(':permissionsdispatcher')
-    apt project(':permissionsdispatcher-processor')
+    compile project(':permissionsdispatcher-annotations')
+    provided project(':permissionsdispatcher-processor')
 }

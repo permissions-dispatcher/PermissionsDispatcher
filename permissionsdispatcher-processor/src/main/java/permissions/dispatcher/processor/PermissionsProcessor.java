@@ -18,7 +18,7 @@ import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
 import javax.tools.Diagnostic;
 
-import permissions.dispatcher.RuntimePermissions;
+import permissions.dispatcher.annotations.RuntimePermissions;
 
 import static permissions.dispatcher.processor.JavaFileBuilder.createJavaFile;
 import static permissions.dispatcher.processor.Utils.getAnnotatedClasses;

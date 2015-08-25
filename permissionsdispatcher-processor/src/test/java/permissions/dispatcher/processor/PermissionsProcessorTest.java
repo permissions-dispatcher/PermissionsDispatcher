@@ -4,9 +4,8 @@ import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
 import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.NeedsPermissions;
-import permissions.dispatcher.ShowsRationale;
-import permissions.dispatcher.ShowsRationales;
+import permissions.dispatcher.annotations.NeedsPermissions;
+import permissions.dispatcher.annotations.ShowsRationale;
 import permissions.dispatcher.processor.data.Source;
 
 import javax.tools.JavaFileObject;
