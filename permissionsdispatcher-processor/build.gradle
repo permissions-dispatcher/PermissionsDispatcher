@@ -1,6 +1,6 @@
 import org.gradle.internal.jvm.Jvm
 
-apply plugin: "java"
+apply plugin: "kotlin"
 apply plugin: 'com.novoda.bintray-release'
 
 targetCompatibility = JavaVersion.VERSION_1_7
@@ -8,6 +8,9 @@ sourceCompatibility = JavaVersion.VERSION_1_7
 
 sourceSets {
     main {
+        kotlin {
+            srcDirs = ['src/main/kotlin', '../permissionsdispatcher/src/main/java']
+        }
         java {
             srcDirs = ['src/main/java', '../permissionsdispatcher/src/main/java']
         }
@@ -17,6 +20,7 @@ sourceSets {
 dependencies {
     compile 'com.squareup:javapoet:1.2.0'
     compile 'com.google.auto.service:auto-service:1.0-rc2'
+    compile 'org.jetbrains.kotlin:kotlin-stdlib:0.1-SNAPSHOT'
     testCompile 'junit:junit:4.12'
     testCompile 'org.assertj:assertj-core:1.7.0'
     testCompile 'org.mockito:mockito-core:1.10.19'
