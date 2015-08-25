@@ -12,6 +12,7 @@ android:
     - extra-google-m2repository
 
 jdk:
+  - oraclejdk7
   - oraclejdk8
 
 branches:
