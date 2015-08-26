@@ -58,6 +58,26 @@ final class Utils {
         return null;
     }
 
+    static ExecutableElement findDeniedPermissionFromValue(String value, List<ExecutableElement> elements) {
+        for (ExecutableElement element : elements) {
+            DeniedPermission annotation = element.getAnnotation(DeniedPermission.class);
+            if (value.equals(annotation.value())) {
+                return element;
+            }
+        }
+        return null;
+    }
+
+    static ExecutableElement findDeniedPermissionFromValue(String[] value, List<ExecutableElement> elements) {
+        for (ExecutableElement element : elements) {
+            DeniedPermissions annotation = element.getAnnotation(DeniedPermissions.class);
+            if (deepEquals(value, annotation.value())) {
+                return element;
+            }
+        }
+        return null;
+    }
+
     static <A extends Annotation> List<String> getValueFromAnnotation(ExecutableElement element, Class<A> clazz) {
         if (Objects.equals(clazz, NeedsPermission.class)) {
             return singletonList(element.getAnnotation(NeedsPermission.class).value());
@@ -67,6 +87,10 @@ final class Utils {
             return singletonList(element.getAnnotation(ShowsRationale.class).value());
         } else if (Objects.equals(clazz, ShowsRationales.class)) {
             return asList(element.getAnnotation(ShowsRationales.class).value());
+        } else if (Objects.equals(clazz, DeniedPermission.class)) {
+            return singletonList(element.getAnnotation(DeniedPermission.class).value());
+        } else if (Objects.equals(clazz, DeniedPermissions.class)) {
+            return asList(element.getAnnotation(DeniedPermissions.class).value());
         } else {
             return emptyList();
         }

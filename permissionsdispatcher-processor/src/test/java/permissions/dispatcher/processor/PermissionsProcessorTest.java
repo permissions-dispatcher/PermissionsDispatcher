@@ -80,6 +80,20 @@ public class PermissionsProcessorTest {
     }
 
     @Test
+    public void oneDeniedPermission() {
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.DeniedPermission.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.DeniedPermission.EXPECT);
+        assertJavaSource(actual, expect);
+    }
+
+    @Test
+    public void unrelatedDeniedPermission() {
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.DeniedPermissionNotMatching.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.DeniedPermissionNotMatching.EXPECT);
+        assertJavaSource(actual, expect);
+    }
+
+    @Test
     public void zeroPermission() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("@NeedsPermission or @NeedsPermissions are not defined");

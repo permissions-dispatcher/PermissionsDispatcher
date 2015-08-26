@@ -1,10 +1,7 @@
 package permissions.dispatcher.processor;
 
 import com.squareup.javapoet.ClassName;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.NeedsPermissions;
-import permissions.dispatcher.ShowsRationale;
-import permissions.dispatcher.ShowsRationales;
+import permissions.dispatcher.*;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
@@ -31,6 +28,10 @@ class RuntimePermissionsAnnotatedElement {
 
     private final List<ExecutableElement> showsRationalesMethods;
 
+    private final List<ExecutableElement> deniedPermissionMethods;
+
+    private final List<ExecutableElement> deniedPermissionsMethods;
+
     RuntimePermissionsAnnotatedElement(TypeElement element) {
         String qualifiedName = element.getQualifiedName().toString();
         packageName = Utils.getPackageName(qualifiedName);
@@ -46,6 +47,10 @@ class RuntimePermissionsAnnotatedElement {
         validateShowRationaleMethods();
         showsRationalesMethods = findMethods(element, ShowsRationales.class);
         validateShowRationalesMethods();
+        deniedPermissionMethods = findMethods(element, DeniedPermission.class);
+        validateDeniedPermissionMethods();
+        deniedPermissionsMethods = findMethods(element, DeniedPermissions.class);
+        validateDeniedPermissionsMethods();
     }
 
     private void validateNeedsPermissionMethods() {
@@ -66,6 +71,16 @@ class RuntimePermissionsAnnotatedElement {
     private void validateShowRationalesMethods() {
         checkDuplicatedValue(showsRationalesMethods, ShowsRationales.class);
         checkPrivateMethods(showsRationalesMethods);
+    }
+
+    private void validateDeniedPermissionMethods() {
+        checkDuplicatedValue(deniedPermissionMethods, DeniedPermission.class);
+        checkPrivateMethods(deniedPermissionMethods);
+    }
+
+    private void validateDeniedPermissionsMethods() {
+        checkDuplicatedValue(deniedPermissionsMethods, DeniedPermissions.class);
+        checkPrivateMethods(deniedPermissionsMethods);
     }
 
     public String getPackageName() {
@@ -99,6 +114,14 @@ class RuntimePermissionsAnnotatedElement {
                 addAll(needsPermissionsMethods);
             }
         };
+    }
+
+    public ExecutableElement getDeniedPermissionFromValue(String value) {
+        return findDeniedPermissionFromValue(value, deniedPermissionMethods);
+    }
+
+    public ExecutableElement getDeniedPermissionFromValue(String[] value) {
+        return findDeniedPermissionFromValue(value, deniedPermissionMethods);
     }
 
     public ExecutableElement getShowsRationaleFromValue(String value) {

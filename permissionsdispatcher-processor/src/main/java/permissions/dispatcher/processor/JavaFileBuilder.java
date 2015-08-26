@@ -66,7 +66,7 @@ final class JavaFileBuilder {
                 .build();
     }
 
-    private static MethodSpec createOnRequestPermissionsResult(ClassName target, List<ExecutableElement> methods) {
+    private static MethodSpec createOnRequestPermissionsResult(ClassName target, List<ExecutableElement> permissionMethods, RuntimePermissionsAnnotatedElement clazz) {
         MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("onRequestPermissionsResult")
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .addParameter(target, "target")
@@ -74,12 +74,26 @@ final class JavaFileBuilder {
                 .addParameter(int[].class, "grantResults")
                 .returns(void.class)
                 .beginControlFlow("switch (requestCode)");
-        for (ExecutableElement method : methods) {
+        for (ExecutableElement method : permissionMethods) {
             String methodName = method.getSimpleName().toString();
             methodBuilder
                     .addCode("case $N:\n", getRequestCodeFieldName(methodName))
                     .beginControlFlow("if ($T.verifyPermissions(grantResults))", PERMISSION_UTILS)
-                    .addStatement("target.$N()", methodName)
+                    .addStatement("target.$N()", methodName);
+            NeedsPermission needsPermission = method.getAnnotation(NeedsPermission.class);
+            String needsPermissionValue = needsPermission != null ? needsPermission.value() : "";
+            ExecutableElement deniedPermission = clazz.getDeniedPermissionFromValue(needsPermissionValue);
+            if (deniedPermission == null) {
+                NeedsPermissions needsPermissions = method.getAnnotation(NeedsPermissions.class);
+                String[] needsPermissionsValue = needsPermissions != null ? needsPermissions.value() : new String[0];
+                deniedPermission = clazz.getDeniedPermissionFromValue(needsPermissionsValue);
+            }
+            if (deniedPermission != null) {
+                methodBuilder
+                        .nextControlFlow("else")
+                        .addStatement("target.$N()", deniedPermission.getSimpleName().toString());
+            }
+            methodBuilder
                     .endControlFlow()
                     .addStatement("break");
         }
@@ -133,7 +147,7 @@ final class JavaFileBuilder {
                 .addMethod(createConstructor())
                 .addMethods(createNeedsPermissionMethods(element))
                 .addMethods(createNeedsPermissionsMethods(element))
-                .addMethod(createOnRequestPermissionsResult(element.getClassName(), permissionsMethods))
+                .addMethod(createOnRequestPermissionsResult(element.getClassName(), permissionsMethods, element))
                 .build();
         String packageName = element.getPackageName();
         return JavaFile.builder(packageName, clazz).build();
