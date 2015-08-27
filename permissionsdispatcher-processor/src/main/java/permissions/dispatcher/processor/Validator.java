@@ -1,6 +1,7 @@
 package permissions.dispatcher.processor;
 
 import permissions.dispatcher.processor.exceptions.DuplicatedValueException;
+import permissions.dispatcher.processor.exceptions.MatchedValueMissingException;
 import permissions.dispatcher.processor.exceptions.NotDefinedException;
 import permissions.dispatcher.processor.exceptions.WrongClassException;
 
@@ -45,6 +46,23 @@ final class Validator {
             Set<Modifier> modifiers = element.getModifiers();
             if (modifiers.contains(Modifier.PRIVATE)) {
                 throw new WrongMethodTypeException("Annotated method must be package private or above");
+            }
+        }
+    }
+
+    static void checkMatchingValues(List<ExecutableElement> elements1, Class<? extends Annotation> clazz1, List<ExecutableElement> elements2, Class<? extends Annotation> clazz2) {
+        for (ExecutableElement element1 : elements1) {
+            boolean matchFound = false;
+            List<String> value1 = getValueFromAnnotation(element1, clazz1);
+            for (ExecutableElement element2 : elements2) {
+                List<String> value2 = getValueFromAnnotation(element2, clazz2);
+                if (value1.equals(value2)) {
+                    matchFound = true;
+                    break;
+                }
+            }
+            if (!matchFound) {
+                throw new MatchedValueMissingException("@DeniedPermissions for " + value1 + " doesn't have a matching @NeedsPermissions method");
             }
         }
     }

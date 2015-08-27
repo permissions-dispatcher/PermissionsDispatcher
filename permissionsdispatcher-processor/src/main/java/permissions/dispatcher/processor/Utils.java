@@ -79,7 +79,9 @@ final class Utils {
     }
 
     static <A extends Annotation> List<String> getValueFromAnnotation(ExecutableElement element, Class<A> clazz) {
-        if (Objects.equals(clazz, NeedsPermission.class)) {
+        if (element.getAnnotation(clazz) == null) {
+            return emptyList();
+        } else if (Objects.equals(clazz, NeedsPermission.class)) {
             return singletonList(element.getAnnotation(NeedsPermission.class).value());
         } else if (Objects.equals(clazz, NeedsPermissions.class)) {
             return asList(element.getAnnotation(NeedsPermissions.class).value());
@@ -94,6 +96,20 @@ final class Utils {
         } else {
             return emptyList();
         }
+    }
+
+    static ExecutableElement findDeniedPermissionFromElement(RuntimePermissionsAnnotatedElement element, ExecutableElement method) {
+        ExecutableElement deniedPermission = null;
+        // Check presence of @NeedsPermission first
+        List<String> annotationValues = Utils.getValueFromAnnotation(method, NeedsPermission.class);
+        if (!annotationValues.isEmpty()) {
+            deniedPermission = element.getDeniedPermissionFromValue(annotationValues.get(0));
+        } else {
+            // Check presence of @NeedsPermissions next
+            annotationValues = Utils.getValueFromAnnotation(method, NeedsPermissions.class);
+            deniedPermission = element.getDeniedPermissionFromValue(annotationValues.toArray(new String[annotationValues.size()]));
+        }
+        return deniedPermission;
     }
 
     static String getPackageName(String name) {

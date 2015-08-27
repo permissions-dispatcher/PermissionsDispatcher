@@ -66,7 +66,9 @@ final class JavaFileBuilder {
                 .build();
     }
 
-    private static MethodSpec createOnRequestPermissionsResult(ClassName target, List<ExecutableElement> permissionMethods, RuntimePermissionsAnnotatedElement clazz) {
+    private static MethodSpec createOnRequestPermissionsResult(RuntimePermissionsAnnotatedElement element) {
+        ClassName target = element.getClassName();
+        List<ExecutableElement> permissionMethods = element.getAllNeedsPermissionsMethods();
         MethodSpec.Builder methodBuilder = MethodSpec.methodBuilder("onRequestPermissionsResult")
                 .addModifiers(Modifier.PUBLIC, Modifier.STATIC)
                 .addParameter(target, "target")
@@ -80,14 +82,7 @@ final class JavaFileBuilder {
                     .addCode("case $N:\n", getRequestCodeFieldName(methodName))
                     .beginControlFlow("if ($T.verifyPermissions(grantResults))", PERMISSION_UTILS)
                     .addStatement("target.$N()", methodName);
-            NeedsPermission needsPermission = method.getAnnotation(NeedsPermission.class);
-            String needsPermissionValue = needsPermission != null ? needsPermission.value() : "";
-            ExecutableElement deniedPermission = clazz.getDeniedPermissionFromValue(needsPermissionValue);
-            if (deniedPermission == null) {
-                NeedsPermissions needsPermissions = method.getAnnotation(NeedsPermissions.class);
-                String[] needsPermissionsValue = needsPermissions != null ? needsPermissions.value() : new String[0];
-                deniedPermission = clazz.getDeniedPermissionFromValue(needsPermissionsValue);
-            }
+            ExecutableElement deniedPermission = element.getDeniedPermissionFromElement(method);
             if (deniedPermission != null) {
                 methodBuilder
                         .nextControlFlow("else")
@@ -147,7 +142,7 @@ final class JavaFileBuilder {
                 .addMethod(createConstructor())
                 .addMethods(createNeedsPermissionMethods(element))
                 .addMethods(createNeedsPermissionsMethods(element))
-                .addMethod(createOnRequestPermissionsResult(element.getClassName(), permissionsMethods, element))
+                .addMethod(createOnRequestPermissionsResult(element))
                 .build();
         String packageName = element.getPackageName();
         return JavaFile.builder(packageName, clazz).build();

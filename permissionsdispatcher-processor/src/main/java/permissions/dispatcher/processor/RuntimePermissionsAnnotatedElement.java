@@ -76,11 +76,13 @@ class RuntimePermissionsAnnotatedElement {
     private void validateDeniedPermissionMethods() {
         checkDuplicatedValue(deniedPermissionMethods, DeniedPermission.class);
         checkPrivateMethods(deniedPermissionMethods);
+        checkMatchingValues(deniedPermissionMethods, DeniedPermission.class, needsPermissionMethods, NeedsPermission.class);
     }
 
     private void validateDeniedPermissionsMethods() {
         checkDuplicatedValue(deniedPermissionsMethods, DeniedPermissions.class);
         checkPrivateMethods(deniedPermissionsMethods);
+        checkMatchingValues(deniedPermissionsMethods, DeniedPermissions.class, needsPermissionsMethods, NeedsPermissions.class);
     }
 
     public String getPackageName() {
@@ -121,7 +123,7 @@ class RuntimePermissionsAnnotatedElement {
     }
 
     public ExecutableElement getDeniedPermissionFromValue(String[] value) {
-        return findDeniedPermissionFromValue(value, deniedPermissionMethods);
+        return findDeniedPermissionFromValue(value, deniedPermissionsMethods);
     }
 
     public ExecutableElement getShowsRationaleFromValue(String value) {
@@ -130,6 +132,10 @@ class RuntimePermissionsAnnotatedElement {
 
     public ExecutableElement getShowsRationaleFromValue(String[] value) {
         return findShowsRationalesFromValue(value, showsRationalesMethods);
+    }
+
+    public ExecutableElement getDeniedPermissionFromElement(ExecutableElement permissionElement) {
+        return findDeniedPermissionFromElement(this, permissionElement);
     }
 
 }

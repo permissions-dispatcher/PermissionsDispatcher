@@ -3,10 +3,7 @@ package permissions.dispatcher.processor;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.NeedsPermissions;
-import permissions.dispatcher.ShowsRationale;
-import permissions.dispatcher.ShowsRationales;
+import permissions.dispatcher.*;
 import permissions.dispatcher.processor.data.Source;
 
 import javax.tools.JavaFileObject;
@@ -81,15 +78,67 @@ public class PermissionsProcessorTest {
 
     @Test
     public void oneDeniedPermission() {
-        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.DeniedPermission.ACTUAL);
-        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.DeniedPermission.EXPECT);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.OneDeniedPermission.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.OneDeniedPermission.EXPECT);
         assertJavaSource(actual, expect);
     }
 
     @Test
-    public void unrelatedDeniedPermission() {
-        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.DeniedPermissionNotMatching.ACTUAL);
-        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.DeniedPermissionNotMatching.EXPECT);
+    public void oneDeniedPermissions() {
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.OneDeniedPermissions.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.OneDeniedPermissions.EXPECT);
+        assertJavaSource(actual, expect);
+    }
+
+    @Test
+    public void twoDeniedPermission() {
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.TwoDeniedPermission.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.TwoDeniedPermission.EXPECT);
+        assertJavaSource(actual, expect);
+    }
+
+    @Test
+    public void deniedPermissionWithoutNeedsPermission() {
+        expectedException.expect(RuntimeException.class);
+        expectedException.expectMessage("@DeniedPermissions for [android.permission.CAMERA] doesn't have a matching @NeedsPermissions method");
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.DeniedPermissionWithoutNeedsPermission.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.EMPTY);
+        assertJavaSource(actual, expect);
+    }
+
+    @Test
+    public void duplicatedDeniedPermission() {
+        expectedException.expect(RuntimeException.class);
+        expectedException.expectMessage("[android.permission.CAMERA] is duplicated in " + DeniedPermission.class);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.DuplicatedDeniedPermission.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.EMPTY);
+        assertJavaSource(actual, expect);
+    }
+
+    @Test
+    public void duplicatedDeniedPermissions() {
+        expectedException.expect(RuntimeException.class);
+        expectedException.expectMessage("[android.permission.CAMERA] is duplicated in " + DeniedPermissions.class);
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.DuplicatedDeniedPermissions.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.EMPTY);
+        assertJavaSource(actual, expect);
+    }
+
+    @Test
+    public void deniedPermissionIsPrivate() {
+        expectedException.expect(RuntimeException.class);
+        expectedException.expectMessage("Annotated method must be package private or above");
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.DeniedPermissionIsPrivate.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.EMPTY);
+        assertJavaSource(actual, expect);
+    }
+
+    @Test
+    public void deniedPermissionsIsPrivate() {
+        expectedException.expect(RuntimeException.class);
+        expectedException.expectMessage("Annotated method must be package private or above");
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.DeniedPermissionsIsPrivate.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.EMPTY);
         assertJavaSource(actual, expect);
     }
 
