@@ -58,8 +58,30 @@ final class Utils {
         return null;
     }
 
+    static ExecutableElement findDeniedPermissionFromValue(String value, List<ExecutableElement> elements) {
+        for (ExecutableElement element : elements) {
+            DeniedPermission annotation = element.getAnnotation(DeniedPermission.class);
+            if (value.equals(annotation.value())) {
+                return element;
+            }
+        }
+        return null;
+    }
+
+    static ExecutableElement findDeniedPermissionFromValue(String[] value, List<ExecutableElement> elements) {
+        for (ExecutableElement element : elements) {
+            DeniedPermissions annotation = element.getAnnotation(DeniedPermissions.class);
+            if (deepEquals(value, annotation.value())) {
+                return element;
+            }
+        }
+        return null;
+    }
+
     static <A extends Annotation> List<String> getValueFromAnnotation(ExecutableElement element, Class<A> clazz) {
-        if (Objects.equals(clazz, NeedsPermission.class)) {
+        if (element.getAnnotation(clazz) == null) {
+            return emptyList();
+        } else if (Objects.equals(clazz, NeedsPermission.class)) {
             return singletonList(element.getAnnotation(NeedsPermission.class).value());
         } else if (Objects.equals(clazz, NeedsPermissions.class)) {
             return asList(element.getAnnotation(NeedsPermissions.class).value());
@@ -67,9 +89,27 @@ final class Utils {
             return singletonList(element.getAnnotation(ShowsRationale.class).value());
         } else if (Objects.equals(clazz, ShowsRationales.class)) {
             return asList(element.getAnnotation(ShowsRationales.class).value());
+        } else if (Objects.equals(clazz, DeniedPermission.class)) {
+            return singletonList(element.getAnnotation(DeniedPermission.class).value());
+        } else if (Objects.equals(clazz, DeniedPermissions.class)) {
+            return asList(element.getAnnotation(DeniedPermissions.class).value());
         } else {
             return emptyList();
         }
+    }
+
+    static ExecutableElement findDeniedPermissionFromElement(RuntimePermissionsAnnotatedElement element, ExecutableElement method) {
+        ExecutableElement deniedPermission = null;
+        // Check presence of @NeedsPermission first
+        List<String> annotationValues = Utils.getValueFromAnnotation(method, NeedsPermission.class);
+        if (!annotationValues.isEmpty()) {
+            deniedPermission = element.getDeniedPermissionFromValue(annotationValues.get(0));
+        } else {
+            // Check presence of @NeedsPermissions next
+            annotationValues = Utils.getValueFromAnnotation(method, NeedsPermissions.class);
+            deniedPermission = element.getDeniedPermissionFromValue(annotationValues.toArray(new String[annotationValues.size()]));
+        }
+        return deniedPermission;
     }
 
     static String getPackageName(String name) {
