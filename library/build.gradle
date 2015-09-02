@@ -1,0 +1,54 @@
+apply plugin: 'com.android.library'
+apply plugin: 'com.novoda.bintray-release'
+
+android {
+    compileSdkVersion 23
+    buildToolsVersion "23.0.0"
+    defaultConfig {
+        minSdkVersion 4
+        targetSdkVersion 23
+    }
+
+    compileOptions {
+        sourceCompatibility JavaVersion.VERSION_1_7
+        targetCompatibility JavaVersion.VERSION_1_7
+    }
+
+    packagingOptions {
+        exclude 'META-INF/services/javax.annotation.processing.Processor'
+    }
+}
+
+dependencies {
+    compile project(':annotations')
+    compile "com.android.support:support-v4:23.0.0"
+}
+
+publish {
+    userOrg = USER
+    groupId = GROUP_ID
+    artifactId = ARTIFACT_ID_CORE
+    version = VERSION
+    description = DESCRIPTION
+    website = WEBSITE
+    licences = LICENCES
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task copyJarToOtherModules(type: Copy) {
+    from 'build/libs'
+    into '../processor/src/test/libs'
+    include '*.jar'
+}
+
+assemble.doLast {
+    copyJarToOtherModules.execute()
+}
+
+artifacts {
+    archives sourcesJar
+}

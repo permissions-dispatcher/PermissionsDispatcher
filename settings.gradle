@@ -1,1 +1,6 @@
-include ':permissionsdispatcher', ':permissionsdispatcher-processor', ':permissionsdispatcher-sample'
+include ':annotations'
+include ':library'
+include ':library-v13'
+include ':processor'
+//include ':processor-v13'
+//include ':sample'
