@@ -114,14 +114,6 @@ dependencies {
 
 PermissionsDispatcher supports API level over 4, using support v4 rev.23.
 
-## ProGuard
-
-```
--dontwarn permissions.dispatcher.processor.**
--keep class permissions.dispatcher.** { *; }
--keep class **PermissionsDispatcher { *; }
-```
-
 ## License
 
 ```
