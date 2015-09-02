@@ -1,0 +1,29 @@
+import org.gradle.internal.jvm.Jvm
+apply plugin: 'kotlin'
+apply plugin: 'com.novoda.bintray-release'
+
+targetCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = JavaVersion.VERSION_1_7
+
+dependencies {
+    compile 'org.jetbrains.kotlin:kotlin-stdlib:0.12.613'
+    compile 'com.squareup:javapoet:1.2.0'
+    compile project(':annotations')
+
+    testCompile 'junit:junit:4.12'
+    testCompile files(Jvm.current().getToolsJar())
+    testCompile 'com.google.testing.compile:compile-testing:0.6'
+    testCompile 'com.google.android:android:4.1.1.4'
+    testCompile fileTree(dir: './src/test/libs', includes: ['*.jar'])
+//    testCompile project(':library')
+}
+
+publish {
+    userOrg = USER
+    groupId = GROUP_ID
+    artifactId = ARTIFACT_ID_PROCESSOR
+    version = VERSION
+    description = DESCRIPTION
+    website = WEBSITE
+    licences = LICENCES
+}
