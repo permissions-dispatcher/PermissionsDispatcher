@@ -1,15 +1,19 @@
-package permissions.dispatcher.dispatcher.sample;
+package permissions.dispatcher.sample;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-import permissions.dispatcher.dispatcher.sample.camera.CameraPreviewFragment;
-import permissions.dispatcher.dispatcher.sample.contacts.ContactsFragment;
+import permissions.dispatcher.Needs;
+import permissions.dispatcher.OnRationale;
+import permissions.dispatcher.RuntimePermissions;
+import permissions.dispatcher.sample.camera.CameraPreviewFragment;
+import permissions.dispatcher.sample.contacts.ContactsFragment;
 
 @RuntimePermissions
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
@@ -39,10 +43,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         // NOTE: delegate the permission handling to generated method
-        MainActivityPermissionsDispatcher.
-                onRequestPermissionsResult(this, requestCode, grantResults);
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
 
     @Needs(Manifest.permission.CAMERA)

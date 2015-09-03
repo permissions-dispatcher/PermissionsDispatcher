@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package permissions.dispatcher.dispatcher.sample.contacts;
+package permissions.dispatcher.sample.contacts;
 
 import android.content.ContentProviderOperation;
 import android.content.ContentResolver;
@@ -34,10 +34,9 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import permissions.dispatcher.sample.R;
 
 import java.util.ArrayList;
-
-import permissions.dispatcher.dispatcher.sample.R;
 
 /**
  * Displays the first contact stored on the device and contains an option to add a dummy contact.

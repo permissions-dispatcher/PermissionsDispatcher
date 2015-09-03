@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package permissions.dispatcher.dispatcher.sample.camera;
+package permissions.dispatcher.sample.camera;
 
 import android.content.Context;
 import android.hardware.Camera;

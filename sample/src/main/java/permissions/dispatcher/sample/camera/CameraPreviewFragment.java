@@ -14,7 +14,7 @@
 * limitations under the License.
 */
 
-package permissions.dispatcher.dispatcher.sample.camera;
+package permissions.dispatcher.sample.camera;
 
 import android.hardware.Camera;
 import android.os.Bundle;
@@ -24,8 +24,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
-
-import permissions.dispatcher.dispatcher.sample.R;
+import permissions.dispatcher.sample.R;
 
 /**
  * Displays a {@link CameraPreview} of the first {@link Camera}.
