@@ -1,5 +1,6 @@
-<manifest package="permissions.dispatcher.dispatcher">
+<manifest package="permissions.dispatcher"
+          xmlns:tools="http://schemas.android.com/tools">
 
-    <application />
+    <uses-sdk tools:overrideLibrary="android.support.v13"/>
 
 </manifest>

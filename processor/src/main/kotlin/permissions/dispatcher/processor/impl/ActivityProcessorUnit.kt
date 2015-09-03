@@ -19,20 +19,12 @@ class ActivityProcessorUnit : BaseProcessorUnit() {
     private val PERMISSION_UTILS: ClassName = ClassName.get("permissions.dispatcher", "PermissionUtils")
     private val ACTIVITY_COMPAT: ClassName = ClassName.get("android.support.v4.app", "ActivityCompat")
 
-    override fun checkSupported(): Boolean {
-        try {
-            Class.forName("android.app.Activity")
-            Class.forName("android.support.v4.app.ActivityCompat")
-            println("Activity supported")
-            return true
-        } catch (e: Exception) {
-            println("Activity not supported: ${e}")
-            return false
-        }
-    }
-
     override fun getTargetType(): TypeMirror {
         return typeMirrorOf("android.app.Activity")
+    }
+
+    override fun checkPrerequisites(rpe: RuntimePermissionsElement) {
+        // Nothing to check
     }
 
     override fun addWithCheckBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String) {

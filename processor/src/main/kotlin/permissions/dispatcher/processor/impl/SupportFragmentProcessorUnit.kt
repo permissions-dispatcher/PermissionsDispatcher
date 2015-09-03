@@ -19,19 +19,12 @@ class SupportFragmentProcessorUnit: BaseProcessorUnit() {
     private val PERMISSION_UTILS: ClassName = ClassName.get("permissions.dispatcher", "PermissionUtils")
     private val ACTIVITY: ClassName = ClassName.get("android.app", "Activity")
 
-    override fun checkSupported(): Boolean {
-        try {
-            Class.forName("android.support.v4.app.Fragment")
-            println("Support Fragment supported")
-            return true
-        } catch (e: Exception) {
-            println("Support Fragment not supported: ${e}")
-            return false
-        }
-    }
-
     override fun getTargetType(): TypeMirror {
         return typeMirrorOf("android.support.v4.app.Fragment")
+    }
+
+    override fun checkPrerequisites(rpe: RuntimePermissionsElement) {
+        // Nothing to check
     }
 
     override fun addWithCheckBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String) {

@@ -1,6 +1,3 @@
-include ':annotations'
 include ':library'
-include ':library-v13'
 include ':processor'
-//include ':processor-v13'
-//include ':sample'
+include ':sample'

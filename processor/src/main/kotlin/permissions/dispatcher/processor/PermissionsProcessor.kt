@@ -5,15 +5,9 @@ import permissions.dispatcher.RuntimePermissions
 import permissions.dispatcher.processor.impl.ActivityProcessorUnit
 import permissions.dispatcher.processor.impl.NativeFragmentProcessorUnit
 import permissions.dispatcher.processor.impl.SupportFragmentProcessorUnit
-import permissions.dispatcher.processor.util.NATIVEFRAGMENT_PROCESSORUNIT_CLASS
 import permissions.dispatcher.processor.util.findAndValidateProcessorUnit
-import permissions.dispatcher.processor.util.isSubtypeOf
-import permissions.dispatcher.processor.util.simpleString
-import java.io.IOException
-import java.util.*
 import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
-import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
@@ -25,7 +19,7 @@ public var ELEMENT_UTILS: Elements by Delegates.notNull()
 /** Type Utilities, obtained from the processing environment */
 public var TYPE_UTILS: Types by Delegates.notNull()
 
-class PermissionsProcessor: AbstractProcessor() {
+class PermissionsProcessor : AbstractProcessor() {
 
     /* Processing Environment helpers */
 
@@ -52,17 +46,7 @@ class PermissionsProcessor: AbstractProcessor() {
                 ActivityProcessorUnit(),
                 SupportFragmentProcessorUnit(),
                 NativeFragmentProcessorUnit()
-        ).filter {
-            it.checkSupported()
-        }
-
-//        try {
-//            units.add(Class.forName(NATIVEFRAGMENT_PROCESSORUNIT_CLASS).newInstance() as ProcessorUnit)
-//            println("Native Support enabled.")
-//        } catch (e: Exception) {
-//            println("Native Support disabled.")
-//        }
-//        processorUnits = units
+        )
     }
 
     override fun getSupportedSourceVersion(): SourceVersion? {
@@ -86,10 +70,10 @@ class PermissionsProcessor: AbstractProcessor() {
             val rpe: RuntimePermissionsElement = RuntimePermissionsElement(element as TypeElement)
 
             // Create a JavaFile for this element and write it out
-            val javaFile: JavaFile = processorUnit.createJavaFile(rpe)
             try {
+                val javaFile: JavaFile = processorUnit.createJavaFile(rpe)
                 javaFile.writeTo(filer)
-            } catch (ex: IOException) {
+            } catch (ex: Exception) {
                 messager.printMessage(Diagnostic.Kind.ERROR, ex.getMessage())
             }
         }
