@@ -23,6 +23,10 @@ class SupportFragmentProcessorUnit: BaseProcessorUnit() {
         return typeMirrorOf("android.support.v4.app.Fragment")
     }
 
+    override fun checkPrerequisites(rpe: RuntimePermissionsElement) {
+        // Nothing to check
+    }
+
     override fun addWithCheckBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String) {
         // Create field names for the constants to use
         val requestCodeField = requestCodeFieldName(needsMethod)

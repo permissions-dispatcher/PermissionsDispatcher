@@ -21,12 +21,17 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
      * This will delegate to other methods that compose generated code
      */
     override final fun createJavaFile(rpe: RuntimePermissionsElement): JavaFile {
+        // Check the prerequisites for creating a Java file for this element
+        checkPrerequisites(rpe)
+
         return JavaFile.builder(rpe.packageName, createTypeSpec(rpe))
                 .addFileComment(FILE_COMMENT)
                 .build()
     }
 
     /* Begin abstract */
+
+    abstract fun checkPrerequisites(rpe: RuntimePermissionsElement)
 
     abstract fun addWithCheckBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String)
 

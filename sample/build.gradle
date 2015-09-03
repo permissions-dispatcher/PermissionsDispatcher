@@ -21,7 +21,9 @@ android {
 }
 
 dependencies {
-    compile 'com.android.support:appcompat-v7:23.0.0'
-    compile project(':library')
-    provided project(':processor')
+    compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
+
+    // The 'exclude' clause models the optional dependency on support-v13 for Project Dependencies
+    compile (project(':library')) { exclude group: 'com.android.support', module: 'support-v13' }
+    apt project(':processor')
 }
