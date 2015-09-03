@@ -1,14 +1,13 @@
-apply plugin: 'android-sdk-manager'
 apply plugin: 'com.android.application'
 apply plugin: 'android-apt'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "22.0.1"
+    compileSdkVersion COMPILE_SDK_VERSION
+    buildToolsVersion BUILD_TOOLS_VERSION
     defaultConfig {
         applicationId "permissions.dispatcher.dispatcher.sample"
-        minSdkVersion 10
-        targetSdkVersion 23
+        minSdkVersion SAMPLE_MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
         versionCode 1
         versionName "1.0"
     }
@@ -24,5 +23,5 @@ android {
 dependencies {
     compile 'com.android.support:appcompat-v7:23.0.0'
     compile project(':library')
-    apt project(':processor')
+    provided project(':processor')
 }

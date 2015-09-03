@@ -15,19 +15,6 @@ class NativeFragmentProcessorUnit: BaseProcessorUnit() {
     private val PERMISSION_UTILS: ClassName = ClassName.get("permissions.dispatcher", "PermissionUtils")
     private val PERMISSION_UTILS_V13: ClassName = ClassName.get("permissions.dispatcher", "PermissionUtilsV13")
 
-    override fun checkSupported(): Boolean {
-        try {
-            Class.forName("android.app.Fragment")
-            Class.forName("permissions.dispatcher.PermissionUtils")
-            Class.forName("permissions.dispatcher.PermissionUtilsV13")
-            println("Native Fragment supported")
-            return true
-        } catch (e: Exception) {
-            println("Native Fragment not supported: ${e}")
-            return false
-        }
-    }
-
     override fun getTargetType(): TypeMirror {
         return typeMirrorOf("android.app.Fragment")
     }

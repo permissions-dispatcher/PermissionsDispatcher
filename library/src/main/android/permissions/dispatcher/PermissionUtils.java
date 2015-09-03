@@ -7,7 +7,7 @@ import android.support.v4.app.ActivityCompat;
 
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
-public class PermissionUtils {
+public final class PermissionUtils {
 
     private PermissionUtils() {
     }
@@ -58,5 +58,4 @@ public class PermissionUtils {
         }
         return false;
     }
-
 }

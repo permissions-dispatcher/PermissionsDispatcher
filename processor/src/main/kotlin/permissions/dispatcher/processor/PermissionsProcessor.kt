@@ -52,17 +52,7 @@ class PermissionsProcessor: AbstractProcessor() {
                 ActivityProcessorUnit(),
                 SupportFragmentProcessorUnit(),
                 NativeFragmentProcessorUnit()
-        ).filter {
-            it.checkSupported()
-        }
-
-//        try {
-//            units.add(Class.forName(NATIVEFRAGMENT_PROCESSORUNIT_CLASS).newInstance() as ProcessorUnit)
-//            println("Native Support enabled.")
-//        } catch (e: Exception) {
-//            println("Native Support disabled.")
-//        }
-//        processorUnits = units
+        )
     }
 
     override fun getSupportedSourceVersion(): SourceVersion? {

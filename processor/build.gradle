@@ -5,17 +5,26 @@ apply plugin: 'com.novoda.bintray-release'
 targetCompatibility = JavaVersion.VERSION_1_7
 sourceCompatibility = JavaVersion.VERSION_1_7
 
-dependencies {
-    compile 'org.jetbrains.kotlin:kotlin-stdlib:0.12.613'
-    compile 'com.squareup:javapoet:1.2.0'
-    compile project(':annotations')
+sourceSets {
+    main {
+        java {
+            srcDirs = [
+                    'src/main/kotlin',
+                    '../library/src/main/java'
+            ]
+        }
+    }
+}
 
-    testCompile 'junit:junit:4.12'
-    testCompile files(Jvm.current().getToolsJar())
-    testCompile 'com.google.testing.compile:compile-testing:0.6'
-    testCompile 'com.google.android:android:4.1.1.4'
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
+    compile "com.squareup:javapoet:$JAVAPOET_VERSION"
+
+    testCompile "junit:junit:$JUNIT_VERSION"
+    testCompile "com.google.testing.compile:compile-testing:$COMPILE_TESTING_VERSION"
+    testCompile "com.google.android:android:$GOOGLE_ANDROID_VERSION"
     testCompile fileTree(dir: './src/test/libs', includes: ['*.jar'])
-//    testCompile project(':library')
+    testCompile files(Jvm.current().getToolsJar())
 }
 
 publish {

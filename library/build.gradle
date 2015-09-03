@@ -1,12 +1,13 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'optional-base'
 
 android {
-    compileSdkVersion 23
-    buildToolsVersion "23.0.0"
+    compileSdkVersion COMPILE_SDK_VERSION
+    buildToolsVersion BUILD_TOOLS_VERSION
     defaultConfig {
-        minSdkVersion 4
-        targetSdkVersion 23
+        minSdkVersion LIBRARY_MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
     }
 
     compileOptions {
@@ -17,38 +18,30 @@ android {
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
+
+    sourceSets {
+        main {
+            java {
+                srcDirs = [
+                        'src/main/java',
+                        'src/main/android'
+                ]
+            }
+        }
+    }
 }
 
 dependencies {
-    compile project(':annotations')
-    compile "com.android.support:support-v4:23.0.0"
+    compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:support-v13:$SUPPORT_LIBRARY_VERSION", optional
 }
 
 publish {
     userOrg = USER
     groupId = GROUP_ID
-    artifactId = ARTIFACT_ID_CORE
+    artifactId = ARTIFACT_ID_LIBRARY
     version = VERSION
     description = DESCRIPTION
     website = WEBSITE
     licences = LICENCES
-}
-
-task sourcesJar(type: Jar) {
-    from android.sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-task copyJarToOtherModules(type: Copy) {
-    from 'build/libs'
-    into '../processor/src/test/libs'
-    include '*.jar'
-}
-
-assemble.doLast {
-    copyJarToOtherModules.execute()
-}
-
-artifacts {
-    archives sourcesJar
 }
