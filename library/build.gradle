@@ -45,3 +45,22 @@ publish {
     website = WEBSITE
     licences = LICENCES
 }
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task copyJarToOtherModules(type: Copy) {
+    from 'build/libs'
+    into '../processor/src/test/libs'
+    include '*.jar'
+}
+
+assemble.doLast {
+    copyJarToOtherModules.execute()
+}
+
+artifacts {
+    archives sourcesJar
+}
