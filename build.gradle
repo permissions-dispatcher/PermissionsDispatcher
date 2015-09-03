@@ -4,10 +4,11 @@ buildscript {
     }
     dependencies {
         // TODO: bintray-release will crash if you upgrade plugin version...
-        classpath 'com.android.tools.build:gradle:1.2.3'
-        classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
-        classpath 'com.jakewharton.sdkmanager:gradle-plugin:0.12.0'
-        classpath 'com.novoda:bintray-release:0.3.0'
+        classpath "com.android.tools.build:gradle:$GRADLE_PLUGIN_VERSION"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_PLUGIN_VERSION"
+        classpath "com.neenbedankt.gradle.plugins:android-apt:$APT_PLUGIN_VERSION"
+        classpath "com.novoda:bintray-release:$BINTRAY_PLUGIN_VERSION"
+        classpath "com.netflix.nebula:gradle-extra-configurations-plugin:$CONFIG_PLUGIN_VERSION"
     }
 }
 
