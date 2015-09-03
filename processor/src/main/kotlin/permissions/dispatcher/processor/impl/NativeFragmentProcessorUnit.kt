@@ -55,7 +55,7 @@ class NativeFragmentProcessorUnit: BaseProcessorUnit() {
 
         // Add the branch for "request permission"
         builder.nextControlFlow("else")
-        builder.addStatement("\$N.requestPermissions(\$N, \$N)", targetParam, permissionField, requestCodeField)
+        builder.addStatement("\$T.getInstance().requestPermissions(\$N, \$N, \$N)", PERMISSION_UTILS_V13, targetParam, permissionField, requestCodeField)
         builder.endControlFlow()
     }
 
