@@ -98,7 +98,7 @@ Add to your project `build.gradle` file:
 ```groovy
 buildscript {
   dependencies {
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.4'
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
   }
 }
 
