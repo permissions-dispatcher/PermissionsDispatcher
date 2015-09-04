@@ -28,20 +28,22 @@ class RuntimePermissionsElement(e: TypeElement) {
     /* Begin private */
 
     private fun validateNeedsMethods() {
+        checkNotEmpty(needsElements, this, javaClass<Needs>())
+        checkDuplicatedValue(needsElements, javaClass<Needs>())
         checkPrivateMethods(needsElements, javaClass<Needs>())
-        checkMethodReturnType(needsElements)
+        checkMethodSignature(needsElements)
     }
 
     private fun validateRationaleMethods() {
         checkDuplicatedValue(onRationaleElements, javaClass<OnRationale>())
         checkPrivateMethods(onRationaleElements, javaClass<OnRationale>())
-        checkMethodReturnType(onRationaleElements)
+        checkMethodSignature(onRationaleElements)
     }
 
     private fun validateDeniedMethods() {
         checkDuplicatedValue(onDeniedElements, javaClass<OnDenied>())
         checkPrivateMethods(onDeniedElements, javaClass<OnDenied>())
-        checkMethodReturnType(onDeniedElements)
+        checkMethodSignature(onDeniedElements)
     }
 
     /* Begin public */

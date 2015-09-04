@@ -1,4 +1,4 @@
-package permissions.dispatcher.processor.data;
+package permissions.dispatcher.processor.base;
 
 import com.google.testing.compile.JavaFileObjects;
 

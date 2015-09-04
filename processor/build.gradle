@@ -16,8 +16,14 @@ sourceSets {
     }
     testV13 {
         java {
-            compileClasspath += test.output
-            runtimeClasspath += test.output
+            srcDirs = [
+                    'src/testV13/java'
+            ]
+        }
+        resources {
+            srcDirs = [
+                    'src/testV13/resources'
+            ]
         }
     }
 }
@@ -27,11 +33,16 @@ configurations {
     testV13Runtime.extendsFrom testRuntime
 }
 
-task testV13(type:Test){
+task testV13(type:Test) {
     description = "Run tests for v13 targets (located in src/testV13/...)."
-    testClassesDir = project.sourceSets.testV13.output.classesDir
-    classpath = project.sourceSets.testV13.runtimeClasspath
+    group = 'verification'
+    testClassesDir = sourceSets.testV13.output.classesDir
+    classpath = sourceSets.testV13.runtimeClasspath
+    reports.junitXml.destination = file("${project.testResultsDir}/$name")
+    reports.html.destination = file("${project.reporting.baseDir}/$name")
+    shouldRunAfter test
 }
+testV13.dependsOn test
 
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
@@ -43,6 +54,10 @@ dependencies {
     testCompile fileTree(dir: './src/test/libs', includes: ['*.jar'])
     testCompile files(Jvm.current().getToolsJar())
 
+    testV13Compile sourceSets.main.output
+    testV13Compile configurations.testCompile
+    testV13Compile sourceSets.test.output
+    testV13Compile configurations.testRuntime
     testV13Compile fileTree(dir: './src/testV13/libs', includes: ['*.jar'])
 }
 
