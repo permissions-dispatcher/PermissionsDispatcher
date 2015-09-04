@@ -14,6 +14,23 @@ sourceSets {
             ]
         }
     }
+    testV13 {
+        java {
+            compileClasspath += test.output
+            runtimeClasspath += test.output
+        }
+    }
+}
+
+configurations {
+    testV13Compile.extendsFrom testCompile
+    testV13Runtime.extendsFrom testRuntime
+}
+
+task testV13(type:Test){
+    description = "Run tests for v13 targets (located in src/testV13/...)."
+    testClassesDir = project.sourceSets.testV13.output.classesDir
+    classpath = project.sourceSets.testV13.runtimeClasspath
 }
 
 dependencies {
@@ -25,6 +42,8 @@ dependencies {
     testCompile "com.google.android:android:$GOOGLE_ANDROID_VERSION"
     testCompile fileTree(dir: './src/test/libs', includes: ['*.jar'])
     testCompile files(Jvm.current().getToolsJar())
+
+    testV13Compile fileTree(dir: './src/testV13/libs', includes: ['*.jar'])
 }
 
 publish {
