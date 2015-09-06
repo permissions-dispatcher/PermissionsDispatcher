@@ -4,10 +4,7 @@ import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.MethodSpec
 import permissions.dispatcher.processor.ProcessorUnit
 import permissions.dispatcher.processor.RuntimePermissionsElement
-import permissions.dispatcher.processor.util.permissionFieldName
-import permissions.dispatcher.processor.util.requestCodeFieldName
-import permissions.dispatcher.processor.util.simpleString
-import permissions.dispatcher.processor.util.typeMirrorOf
+import permissions.dispatcher.processor.util.*
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.type.TypeMirror
 
@@ -40,17 +37,21 @@ class SupportFragmentProcessorUnit: BaseProcessorUnit() {
         builder.beginControlFlow("if (\$T.hasSelfPermissions(\$N, \$N))", PERMISSION_UTILS, activityVar, permissionField)
         builder.addStatement("\$N.\$N()", targetParam, needsMethod.simpleString())
 
-        // Add the conditional for "OnRationale", if present
+        // Add the conditional for "OnShowRationale", if present
         val onRationale: ExecutableElement? = rpe.findOnRationaleForNeeds(needsMethod)
         if (onRationale != null) {
             builder.nextControlFlow("else if (\$T.shouldShowRequestPermissionRationale(\$N, \$N))", PERMISSION_UTILS, activityVar, permissionField)
-            builder.addStatement("\$N.\$N()", targetParam, onRationale.simpleString())
+            builder.addStatement("\$N.\$N(new \$N(\$N))", targetParam, onRationale.simpleString(), permissionRequestMethodName(needsMethod), targetParam)
         }
 
         // Add the branch for "request permission"
         builder.nextControlFlow("else")
-        builder.addStatement("\$N.requestPermissions(\$N, \$N)", targetParam, permissionField, requestCodeField)
+        addRequestPermissionsStatement(builder, targetParam, permissionField, requestCodeField)
         builder.endControlFlow()
+    }
+
+    override fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {
+        builder.addStatement("\$N.requestPermissions(\$N, \$N)", targetParam, permissionField, requestCodeField)
     }
 
     override fun addResultCaseBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String, grantResultsParam: String) {

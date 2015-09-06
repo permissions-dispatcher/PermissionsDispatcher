@@ -6,10 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Register some methods which explain why permissions are needed.
+ * Register some methods which permissions are needed.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
-public @interface OnRationale {
+public @interface OnPermissionDenied {
     String[] value();
 }

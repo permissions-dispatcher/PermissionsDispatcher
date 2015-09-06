@@ -1,8 +1,8 @@
 package permissions.dispatcher.processor.util
 
-import permissions.dispatcher.Needs
-import permissions.dispatcher.OnDenied
-import permissions.dispatcher.OnRationale
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnPermissionDenied
+import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.processor.TYPE_UTILS
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
@@ -25,6 +25,15 @@ fun Element.simpleString(): String {
 }
 
 /**
+ * Returns the simple name of a TypeMirror as a string
+ */
+fun TypeMirror.simpleString(): String {
+    val toString: String = this.toString()
+    val indexOfDot: Int = toString.lastIndexOf('.')
+    return if (indexOfDot == -1) toString else toString.substring(indexOfDot + 1)
+}
+
+/**
  * Returns whether or not an Element is annotated with the provided Annotation class
  */
 fun <A : Annotation> Element.hasAnnotation(annotationType: Class<A>): Boolean {
@@ -37,12 +46,12 @@ fun <A : Annotation> Element.hasAnnotation(annotationType: Class<A>): Boolean {
  * PermissionsDispatcher, this returns an empty list
  */
 fun Annotation.permissionValue(): List<String> {
-    if (annotationType().equals(javaClass<Needs>())) {
-        return (this as Needs).value.asList()
-    } else if (annotationType().equals(javaClass<OnRationale>())) {
-        return (this as OnRationale).value.asList()
-    } else if (annotationType().equals(javaClass<OnDenied>())) {
-        return (this as OnDenied).value.asList()
+    if (annotationType().equals(javaClass<NeedsPermission>())) {
+        return (this as NeedsPermission).value.asList()
+    } else if (annotationType().equals(javaClass<OnShowRationale>())) {
+        return (this as OnShowRationale).value.asList()
+    } else if (annotationType().equals(javaClass<OnPermissionDenied>())) {
+        return (this as OnPermissionDenied).value.asList()
     }
     return emptyList()
 }

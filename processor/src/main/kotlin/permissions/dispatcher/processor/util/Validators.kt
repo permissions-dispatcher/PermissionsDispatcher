@@ -1,16 +1,15 @@
 package permissions.dispatcher.processor.util
 
 import permissions.dispatcher.processor.ProcessorUnit
-import permissions.dispatcher.processor.exception.DuplicatedValueException
-import permissions.dispatcher.processor.exception.PrivateMethodException
-import permissions.dispatcher.processor.exception.WrongClassException
-import permissions.dispatcher.processor.exception.WrongReturnTypeException
+import permissions.dispatcher.processor.RuntimePermissionsElement
+import permissions.dispatcher.processor.exception.*
 import java.util.*
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
 import javax.lang.model.type.NoType
 import javax.lang.model.type.TypeKind
+import javax.lang.model.type.TypeMirror
 
 /**
  * Obtains the ProcessorUnit implementation for the provided element.
@@ -35,8 +34,18 @@ fun <A : Annotation> checkDuplicatedValue(items: List<ExecutableElement>, annota
     items.forEach {
         val permissionValue: List<String> = it.getAnnotation(annotationClass).permissionValue()
         if (!set.addAll(permissionValue)) {
-            throw DuplicatedValueException(permissionValue, annotationClass)
+            throw DuplicatedValueException(permissionValue, it, annotationClass)
         }
+    }
+}
+
+/**
+ * Checks the elements in the provided list for elements. Raises an exception if
+ * it doesn't contain any elements
+ */
+fun <A : Annotation> checkNotEmpty(items: List<ExecutableElement>, rpe: RuntimePermissionsElement, annotationClass: Class<A>) {
+    if (items.isEmpty()) {
+        throw NoAnnotatedMethodsException(rpe, annotationClass)
     }
 }
 
@@ -57,10 +66,36 @@ fun <A : Annotation> checkPrivateMethods(items: List<ExecutableElement>, annotat
  * Checks the return type of the elements in the provided list. Raises an exception
  * if any element specifies a return type other than 'void'
  */
-fun checkMethodReturnType(items : List<ExecutableElement>) {
+fun checkMethodSignature(items : List<ExecutableElement>) {
     items.forEach {
+        // Allow 'void' return type only
         if (it.getReturnType().getKind() != TypeKind.VOID) {
             throw WrongReturnTypeException(it)
+        }
+        // Allow methods without 'throws' declaration only
+        if (it.getThrownTypes().isNotEmpty()) {
+            throw NoThrowsAllowedException(it)
+        }
+    }
+}
+
+fun checkMethodParameters(items : List<ExecutableElement>, numParams: Int, vararg requiredTypes: TypeMirror) {
+    items.forEach {
+        // Check each element's parameters against the requirements
+        val params = it.getParameters()
+        if (numParams == 0 && params.isNotEmpty()) {
+            throw NoParametersAllowedException(it)
+        }
+
+        if (numParams != params.size()) {
+            throw WrongParametersException(it, requiredTypes)
+        }
+
+        params.forEachIndexed { i, param ->
+            val requiredType = requiredTypes.get(i)
+            if (!param.asType().isSubtypeOf(requiredType)) {
+                throw WrongParametersException(it, requiredTypes)
+            }
         }
     }
 }

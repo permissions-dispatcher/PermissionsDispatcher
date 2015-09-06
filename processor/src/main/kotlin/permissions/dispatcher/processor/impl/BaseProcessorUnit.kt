@@ -1,10 +1,12 @@
 package permissions.dispatcher.processor.impl
 
 import com.squareup.javapoet.*
-import permissions.dispatcher.Needs
+import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.ProcessorUnit
 import permissions.dispatcher.processor.RuntimePermissionsElement
+import permissions.dispatcher.processor.TYPE_UTILS
 import permissions.dispatcher.processor.util.*
+import java.lang.ref.WeakReference
 import java.util.*
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
@@ -37,6 +39,8 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
 
     abstract fun addResultCaseBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String, grantResultsParam: String)
 
+    abstract fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String)
+
     /* Begin private */
 
     private fun createTypeSpec(rpe: RuntimePermissionsElement): TypeSpec {
@@ -46,6 +50,7 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
                 .addMethod(createConstructor())
                 .addMethods(createWithCheckMethods(rpe))
                 .addMethod(createPermissionResultMethod(rpe))
+                .addTypes(createPermissionRequestClasses(rpe))
         return builder.build()
     }
 
@@ -53,7 +58,7 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
         val fields: ArrayList<FieldSpec> = arrayListOf()
         var index: Int = 0
         needsElements.forEach {
-            // For each method annotated with @Needs, add REQUEST integer and PERMISSION String[] fields
+            // For each method annotated with @NeedsPermission, add REQUEST integer and PERMISSION String[] fields
             fields.add(createRequestCodeField(it, index++))
             fields.add(createPermissionField(it))
         }
@@ -68,7 +73,7 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
     }
 
     private fun createPermissionField(e: ExecutableElement): FieldSpec {
-        val permissionValue: List<String> = e.getAnnotation(javaClass<Needs>()).permissionValue()
+        val permissionValue: List<String> = e.getAnnotation(javaClass<NeedsPermission>()).permissionValue()
         val formattedValue: String = permissionValue.joinToString(
                 separator = ",",
                 prefix = "{",
@@ -90,7 +95,7 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
     private fun createWithCheckMethods(rpe: RuntimePermissionsElement): List<MethodSpec> {
         val methods: ArrayList<MethodSpec> = arrayListOf()
         rpe.needsElements.forEach {
-            // For each @Needs method, create the "WithCheck" equivalent
+            // For each @NeedsPermission method, create the "WithCheck" equivalent
             methods.add(createWithCheckMethod(rpe, it))
         }
         return methods
@@ -119,7 +124,7 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
                 .addParameter(TypeName.INT, requestCodeParam)
                 .addParameter(ArrayTypeName.of(TypeName.INT), grantResultsParam)
 
-        // For each @Needs method, add a switch case
+        // For each @NeedsPermission method, add a switch case
         builder.beginControlFlow("switch (\$N)", requestCodeParam)
         for (needsMethod in rpe.needsElements) {
             builder.addCode("case \$N:\n", requestCodeFieldName(needsMethod))
@@ -133,6 +138,65 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
                 .addCode("default:\n")
                 .addStatement("break")
                 .endControlFlow();
+
+        return builder.build()
+    }
+
+    private fun createPermissionRequestClasses(rpe: RuntimePermissionsElement): List<TypeSpec> {
+        val classes: ArrayList<TypeSpec> = arrayListOf()
+        rpe.needsElements.forEach {
+            val onRationale = rpe.findOnRationaleForNeeds(it)
+            if (onRationale != null) {
+                classes.add(createPermissionRequestClass(rpe, it))
+            }
+        }
+        return classes
+    }
+
+    private fun createPermissionRequestClass(rpe: RuntimePermissionsElement, needsMethod: ExecutableElement): TypeSpec {
+        val targetType = rpe.typeName
+        val builder = TypeSpec.classBuilder(permissionRequestMethodName(needsMethod))
+                .addSuperinterface(ClassName.get("permissions.dispatcher", "PermissionRequest"))
+                .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
+
+        // Add required fields to the target
+        val weakFieldName: String = "weakTarget"
+        val weakFieldType = ParameterizedTypeName.get(ClassName.get("java.lang.ref", "WeakReference"), targetType)
+        builder.addField(weakFieldType, weakFieldName, Modifier.PRIVATE, Modifier.FINAL)
+
+        // Add constructor
+        val targetParam = "target"
+        builder.addMethod(
+                MethodSpec.constructorBuilder()
+                        .addModifiers(Modifier.PRIVATE)
+                        .addParameter(targetType, targetParam)
+                        .addStatement("this.\$L = new WeakReference<>(\$N)", weakFieldName, targetParam)
+                        .build()
+        )
+
+        // Add proceed() override
+        val proceedMethod: MethodSpec.Builder = MethodSpec.methodBuilder("proceed")
+                .addAnnotation(javaClass<Override>())
+                .addModifiers(Modifier.PUBLIC)
+                .returns(TypeName.VOID)
+                .addStatement("\$T target = \$N.get()", targetType, weakFieldName)
+                .addStatement("if (target == null) return")
+        addRequestPermissionsStatement(proceedMethod, targetParam, permissionFieldName(needsMethod), requestCodeFieldName(needsMethod))
+        builder.addMethod(proceedMethod.build())
+
+        // Add cancel() override method
+        val cancelMethod: MethodSpec.Builder = MethodSpec.methodBuilder("cancel")
+                .addAnnotation(javaClass<Override>())
+                .addModifiers(Modifier.PUBLIC)
+                .returns(TypeName.VOID)
+        val onDenied = rpe.findOnDeniedForNeeds(needsMethod)
+        if (onDenied != null) {
+            cancelMethod
+                    .addStatement("\$T target = \$N.get()", targetType, weakFieldName)
+                    .addStatement("if (target == null) return")
+                    .addStatement("target.\$N()", onDenied.simpleString())
+        }
+        builder.addMethod(cancelMethod.build())
 
         return builder.build()
     }

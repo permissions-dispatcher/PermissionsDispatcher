@@ -23,4 +23,15 @@ public final class V13Access {
         }
         return false;
     }
+
+    /**
+     * Requests the provided permissions for a Fragment instance.
+     *
+     * @param fragment    fragment
+     * @param permissions permissions list
+     * @param requestCode Request code connected to the permission request
+     */
+    public void requestPermissions(Fragment fragment, String[] permissions, int requestCode) {
+        FragmentCompat.requestPermissions(fragment, permissions, requestCode);
+    }
 }
