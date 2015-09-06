@@ -9,6 +9,7 @@ import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
 import javax.lang.model.type.NoType
 import javax.lang.model.type.TypeKind
+import javax.lang.model.type.TypeMirror
 
 /**
  * Obtains the ProcessorUnit implementation for the provided element.
@@ -71,13 +72,30 @@ fun checkMethodSignature(items : List<ExecutableElement>) {
         if (it.getReturnType().getKind() != TypeKind.VOID) {
             throw WrongReturnTypeException(it)
         }
-        // Allow methods without parameters only
-        if (it.getParameters().isNotEmpty()) {
-            throw NoParametersAllowedException(it)
-        }
         // Allow methods without 'throws' declaration only
         if (it.getThrownTypes().isNotEmpty()) {
             throw NoThrowsAllowedException(it)
+        }
+    }
+}
+
+fun checkMethodParameters(items : List<ExecutableElement>, numParams: Int, vararg requiredTypes: TypeMirror) {
+    items.forEach {
+        // Check each element's parameters against the requirements
+        val params = it.getParameters()
+        if (numParams == 0 && params.isNotEmpty()) {
+            throw NoParametersAllowedException(it)
+        }
+
+        if (numParams != params.size()) {
+            throw WrongParametersException(it, requiredTypes)
+        }
+
+        params.forEachIndexed { i, param ->
+            val requiredType = requiredTypes.get(i)
+            if (!param.asType().isSubtypeOf(requiredType)) {
+                throw WrongParametersException(it, requiredTypes)
+            }
         }
     }
 }

@@ -7,7 +7,7 @@ import permissions.dispatcher.processor.data.V13Source;
 public class V13ProcessorTestSuite extends TestSuite {
 
     @Test public void noPermissionNativeFragment() {
-        expectRuntimeException("Annotated class 'MyFragment' doesn't have any method annotated with '@Needs'");
+        expectRuntimeException("Annotated class 'MyFragment' doesn't have any method annotated with '@NeedsPermission'");
         assertJavaSource(V13Source.NativeFragmentWithoutNeeds);
     }
 
@@ -25,5 +25,9 @@ public class V13ProcessorTestSuite extends TestSuite {
 
     @Test public void onePermissionWithDeniedNativeFragment() {
         assertJavaSource(V13Source.OnePermissionWithDeniedNativeFragment);
+    }
+
+    @Test public void onePermissionWithRationaleAndDeniedNativeFragment() {
+        assertJavaSource(V13Source.OnePermissionWithRationaleAndDeniedNativeFragment);
     }
 }

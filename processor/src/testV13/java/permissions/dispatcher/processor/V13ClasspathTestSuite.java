@@ -2,9 +2,6 @@ package permissions.dispatcher.processor;
 
 import org.junit.Test;
 
-/**
- * Created by marcel on 04.09.15.
- */
 public class V13ClasspathTestSuite {
 
     @Test

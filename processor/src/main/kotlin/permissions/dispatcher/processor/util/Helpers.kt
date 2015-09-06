@@ -1,8 +1,8 @@
 package permissions.dispatcher.processor.util
 
 import com.squareup.javapoet.TypeName
-import permissions.dispatcher.Needs
-import permissions.dispatcher.OnDenied
+import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.processor.ELEMENT_UTILS
 import permissions.dispatcher.processor.TYPE_UTILS
 import javax.lang.model.element.ExecutableElement
@@ -24,8 +24,12 @@ public fun withCheckMethodName(e: ExecutableElement): String {
     return "${e.simpleString()}$GEN_WITHCHECK_SUFFIX"
 }
 
+public fun permissionRequestMethodName(e: ExecutableElement): String {
+    return "${e.simpleString().capitalize()}$GEN_PERMISSIONREQUEST_SUFFIX"
+}
+
 fun <A : Annotation> findMatchingMethodForNeeds(needsElement: ExecutableElement, otherElements: List<ExecutableElement>, annotationType: Class<A>): ExecutableElement? {
-    val value: List<String> = needsElement.getAnnotation(javaClass<Needs>()).permissionValue()
+    val value: List<String> = needsElement.getAnnotation(javaClass<NeedsPermission>()).permissionValue()
     return otherElements.firstOrNull {
         it.getAnnotation(annotationType).permissionValue().equals(value)
     }

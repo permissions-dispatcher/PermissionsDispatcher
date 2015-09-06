@@ -3,9 +3,6 @@ package permissions.dispatcher.processor;
 import org.junit.Test;
 import permissions.dispatcher.processor.base.TestSuite;
 
-/**
- * Created by marcel on 04.09.15.
- */
 public class ClasspathTestSuite extends TestSuite {
 
     @Test

@@ -1,9 +1,6 @@
 package permissions.dispatcher.processor.base;
 
-import org.hamcrest.BaseMatcher;
-import org.hamcrest.Description;
 import org.hamcrest.Matcher;
-import org.hamcrest.core.SubstringMatcher;
 import org.junit.Rule;
 import org.junit.rules.ExpectedException;
 import permissions.dispatcher.processor.PermissionsProcessor;
@@ -11,9 +8,6 @@ import permissions.dispatcher.processor.PermissionsProcessor;
 import static com.google.common.truth.Truth.ASSERT;
 import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
 
-/**
- * Created by marcel on 04.09.15.
- */
 public abstract class TestSuite {
 
     @Rule

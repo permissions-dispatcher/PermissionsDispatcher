@@ -4,9 +4,6 @@ import com.google.testing.compile.JavaFileObjects;
 
 import javax.tools.JavaFileObject;
 
-/**
- * Created by marcel on 03.09.15.
- */
 public abstract class BaseTest {
 
     public final JavaFileObject actual() {

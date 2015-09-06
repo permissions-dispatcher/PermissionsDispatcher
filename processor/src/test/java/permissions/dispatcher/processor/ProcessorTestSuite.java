@@ -2,15 +2,8 @@ package permissions.dispatcher.processor;
 
 import org.junit.Test;
 import permissions.dispatcher.processor.base.TestSuite;
-import permissions.dispatcher.processor.base.BaseTest;
 import permissions.dispatcher.processor.data.Source;
 
-import static com.google.common.truth.Truth.ASSERT;
-import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
-
-/**
- * Created by marcel on 03.09.15.
- */
 public class ProcessorTestSuite extends TestSuite {
 
     @Test public void nativeFragmentNotSupported() {
@@ -19,12 +12,12 @@ public class ProcessorTestSuite extends TestSuite {
     }
 
     @Test public void noPermissionActivity() {
-        expectRuntimeException("Annotated class 'MyActivity' doesn't have any method annotated with '@Needs'");
+        expectRuntimeException("Annotated class 'MyActivity' doesn't have any method annotated with '@NeedsPermission'");
         assertJavaSource(Source.NoPermissionActivity);
     }
 
     @Test public void noPermissionFragment() {
-        expectRuntimeException("Annotated class 'MyFragment' doesn't have any method annotated with '@Needs'");
+        expectRuntimeException("Annotated class 'MyFragment' doesn't have any method annotated with '@NeedsPermission'");
         assertJavaSource(Source.NoPermissionSupportFragment);
     }
 
@@ -48,9 +41,14 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.PermissionWithParameters);
     }
 
-    @Test public void rationaleWithParameters() {
-        expectRuntimeException("Method 'cameraRationale()' must not have any parameters");
-        assertJavaSource(Source.RationaleWithParameters);
+    @Test public void rationaleWithWrongParameters() {
+        expectRuntimeException("Method 'cameraRationale()' must declare parameters of type 'PermissionRequest'");
+        assertJavaSource(Source.RationaleWithWrongParameters);
+    }
+
+    @Test public void rationaleWithoutParameters() {
+        expectRuntimeException("Method 'cameraRationale()' must declare parameters of type 'PermissionRequest'");
+        assertJavaSource(Source.RationaleWithoutParameters);
     }
 
     @Test public void deniedWithParameters() {
@@ -74,17 +72,17 @@ public class ProcessorTestSuite extends TestSuite {
     }
 
     @Test public void privatePermission() {
-        expectRuntimeException("Method 'showCamera()' annotated with '@Needs' must not be private");
+        expectRuntimeException("Method 'showCamera()' annotated with '@NeedsPermission' must not be private");
         assertJavaSource(Source.PrivatePermission);
     }
 
     @Test public void privateRationale() {
-        expectRuntimeException("Method 'cameraRationale()' annotated with '@OnRationale' must not be private");
+        expectRuntimeException("Method 'cameraRationale()' annotated with '@OnShowRationale' must not be private");
         assertJavaSource(Source.PrivateRationale);
     }
 
     @Test public void privateDenied() {
-        expectRuntimeException("Method 'onCameraDenied()' annotated with '@OnDenied' must not be private");
+        expectRuntimeException("Method 'onCameraDenied()' annotated with '@OnPermissionDenied' must not be private");
         assertJavaSource(Source.PrivateDenied);
     }
 
@@ -94,17 +92,17 @@ public class ProcessorTestSuite extends TestSuite {
     }
 
     @Test public void duplicatedPermission() {
-        expectRuntimeException("[android.permission.CAMERA] is duplicated in 'showCamera2()' annotated with '@Needs'");
+        expectRuntimeException("[android.permission.CAMERA] is duplicated in 'showCamera2()' annotated with '@NeedsPermission'");
         assertJavaSource(Source.DuplicatedPermission);
     }
 
     @Test public void duplicatedRationale() {
-        expectRuntimeException("[android.permission.CAMERA] is duplicated in 'cameraRationale2()' annotated with '@OnRationale'");
+        expectRuntimeException("[android.permission.CAMERA] is duplicated in 'cameraRationale2()' annotated with '@OnShowRationale'");
         assertJavaSource(Source.DuplicatedRationale);
     }
 
     @Test public void duplicatedDenied() {
-        expectRuntimeException("[android.permission.CAMERA] is duplicated in 'onCameraDenied2()' annotated with '@OnDenied'");
+        expectRuntimeException("[android.permission.CAMERA] is duplicated in 'onCameraDenied2()' annotated with '@OnPermissionDenied'");
         assertJavaSource(Source.DuplicatedDenied);
     }
 
@@ -118,6 +116,10 @@ public class ProcessorTestSuite extends TestSuite {
 
     @Test public void twoPermissionsActivity() {
         assertJavaSource(Source.TwoPermissionsActivity);
+    }
+
+    @Test public void twoPermissionsAtOnceActivity() {
+        assertJavaSource(Source.TwoPermissionsAtOnceActivity);
     }
 
     @Test public void twoPermissionsSupportFragment() {
@@ -170,5 +172,13 @@ public class ProcessorTestSuite extends TestSuite {
 
     @Test public void onePermissionWithOtherDeniedFragment() {
         assertJavaSource(Source.OnePermissionWithOtherDeniedSupportFragment);
+    }
+
+    @Test public void onePermissionWithRationaleAndDeniedActivity() {
+        assertJavaSource(Source.OnePermissionWithRationaleAndDeniedActivity);
+    }
+
+    @Test public void onePermissionWithRationaleAndDeniedSupportFragment() {
+        assertJavaSource(Source.OnePermissionWithRationaleAndDeniedSupportFragment);
     }
 }
