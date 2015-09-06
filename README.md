@@ -5,7 +5,7 @@
 [![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-PermissionsDispatcher-green.svg?style=flat)](https://android-arsenal.com/details/1/2316)
 
 PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow.
-[Runtime permissions](https://developer.android.com/preview/features/runtime-permissions.html) are great for users, but can be tedious to implement correctly for developers, requiring a lot of boilerplate code. This library lifts the burden that comes with writing a bunch of check statements whether a permission have been granted or not from you, in order to keep your code clean and safe.
+[Runtime permissions](https://developer.android.com/preview/features/runtime-permissions.html) are great for users, but can be tedious to implement correctly for developers, requiring a lot of boilerplate code. This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code clean and safe. The library is 100% reflection-free.
 
 ## Download
 
@@ -34,14 +34,14 @@ Here's a minimum example, in which we register a `MainActivity` which requires `
 
 ### 1. Attach annotations
 
-There are only few annotations.
+PermissionsDispatcher introduces only a few annotations, keeping its general API concise:
 
 |Annotation|Required|Description|
 |---|---|---|
 |`@RuntimePermissions`|**✓**|Register an `Activity` or `Fragment` to handle permissions|
-|`@NeedsPermission`|**✓**|Annotate a method which performs the action that requires the permission|
-|`@OnShowRationale`||Annotate a method which explains why the permission is needed. It passes in a `PermissionRequest` object which can be used to continue or abort the current permission request upon user input|
-|`@OnPermissionDenied`||Annotate a method which is invoked if the user doesn't grant the permission|
+|`@NeedsPermission`|**✓**|Annotate a method which performs the action that requires one or more permissions|
+|`@OnShowRationale`||Annotate a method which explains why the permission/s is/are needed. It passes in a `PermissionRequest` object which can be used to continue or abort the current permission request upon user input|
+|`@OnPermissionDenied`||Annotate a method which is invoked if the user doesn't grant the permissions|
 
 > NOTE: Annotated methods must not be `private`.
 
@@ -109,11 +109,11 @@ public void onRequestPermissionsResult(int requestCode, String[] permissions, in
 }
 ```
 
-Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/permissionsdispatcher-sample) and [generated class](https://gist.github.com/hotchemi/5dc89c02399c2419fab7). for more details.
+Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/permissionsdispatcher-sample) and [generated class](https://gist.github.com/hotchemi/5dc89c02399c2419fab7) for more details.
 
 ## Support
 
-PermissionsDispatcher is supported on **API levels 4 and up**, with which you get support for annotating `android.app.Activity` and `android.support.v4.app.Fragment` sub-classes out of the box. In case you are using `android.app.Fragment` instances in your app, you can use these with PermissionsDispatcher as well! Simply add a dependency on the `support-v13` library alongside PermissionsDispatcher in your project, and it will enable support for native fragments.
+PermissionsDispatcher is supported on **API levels 4 and up**, with which you get support for annotating `android.app.Activity` and `android.support.v4.app.Fragment` sub-classes out of the box. In case you rely on `android.app.Fragment` in your app, you can use these with PermissionsDispatcher as well! Simply add a dependency on the `support-v13` library alongside PermissionsDispatcher in your project, and it will enable support for native fragments.
 
 ## License
 
