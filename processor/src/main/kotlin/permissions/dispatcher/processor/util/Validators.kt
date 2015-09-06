@@ -67,11 +67,17 @@ fun <A : Annotation> checkPrivateMethods(items: List<ExecutableElement>, annotat
  */
 fun checkMethodSignature(items : List<ExecutableElement>) {
     items.forEach {
+        // Allow 'void' return type only
         if (it.getReturnType().getKind() != TypeKind.VOID) {
             throw WrongReturnTypeException(it)
         }
+        // Allow methods without parameters only
         if (it.getParameters().isNotEmpty()) {
             throw NoParametersAllowedException(it)
+        }
+        // Allow methods without 'throws' declaration only
+        if (it.getThrownTypes().isNotEmpty()) {
+            throw NoThrowsAllowedException(it)
         }
     }
 }

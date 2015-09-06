@@ -12,6 +12,35 @@ public final class Source {
 
     static final String[] EMPTY_SOURCE = {};
 
+    public static final BaseTest NativeFragmentNotSupported = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyFragment";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Fragment;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.Needs;",
+                    "@RuntimePermissions",
+                    "public class MyFragment extends Fragment {",
+                    "   @Needs(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return EMPTY_SOURCE;
+        }
+    };
+
     public static final BaseTest NoPermissionActivity = new BaseTest() {
         @Override
         protected String getName() {
@@ -255,6 +284,196 @@ public final class Source {
         }
     };
 
+    public static final BaseTest PermissionWithThrows = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.Needs;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "   @Needs(Manifest.permission.CAMERA)",
+                    "   void showCamera() throws Exception {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return EMPTY_SOURCE;
+        }
+    };
+
+    public static final BaseTest RationaleWithThrows = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.Needs;",
+                    "import permissions.dispatcher.OnRationale;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "   @Needs(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "   @OnRationale(Manifest.permission.CAMERA)",
+                    "   void cameraRationale() throws Exception {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return EMPTY_SOURCE;
+        }
+    };
+
+    public static final BaseTest DeniedWithThrows = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.Needs;",
+                    "import permissions.dispatcher.OnDenied;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "   @Needs(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "   @OnDenied(Manifest.permission.CAMERA)",
+                    "   void onCameraDenied() throws Exception {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return EMPTY_SOURCE;
+        }
+    };
+
+    public static final BaseTest PrivatePermission = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.Needs;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "   @Needs(Manifest.permission.CAMERA)",
+                    "   private void showCamera() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return EMPTY_SOURCE;
+        }
+    };
+
+    public static final BaseTest PrivateRationale = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.Needs;",
+                    "import permissions.dispatcher.OnRationale;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "   @Needs(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "   @OnRationale(Manifest.permission.CAMERA)",
+                    "   private void cameraRationale() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return EMPTY_SOURCE;
+        }
+    };
+
+    public static final BaseTest PrivateDenied = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.Needs;",
+                    "import permissions.dispatcher.OnDenied;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "   @Needs(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "   @OnDenied(Manifest.permission.CAMERA)",
+                    "   private void onCameraDenied() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return EMPTY_SOURCE;
+        }
+    };
+
     public static final BaseTest WrongAnnotatedClass = new BaseTest() {
         @Override
         protected String getName() {
@@ -305,6 +524,78 @@ public final class Source {
                     "   }",
                     "   @Needs(Manifest.permission.CAMERA)",
                     "   void showCamera2() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return EMPTY_SOURCE;
+        }
+    };
+
+    public static final BaseTest DuplicatedRationale = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.Needs;",
+                    "import permissions.dispatcher.OnRationale;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "   @Needs(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "   @OnRationale(Manifest.permission.CAMERA)",
+                    "   void cameraRationale() {",
+                    "   }",
+                    "   @OnRationale(Manifest.permission.CAMERA)",
+                    "   void cameraRationale2() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return EMPTY_SOURCE;
+        }
+    };
+
+    public static final BaseTest DuplicatedDenied = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.Needs;",
+                    "import permissions.dispatcher.OnDenied;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "   @Needs(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "   @OnDenied(Manifest.permission.CAMERA)",
+                    "   void onCameraDenied() {",
+                    "   }",
+                    "   @OnDenied(Manifest.permission.CAMERA)",
+                    "   void onCameraDenied2() {",
                     "   }",
                     "}"
             };

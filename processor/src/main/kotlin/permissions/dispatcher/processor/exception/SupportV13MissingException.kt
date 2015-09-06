@@ -5,5 +5,5 @@ import permissions.dispatcher.processor.RuntimePermissionsElement
 /**
  * Created by marcel on 03.09.15.
  */
-public class SupportV13MissingException(e: RuntimePermissionsElement) : RuntimeException("PermissionDispatcher for annotated class '${e.inputClassName}' can\'t be generated, because the support-v13 dependency is missing on your project") {
+public class SupportV13MissingException(e: RuntimePermissionsElement) : RuntimeException("PermissionsDispatcher for annotated class '${e.inputClassName}' can\'t be generated, because the support-v13 dependency is missing on your project") {
 }

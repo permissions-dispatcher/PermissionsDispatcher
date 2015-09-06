@@ -69,12 +69,8 @@ class PermissionsProcessor : AbstractProcessor() {
             val rpe: RuntimePermissionsElement = RuntimePermissionsElement(it as TypeElement)
 
             // Create a JavaFile for this element and write it out
-            try {
-                val javaFile: JavaFile = processorUnit.createJavaFile(rpe)
-                javaFile.writeTo(filer)
-            } catch (ex: Exception) {
-                messager.printMessage(Diagnostic.Kind.ERROR, ex.getMessage())
-            }
+            val javaFile: JavaFile = processorUnit.createJavaFile(rpe)
+            javaFile.writeTo(filer)
         }
 
         return true

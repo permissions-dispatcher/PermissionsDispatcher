@@ -13,74 +13,99 @@ import static com.google.testing.compile.JavaSourceSubjectFactory.javaSource;
  */
 public class ProcessorTestSuite extends TestSuite {
 
-    static void assertJavaSource(BaseTest test) {
-        ASSERT
-                .about(javaSource())
-                .that(test.actual())
-                .processedWith(new PermissionsProcessor())
-                .compilesWithoutError()
-                .and()
-                .generatesSources(test.expect());
+    @Test public void nativeFragmentNotSupported() {
+        expectRuntimeException("PermissionsDispatcher for annotated class 'MyFragment' can't be generated, because the support-v13 dependency is missing on your project");
+        assertJavaSource(Source.NativeFragmentNotSupported);
     }
 
     @Test public void noPermissionActivity() {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Annotated class 'MyActivity' doesn't have any method annotated with '@Needs'");
+        expectRuntimeException("Annotated class 'MyActivity' doesn't have any method annotated with '@Needs'");
         assertJavaSource(Source.NoPermissionActivity);
     }
 
     @Test public void noPermissionFragment() {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Annotated class 'MyFragment' doesn't have any method annotated with '@Needs'");
+        expectRuntimeException("Annotated class 'MyFragment' doesn't have any method annotated with '@Needs'");
         assertJavaSource(Source.NoPermissionSupportFragment);
     }
 
     @Test public void permissionWithNonVoidReturnType() {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Method 'showCamera()' must specify return type 'void', not 'int'");
+        expectRuntimeException("Method 'showCamera()' must specify return type 'void', not 'int'");
         assertJavaSource(Source.PermissionWithNonVoidReturnType);
     }
 
     @Test public void rationaleWithNonVoidReturnType() {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Method 'cameraRationale()' must specify return type 'void', not 'int'");
+        expectRuntimeException("Method 'cameraRationale()' must specify return type 'void', not 'int'");
         assertJavaSource(Source.RationaleWithNonVoidReturnType);
     }
 
     @Test public void deniedWithNonVoidReturnType() {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Method 'onCameraDenied()' must specify return type 'void', not 'int'");
+        expectRuntimeException("Method 'onCameraDenied()' must specify return type 'void', not 'int'");
         assertJavaSource(Source.DeniedWithNonVoidReturnType);
     }
 
     @Test public void permissionWithParameters() {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Method 'showCamera()' must not have any parameters");
+        expectRuntimeException("Method 'showCamera()' must not have any parameters");
         assertJavaSource(Source.PermissionWithParameters);
     }
 
     @Test public void rationaleWithParameters() {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Method 'cameraRationale()' must not have any parameters");
+        expectRuntimeException("Method 'cameraRationale()' must not have any parameters");
         assertJavaSource(Source.RationaleWithParameters);
     }
 
     @Test public void deniedWithParameters() {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Method 'onCameraDenied()' must not have any parameters");
+        expectRuntimeException("Method 'onCameraDenied()' must not have any parameters");
         assertJavaSource(Source.DeniedWithParameters);
     }
 
+    @Test public void permissionWithThrows() {
+        expectRuntimeException("Method 'showCamera()' must not have any 'throws' declaration in its signature");
+        assertJavaSource(Source.PermissionWithThrows);
+    }
+
+    @Test public void rationaleWithThrows() {
+        expectRuntimeException("Method 'cameraRationale()' must not have any 'throws' declaration in its signature");
+        assertJavaSource(Source.RationaleWithThrows);
+    }
+
+    @Test public void deniedWithThrows() {
+        expectRuntimeException("Method 'onCameraDenied()' must not have any 'throws' declaration in its signature");
+        assertJavaSource(Source.DeniedWithThrows);
+    }
+
+    @Test public void privatePermission() {
+        expectRuntimeException("Method 'showCamera()' annotated with '@Needs' must not be private");
+        assertJavaSource(Source.PrivatePermission);
+    }
+
+    @Test public void privateRationale() {
+        expectRuntimeException("Method 'cameraRationale()' annotated with '@OnRationale' must not be private");
+        assertJavaSource(Source.PrivateRationale);
+    }
+
+    @Test public void privateDenied() {
+        expectRuntimeException("Method 'onCameraDenied()' annotated with '@OnDenied' must not be private");
+        assertJavaSource(Source.PrivateDenied);
+    }
+
     @Test public void wrongAnnotatedClass() {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Class 'tests.MyService' can't be annotated with '@RuntimePermissions'");
+        expectRuntimeException("Class 'tests.MyService' can't be annotated with '@RuntimePermissions'");
         assertJavaSource(Source.WrongAnnotatedClass);
     }
 
     @Test public void duplicatedPermission() {
-        expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("[android.permission.CAMERA] is duplicated in 'showCamera2()' annotated with '@interface permissions.dispatcher.Needs'");
+        expectRuntimeException("[android.permission.CAMERA] is duplicated in 'showCamera2()' annotated with '@Needs'");
         assertJavaSource(Source.DuplicatedPermission);
+    }
+
+    @Test public void duplicatedRationale() {
+        expectRuntimeException("[android.permission.CAMERA] is duplicated in 'cameraRationale2()' annotated with '@OnRationale'");
+        assertJavaSource(Source.DuplicatedRationale);
+    }
+
+    @Test public void duplicatedDenied() {
+        expectRuntimeException("[android.permission.CAMERA] is duplicated in 'onCameraDenied2()' annotated with '@OnDenied'");
+        assertJavaSource(Source.DuplicatedDenied);
     }
 
     @Test public void onePermissionActivity() {
