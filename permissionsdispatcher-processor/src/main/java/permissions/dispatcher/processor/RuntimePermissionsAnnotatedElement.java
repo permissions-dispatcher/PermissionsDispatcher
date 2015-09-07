@@ -32,12 +32,12 @@ class RuntimePermissionsAnnotatedElement {
 
     private final List<ExecutableElement> showsRationalesMethods;
 
-    RuntimePermissionsAnnotatedElement(TypeElement element) {
+    RuntimePermissionsAnnotatedElement(TypeElement element, TypeResolver resolver) {
         String qualifiedName = element.getQualifiedName().toString();
         packageName = Utils.getPackageName(qualifiedName);
         className = Utils.getClassName(qualifiedName);
-        checkClassName(className);
-        classType = ClassType.getClassType(className);
+        classType = ClassType.getClassType(qualifiedName, resolver);
+        checkClassType(classType);
         needsPermissionMethods = findMethods(element, NeedsPermission.class);
         validateNeedsPermissionMethods();
         needsPermissionsMethods = findMethods(element, NeedsPermissions.class);

@@ -3,9 +3,10 @@ package permissions.dispatcher.processor;
 import org.junit.Rule;
 import org.junit.Test;
 import org.junit.rules.ExpectedException;
-import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.annotations.NeedsPermission;
 import permissions.dispatcher.annotations.NeedsPermissions;
 import permissions.dispatcher.annotations.ShowsRationale;
+import permissions.dispatcher.annotations.ShowsRationales;
 import permissions.dispatcher.processor.data.Source;
 
 import javax.tools.JavaFileObject;
@@ -90,7 +91,7 @@ public class PermissionsProcessorTest {
     @Test
     public void wrongClassName() {
         expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Annotated class must be finished with 'Activity' or 'Fragment'");
+        expectedException.expectMessage("Annotated class must be a sub-class of 'android.app.Activity' or 'android.support.v4.app.Fragment'");
         String className = "MainUtils";
         JavaFileObject actual = forSourceLines(className, Source.WrongClassName.ACTUAL);
         JavaFileObject expect = forSourceLines(className + CLASS_SUFFIX, Source.EMPTY);

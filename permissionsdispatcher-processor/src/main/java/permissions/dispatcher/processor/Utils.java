@@ -22,11 +22,11 @@ import static permissions.dispatcher.processor.ConstantsProvider.REQUEST_CODE_PR
 
 final class Utils {
 
-    static List<RuntimePermissionsAnnotatedElement> getAnnotatedClasses(RoundEnvironment env) {
+    static List<RuntimePermissionsAnnotatedElement> getAnnotatedClasses(RoundEnvironment env, TypeResolver resolver) {
         List<RuntimePermissionsAnnotatedElement> models = new ArrayList<>();
         Set<? extends Element> elements = env.getElementsAnnotatedWith(RuntimePermissions.class);
         for (Element element : elements) {
-            models.add(new RuntimePermissionsAnnotatedElement((TypeElement) element));
+            models.add(new RuntimePermissionsAnnotatedElement((TypeElement) element, resolver));
         }
         return models;
     }
