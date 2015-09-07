@@ -2,13 +2,12 @@
 
 [![Build Status](https://travis-ci.org/hotchemi/PermissionsDispatcher.svg)](https://travis-ci.org/hotchemi/PermissionsDispatcher)
 [ ![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg) ](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-PermissionsDispatcher-green.svg?style=flat)](https://android-arsenal.com/details/1/2316)
 
 PermissionsDispatcher provides simple annotation-based API to handle runtime permissions in Marshmallow.
 
 [Runtime permissions](https://developer.android.com/preview/features/runtime-permissions.html) is so great for users but also the hell for developers.
 
-You can be released from the burden that writing a bunch of check statements whether a permission have been granted or not. 
+You can be released from the burden that writing a bunch of check statements whether a permission have been granted or not.
 
 ## Usage
 
@@ -18,11 +17,17 @@ Here's a minimum example that you register `MainActivity` which requires `Manife
 
 There are only few annotations.
 
+#### Must
+
 - `@RuntimePermissions`: Register an Activity or Fragment to handle permissions.
 - `@NeedsPermission`: Register a method which the permission is needed.
     - You can use `@NeedsPermissions` for multiple requests.
+
+#### Option
 - `@ShowsRationale`: Register a method which explains why the permission is needed. An annotated method is called when `shouldShowRequestPermissionRationale` returns true.
     - You can use `@ShowsRationales` for multiple requests.
+- `@DeniedPermission`: Register a method called when user deny a permission.
+    - You can use `@DeniedPermissions` for multiple requests.
 
 > NOTE: Annotated methods must be package private or above.
 
@@ -38,11 +43,16 @@ public class MainActivity extends Activity {
                 .commitAllowingStateLoss();
     }
 
-    // this is option
+    // Option
     @ShowsRationale(Manifest.permission.CAMERA)
     void showRationaleForCamera() {
         Toast.makeText(this, R.string.permission_camera_rationale, Toast.LENGTH_SHORT).show();
     }
+
+    // Option
+    @DeniedPermission(Manifest.permission.CAMERA)
+    void showDeniedForCamera() {
+        Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show();
 }
 ```
 
@@ -62,23 +72,8 @@ protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     Button cameraButton = (Button) findViewById(R.id.button_camera);
-    cameraButton.setOnClickListener(this);
-    Button contactsButton = (Button) findViewById(R.id.button_contacts);
-    contactsButton.setOnClickListener(this);
-}
-
-@Override
-public void onClick(View v) {
-    switch (v.getId()) {
-        case R.id.button_camera:
-            // NOTE: delegate the permission handling to generated method
-            MainActivityPermissionsDispatcher.showCameraWithCheck(this);
-            break;
-        case R.id.button_contacts:
-            // NOTE: delegate the permission handling to generated method
-            MainActivityPermissionsDispatcher.showContactsWithCheck(this);
-            break;
-    }
+    cameraButton.setOnClickListener(v ->
+      MainActivityPermissionsDispatcher.showCameraWithCheck(this));
 }
 
 @Override
@@ -105,8 +100,8 @@ buildscript {
 apply plugin: 'android-apt'
 
 dependencies {
-  compile 'com.github.hotchemi:permissionsdispatcher:1.1.2'
-  apt 'com.github.hotchemi:permissionsdispatcher-processor:1.1.2'
+  compile 'com.github.hotchemi:permissionsdispatcher:1.2.0'
+  apt 'com.github.hotchemi:permissionsdispatcher-processor:1.2.0'
 }
 ```
 
