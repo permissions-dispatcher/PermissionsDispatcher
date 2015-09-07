@@ -1,4 +1,4 @@
-package permissions.dispatcher.annotations;
+package permissions.dispatcher;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,10 +6,10 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Register some methods which explain why permissions are needed.
+ * Register a method which explains why this permission is needed.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)
-public @interface ShowsRationales {
-    String[] value();
+public @interface ShowsRationale {
+    String value();
 }

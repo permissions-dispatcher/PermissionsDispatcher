@@ -8,12 +8,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
-
-import permissions.dispatcher.annotations.NeedsPermission;
-import permissions.dispatcher.annotations.NeedsPermissions;
-import permissions.dispatcher.annotations.RuntimePermissions;
-import permissions.dispatcher.annotations.ShowsRationale;
-import permissions.dispatcher.annotations.ShowsRationales;
+import permissions.dispatcher.*;
 import permissions.dispatcher.sample.camera.CameraPreviewFragment;
 import permissions.dispatcher.sample.contacts.ContactsFragment;
 

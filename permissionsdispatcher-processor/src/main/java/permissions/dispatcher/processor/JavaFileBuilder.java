@@ -1,9 +1,8 @@
 package permissions.dispatcher.processor;
 
 import com.squareup.javapoet.*;
-
-import permissions.dispatcher.annotations.NeedsPermission;
-import permissions.dispatcher.annotations.NeedsPermissions;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.NeedsPermissions;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;

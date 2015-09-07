@@ -1,4 +1,4 @@
-package permissions.dispatcher.annotations;
+package permissions.dispatcher;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -6,10 +6,9 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Register some methods which permissions are needed.
+ * Register an <code>Activity</code> or <code>Fragment</code> to handle permissions.
  */
-@Target(ElementType.METHOD)
+@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)
-public @interface NeedsPermissions {
-    String[] value();
+public @interface RuntimePermissions {
 }

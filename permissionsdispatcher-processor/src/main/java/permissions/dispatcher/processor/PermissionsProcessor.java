@@ -21,7 +21,7 @@ import javax.lang.model.util.Elements;
 import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 
-import permissions.dispatcher.annotations.RuntimePermissions;
+import permissions.dispatcher.RuntimePermissions;
 
 import static permissions.dispatcher.processor.JavaFileBuilder.createJavaFile;
 import static permissions.dispatcher.processor.Utils.getAnnotatedClasses;
