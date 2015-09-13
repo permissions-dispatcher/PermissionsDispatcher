@@ -98,6 +98,13 @@ public class PermissionsProcessorTest {
     }
 
     @Test
+    public void nestedSuperClass() {
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.NestedSuperClass.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.NestedSuperClass.EXPECT);
+        assertJavaSource(actual, expect);
+    }
+
+    @Test
     public void deniedPermissionWithoutNeedsPermission() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("@DeniedPermissions for [android.permission.CAMERA] doesn't have a matching @NeedsPermissions method");
@@ -152,11 +159,11 @@ public class PermissionsProcessorTest {
     }
 
     @Test
-    public void wrongClassName() {
+    public void wrongSuperClassType() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("Annotated class must be a subclass of 'android.app.Activity' or 'android.support.v4.app.Fragment'");
         String className = "MainUtils";
-        JavaFileObject actual = forSourceLines(className, Source.WrongClassName.ACTUAL);
+        JavaFileObject actual = forSourceLines(className, Source.WrongSuperClassType.ACTUAL);
         JavaFileObject expect = forSourceLines(className + CLASS_SUFFIX, Source.EMPTY);
         assertJavaSource(actual, expect);
     }
