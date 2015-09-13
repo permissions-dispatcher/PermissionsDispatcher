@@ -10,10 +10,10 @@ enum ClassType {
         this.activity = activity;
     }
 
-    static ClassType getClassType(String className) {
-        if (className.endsWith("Activity")) {
+    static ClassType getClassType(String className, TypeResolver resolver) {
+        if (resolver.isSubTypeOf(className, ConstantsProvider.ACTIVITY)) {
             return ACTIVITY;
-        } else if (className.endsWith("Fragment")) {
+        } else if (resolver.isSubTypeOf(className, ConstantsProvider.V4FRAGMENT)) {
             return FRAGMENT;
         }
         return null;

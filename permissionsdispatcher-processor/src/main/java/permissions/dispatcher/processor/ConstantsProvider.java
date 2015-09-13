@@ -6,6 +6,8 @@ interface ConstantsProvider {
 
     ClassName ACTIVITY_COMPAT = ClassName.get("android.support.v4.app", "ActivityCompat");
     ClassName PERMISSION_UTILS = ClassName.get("permissions.dispatcher", "PermissionUtils");
+    String ACTIVITY = "android.app.Activity";
+    String V4FRAGMENT = "android.support.v4.app.Fragment";
     String CLASS_SUFFIX = "PermissionsDispatcher";
     String METHOD_SUFFIX = "WithCheck";
     String REQUEST_CODE_PREFIX = "REQUEST_";

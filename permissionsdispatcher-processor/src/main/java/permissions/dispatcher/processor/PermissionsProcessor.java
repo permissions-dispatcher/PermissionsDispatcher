@@ -16,6 +16,9 @@ import javax.annotation.processing.Processor;
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.SourceVersion;
 import javax.lang.model.element.TypeElement;
+import javax.lang.model.type.TypeMirror;
+import javax.lang.model.util.Elements;
+import javax.lang.model.util.Types;
 import javax.tools.Diagnostic;
 
 import permissions.dispatcher.RuntimePermissions;
@@ -24,7 +27,7 @@ import static permissions.dispatcher.processor.JavaFileBuilder.createJavaFile;
 import static permissions.dispatcher.processor.Utils.getAnnotatedClasses;
 
 @AutoService(Processor.class)
-public class PermissionsProcessor extends AbstractProcessor {
+public class PermissionsProcessor extends AbstractProcessor implements TypeResolver {
 
     private Filer filer;
 
@@ -61,4 +64,12 @@ public class PermissionsProcessor extends AbstractProcessor {
         return true;
     }
 
+    @Override
+    public boolean isSubTypeOf(String subTypeClass, String superTypeClass) {
+        Types types = processingEnv.getTypeUtils();
+        Elements elements = processingEnv.getElementUtils();
+        TypeMirror subType = types.getDeclaredType(elements.getTypeElement(subTypeClass));
+        TypeMirror superType = types.getDeclaredType(elements.getTypeElement(superTypeClass));
+        return types.isSubtype(subType, superType);
+    }
 }
