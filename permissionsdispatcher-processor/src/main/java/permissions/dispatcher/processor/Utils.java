@@ -82,7 +82,7 @@ final class Utils {
         return null;
     }
 
-    static ExecutableElement findDeniedPermissionFromValue(String[] value, List<ExecutableElement> elements) {
+    static ExecutableElement findDeniedPermissionsFromValue(String[] value, List<ExecutableElement> elements) {
         for (ExecutableElement element : elements) {
             DeniedPermissions annotation = element.getAnnotation(DeniedPermissions.class);
             if (deepEquals(value, annotation.value())) {
@@ -111,15 +111,19 @@ final class Utils {
     }
 
     static ExecutableElement findDeniedPermissionFromElement(RuntimePermissionsAnnotatedElement element, ExecutableElement method) {
+        Annotation annotation = method.getAnnotation(NeedsPermission.class);
+        if (annotation == null) {
+            annotation = method.getAnnotation(NeedsPermissions.class);
+        }
+        List<String> annotationValues = getValueFromAnnotation(method, annotation.annotationType());
+        if (isEmpty(annotationValues)) {
+            return null;
+        }
         ExecutableElement deniedPermission;
-        // Check presence of @NeedsPermission first
-        List<String> annotationValues = Utils.getValueFromAnnotation(method, NeedsPermission.class);
-        if (!annotationValues.isEmpty()) {
+        if (Objects.equals(annotation.annotationType(), NeedsPermission.class)) {
             deniedPermission = element.getDeniedPermissionFromValue(annotationValues.get(0));
         } else {
-            // Check presence of @NeedsPermissions next
-            annotationValues = Utils.getValueFromAnnotation(method, NeedsPermissions.class);
-            deniedPermission = element.getDeniedPermissionFromValue(annotationValues.toArray(new String[annotationValues.size()]));
+            deniedPermission = element.getDeniedPermissionsFromValue(annotationValues.toArray(new String[annotationValues.size()]));
         }
         return deniedPermission;
     }

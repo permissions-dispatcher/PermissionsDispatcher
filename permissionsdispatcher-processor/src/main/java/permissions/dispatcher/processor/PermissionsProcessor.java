@@ -52,7 +52,7 @@ public class PermissionsProcessor extends AbstractProcessor implements TypeResol
 
     @Override
     public boolean process(Set<? extends TypeElement> annotations, RoundEnvironment env) {
-        List<RuntimePermissionsAnnotatedElement> classes = getAnnotatedClasses(env);
+        List<RuntimePermissionsAnnotatedElement> classes = getAnnotatedClasses(env, this);
         for (RuntimePermissionsAnnotatedElement clazz : classes) {
             JavaFile javaFile = createJavaFile(clazz);
             try {

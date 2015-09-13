@@ -70,7 +70,7 @@ public final class Source {
         public static final String[] ACTUAL = {
                 "package permissions.dispatcher.sample;",
                 "import android.Manifest;",
-                "import android.app.Fragment;",
+                "import android.support.v4.app.Fragment;",
                 "import android.os.Bundle;",
                 "import android.view.Menu;",
                 "import android.view.MenuItem;",

@@ -154,7 +154,7 @@ public class PermissionsProcessorTest {
     @Test
     public void wrongClassName() {
         expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Annotated class must be finished with 'Activity' or 'Fragment'");
+        expectedException.expectMessage("Annotated class must be a subclass of 'android.app.Activity' or 'android.support.v4.app.Fragment'");
         String className = "MainUtils";
         JavaFileObject actual = forSourceLines(className, Source.WrongClassName.ACTUAL);
         JavaFileObject expect = forSourceLines(className + CLASS_SUFFIX, Source.EMPTY);
