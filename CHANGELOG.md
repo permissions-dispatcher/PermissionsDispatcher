@@ -1,5 +1,7 @@
 # ChangeLog
 
+- 1.2.1 2015/09/14
+    - Fix #14 and #16.
 - 1.2.0 2015/09/07
     - Add `@DeniedPermission` and `@DeniedPermissions`.
 - 1.1.2 2015/08/26
