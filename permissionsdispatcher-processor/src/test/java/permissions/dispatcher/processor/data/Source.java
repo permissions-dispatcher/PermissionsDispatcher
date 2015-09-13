@@ -834,11 +834,11 @@ public final class Source {
         };
     }
 
-    public static class NestedSuperClass {
+    public static class NestedSuperClassActivity {
         public static final String[] ACTUAL = {
                 "package permissions.dispatcher.sample;",
                 "import android.Manifest;",
-                "import android.app.Activity;",
+                "import android.support.v4.app.FragmentActivity;",
                 "import android.os.Bundle;",
                 "import android.view.Menu;",
                 "import android.view.MenuItem;",
@@ -846,15 +846,13 @@ public final class Source {
                 "import permissions.dispatcher.RuntimePermissions;",
                 "import permissions.dispatcher.ShowsRationale;",
                 "@RuntimePermissions",
-                "public class MainActivity extends SuperActivity {",
+                "public class MainActivity extends FragmentActivity {",
                 "@NeedsPermission(Manifest.permission.CAMERA)",
                 "void showCamera() {",
                 "}",
                 "@ShowsRationale(Manifest.permission.CAMERA)",
                 "void showRationaleForCamera() {",
                 "}",
-                // original extended activity
-                "static class SuperActivity extends Activity {}",
                 "}"};
 
         public static final String[] EXPECT = {
@@ -884,6 +882,68 @@ public final class Source {
                 "  }",
                 "\n",
                 "  public static void onRequestPermissionsResult(MainActivity target, int requestCode, int[] grantResults) {",
+                "    switch (requestCode) {",
+                "      case REQUEST_SHOWCAMERA:",
+                "      if (PermissionUtils.verifyPermissions(grantResults)) {",
+                "        target.showCamera();",
+                "      }",
+                "      break;",
+                "      default:",
+                "      break;",
+                "    }",
+                "  }",
+                "}"
+        };
+    }
+
+    public static class NestedSuperClassFragment {
+        public static final String[] ACTUAL = {
+                "package permissions.dispatcher.sample;",
+                "import android.Manifest;",
+                "import android.support.v4.app.ListFragment;",
+                "import android.os.Bundle;",
+                "import android.view.Menu;",
+                "import android.view.MenuItem;",
+                "import permissions.dispatcher.NeedsPermission;",
+                "import permissions.dispatcher.RuntimePermissions;",
+                "import permissions.dispatcher.ShowsRationale;",
+                "@RuntimePermissions",
+                "public class MainFragment extends ListFragment {",
+                "@NeedsPermission(Manifest.permission.CAMERA)",
+                "void showCamera() {",
+                "}",
+                "@ShowsRationale(Manifest.permission.CAMERA)",
+                "void showRationaleForCamera() {",
+                "}",
+                "}"};
+
+        public static final String[] EXPECT = {
+                "package permissions.dispatcher.sample;",
+                "\n",
+                "import android.support.v4.app.ActivityCompat;",
+                "import java.lang.String;",
+                "import permissions.dispatcher.PermissionUtils;",
+                "\n",
+                "public final class MainFragmentPermissionsDispatcher {",
+                "  private static final int REQUEST_SHOWCAMERA = 0;",
+                "\n",
+                "  private static final String[] PERMISSION_SHOWCAMERA = new String[]{\"android.permission.CAMERA\"};",
+                "\n",
+                "  private MainActivityPermissionsDispatcher() {",
+                "  }",
+                "\n",
+                "  public static void showCameraWithCheck(MainFragment target) {",
+                "    if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                "      target.showCamera();",
+                "    } else {",
+                "      if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                "        target.showRationaleForCamera();",
+                "      }",
+                "      ActivityCompat.requestPermissions(target.getActivity(), PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                "    }",
+                "  }",
+                "\n",
+                "  public static void onRequestPermissionsResult(MainFragment target, int requestCode, int[] grantResults) {",
                 "    switch (requestCode) {",
                 "      case REQUEST_SHOWCAMERA:",
                 "      if (PermissionUtils.verifyPermissions(grantResults)) {",

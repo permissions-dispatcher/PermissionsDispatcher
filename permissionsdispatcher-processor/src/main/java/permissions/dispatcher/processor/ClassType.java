@@ -10,6 +10,10 @@ enum ClassType {
         this.activity = activity;
     }
 
+    public String getActivity() {
+        return activity;
+    }
+
     static ClassType getClassType(String className, TypeResolver resolver) {
         if (resolver.isSubTypeOf(className, ConstantsProvider.ACTIVITY)) {
             return ACTIVITY;
@@ -17,10 +21,6 @@ enum ClassType {
             return FRAGMENT;
         }
         return null;
-    }
-
-    public String getActivity() {
-        return activity;
     }
 
 }

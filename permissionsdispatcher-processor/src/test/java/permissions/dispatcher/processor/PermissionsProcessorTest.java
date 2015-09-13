@@ -98,9 +98,17 @@ public class PermissionsProcessorTest {
     }
 
     @Test
-    public void nestedSuperClass() {
-        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.NestedSuperClass.ACTUAL);
-        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.NestedSuperClass.EXPECT);
+    public void nestedSuperClassActivity() {
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.NestedSuperClassActivity.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.NestedSuperClassActivity.EXPECT);
+        assertJavaSource(actual, expect);
+    }
+
+    @Test
+    public void nestedSuperClassFragment() {
+        String className = "MainFragment";
+        JavaFileObject actual = forSourceLines(className, Source.NestedSuperClassFragment.ACTUAL);
+        JavaFileObject expect = forSourceLines(className + CLASS_SUFFIX, Source.NestedSuperClassFragment.EXPECT);
         assertJavaSource(actual, expect);
     }
 
