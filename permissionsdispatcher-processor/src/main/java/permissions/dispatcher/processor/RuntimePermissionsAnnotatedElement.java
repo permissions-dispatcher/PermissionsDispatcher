@@ -32,12 +32,12 @@ class RuntimePermissionsAnnotatedElement {
 
     private final List<ExecutableElement> deniedPermissionsMethods;
 
-    RuntimePermissionsAnnotatedElement(TypeElement element) {
+    RuntimePermissionsAnnotatedElement(TypeElement element, TypeResolver resolver) {
         String qualifiedName = element.getQualifiedName().toString();
         packageName = Utils.getPackageName(qualifiedName);
         className = Utils.getClassName(qualifiedName);
-        checkClassName(className);
-        classType = ClassType.getClassType(className);
+        classType = ClassType.getClassType(qualifiedName, resolver);
+        checkClassType(classType);
         needsPermissionMethods = findMethods(element, NeedsPermission.class);
         validateNeedsPermissionMethods();
         needsPermissionsMethods = findMethods(element, NeedsPermissions.class);
@@ -122,8 +122,8 @@ class RuntimePermissionsAnnotatedElement {
         return findDeniedPermissionFromValue(value, deniedPermissionMethods);
     }
 
-    public ExecutableElement getDeniedPermissionFromValue(String[] value) {
-        return findDeniedPermissionFromValue(value, deniedPermissionsMethods);
+    public ExecutableElement getDeniedPermissionsFromValue(String[] value) {
+        return findDeniedPermissionsFromValue(value, deniedPermissionsMethods);
     }
 
     public ExecutableElement getShowsRationaleFromValue(String value) {

@@ -98,6 +98,21 @@ public class PermissionsProcessorTest {
     }
 
     @Test
+    public void nestedSuperClassActivity() {
+        JavaFileObject actual = forSourceLines(DEFAULT_CLASS, Source.NestedSuperClassActivity.ACTUAL);
+        JavaFileObject expect = forSourceLines(DEFAULT_CLASS + CLASS_SUFFIX, Source.NestedSuperClassActivity.EXPECT);
+        assertJavaSource(actual, expect);
+    }
+
+    @Test
+    public void nestedSuperClassFragment() {
+        String className = "MainFragment";
+        JavaFileObject actual = forSourceLines(className, Source.NestedSuperClassFragment.ACTUAL);
+        JavaFileObject expect = forSourceLines(className + CLASS_SUFFIX, Source.NestedSuperClassFragment.EXPECT);
+        assertJavaSource(actual, expect);
+    }
+
+    @Test
     public void deniedPermissionWithoutNeedsPermission() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("@DeniedPermissions for [android.permission.CAMERA] doesn't have a matching @NeedsPermissions method");
@@ -152,11 +167,11 @@ public class PermissionsProcessorTest {
     }
 
     @Test
-    public void wrongClassName() {
+    public void wrongSuperClassType() {
         expectedException.expect(RuntimeException.class);
-        expectedException.expectMessage("Annotated class must be finished with 'Activity' or 'Fragment'");
+        expectedException.expectMessage("Annotated class must be a subclass of 'android.app.Activity' or 'android.support.v4.app.Fragment'");
         String className = "MainUtils";
-        JavaFileObject actual = forSourceLines(className, Source.WrongClassName.ACTUAL);
+        JavaFileObject actual = forSourceLines(className, Source.WrongSuperClassType.ACTUAL);
         JavaFileObject expect = forSourceLines(className + CLASS_SUFFIX, Source.EMPTY);
         assertJavaSource(actual, expect);
     }

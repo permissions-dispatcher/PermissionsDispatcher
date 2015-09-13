@@ -28,11 +28,11 @@ final class Validator {
         }
     }
 
-    static void checkClassName(String name) {
-        if (name.endsWith("Activity") || name.endsWith("Fragment")) {
+    static void checkClassType(ClassType classType) {
+        if (classType != null) {
             return;
         }
-        throw new WrongClassException("Annotated class must be finished with 'Activity' or 'Fragment'");
+        throw new WrongClassException("Annotated class must be a subclass of 'android.app.Activity' or 'android.support.v4.app.Fragment'");
     }
 
     static void checkDuplicatedValue(List<ExecutableElement> methods, Class<? extends Annotation> clazz) {
