@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Register an <code>Activity</code> or <code>Fragment</code> to handle permissions.
+ * Register <code>Activity</code> or <code>Fragment</code> to handle permissions.
  */
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.SOURCE)

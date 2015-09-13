@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Register some methods which explain why permissions are needed.
+ * Register a method which explains why permissions are needed.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)

@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Register some methods invoked when a permission request is denied.
+ * Register a method invoked when permission requests are denied.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)

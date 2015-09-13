@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * Register a method which the permission is needed.
+ * Register a method which a permission is needed.
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.SOURCE)

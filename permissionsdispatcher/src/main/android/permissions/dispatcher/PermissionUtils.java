@@ -28,11 +28,11 @@ public class PermissionUtils {
     }
 
     /**
-     * Returns true if the Activity or Fragment has access to all given permissions.
+     * Returns true if <code>Activity</code> or <code>Fragment</code> has access to all given permissions.
      *
-     * @param context context
-     * @param permissions permission list
-     * @return returns true if the Activity or Fragment has access to all given permissions.
+     * @param context     context
+     * @param permissions permissions
+     * @return returns true if <code>Activity</code> or <code>Fragment</code> has access to all given permissions.
      */
     public static boolean hasSelfPermissions(Context context, String... permissions) {
         for (String permission : permissions) {
