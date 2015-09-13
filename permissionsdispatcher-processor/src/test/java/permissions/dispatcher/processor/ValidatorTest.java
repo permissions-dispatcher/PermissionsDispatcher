@@ -10,7 +10,7 @@ import java.util.List;
 
 import javax.lang.model.element.ExecutableElement;
 
-import static permissions.dispatcher.processor.Validator.checkClassName;
+import static permissions.dispatcher.processor.Validator.checkClassType;
 import static permissions.dispatcher.processor.Validator.checkNeedsPermissionsSize;
 
 /**
@@ -36,22 +36,22 @@ public class ValidatorTest {
 
     @Test
     public void validCheckClassName() {
-        checkClassName("MainActivity");
-        checkClassName("MainFragment");
+        checkClassType("MainActivity");
+        checkClassType("MainFragment");
     }
 
     @Test
     public void invalidCheckClassName1() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("Annotated class must be finished with 'Activity' or 'Fragment'");
-        checkClassName("ActivityMain");
+        checkClassType("ActivityMain");
     }
 
     @Test
     public void invalidCheckClassName2() {
         expectedException.expect(RuntimeException.class);
         expectedException.expectMessage("Annotated class must be finished with 'Activity' or 'Fragment'");
-        checkClassName("FragmentMain");
+        checkClassType("FragmentMain");
     }
 
 }

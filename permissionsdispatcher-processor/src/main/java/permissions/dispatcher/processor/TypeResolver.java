@@ -2,6 +2,6 @@ package permissions.dispatcher.processor;
 
 interface TypeResolver {
 
-    boolean isSubTypeOf(String subType, String superType);
+    boolean isSubTypeOf(String subTypeClass, String superTypeClass);
 
 }
