@@ -72,6 +72,7 @@ protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
     Button cameraButton = (Button) findViewById(R.id.button_camera);
+    // NOTE: delegate the permission handling to generated method
     cameraButton.setOnClickListener(v ->
       MainActivityPermissionsDispatcher.showCameraWithCheck(this));
 }
@@ -100,8 +101,8 @@ buildscript {
 apply plugin: 'android-apt'
 
 dependencies {
-  compile 'com.github.hotchemi:permissionsdispatcher:1.2.0'
-  apt 'com.github.hotchemi:permissionsdispatcher-processor:1.2.0'
+  compile 'com.github.hotchemi:permissionsdispatcher:1.2.1'
+  apt 'com.github.hotchemi:permissionsdispatcher-processor:1.2.1'
 }
 ```
 
