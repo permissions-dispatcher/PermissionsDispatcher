@@ -2,7 +2,7 @@ package permissions.dispatcher.processor;
 
 enum ClassType {
     ACTIVITY("target"),
-    FRAGMENT("target.getActivity()");
+    V4FRAGMENT("target.getActivity()");
 
     private final String activity;
 
@@ -18,7 +18,7 @@ enum ClassType {
         if (resolver.isSubTypeOf(className, ConstantsProvider.ACTIVITY)) {
             return ACTIVITY;
         } else if (resolver.isSubTypeOf(className, ConstantsProvider.V4FRAGMENT)) {
-            return FRAGMENT;
+            return V4FRAGMENT;
         }
         return null;
     }

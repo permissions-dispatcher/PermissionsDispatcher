@@ -12,7 +12,7 @@ public class ClassTypeTest {
     @Test
     public void getActivityTest() {
         assertThat(ClassType.ACTIVITY.getActivity()).isEqualTo("target");
-        assertThat(ClassType.FRAGMENT.getActivity()).isEqualTo("target.getActivity()");
+        assertThat(ClassType.V4FRAGMENT.getActivity()).isEqualTo("target.getActivity()");
     }
 
 }

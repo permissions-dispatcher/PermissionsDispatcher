@@ -69,8 +69,8 @@ public class UtilsTest {
             assertThat(getRequestCodeFieldName(name)).isEqualTo("REQUEST_ACTIVITY");
         }
         {
-            String name = "FRAGMENT";
-            assertThat(getRequestCodeFieldName(name)).isEqualTo("REQUEST_FRAGMENT");
+            String name = "V4FRAGMENT";
+            assertThat(getRequestCodeFieldName(name)).isEqualTo("REQUEST_V4FRAGMENT");
         }
     }
 

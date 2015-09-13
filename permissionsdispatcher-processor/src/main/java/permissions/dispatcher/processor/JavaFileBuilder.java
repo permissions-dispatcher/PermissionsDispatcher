@@ -1,11 +1,13 @@
 package permissions.dispatcher.processor;
 
 import com.squareup.javapoet.*;
+
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.NeedsPermissions;
 
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.Modifier;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -26,7 +28,8 @@ final class JavaFileBuilder {
             String value = element.getAnnotation(NeedsPermission.class).value();
             ExecutableElement showsRationale = clazz.getShowsRationaleFromValue(value);
             String activity = clazz.getClassType().getActivity();
-            methodSpecs.add(createMethodWithCheck(activity, clazz.getClassName(), element, showsRationale));
+            methodSpecs.add(createMethodWithCheck(clazz.getClassType(), activity,
+                    clazz.getClassName(), element, showsRationale));
         }
         return methodSpecs;
     }
@@ -38,12 +41,14 @@ final class JavaFileBuilder {
             String[] value = element.getAnnotation(NeedsPermissions.class).value();
             ExecutableElement showsRationale = clazz.getShowsRationaleFromValue(value);
             String activity = clazz.getClassType().getActivity();
-            methodSpecs.add(createMethodWithCheck(activity, clazz.getClassName(), element, showsRationale));
+            methodSpecs.add(createMethodWithCheck(clazz.getClassType(), activity,
+                    clazz.getClassName(), element, showsRationale));
         }
         return methodSpecs;
     }
 
-    private static MethodSpec createMethodWithCheck(String activity, ClassName target, ExecutableElement needsPermission, ExecutableElement showsRationale) {
+    private static MethodSpec createMethodWithCheck(ClassType classType, String activity, ClassName target,
+                                                    ExecutableElement needsPermission, ExecutableElement showsRationale) {
         String methodName = needsPermission.getSimpleName().toString();
         String value = getPermissionFieldName(needsPermission.getSimpleName().toString());
         MethodSpec.Builder
@@ -55,15 +60,26 @@ final class JavaFileBuilder {
                 .addStatement("target.$N()", methodName)
                 .nextControlFlow("else");
         if (showsRationale != null) {
-            methodBuilder.beginControlFlow("if ($T.shouldShowRequestPermissionRationale($N, $N))",
-                    PERMISSION_UTILS, activity, value)
+            String rationaleTarget = null;
+            if (classType == ClassType.ACTIVITY) {
+                rationaleTarget = activity;
+            } else if (classType == ClassType.V4FRAGMENT) {
+                rationaleTarget = "target";
+            }
+            methodBuilder
+                    .beginControlFlow("if ($T.shouldShowRequestPermissionRationale($N, $N))",
+                            PERMISSION_UTILS, rationaleTarget, value)
                     .addStatement("target.$N()", showsRationale.getSimpleName())
                     .endControlFlow();
         }
-        return methodBuilder.addStatement("$T.requestPermissions($N, $N, $N)",
-                ACTIVITY_COMPAT, activity, value, getRequestCodeFieldName(methodName))
-                .endControlFlow()
-                .build();
+        if (classType == ClassType.ACTIVITY) {
+            methodBuilder.addStatement("$T.requestPermissions($N, $N, $N)",
+                    ACTIVITY_COMPAT, activity, value, getRequestCodeFieldName(methodName));
+        } else if (classType == ClassType.V4FRAGMENT) {
+            methodBuilder.addStatement("target.requestPermissions($N, $N)",
+                    value, getRequestCodeFieldName(methodName));
+        }
+        return methodBuilder.endControlFlow().build();
     }
 
     private static MethodSpec createOnRequestPermissionsResult(RuntimePermissionsAnnotatedElement element) {

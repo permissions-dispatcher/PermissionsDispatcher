@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.Fragment;
 
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
@@ -53,6 +54,22 @@ public class PermissionUtils {
     public static boolean shouldShowRequestPermissionRationale(Activity activity, String... permissions) {
         for (String permission : permissions) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks given permissions are needed to show rationale.
+     *
+     * @param fragment fragment
+     * @param permissions permission list
+     * @return returns true if one of the permission is needed to show rationale.
+     */
+    public static boolean shouldShowRequestPermissionRationale(Fragment fragment, String... permissions) {
+        for (String permission : permissions) {
+            if (fragment.shouldShowRequestPermissionRationale(permission)) {
                 return true;
             }
         }
