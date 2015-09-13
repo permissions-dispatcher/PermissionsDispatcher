@@ -2,9 +2,8 @@ package permissions.dispatcher.sample;
 
 import android.Manifest;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
-import android.view.Menu;
-import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
 import android.widget.Toast;
@@ -40,7 +39,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         // NOTE: delegate the permission handling to generated method
         MainActivityPermissionsDispatcher.
                 onRequestPermissionsResult(this, requestCode, grantResults);
@@ -68,18 +67,18 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     }
 
     @ShowsRationales({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})
-    void showRationaleForContact() {
+    void showRationaleForContacts() {
         Toast.makeText(this, R.string.permission_contacts_rationale, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        return true;
+    @DeniedPermission(Manifest.permission.CAMERA)
+    void deniedActionForCamera() {
+        Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        return super.onOptionsItemSelected(item);
+    @DeniedPermissions({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})
+    void deniedActionForContacts() {
+        Toast.makeText(this, R.string.permission_contacts_denied, Toast.LENGTH_SHORT).show();
     }
 
     public void onBackClick(View view) {
