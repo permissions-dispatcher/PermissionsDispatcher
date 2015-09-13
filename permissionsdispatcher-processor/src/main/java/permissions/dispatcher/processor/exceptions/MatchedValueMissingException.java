@@ -5,4 +5,5 @@ public class MatchedValueMissingException extends RuntimeException {
     public MatchedValueMissingException(String message) {
         super(message);
     }
+
 }
