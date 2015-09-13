@@ -1,22 +1,26 @@
 package permissions.dispatcher.processor;
 
-import permissions.dispatcher.processor.exceptions.DuplicatedValueException;
-import permissions.dispatcher.processor.exceptions.MatchedValueMissingException;
-import permissions.dispatcher.processor.exceptions.NotDefinedException;
-import permissions.dispatcher.processor.exceptions.WrongClassException;
-
-import javax.lang.model.element.ExecutableElement;
-import javax.lang.model.element.Modifier;
 import java.lang.annotation.Annotation;
 import java.lang.invoke.WrongMethodTypeException;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
+import javax.lang.model.element.ExecutableElement;
+import javax.lang.model.element.Modifier;
+
+import permissions.dispatcher.processor.exceptions.DuplicatedValueException;
+import permissions.dispatcher.processor.exceptions.MatchedValueMissingException;
+import permissions.dispatcher.processor.exceptions.NotDefinedException;
+import permissions.dispatcher.processor.exceptions.WrongClassException;
+
 import static permissions.dispatcher.processor.Utils.getValueFromAnnotation;
 import static permissions.dispatcher.processor.Utils.isEmpty;
 
 final class Validator {
+
+    private Validator() {
+    }
 
     static void checkNeedsPermissionsSize(List<ExecutableElement> permission, List<ExecutableElement> permissions) {
         if (isEmpty(permission) && isEmpty(permissions)) {

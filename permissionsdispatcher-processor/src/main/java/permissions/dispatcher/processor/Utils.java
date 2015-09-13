@@ -1,13 +1,24 @@
 package permissions.dispatcher.processor;
 
-import permissions.dispatcher.*;
+import java.lang.annotation.Annotation;
+import java.util.ArrayList;
+import java.util.Collection;
+import java.util.List;
+import java.util.Objects;
+import java.util.Set;
 
 import javax.annotation.processing.RoundEnvironment;
 import javax.lang.model.element.Element;
 import javax.lang.model.element.ExecutableElement;
 import javax.lang.model.element.TypeElement;
-import java.lang.annotation.Annotation;
-import java.util.*;
+
+import permissions.dispatcher.DeniedPermission;
+import permissions.dispatcher.DeniedPermissions;
+import permissions.dispatcher.NeedsPermission;
+import permissions.dispatcher.NeedsPermissions;
+import permissions.dispatcher.RuntimePermissions;
+import permissions.dispatcher.ShowsRationale;
+import permissions.dispatcher.ShowsRationales;
 
 import static java.util.Arrays.asList;
 import static java.util.Arrays.deepEquals;
@@ -17,6 +28,9 @@ import static permissions.dispatcher.processor.ConstantsProvider.PERMISSION_PREF
 import static permissions.dispatcher.processor.ConstantsProvider.REQUEST_CODE_PREFIX;
 
 final class Utils {
+
+    private Utils() {
+    }
 
     static List<RuntimePermissionsAnnotatedElement> getAnnotatedClasses(RoundEnvironment env) {
         List<RuntimePermissionsAnnotatedElement> models = new ArrayList<>();
@@ -79,9 +93,7 @@ final class Utils {
     }
 
     static <A extends Annotation> List<String> getValueFromAnnotation(ExecutableElement element, Class<A> clazz) {
-        if (element.getAnnotation(clazz) == null) {
-            return emptyList();
-        } else if (Objects.equals(clazz, NeedsPermission.class)) {
+        if (Objects.equals(clazz, NeedsPermission.class)) {
             return singletonList(element.getAnnotation(NeedsPermission.class).value());
         } else if (Objects.equals(clazz, NeedsPermissions.class)) {
             return asList(element.getAnnotation(NeedsPermissions.class).value());
@@ -99,7 +111,7 @@ final class Utils {
     }
 
     static ExecutableElement findDeniedPermissionFromElement(RuntimePermissionsAnnotatedElement element, ExecutableElement method) {
-        ExecutableElement deniedPermission = null;
+        ExecutableElement deniedPermission;
         // Check presence of @NeedsPermission first
         List<String> annotationValues = Utils.getValueFromAnnotation(method, NeedsPermission.class);
         if (!annotationValues.isEmpty()) {
@@ -133,8 +145,9 @@ final class Utils {
     }
 
     static String toString(String... array) {
-        if (array == null)
+        if (array == null) {
             return null;
+        }
         int max = array.length - 1;
         StringBuilder b = new StringBuilder();
         b.append('{');
