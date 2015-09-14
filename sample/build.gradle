@@ -25,5 +25,5 @@ dependencies {
 
     // The 'exclude' clause simulates the optional dependency on support-v13 for local Project Dependencies
     compile (project(':library')) { exclude group: 'com.android.support', module: 'support-v13' }
-    apt project(':processor')
+    provided project(':processor')
 }
