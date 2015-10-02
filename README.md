@@ -53,6 +53,7 @@ public class MainActivity extends Activity {
     @DeniedPermission(Manifest.permission.CAMERA)
     void showDeniedForCamera() {
         Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show();
+    }
 }
 ```
 
