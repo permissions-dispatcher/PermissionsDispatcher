@@ -80,7 +80,7 @@ protected void onCreate(Bundle savedInstanceState) {
 
 @Override
 public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
-    super.onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults);
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     // NOTE: delegate the permission handling to generated method
     MainActivityPermissionsDispatcher.
             onRequestPermissionsResult(this, requestCode, grantResults);
