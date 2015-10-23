@@ -104,7 +104,7 @@ apply plugin: 'android-apt'
 
 dependencies {
   compile 'com.github.hotchemi:permissionsdispatcher:1.2.1'
-  apt 'com.github.hotchemi:permissionsdispatcher-processor:1.2.1'
+  apt 'com.github.hotchemi:permissionsdispatcher-processor:1.2.1@aar'
 }
 ```
 
