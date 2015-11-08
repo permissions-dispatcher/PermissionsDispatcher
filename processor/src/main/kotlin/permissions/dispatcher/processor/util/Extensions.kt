@@ -13,16 +13,14 @@ import javax.lang.model.type.TypeMirror
  * Returns the package name of a TypeElement
  */
 fun TypeElement.packageName(): String {
-    val qn = this.getQualifiedName().toString()
+    val qn = this.qualifiedName.toString()
     return qn.substring(0, qn.lastIndexOf('.'))
 }
 
 /**
  * Returns the simple name of an Element as a string
  */
-fun Element.simpleString(): String {
-    return this.getSimpleName().toString()
-}
+fun Element.simpleString(): String = this.simpleName.toString()
 
 /**
  * Returns the simple name of a TypeMirror as a string
@@ -36,9 +34,8 @@ fun TypeMirror.simpleString(): String {
 /**
  * Returns whether or not an Element is annotated with the provided Annotation class
  */
-fun <A : Annotation> Element.hasAnnotation(annotationType: Class<A>): Boolean {
-    return this.getAnnotation(annotationType) != null
-}
+fun <A : Annotation> Element.hasAnnotation(annotationType: Class<A>): Boolean =
+        this.getAnnotation(annotationType) != null
 
 /**
  * Returns the inherent value() of a permission Annotation. If
@@ -46,11 +43,11 @@ fun <A : Annotation> Element.hasAnnotation(annotationType: Class<A>): Boolean {
  * PermissionsDispatcher, this returns an empty list
  */
 fun Annotation.permissionValue(): List<String> {
-    if (annotationType().equals(javaClass<NeedsPermission>())) {
+    if (annotationType().equals(NeedsPermission::class.java)) {
         return (this as NeedsPermission).value.asList()
-    } else if (annotationType().equals(javaClass<OnShowRationale>())) {
+    } else if (annotationType().equals(OnShowRationale::class.java)) {
         return (this as OnShowRationale).value.asList()
-    } else if (annotationType().equals(javaClass<OnPermissionDenied>())) {
+    } else if (annotationType().equals(OnPermissionDenied::class.java)) {
         return (this as OnPermissionDenied).value.asList()
     }
     return emptyList()
@@ -59,15 +56,12 @@ fun Annotation.permissionValue(): List<String> {
 /**
  * Returns a list of enclosed elements annotated with the provided Annotations
  */
-fun <A : Annotation> Element.childElementsAnnotatedWith(annotationClass: Class<A>) : List<ExecutableElement> {
-    return this.getEnclosedElements()
-            .filter { it.hasAnnotation(annotationClass) }
-            .map { it as ExecutableElement }
-}
+fun <A : Annotation> Element.childElementsAnnotatedWith(annotationClass: Class<A>): List<ExecutableElement> =
+        this.enclosedElements
+                .filter { it.hasAnnotation(annotationClass) }
+                .map { it as ExecutableElement }
 
 /**
  * Returns whether or not a TypeMirror is a subtype of the provided other TypeMirror
  */
-fun TypeMirror.isSubtypeOf(ofType: TypeMirror): Boolean {
-    return TYPE_UTILS.isSubtype(this, ofType)
-}
+fun TypeMirror.isSubtypeOf(ofType: TypeMirror): Boolean = TYPE_UTILS.isSubtype(this, ofType)

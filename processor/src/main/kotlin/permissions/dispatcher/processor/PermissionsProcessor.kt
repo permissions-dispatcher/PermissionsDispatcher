@@ -11,7 +11,6 @@ import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
 import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
-import javax.tools.Diagnostic
 import kotlin.properties.Delegates
 
 /** Element Utilities, obtained from the processing environment */
@@ -36,10 +35,10 @@ class PermissionsProcessor : AbstractProcessor() {
         super.init(processingEnv)
 
         // Setup helper objects
-        filer = processingEnv.getFiler()
-        messager = processingEnv.getMessager()
-        ELEMENT_UTILS = processingEnv.getElementUtils()
-        TYPE_UTILS = processingEnv.getTypeUtils()
+        filer = processingEnv.filer
+        messager = processingEnv.messager
+        ELEMENT_UTILS = processingEnv.elementUtils
+        TYPE_UTILS = processingEnv.typeUtils
 
         // Setup the list of ProcessorUnits to handle code generation with
         processorUnits = listOf(
@@ -54,14 +53,14 @@ class PermissionsProcessor : AbstractProcessor() {
     }
 
     override fun getSupportedAnnotationTypes(): MutableSet<String> {
-        return hashSetOf(javaClass<RuntimePermissions>().getCanonicalName())
+        return hashSetOf(RuntimePermissions::class.java.canonicalName)
     }
 
     /**
      * Main processing method
      */
     override fun process(annotations: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment?): Boolean {
-        roundEnv!!.getElementsAnnotatedWith(javaClass<RuntimePermissions>()).forEach {
+        roundEnv!!.getElementsAnnotatedWith(RuntimePermissions::class.java).forEach {
             // Find a suitable ProcessorUnit for this element
             val processorUnit = findAndValidateProcessorUnit(processorUnits, it)
 

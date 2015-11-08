@@ -4,13 +4,10 @@ import com.squareup.javapoet.*
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.ProcessorUnit
 import permissions.dispatcher.processor.RuntimePermissionsElement
-import permissions.dispatcher.processor.TYPE_UTILS
 import permissions.dispatcher.processor.util.*
-import java.lang.ref.WeakReference
 import java.util.*
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
-import javax.lang.model.type.TypeKind
 
 /**
  * Base class for ProcessorUnit implementations. This generates the parts of code independent
@@ -66,21 +63,21 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
     }
 
     private fun createRequestCodeField(e: ExecutableElement, index: Int): FieldSpec {
-        return FieldSpec.builder(javaClass<Int>(), requestCodeFieldName(e))
+        return FieldSpec.builder(Int::class.java, requestCodeFieldName(e))
                 .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
                 .initializer("\$L", index)
                 .build()
     }
 
     private fun createPermissionField(e: ExecutableElement): FieldSpec {
-        val permissionValue: List<String> = e.getAnnotation(javaClass<NeedsPermission>()).permissionValue()
+        val permissionValue: List<String> = e.getAnnotation(NeedsPermission::class.java).permissionValue()
         val formattedValue: String = permissionValue.joinToString(
                 separator = ",",
                 prefix = "{",
                 postfix = "}",
                 transform = { "\"$it\"" }
         )
-        return FieldSpec.builder(ArrayTypeName.of(javaClass<String>()), permissionFieldName(e))
+        return FieldSpec.builder(ArrayTypeName.of(String::class.java), permissionFieldName(e))
                 .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
                 .initializer("\$N", "new String[] $formattedValue")
                 .build()
@@ -176,7 +173,7 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
 
         // Add proceed() override
         val proceedMethod: MethodSpec.Builder = MethodSpec.methodBuilder("proceed")
-                .addAnnotation(javaClass<Override>())
+                .addAnnotation(Override::class.java)
                 .addModifiers(Modifier.PUBLIC)
                 .returns(TypeName.VOID)
                 .addStatement("\$T target = \$N.get()", targetType, weakFieldName)
@@ -186,7 +183,7 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
 
         // Add cancel() override method
         val cancelMethod: MethodSpec.Builder = MethodSpec.methodBuilder("cancel")
-                .addAnnotation(javaClass<Override>())
+                .addAnnotation(Override::class.java)
                 .addModifiers(Modifier.PUBLIC)
                 .returns(TypeName.VOID)
         val onDenied = rpe.findOnDeniedForNeeds(needsMethod)

@@ -7,7 +7,6 @@ import java.util.*
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
-import javax.lang.model.type.NoType
 import javax.lang.model.type.TypeKind
 import javax.lang.model.type.TypeMirror
 
@@ -56,7 +55,7 @@ fun <A : Annotation> checkNotEmpty(items: List<ExecutableElement>, rpe: RuntimeP
  */
 fun <A : Annotation> checkPrivateMethods(items: List<ExecutableElement>, annotationClass: Class<A>) {
     items.forEach {
-        if (it.getModifiers().contains(Modifier.PRIVATE)) {
+        if (it.modifiers.contains(Modifier.PRIVATE)) {
             throw PrivateMethodException(it, annotationClass)
         }
     }
@@ -69,11 +68,11 @@ fun <A : Annotation> checkPrivateMethods(items: List<ExecutableElement>, annotat
 fun checkMethodSignature(items : List<ExecutableElement>) {
     items.forEach {
         // Allow 'void' return type only
-        if (it.getReturnType().getKind() != TypeKind.VOID) {
+        if (it.returnType.kind != TypeKind.VOID) {
             throw WrongReturnTypeException(it)
         }
         // Allow methods without 'throws' declaration only
-        if (it.getThrownTypes().isNotEmpty()) {
+        if (it.thrownTypes.isNotEmpty()) {
             throw NoThrowsAllowedException(it)
         }
     }
@@ -82,17 +81,17 @@ fun checkMethodSignature(items : List<ExecutableElement>) {
 fun checkMethodParameters(items : List<ExecutableElement>, numParams: Int, vararg requiredTypes: TypeMirror) {
     items.forEach {
         // Check each element's parameters against the requirements
-        val params = it.getParameters()
+        val params = it.parameters
         if (numParams == 0 && params.isNotEmpty()) {
             throw NoParametersAllowedException(it)
         }
 
-        if (numParams != params.size()) {
+        if (numParams != params.size) {
             throw WrongParametersException(it, requiredTypes)
         }
 
         params.forEachIndexed { i, param ->
-            val requiredType = requiredTypes.get(i)
+            val requiredType = requiredTypes[i]
             if (!param.asType().isSubtypeOf(requiredType)) {
                 throw WrongParametersException(it, requiredTypes)
             }

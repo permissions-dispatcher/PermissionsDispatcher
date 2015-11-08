@@ -2,7 +2,6 @@ package permissions.dispatcher.processor.impl
 
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.MethodSpec
-import permissions.dispatcher.processor.ProcessorUnit
 import permissions.dispatcher.processor.RuntimePermissionsElement
 import permissions.dispatcher.processor.util.*
 import javax.lang.model.element.ExecutableElement
