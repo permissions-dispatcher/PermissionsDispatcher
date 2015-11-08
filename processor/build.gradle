@@ -1,0 +1,72 @@
+import org.gradle.internal.jvm.Jvm
+apply plugin: 'kotlin'
+apply plugin: 'com.novoda.bintray-release'
+
+targetCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = JavaVersion.VERSION_1_7
+
+sourceSets {
+    main {
+        java {
+            srcDirs = [
+                    'src/main/kotlin',
+                    '../library/src/main/java'
+            ]
+        }
+    }
+    testV13 {
+        java {
+            srcDirs = [
+                    'src/testV13/java'
+            ]
+        }
+        resources {
+            srcDirs = [
+                    'src/testV13/resources'
+            ]
+        }
+    }
+}
+
+configurations {
+    testV13Compile.extendsFrom testCompile
+    testV13Runtime.extendsFrom testRuntime
+}
+
+task testV13(type:Test) {
+    description = "Run tests for v13 targets (located in src/testV13/...)."
+    group = 'verification'
+    testClassesDir = sourceSets.testV13.output.classesDir
+    classpath = sourceSets.testV13.runtimeClasspath
+    reports.junitXml.destination = file("${project.testResultsDir}/$name")
+    reports.html.destination = file("${project.reporting.baseDir}/$name")
+    shouldRunAfter test
+}
+testV13.dependsOn test
+
+dependencies {
+    compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
+    compile "com.squareup:javapoet:$JAVAPOET_VERSION"
+
+    testCompile "junit:junit:$JUNIT_VERSION"
+    testCompile "com.google.testing.compile:compile-testing:$COMPILE_TESTING_VERSION"
+    testCompile "com.google.android:android:$GOOGLE_ANDROID_VERSION"
+    testCompile fileTree(dir: './src/test/libs', includes: ['*.jar'])
+    testCompile files(Jvm.current().getToolsJar())
+
+    testV13Compile sourceSets.main.output
+    testV13Compile configurations.testCompile
+    testV13Compile sourceSets.test.output
+    testV13Compile configurations.testRuntime
+    testV13Compile fileTree(dir: './src/testV13/libs', includes: ['*.jar'])
+}
+
+publish {
+    userOrg = USER
+    groupId = GROUP_ID
+    artifactId = ARTIFACT_ID_PROCESSOR
+    version = VERSION
+    description = DESCRIPTION
+    website = WEBSITE
+    licences = LICENCES
+}
