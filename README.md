@@ -14,7 +14,7 @@ This library is only compatible with Gradle-based builds. To add it to your proj
 ```groovy
 buildscript {
   dependencies {
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.7'
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
   }
 }
 
