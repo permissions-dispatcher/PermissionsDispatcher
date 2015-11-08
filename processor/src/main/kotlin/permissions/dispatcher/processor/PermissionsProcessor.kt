@@ -60,6 +60,9 @@ class PermissionsProcessor : AbstractProcessor() {
      * Main processing method
      */
     override fun process(annotations: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment?): Boolean {
+        // Create a RequestCodeProvider which guarantees unique request codes for each permission request
+        val requestCodeProvider = RequestCodeProvider()
+
         roundEnv!!.getElementsAnnotatedWith(RuntimePermissions::class.java).forEach {
             // Find a suitable ProcessorUnit for this element
             val processorUnit = findAndValidateProcessorUnit(processorUnits, it)
@@ -68,7 +71,7 @@ class PermissionsProcessor : AbstractProcessor() {
             val rpe: RuntimePermissionsElement = RuntimePermissionsElement(it as TypeElement)
 
             // Create a JavaFile for this element and write it out
-            val javaFile: JavaFile = processorUnit.createJavaFile(rpe)
+            val javaFile: JavaFile = processorUnit.createJavaFile(rpe, requestCodeProvider)
             javaFile.writeTo(filer)
         }
 

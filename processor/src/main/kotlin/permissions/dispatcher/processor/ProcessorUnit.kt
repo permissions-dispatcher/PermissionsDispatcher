@@ -7,5 +7,5 @@ interface ProcessorUnit {
 
     fun getTargetType(): TypeMirror
 
-    fun createJavaFile(rpe: RuntimePermissionsElement): JavaFile
+    fun createJavaFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): JavaFile
 }

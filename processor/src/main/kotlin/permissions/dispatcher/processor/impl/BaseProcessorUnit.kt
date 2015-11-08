@@ -3,6 +3,7 @@ package permissions.dispatcher.processor.impl
 import com.squareup.javapoet.*
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.ProcessorUnit
+import permissions.dispatcher.processor.RequestCodeProvider
 import permissions.dispatcher.processor.RuntimePermissionsElement
 import permissions.dispatcher.processor.util.*
 import java.util.*
@@ -19,11 +20,11 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
      * Creates the JavaFile for the provided @RuntimePermissions element.
      * This will delegate to other methods that compose generated code
      */
-    override final fun createJavaFile(rpe: RuntimePermissionsElement): JavaFile {
+    override final fun createJavaFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): JavaFile {
         // Check the prerequisites for creating a Java file for this element
         checkPrerequisites(rpe)
 
-        return JavaFile.builder(rpe.packageName, createTypeSpec(rpe))
+        return JavaFile.builder(rpe.packageName, createTypeSpec(rpe, requestCodeProvider))
                 .addFileComment(FILE_COMMENT)
                 .build()
     }
@@ -40,10 +41,10 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
 
     /* Begin private */
 
-    private fun createTypeSpec(rpe: RuntimePermissionsElement): TypeSpec {
+    private fun createTypeSpec(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): TypeSpec {
         val builder: TypeSpec.Builder = TypeSpec.classBuilder(rpe.generatedClassName)
                 .addModifiers(Modifier.FINAL)
-                .addFields(createFields(rpe.needsElements))
+                .addFields(createFields(rpe.needsElements, requestCodeProvider))
                 .addMethod(createConstructor())
                 .addMethods(createWithCheckMethods(rpe))
                 .addMethod(createPermissionResultMethod(rpe))
@@ -51,12 +52,11 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
         return builder.build()
     }
 
-    private fun createFields(needsElements: List<ExecutableElement>): List<FieldSpec> {
+    private fun createFields(needsElements: List<ExecutableElement>, requestCodeProvider: RequestCodeProvider): List<FieldSpec> {
         val fields: ArrayList<FieldSpec> = arrayListOf()
-        var index: Int = 0
         needsElements.forEach {
             // For each method annotated with @NeedsPermission, add REQUEST integer and PERMISSION String[] fields
-            fields.add(createRequestCodeField(it, index++))
+            fields.add(createRequestCodeField(it, requestCodeProvider.nextRequestCode()))
             fields.add(createPermissionField(it))
         }
         return fields
