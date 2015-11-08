@@ -67,9 +67,8 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA)
-    void onCameraDenied() {
-        Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_LONG).show();
-    }
+    void showDeniedForCamera() {
+        Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show();
 }
 ```
 
@@ -109,7 +108,7 @@ public void onRequestPermissionsResult(int requestCode, String[] permissions, in
 }
 ```
 
-Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/permissionsdispatcher-sample) and [generated class](https://gist.github.com/hotchemi/5dc89c02399c2419fab7) for more details.
+Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/sample) and [generated class](https://gist.github.com/aurae/7821f3a2da098b949f7b) for more details.
 
 ## Support
 
@@ -118,7 +117,7 @@ PermissionsDispatcher is supported on **API levels 4 and up**, with which you ge
 ## License
 
 ```
-Copyright 2015 Shintaro Katafuchi
+Copyright 2015 Shintaro Katafuchi, Marcel Schnelle
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
