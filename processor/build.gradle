@@ -33,6 +33,21 @@ configurations {
     testV13Runtime.extendsFrom testRuntime
 }
 
+task sourcesJar(type: Jar) {
+    from sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
 task testV13(type:Test) {
     description = "Run tests for v13 targets (located in src/testV13/...)."
     group = 'verification'

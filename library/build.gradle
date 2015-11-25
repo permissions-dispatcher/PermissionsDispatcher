@@ -51,6 +51,21 @@ task sourcesJar(type: Jar) {
     classifier = 'sources'
 }
 
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
 task copyJarToOtherModules(type: Copy) {
     from 'build/libs'
     into '../processor/src/test/libs'
@@ -59,8 +74,4 @@ task copyJarToOtherModules(type: Copy) {
 
 assemble.doLast {
     copyJarToOtherModules.execute()
-}
-
-artifacts {
-    archives sourcesJar
 }
