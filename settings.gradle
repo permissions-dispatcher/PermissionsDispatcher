@@ -1,3 +1,1 @@
-include ':library'
-include ':processor'
-include ':sample'
+include ':library', ':processor', ':sample'
