@@ -36,14 +36,14 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.DeniedWithNonVoidReturnType);
     }
 
-    @Test public void permissionWithParameters() {
-        expectRuntimeException("Method 'showCamera()' must not have any parameters");
-        assertJavaSource(Source.PermissionWithParameters);
+    @Test public void rationaleWithWrongParameters1() {
+        expectRuntimeException("Method 'cameraRationale()' must declare parameters of type 'PermissionRequest'");
+        assertJavaSource(Source.RationaleWithWrongParameters1);
     }
 
-    @Test public void rationaleWithWrongParameters() {
+    @Test public void rationaleWithWrongParameters2() {
         expectRuntimeException("Method 'cameraRationale()' must declare parameters of type 'PermissionRequest'");
-        assertJavaSource(Source.RationaleWithWrongParameters);
+        assertJavaSource(Source.RationaleWithWrongParameters2);
     }
 
     @Test public void rationaleWithoutParameters() {
@@ -107,6 +107,38 @@ public class ProcessorTestSuite extends TestSuite {
 
     @Test public void onePermissionFragment() {
         assertJavaSource(Source.OnePermissionSupportFragment);
+    }
+
+    @Test public void onePermissionWithParametersActivity() {
+        assertJavaSource(Source.OnePermissionWithParametersActivity);
+    }
+
+    @Test public void onePermissionWithParametersAndRationaleActivity() {
+        assertJavaSource(Source.OnePermissionWithParametersAndRationaleActivity);
+    }
+
+    @Test public void onePermissionWithParametersAndDeniedActivity() {
+        assertJavaSource(Source.OnePermissionWithParametersAndDeniedActivity);
+    }
+
+    @Test public void onePermissionWithParametersRationaleAndDeniedActivity() {
+        assertJavaSource(Source.OnePermissionWithParametersRationaleAndDeniedActivity);
+    }
+
+    @Test public void onePermissionWithParametersSupportFragment() {
+        assertJavaSource(Source.OnePermissionWithParametersSupportFragment);
+    }
+
+    @Test public void onePermissionWithParametersAndRationaleSupportFragment() {
+        assertJavaSource(Source.OnePermissionWithParametersAndRationaleSupportFragment);
+    }
+
+    @Test public void onePermissionWithParametersAndDeniedSupportFragment() {
+        assertJavaSource(Source.OnePermissionWithParametersAndDeniedSupportFragment);
+    }
+
+    @Test public void onePermissionWithParametersRationaleAndDeniedSupportFragment() {
+        assertJavaSource(Source.OnePermissionWithParametersRationaleAndDeniedSupportFragment);
     }
 
     @Test public void twoPermissionsActivity() {

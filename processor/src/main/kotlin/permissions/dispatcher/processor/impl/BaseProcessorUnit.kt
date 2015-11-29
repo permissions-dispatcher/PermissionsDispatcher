@@ -42,14 +42,14 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
     /* Begin private */
 
     private fun createTypeSpec(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): TypeSpec {
-        val builder: TypeSpec.Builder = TypeSpec.classBuilder(rpe.generatedClassName)
+        return TypeSpec.classBuilder(rpe.generatedClassName)
                 .addModifiers(Modifier.FINAL)
                 .addFields(createFields(rpe.needsElements, requestCodeProvider))
                 .addMethod(createConstructor())
                 .addMethods(createWithCheckMethods(rpe))
                 .addMethod(createPermissionResultMethod(rpe))
                 .addTypes(createPermissionRequestClasses(rpe))
-        return builder.build()
+                .build()
     }
 
     private fun createFields(needsElements: List<ExecutableElement>, requestCodeProvider: RequestCodeProvider): List<FieldSpec> {
@@ -58,6 +58,10 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
             // For each method annotated with @NeedsPermission, add REQUEST integer and PERMISSION String[] fields
             fields.add(createRequestCodeField(it, requestCodeProvider.nextRequestCode()))
             fields.add(createPermissionField(it))
+
+            if (it.parameters.isNotEmpty()) {
+                fields.add(createPendingRequestField(it))
+            }
         }
         return fields
     }
@@ -83,6 +87,12 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
                 .build()
     }
 
+    private fun createPendingRequestField(e: ExecutableElement): FieldSpec {
+        return FieldSpec.builder(ClassName.get("permissions.dispatcher", "GrantableRequest"), pendingRequestFieldName(e))
+                .addModifiers(Modifier.PRIVATE, Modifier.STATIC)
+                .build()
+    }
+
     private fun createConstructor(): MethodSpec {
         return MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PRIVATE)
@@ -104,6 +114,11 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
                 .addModifiers(Modifier.STATIC)
                 .returns(TypeName.VOID)
                 .addParameter(rpe.typeName, targetParam)
+
+        // If the method has parameters, add those as well
+        method.parameters.forEach {
+            builder.addParameter(typeNameOf(it), it.simpleString())
+        }
 
         // Delegate method body generation to implementing classes
         addWithCheckBody(builder, method, rpe, targetParam)
@@ -143,7 +158,7 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
         val classes: ArrayList<TypeSpec> = arrayListOf()
         rpe.needsElements.forEach {
             val onRationale = rpe.findOnRationaleForNeeds(it)
-            if (onRationale != null) {
+            if (onRationale != null || it.parameters.isNotEmpty()) {
                 classes.add(createPermissionRequestClass(rpe, it))
             }
         }
@@ -151,25 +166,37 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
     }
 
     private fun createPermissionRequestClass(rpe: RuntimePermissionsElement, needsMethod: ExecutableElement): TypeSpec {
+        // Select the superinterface of the generated class
+        // based on whether or not the annotated method has parameters
+        val hasParameters: Boolean = needsMethod.parameters.isNotEmpty()
+        val superInterfaceName: String = if (hasParameters) "GrantableRequest" else "PermissionRequest"
+
         val targetType = rpe.typeName
-        val builder = TypeSpec.classBuilder(permissionRequestMethodName(needsMethod))
-                .addSuperinterface(ClassName.get("permissions.dispatcher", "PermissionRequest"))
+        val builder = TypeSpec.classBuilder(permissionRequestTypeName(needsMethod))
+                .addSuperinterface(ClassName.get("permissions.dispatcher", superInterfaceName))
                 .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
 
         // Add required fields to the target
         val weakFieldName: String = "weakTarget"
         val weakFieldType = ParameterizedTypeName.get(ClassName.get("java.lang.ref", "WeakReference"), targetType)
         builder.addField(weakFieldType, weakFieldName, Modifier.PRIVATE, Modifier.FINAL)
+        needsMethod.parameters.forEach {
+            builder.addField(typeNameOf(it), it.simpleString(), Modifier.PRIVATE, Modifier.FINAL)
+        }
 
         // Add constructor
         val targetParam = "target"
-        builder.addMethod(
-                MethodSpec.constructorBuilder()
-                        .addModifiers(Modifier.PRIVATE)
-                        .addParameter(targetType, targetParam)
-                        .addStatement("this.\$L = new WeakReference<>(\$N)", weakFieldName, targetParam)
-                        .build()
-        )
+        val constructorBuilder = MethodSpec.constructorBuilder()
+                .addModifiers(Modifier.PRIVATE)
+                .addParameter(targetType, targetParam)
+                .addStatement("this.\$L = new WeakReference<>(\$N)", weakFieldName, targetParam)
+        needsMethod.parameters.forEach {
+            val fieldName = it.simpleString()
+            constructorBuilder
+                    .addParameter(typeNameOf(it), fieldName)
+                    .addStatement("this.\$L = \$N", fieldName, fieldName)
+        }
+        builder.addMethod(constructorBuilder.build())
 
         // Add proceed() override
         val proceedMethod: MethodSpec.Builder = MethodSpec.methodBuilder("proceed")
@@ -194,6 +221,29 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
                     .addStatement("target.\$N()", onDenied.simpleString())
         }
         builder.addMethod(cancelMethod.build())
+
+        // For classes with additional parameters, add a "grant()" method
+        if (hasParameters) {
+            val grantMethod: MethodSpec.Builder = MethodSpec.methodBuilder("grant")
+                    .addAnnotation(Override::class.java)
+                    .addModifiers(Modifier.PUBLIC)
+                    .returns(TypeName.VOID)
+            grantMethod
+                    .addStatement("\$T target = \$N.get()", targetType, weakFieldName)
+                    .addStatement("if (target == null) return")
+
+            // Compose the call to the permission-protected method;
+            // since the number of parameters is variable, utilize the low-level CodeBlock here
+            // to compose the method call and its parameters
+            grantMethod.addCode(
+                    CodeBlock.builder()
+                    .add("target.\$N(", needsMethod.simpleString())
+                    .add(varargsParametersCodeBlock(needsMethod))
+                    .addStatement(")")
+                    .build()
+            )
+            builder.addMethod(grantMethod.build())
+        }
 
         return builder.build()
     }

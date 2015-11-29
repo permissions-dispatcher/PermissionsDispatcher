@@ -1,6 +1,7 @@
 package permissions.dispatcher.processor.impl
 
 import com.squareup.javapoet.ClassName
+import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.MethodSpec
 import permissions.dispatcher.processor.RuntimePermissionsElement
 import permissions.dispatcher.processor.util.*
@@ -34,18 +35,47 @@ class SupportFragmentProcessorUnit: BaseProcessorUnit() {
 
         // Add the conditional for when permission has already been granted
         builder.beginControlFlow("if (\$T.hasSelfPermissions(\$N, \$N))", PERMISSION_UTILS, activityVar, permissionField)
-        builder.addStatement("\$N.\$N()", targetParam, needsMethod.simpleString())
+        builder.addCode(CodeBlock.builder()
+                .add("\$N.\$N(", targetParam, needsMethod.simpleString())
+                .add(varargsParametersCodeBlock(needsMethod))
+                .addStatement(")")
+                .build()
+        )
+        builder.nextControlFlow("else")
 
         // Add the conditional for "OnShowRationale", if present
         val onRationale: ExecutableElement? = rpe.findOnRationaleForNeeds(needsMethod)
+        val hasParameters: Boolean = needsMethod.parameters.isNotEmpty()
+        if (hasParameters) {
+            // If the method has parameters, precede the potential OnRationale call with
+            // an instantiation of the temporary Request object
+            val varargsCall = CodeBlock.builder()
+                    .add("\$N = new \$N(\$N, ",
+                            pendingRequestFieldName(needsMethod),
+                            permissionRequestTypeName(needsMethod),
+                            targetParam
+                    )
+                    .add(varargsParametersCodeBlock(needsMethod))
+                    .addStatement(")")
+            builder.addCode(varargsCall.build())
+        }
         if (onRationale != null) {
-            builder.nextControlFlow("else if (\$T.shouldShowRequestPermissionRationale(\$N, \$N))", PERMISSION_UTILS, activityVar, permissionField)
-            builder.addStatement("\$N.\$N(new \$N(\$N))", targetParam, onRationale.simpleString(), permissionRequestMethodName(needsMethod), targetParam)
+            builder.beginControlFlow("if (\$T.shouldShowRequestPermissionRationale(\$N, \$N))", PERMISSION_UTILS, activityVar, permissionField)
+            if (hasParameters) {
+                // For methods with parameters, use the PermissionRequest instantiated above
+                builder.addStatement("\$N.\$N(\$N)", targetParam, onRationale.simpleString(), pendingRequestFieldName(needsMethod))
+            } else {
+                // Otherwise, create a new PermissionRequest on-the-fly
+                builder.addStatement("\$N.\$N(new \$N(\$N))", targetParam, onRationale.simpleString(), permissionRequestTypeName(needsMethod), targetParam)
+            }
+            builder.nextControlFlow("else")
         }
 
         // Add the branch for "request permission"
-        builder.nextControlFlow("else")
         addRequestPermissionsStatement(builder, targetParam, permissionField, requestCodeField)
+        if (onRationale != null) {
+            builder.endControlFlow()
+        }
         builder.endControlFlow()
     }
 
@@ -56,7 +86,17 @@ class SupportFragmentProcessorUnit: BaseProcessorUnit() {
     override fun addResultCaseBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String, grantResultsParam: String) {
         // Add the conditional for "permission verified"
         builder.beginControlFlow("if (\$T.verifyPermissions(\$N))", PERMISSION_UTILS, grantResultsParam)
-        builder.addStatement("target.\$N()", needsMethod.simpleString())
+
+        // Based on whether or not the method has parameters, delegate to the "pending request" object or invoke the method directly
+        val hasParameters = needsMethod.parameters.isNotEmpty()
+        if (hasParameters) {
+            val pendingField = pendingRequestFieldName(needsMethod)
+            builder.beginControlFlow("if (\$N != null)", pendingField)
+            builder.addStatement("\$N.grant()", pendingField)
+            builder.endControlFlow()
+        } else {
+            builder.addStatement("target.\$N()", needsMethod.simpleString())
+        }
 
         // Add the conditional for "permission denied", if present
         val onDenied: ExecutableElement? = rpe.findOnDeniedForNeeds(needsMethod)
@@ -66,6 +106,11 @@ class SupportFragmentProcessorUnit: BaseProcessorUnit() {
         }
         // Close the control flow
         builder.endControlFlow()
+
+        // Remove the temporary pending request field, in case it was used for a method with parameters
+        if (hasParameters) {
+            builder.addStatement("\$N = null", pendingRequestFieldName(needsMethod))
+        }
         builder.addStatement("break");
     }
 }

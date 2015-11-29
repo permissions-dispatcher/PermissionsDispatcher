@@ -92,7 +92,7 @@ fun checkMethodParameters(items : List<ExecutableElement>, numParams: Int, varar
 
         params.forEachIndexed { i, param ->
             val requiredType = requiredTypes[i]
-            if (!param.asType().isSubtypeOf(requiredType)) {
+            if (!param.asType().equals(requiredType)) {
                 throw WrongParametersException(it, requiredTypes)
             }
         }
