@@ -91,11 +91,6 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.WrongAnnotatedClass);
     }
 
-    @Test public void duplicatedPermission() {
-        expectRuntimeException("[android.permission.CAMERA] is duplicated in 'showCamera2()' annotated with '@NeedsPermission'");
-        assertJavaSource(Source.DuplicatedPermission);
-    }
-
     @Test public void duplicatedRationale() {
         expectRuntimeException("[android.permission.CAMERA] is duplicated in 'cameraRationale2()' annotated with '@OnShowRationale'");
         assertJavaSource(Source.DuplicatedRationale);
@@ -116,6 +111,38 @@ public class ProcessorTestSuite extends TestSuite {
 
     @Test public void twoPermissionsActivity() {
         assertJavaSource(Source.TwoPermissionsActivity);
+    }
+
+    @Test public void twoPermissionsWithSameSignatureActivity() {
+        assertJavaSource(Source.TwoPermissionsWithSameSignatureActivity);
+    }
+
+    @Test public void twoPermissionsWithSameSignatureAndRationaleActivity() {
+        assertJavaSource(Source.TwoPermissionsWithSameSignatureAndRationaleActivity);
+    }
+
+    @Test public void twoPermissionsWithSameSignatureAndDeniedActivity() {
+        assertJavaSource(Source.TwoPermissionsWithSameSignatureAndDeniedActivity);
+    }
+
+    @Test public void twoPermissionsWithSameSignatureRationaleAndDeniedActivity() {
+        assertJavaSource(Source.TwoPermissionsWithSameSignatureRationaleAndDeniedActivity);
+    }
+
+    @Test public void twoPermissionsWithSameSignatureSupportFragment() {
+        assertJavaSource(Source.TwoPermissionsWithSameSignatureSupportFragment);
+    }
+
+    @Test public void twoPermissionsWithSameSignatureAndRationaleSupportFragment() {
+        assertJavaSource(Source.TwoPermissionsWithSameSignatureAndRationaleSupportFragment);
+    }
+
+    @Test public void twoPermissionsWithSameSignatureAndDeniedSupportFragment() {
+        assertJavaSource(Source.TwoPermissionsWithSameSignatureAndDeniedSupportFragment);
+    }
+
+    @Test public void twoPermissionsWithSameSignatureRationaleAndDeniedSupportFragment() {
+        assertJavaSource(Source.TwoPermissionsWithSameSignatureRationaleAndDeniedSupportFragment);
     }
 
     @Test public void twoPermissionsAtOnceActivity() {
