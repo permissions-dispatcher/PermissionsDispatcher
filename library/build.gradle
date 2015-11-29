@@ -69,7 +69,7 @@ artifacts {
 task copyJarToOtherModules(type: Copy) {
     from 'build/libs'
     into '../processor/src/test/libs'
-    include '*.jar'
+    include '*-sources.jar'
 }
 
 assemble.doLast {
