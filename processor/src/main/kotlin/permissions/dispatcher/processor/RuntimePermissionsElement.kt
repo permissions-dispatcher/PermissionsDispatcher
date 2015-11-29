@@ -27,7 +27,6 @@ class RuntimePermissionsElement(e: TypeElement) {
 
     private fun validateNeedsMethods() {
         checkNotEmpty(needsElements, this, NeedsPermission::class.java)
-        checkDuplicatedValue(needsElements, NeedsPermission::class.java)
         checkPrivateMethods(needsElements, NeedsPermission::class.java)
         checkMethodSignature(needsElements)
         checkMethodParameters(needsElements, 0)
