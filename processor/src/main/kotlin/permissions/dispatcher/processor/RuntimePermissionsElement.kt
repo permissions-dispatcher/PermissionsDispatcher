@@ -29,7 +29,6 @@ class RuntimePermissionsElement(e: TypeElement) {
         checkNotEmpty(needsElements, this, NeedsPermission::class.java)
         checkPrivateMethods(needsElements, NeedsPermission::class.java)
         checkMethodSignature(needsElements)
-        checkMethodParameters(needsElements, 0)
     }
 
     private fun validateRationaleMethods() {
