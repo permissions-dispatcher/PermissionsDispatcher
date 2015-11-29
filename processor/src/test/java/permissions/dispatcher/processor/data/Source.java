@@ -536,38 +536,6 @@ public final class Source {
         }
     };
 
-    public static final BaseTest DuplicatedPermission = new BaseTest() {
-        @Override
-        protected String getName() {
-            return "MyActivity";
-        }
-
-        @Override
-        protected String[] getActualSource() {
-            return new String[] {
-                    "package tests;",
-                    "import android.Manifest;",
-                    "import android.app.Activity;",
-                    "import permissions.dispatcher.RuntimePermissions;",
-                    "import permissions.dispatcher.NeedsPermission;",
-                    "@RuntimePermissions",
-                    "public class MyActivity extends Activity {",
-                    "   @NeedsPermission(Manifest.permission.CAMERA)",
-                    "   void showCamera() {",
-                    "   }",
-                    "   @NeedsPermission(Manifest.permission.CAMERA)",
-                    "   void showCamera2() {",
-                    "   }",
-                    "}"
-            };
-        }
-
-        @Override
-        protected String[] getExpectSource() {
-            return EMPTY_SOURCE;
-        }
-    };
-
     public static final BaseTest DuplicatedRationale = new BaseTest() {
         @Override
         protected String getName() {
@@ -968,6 +936,412 @@ public final class Source {
         }
     };
 
+    public static final BaseTest TwoPermissionsWithSameSignatureActivity = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera2() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.support.v4.app.ActivityCompat;",
+                    "import java.lang.String;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyActivityPermissionsDispatcher {",
+                    "   private static final int REQUEST_SHOWCAMERA = 0;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA = new String[] {\"android.permission.CAMERA\"};",
+                    "   private static final int REQUEST_SHOWCAMERA2 = 1;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA2 = new String[] {\"android.permission.CAMERA\"};",
+                    "   private MyActivityPermissionsDispatcher() {",
+                    "   }",
+                    "   static void showCameraWithCheck(MyActivity target) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
+                    "           target.showCamera();",
+                    "       } else {",
+                    "           ActivityCompat.requestPermissions(target, PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "       }",
+                    "   }",
+                    "   static void showCamera2WithCheck(MyActivity target) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA2)) {",
+                    "           target.showCamera2();",
+                    "       } else {",
+                    "           ActivityCompat.requestPermissions(target, PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
+                    "       }",
+                    "   }",
+                    "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
+                    "       switch (requestCode) {",
+                    "           case REQUEST_SHOWCAMERA:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera();",
+                    "               }",
+                    "               break;",
+                    "           case REQUEST_SHOWCAMERA2:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera2();",
+                    "               }",
+                    "               break;",
+                    "           default:",
+                    "               break;",
+                    "       }",
+                    "   }",
+                    "}"
+            };
+        }
+    };
+
+    public static final BaseTest TwoPermissionsWithSameSignatureAndRationaleActivity = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnShowRationale;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera2() {",
+                    "   }",
+                    "   @OnShowRationale(Manifest.permission.CAMERA)",
+                    "   void cameraRationale(PermissionRequest request) {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.support.v4.app.ActivityCompat;",
+                    "import java.lang.Override;",
+                    "import java.lang.String;",
+                    "import java.lang.ref.WeakReference;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyActivityPermissionsDispatcher {",
+                    "   private static final int REQUEST_SHOWCAMERA = 0;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA = new String[] {\"android.permission.CAMERA\"};",
+                    "   private static final int REQUEST_SHOWCAMERA2 = 1;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA2 = new String[] {\"android.permission.CAMERA\"};",
+                    "   private MyActivityPermissionsDispatcher() {",
+                    "   }",
+                    "   static void showCameraWithCheck(MyActivity target) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
+                    "           target.showCamera();",
+                    "       } else if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
+                    "           target.cameraRationale(new ShowCameraPermissionRequest(target));",
+                    "       } else {",
+                    "           ActivityCompat.requestPermissions(target, PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "       }",
+                    "   }",
+                    "   static void showCamera2WithCheck(MyActivity target) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA2)) {",
+                    "           target.showCamera2();",
+                    "       } else if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA2)) {",
+                    "           target.cameraRationale(new ShowCamera2PermissionRequest(target));",
+                    "       } else {",
+                    "           ActivityCompat.requestPermissions(target, PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
+                    "       }",
+                    "   }",
+                    "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
+                    "       switch (requestCode) {",
+                    "           case REQUEST_SHOWCAMERA:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera();",
+                    "               }",
+                    "               break;",
+                    "           case REQUEST_SHOWCAMERA2:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera2();",
+                    "               }",
+                    "               break;",
+                    "           default:",
+                    "               break;",
+                    "       }",
+                    "   }",
+                    "   private static final class ShowCameraPermissionRequest implements PermissionRequest {",
+                    "        private final WeakReference<MyActivity> weakTarget;",
+                    "        private ShowCameraPermissionRequest(MyActivity target) {",
+                    "            this.weakTarget = new WeakReference<>(target);",
+                    "        }",
+                    "        @Override",
+                    "        public void proceed() {",
+                    "            MyActivity target = weakTarget.get();",
+                    "            if (target == null) return;",
+                    "            ActivityCompat.requestPermissions(target, PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "        }",
+                    "        @Override",
+                    "        public void cancel() {",
+                    "        }",
+                    "   }",
+                    "   private static final class ShowCamera2PermissionRequest implements PermissionRequest {",
+                    "        private final WeakReference<MyActivity> weakTarget;",
+                    "        private ShowCamera2PermissionRequest(MyActivity target) {",
+                    "            this.weakTarget = new WeakReference<>(target);",
+                    "        }",
+                    "        @Override",
+                    "        public void proceed() {",
+                    "            MyActivity target = weakTarget.get();",
+                    "            if (target == null) return;",
+                    "            ActivityCompat.requestPermissions(target, PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
+                    "        }",
+                    "        @Override",
+                    "        public void cancel() {",
+                    "        }",
+                    "   }",
+                    "}"
+            };
+        }
+    };
+
+    public static final BaseTest TwoPermissionsWithSameSignatureAndDeniedActivity = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera2() {",
+                    "   }",
+                    "   @OnPermissionDenied(Manifest.permission.CAMERA)",
+                    "   void cameraDenied() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.support.v4.app.ActivityCompat;",
+                    "import java.lang.String;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyActivityPermissionsDispatcher {",
+                    "   private static final int REQUEST_SHOWCAMERA = 0;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA = new String[] {\"android.permission.CAMERA\"};",
+                    "   private static final int REQUEST_SHOWCAMERA2 = 1;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA2 = new String[] {\"android.permission.CAMERA\"};",
+                    "   private MyActivityPermissionsDispatcher() {",
+                    "   }",
+                    "   static void showCameraWithCheck(MyActivity target) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
+                    "           target.showCamera();",
+                    "       } else {",
+                    "           ActivityCompat.requestPermissions(target, PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "       }",
+                    "   }",
+                    "   static void showCamera2WithCheck(MyActivity target) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA2)) {",
+                    "           target.showCamera2();",
+                    "       } else {",
+                    "           ActivityCompat.requestPermissions(target, PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
+                    "       }",
+                    "   }",
+                    "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
+                    "       switch (requestCode) {",
+                    "           case REQUEST_SHOWCAMERA:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera();",
+                    "               } else {",
+                    "                   target.cameraDenied();",
+                    "               }",
+                    "               break;",
+                    "           case REQUEST_SHOWCAMERA2:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera2();",
+                    "               } else {",
+                    "                   target.cameraDenied();",
+                    "               }",
+                    "               break;",
+                    "           default:",
+                    "               break;",
+                    "       }",
+                    "   }",
+                    "}"
+            };
+        }
+    };
+
+    public static final BaseTest TwoPermissionsWithSameSignatureRationaleAndDeniedActivity = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnShowRationale;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera2() {",
+                    "   }",
+                    "   @OnShowRationale(Manifest.permission.CAMERA)",
+                    "   void cameraRationale(PermissionRequest request) {",
+                    "   }",
+                    "   @OnPermissionDenied(Manifest.permission.CAMERA)",
+                    "   void cameraDenied() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.support.v4.app.ActivityCompat;",
+                    "import java.lang.Override;",
+                    "import java.lang.String;",
+                    "import java.lang.ref.WeakReference;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyActivityPermissionsDispatcher {",
+                    "   private static final int REQUEST_SHOWCAMERA = 0;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA = new String[] {\"android.permission.CAMERA\"};",
+                    "   private static final int REQUEST_SHOWCAMERA2 = 1;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA2 = new String[] {\"android.permission.CAMERA\"};",
+                    "   private MyActivityPermissionsDispatcher() {",
+                    "   }",
+                    "   static void showCameraWithCheck(MyActivity target) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
+                    "           target.showCamera();",
+                    "       } else if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
+                    "           target.cameraRationale(new ShowCameraPermissionRequest(target));",
+                    "       } else {",
+                    "           ActivityCompat.requestPermissions(target, PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "       }",
+                    "   }",
+                    "   static void showCamera2WithCheck(MyActivity target) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA2)) {",
+                    "           target.showCamera2();",
+                    "       } else if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA2)) {",
+                    "           target.cameraRationale(new ShowCamera2PermissionRequest(target));",
+                    "       } else {",
+                    "           ActivityCompat.requestPermissions(target, PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
+                    "       }",
+                    "   }",
+                    "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
+                    "       switch (requestCode) {",
+                    "           case REQUEST_SHOWCAMERA:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera();",
+                    "               } else {",
+                    "                   target.cameraDenied();",
+                    "               }",
+                    "               break;",
+                    "           case REQUEST_SHOWCAMERA2:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera2();",
+                    "               } else {",
+                    "                   target.cameraDenied();",
+                    "               }",
+                    "               break;",
+                    "           default:",
+                    "               break;",
+                    "       }",
+                    "   }",
+                    "   private static final class ShowCameraPermissionRequest implements PermissionRequest {",
+                    "        private final WeakReference<MyActivity> weakTarget;",
+                    "        private ShowCameraPermissionRequest(MyActivity target) {",
+                    "            this.weakTarget = new WeakReference<>(target);",
+                    "        }",
+                    "        @Override",
+                    "        public void proceed() {",
+                    "            MyActivity target = weakTarget.get();",
+                    "            if (target == null) return;",
+                    "            ActivityCompat.requestPermissions(target, PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "        }",
+                    "        @Override",
+                    "        public void cancel() {",
+                    "            MyActivity target = weakTarget.get();",
+                    "            if (target == null) return;",
+                    "            target.cameraDenied();",
+                    "        }",
+                    "   }",
+                    "   private static final class ShowCamera2PermissionRequest implements PermissionRequest {",
+                    "        private final WeakReference<MyActivity> weakTarget;",
+                    "        private ShowCamera2PermissionRequest(MyActivity target) {",
+                    "            this.weakTarget = new WeakReference<>(target);",
+                    "        }",
+                    "        @Override",
+                    "        public void proceed() {",
+                    "            MyActivity target = weakTarget.get();",
+                    "            if (target == null) return;",
+                    "            ActivityCompat.requestPermissions(target, PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
+                    "        }",
+                    "        @Override",
+                    "        public void cancel() {",
+                    "            MyActivity target = weakTarget.get();",
+                    "            if (target == null) return;",
+                    "            target.cameraDenied();",
+                    "        }",
+                    "   }",
+                    "}"
+            };
+        }
+    };
+
     public static final BaseTest OnePermissionWithRationaleActivity = new BaseTest() {
         @Override
         protected String getName() {
@@ -1128,6 +1502,421 @@ public final class Source {
                     "        }",
                     "        @Override",
                     "        public void cancel() {",
+                    "        }",
+                    "   }",
+                    "}"
+            };
+        }
+    };
+
+    public static final BaseTest TwoPermissionsWithSameSignatureSupportFragment = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyFragment";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.support.v4.app.Fragment;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "@RuntimePermissions",
+                    "public class MyFragment extends Fragment {",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera2() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.app.Activity;",
+                    "import java.lang.String;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyFragmentPermissionsDispatcher {",
+                    "   private static final int REQUEST_SHOWCAMERA = 0;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA = new String[] {\"android.permission.CAMERA\"};",
+                    "   private static final int REQUEST_SHOWCAMERA2 = 1;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA2 = new String[] {\"android.permission.CAMERA\"};",
+                    "   private MyActivityPermissionsDispatcher() {",
+                    "   }",
+                    "   static void showCameraWithCheck(MyFragment target) {",
+                    "       Activity activity = target.getActivity();",
+                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           target.showCamera();",
+                    "       } else {",
+                    "           target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "       }",
+                    "   }",
+                    "   static void showCamera2WithCheck(MyFragment target) {",
+                    "       Activity activity = target.getActivity();",
+                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA2)) {",
+                    "           target.showCamera2();",
+                    "       } else {",
+                    "           target.requestPermissions(PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
+                    "       }",
+                    "   }",
+                    "   static void onRequestPermissionsResult(MyFragment target, int requestCode, int[] grantResults) {",
+                    "       switch (requestCode) {",
+                    "           case REQUEST_SHOWCAMERA:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera();",
+                    "               }",
+                    "               break;",
+                    "           case REQUEST_SHOWCAMERA2:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera2();",
+                    "               }",
+                    "               break;",
+                    "           default:",
+                    "               break;",
+                    "       }",
+                    "   }",
+                    "}"
+            };
+        }
+    };
+
+    public static final BaseTest TwoPermissionsWithSameSignatureAndRationaleSupportFragment = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyFragment";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.support.v4.app.Fragment;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnShowRationale;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "@RuntimePermissions",
+                    "public class MyFragment extends Fragment {",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera2() {",
+                    "   }",
+                    "   @OnShowRationale(Manifest.permission.CAMERA)",
+                    "   void cameraRationale(PermissionRequest request) {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.app.Activity;",
+                    "import java.lang.Override;",
+                    "import java.lang.String;",
+                    "import java.lang.ref.WeakReference;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyFragmentPermissionsDispatcher {",
+                    "   private static final int REQUEST_SHOWCAMERA = 0;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA = new String[] {\"android.permission.CAMERA\"};",
+                    "   private static final int REQUEST_SHOWCAMERA2 = 1;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA2 = new String[] {\"android.permission.CAMERA\"};",
+                    "   private MyActivityPermissionsDispatcher() {",
+                    "   }",
+                    "   static void showCameraWithCheck(MyFragment target) {",
+                    "       Activity activity = target.getActivity();",
+                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           target.showCamera();",
+                    "       } else if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           target.cameraRationale(new ShowCameraPermissionRequest(target));",
+                    "       } else {",
+                    "           target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "       }",
+                    "   }",
+                    "   static void showCamera2WithCheck(MyFragment target) {",
+                    "       Activity activity = target.getActivity();",
+                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA2)) {",
+                    "           target.showCamera2();",
+                    "       } else if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA2)) {",
+                    "           target.cameraRationale(new ShowCamera2PermissionRequest(target));",
+                    "       } else {",
+                    "           target.requestPermissions(PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
+                    "       }",
+                    "   }",
+                    "   static void onRequestPermissionsResult(MyFragment target, int requestCode, int[] grantResults) {",
+                    "       switch (requestCode) {",
+                    "           case REQUEST_SHOWCAMERA:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera();",
+                    "               }",
+                    "               break;",
+                    "           case REQUEST_SHOWCAMERA2:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera2();",
+                    "               }",
+                    "               break;",
+                    "           default:",
+                    "               break;",
+                    "       }",
+                    "   }",
+                    "   private static final class ShowCameraPermissionRequest implements PermissionRequest {",
+                    "        private final WeakReference<MyFragment> weakTarget;",
+                    "        private ShowCameraPermissionRequest(MyFragment target) {",
+                    "            this.weakTarget = new WeakReference<>(target);",
+                    "        }",
+                    "        @Override",
+                    "        public void proceed() {",
+                    "            MyFragment target = weakTarget.get();",
+                    "            if (target == null) return;",
+                    "            target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "        }",
+                    "        @Override",
+                    "        public void cancel() {",
+                    "        }",
+                    "   }",
+                    "   private static final class ShowCamera2PermissionRequest implements PermissionRequest {",
+                    "        private final WeakReference<MyFragment> weakTarget;",
+                    "        private ShowCameraPermissionRequest(MyFragment target) {",
+                    "            this.weakTarget = new WeakReference<>(target);",
+                    "        }",
+                    "        @Override",
+                    "        public void proceed() {",
+                    "            MyFragment target = weakTarget.get();",
+                    "            if (target == null) return;",
+                    "            target.requestPermissions(PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
+                    "        }",
+                    "        @Override",
+                    "        public void cancel() {",
+                    "        }",
+                    "   }",
+                    "}"
+            };
+        }
+    };
+
+    public static final BaseTest TwoPermissionsWithSameSignatureAndDeniedSupportFragment = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyFragment";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.support.v4.app.Fragment;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "@RuntimePermissions",
+                    "public class MyFragment extends Fragment {",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera2() {",
+                    "   }",
+                    "   @OnPermissionDenied(Manifest.permission.CAMERA)",
+                    "   void cameraDenied() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.app.Activity;",
+                    "import java.lang.String;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyFragmentPermissionsDispatcher {",
+                    "   private static final int REQUEST_SHOWCAMERA = 0;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA = new String[] {\"android.permission.CAMERA\"};",
+                    "   private static final int REQUEST_SHOWCAMERA2 = 1;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA2 = new String[] {\"android.permission.CAMERA\"};",
+                    "   private MyActivityPermissionsDispatcher() {",
+                    "   }",
+                    "   static void showCameraWithCheck(MyFragment target) {",
+                    "       Activity activity = target.getActivity();",
+                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           target.showCamera();",
+                    "       } else {",
+                    "           target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "       }",
+                    "   }",
+                    "   static void showCamera2WithCheck(MyFragment target) {",
+                    "       Activity activity = target.getActivity();",
+                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA2)) {",
+                    "           target.showCamera2();",
+                    "       } else {",
+                    "           target.requestPermissions(PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
+                    "       }",
+                    "   }",
+                    "   static void onRequestPermissionsResult(MyFragment target, int requestCode, int[] grantResults) {",
+                    "       switch (requestCode) {",
+                    "           case REQUEST_SHOWCAMERA:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera();",
+                    "               } else {",
+                    "                   target.cameraDenied();",
+                    "               }",
+                    "               break;",
+                    "           case REQUEST_SHOWCAMERA2:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera2();",
+                    "               } else {",
+                    "                   target.cameraDenied();",
+                    "               }",
+                    "               break;",
+                    "           default:",
+                    "               break;",
+                    "       }",
+                    "   }",
+                    "}"
+            };
+        }
+    };
+
+    public static final BaseTest TwoPermissionsWithSameSignatureRationaleAndDeniedSupportFragment = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyFragment";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.support.v4.app.Fragment;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnShowRationale;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "@RuntimePermissions",
+                    "public class MyFragment extends Fragment {",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera2() {",
+                    "   }",
+                    "   @OnShowRationale(Manifest.permission.CAMERA)",
+                    "   void cameraRationale(PermissionRequest request) {",
+                    "   }",
+                    "   @OnPermissionDenied(Manifest.permission.CAMERA)",
+                    "   void cameraDenied() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.app.Activity;",
+                    "import java.lang.Override;",
+                    "import java.lang.String;",
+                    "import java.lang.ref.WeakReference;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyFragmentPermissionsDispatcher {",
+                    "   private static final int REQUEST_SHOWCAMERA = 0;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA = new String[] {\"android.permission.CAMERA\"};",
+                    "   private static final int REQUEST_SHOWCAMERA2 = 1;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA2 = new String[] {\"android.permission.CAMERA\"};",
+                    "   private MyActivityPermissionsDispatcher() {",
+                    "   }",
+                    "   static void showCameraWithCheck(MyFragment target) {",
+                    "       Activity activity = target.getActivity();",
+                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           target.showCamera();",
+                    "       } else if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           target.cameraRationale(new ShowCameraPermissionRequest(target));",
+                    "       } else {",
+                    "           target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "       }",
+                    "   }",
+                    "   static void showCamera2WithCheck(MyFragment target) {",
+                    "       Activity activity = target.getActivity();",
+                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA2)) {",
+                    "           target.showCamera2();",
+                    "       } else if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA2)) {",
+                    "           target.cameraRationale(new ShowCamera2PermissionRequest(target));",
+                    "       } else {",
+                    "           target.requestPermissions(PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
+                    "       }",
+                    "   }",
+                    "   static void onRequestPermissionsResult(MyFragment target, int requestCode, int[] grantResults) {",
+                    "       switch (requestCode) {",
+                    "           case REQUEST_SHOWCAMERA:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera();",
+                    "               } else {",
+                    "                   target.cameraDenied();",
+                    "               }",
+                    "               break;",
+                    "           case REQUEST_SHOWCAMERA2:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera2();",
+                    "               } else {",
+                    "                   target.cameraDenied();",
+                    "               }",
+                    "               break;",
+                    "           default:",
+                    "               break;",
+                    "       }",
+                    "   }",
+                    "   private static final class ShowCameraPermissionRequest implements PermissionRequest {",
+                    "        private final WeakReference<MyFragment> weakTarget;",
+                    "        private ShowCameraPermissionRequest(MyFragment target) {",
+                    "            this.weakTarget = new WeakReference<>(target);",
+                    "        }",
+                    "        @Override",
+                    "        public void proceed() {",
+                    "            MyFragment target = weakTarget.get();",
+                    "            if (target == null) return;",
+                    "            target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "        }",
+                    "        @Override",
+                    "        public void cancel() {",
+                    "            MyFragment target = weakTarget.get();",
+                    "            if (target == null) return;",
+                    "            target.cameraDenied();",
+                    "        }",
+                    "   }",
+                    "   private static final class ShowCamera2PermissionRequest implements PermissionRequest {",
+                    "        private final WeakReference<MyFragment> weakTarget;",
+                    "        private ShowCameraPermissionRequest(MyFragment target) {",
+                    "            this.weakTarget = new WeakReference<>(target);",
+                    "        }",
+                    "        @Override",
+                    "        public void proceed() {",
+                    "            MyFragment target = weakTarget.get();",
+                    "            if (target == null) return;",
+                    "            target.requestPermissions(PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
+                    "        }",
+                    "        @Override",
+                    "        public void cancel() {",
+                    "            MyFragment target = weakTarget.get();",
+                    "            if (target == null) return;",
+                    "            target.cameraDenied();",
                     "        }",
                     "   }",
                     "}"
