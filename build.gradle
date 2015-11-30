@@ -3,7 +3,6 @@ buildscript {
         jcenter()
     }
     dependencies {
-        // TODO: bintray-release will crash if you upgrade plugin version...
         classpath "com.android.tools.build:gradle:$GRADLE_PLUGIN_VERSION"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_PLUGIN_VERSION"
         classpath "com.neenbedankt.gradle.plugins:android-apt:$APT_PLUGIN_VERSION"
