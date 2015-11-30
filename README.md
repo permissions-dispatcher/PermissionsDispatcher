@@ -1,15 +1,16 @@
 # PermissionsDispatcher
 
 [![Build Status](https://travis-ci.org/hotchemi/PermissionsDispatcher.svg)](https://travis-ci.org/hotchemi/PermissionsDispatcher)
-[ ![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg) ](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
-[![Android Arsenal](https://img.shields.io/badge/Android%20Arsenal-PermissionsDispatcher-green.svg?style=flat)](https://android-arsenal.com/details/1/2316)
+[![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg)](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
 
 PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow.
 [Runtime permissions](https://developer.android.com/preview/features/runtime-permissions.html) are great for users, but can be tedious to implement correctly for developers, requiring a lot of boilerplate code. This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code clean and safe. The library is 100% reflection-free.
 
 ## Download
 
-This library is only compatible with Gradle-based builds. To add it to your project, include the following in your `build.gradle` files:
+This library is only compatible with Gradle-based builds.
+
+To add it to your project, include the following in your `build.gradle` files:
 
 ```groovy
 buildscript {
@@ -26,7 +27,9 @@ dependencies {
 }
 ```
 
-PermissionsDispatcher depends on the `support-v4` library by default, in order to be able to use `ActivityCompat` for permission requests.
+### Note
+
+PermissionsDispatcher depends on the `support-v4` library by default, in order to be able to use some permission compat classes.
 
 ## Usage
 
@@ -81,10 +84,8 @@ Upon compilation, PermissionsDispatcher generates a class for `MainActivity` (su
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    Button cameraButton = (Button) findViewById(R.id.button_camera);
-    cameraButton.setOnClickListener(this);
-    Button contactsButton = (Button) findViewById(R.id.button_contacts);
-    contactsButton.setOnClickListener(this);
+    findViewById(R.id.button_camera).setOnClickListener(this);
+    findViewById(R.id.button_contacts).setOnClickListener(this);
 }
 
 @Override
@@ -103,6 +104,7 @@ public void onClick(View v) {
 
 @Override
 public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults);
     // NOTE: delegate the permission handling to generated method
     MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
 }
@@ -112,9 +114,11 @@ Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/ma
 
 ## Support
 
-PermissionsDispatcher is supported on **API levels 4 and up**, with which you get support for annotating `android.app.Activity` and `android.support.v4.app.Fragment` sub-classes out of the box. In case you rely on `android.app.Fragment` in your app, you can use these with PermissionsDispatcher as well! Simply add a dependency on the `support-v13` library alongside PermissionsDispatcher in your project, and it will enable support for native fragments.
+PermissionsDispatcher is supported on **API levels 4 and up**, with which you get support for annotating `android.app.Activity` and `android.support.v4.app.Fragment` sub-classes out of the box.
 
-## License
+In case you rely on `android.app.Fragment` in your app, you can use these with PermissionsDispatcher as well! Simply add a dependency on the `support-v13` library alongside PermissionsDispatcher in your project, and it will enable support for native fragments.
+
+## Licence
 
 ```
 Copyright 2015 Shintaro Katafuchi, Marcel Schnelle
