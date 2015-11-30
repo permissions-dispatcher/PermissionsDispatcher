@@ -8,7 +8,6 @@ import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.view.View;
-import android.widget.Button;
 import android.widget.Toast;
 import permissions.dispatcher.*;
 import permissions.dispatcher.sample.camera.CameraPreviewFragment;
@@ -21,10 +20,8 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        Button cameraButton = (Button) findViewById(R.id.button_camera);
-        cameraButton.setOnClickListener(this);
-        Button contactsButton = (Button) findViewById(R.id.button_contacts);
-        contactsButton.setOnClickListener(this);
+        findViewById(R.id.button_camera).setOnClickListener(this);
+        findViewById(R.id.button_contacts).setOnClickListener(this);
     }
 
     @Override
@@ -43,6 +40,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
 
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         // NOTE: delegate the permission handling to generated method
         MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
