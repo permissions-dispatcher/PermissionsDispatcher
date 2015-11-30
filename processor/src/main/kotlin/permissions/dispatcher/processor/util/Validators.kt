@@ -24,14 +24,14 @@ fun findAndValidateProcessorUnit(units: List<ProcessorUnit>, e: Element): Proces
 }
 
 /**
- * Checks the elements in the provided list annotated with an annotation
- * against duplicate values. Raises an exception if any annotation value
- * is found multiple times
+ * Checks the elements in the provided list annotated with an annotation against duplicate values.
+ * <p>
+ * Raises an exception if any annotation value is found multiple times.
  */
 fun <A : Annotation> checkDuplicatedValue(items: List<ExecutableElement>, annotationClass: Class<A>) {
     val set: HashSet<String> = hashSetOf()
     items.forEach {
-        val permissionValue: List<String> = it.getAnnotation(annotationClass).permissionValue()
+        val permissionValue = it.getAnnotation(annotationClass).permissionValue()
         if (!set.addAll(permissionValue)) {
             throw DuplicatedValueException(permissionValue, it, annotationClass)
         }
@@ -39,8 +39,9 @@ fun <A : Annotation> checkDuplicatedValue(items: List<ExecutableElement>, annota
 }
 
 /**
- * Checks the elements in the provided list for elements. Raises an exception if
- * it doesn't contain any elements
+ * Checks the elements in the provided list for elements.
+ * <p>
+ * Raises an exception if it doesn't contain any elements.
  */
 fun <A : Annotation> checkNotEmpty(items: List<ExecutableElement>, rpe: RuntimePermissionsElement, annotationClass: Class<A>) {
     if (items.isEmpty()) {
@@ -50,8 +51,9 @@ fun <A : Annotation> checkNotEmpty(items: List<ExecutableElement>, rpe: RuntimeP
 
 /**
  * Checks the elements in the provided list annotated with an annotation
- * against private modifiers. Raises an exception if any element contains
- * the "private" modifier
+ * against private modifiers.
+ * <p>
+ * Raises an exception if any element contains the "private" modifier.
  */
 fun <A : Annotation> checkPrivateMethods(items: List<ExecutableElement>, annotationClass: Class<A>) {
     items.forEach {
@@ -62,10 +64,11 @@ fun <A : Annotation> checkPrivateMethods(items: List<ExecutableElement>, annotat
 }
 
 /**
- * Checks the return type of the elements in the provided list. Raises an exception
- * if any element specifies a return type other than 'void'
+ * Checks the return type of the elements in the provided list.
+ * <p>
+ * Raises an exception if any element specifies a return type other than 'void'.
  */
-fun checkMethodSignature(items : List<ExecutableElement>) {
+fun checkMethodSignature(items: List<ExecutableElement>) {
     items.forEach {
         // Allow 'void' return type only
         if (it.returnType.kind != TypeKind.VOID) {
@@ -78,7 +81,7 @@ fun checkMethodSignature(items : List<ExecutableElement>) {
     }
 }
 
-fun checkMethodParameters(items : List<ExecutableElement>, numParams: Int, vararg requiredTypes: TypeMirror) {
+fun checkMethodParameters(items: List<ExecutableElement>, numParams: Int, vararg requiredTypes: TypeMirror) {
     items.forEach {
         // Check each element's parameters against the requirements
         val params = it.parameters

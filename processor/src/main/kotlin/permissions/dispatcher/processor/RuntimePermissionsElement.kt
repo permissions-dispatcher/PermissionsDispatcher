@@ -16,8 +16,8 @@ class RuntimePermissionsElement(e: TypeElement) {
     val needsElements = e.childElementsAnnotatedWith(NeedsPermission::class.java)
     val onRationaleElements = e.childElementsAnnotatedWith(OnShowRationale::class.java)
     val onDeniedElements = e.childElementsAnnotatedWith(OnPermissionDenied::class.java)
+
     init {
-        // Validate annotated elements
         validateNeedsMethods()
         validateRationaleMethods()
         validateDeniedMethods()

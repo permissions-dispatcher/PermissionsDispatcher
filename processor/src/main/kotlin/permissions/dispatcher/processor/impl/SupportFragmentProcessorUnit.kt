@@ -9,11 +9,12 @@ import javax.lang.model.element.ExecutableElement
 import javax.lang.model.type.TypeMirror
 
 /**
- * ProcessorUnit implementation for Fragments defined in the support-v4 library
+ * ProcessorUnit implementation for Fragments defined in the support-v4 library.
  */
 class SupportFragmentProcessorUnit: BaseProcessorUnit() {
 
     private val PERMISSION_UTILS: ClassName = ClassName.get("permissions.dispatcher", "PermissionUtils")
+
     private val ACTIVITY: ClassName = ClassName.get("android.app", "Activity")
 
     override fun getTargetType(): TypeMirror {

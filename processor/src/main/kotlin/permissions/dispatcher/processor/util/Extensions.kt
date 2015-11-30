@@ -10,7 +10,7 @@ import javax.lang.model.element.TypeElement
 import javax.lang.model.type.TypeMirror
 
 /**
- * Returns the package name of a TypeElement
+ * Returns the package name of a TypeElement.
  */
 fun TypeElement.packageName(): String {
     val qn = this.qualifiedName.toString()
@@ -18,12 +18,12 @@ fun TypeElement.packageName(): String {
 }
 
 /**
- * Returns the simple name of an Element as a string
+ * Returns the simple name of an Element as a string.
  */
 fun Element.simpleString(): String = this.simpleName.toString()
 
 /**
- * Returns the simple name of a TypeMirror as a string
+ * Returns the simple name of a TypeMirror as a string.
  */
 fun TypeMirror.simpleString(): String {
     val toString: String = this.toString()
@@ -32,15 +32,15 @@ fun TypeMirror.simpleString(): String {
 }
 
 /**
- * Returns whether or not an Element is annotated with the provided Annotation class
+ * Returns whether or not an Element is annotated with the provided Annotation class.
  */
 fun <A : Annotation> Element.hasAnnotation(annotationType: Class<A>): Boolean =
         this.getAnnotation(annotationType) != null
 
 /**
- * Returns the inherent value() of a permission Annotation. If
- * this is invoked on an Annotation that's not defined by
- * PermissionsDispatcher, this returns an empty list
+ * Returns the inherent value() of a permission Annotation.
+ * <p>
+ * If this is invoked on an Annotation that's not defined by PermissionsDispatcher, this returns an empty list.
  */
 fun Annotation.permissionValue(): List<String> {
     if (annotationType().equals(NeedsPermission::class.java)) {
@@ -54,7 +54,7 @@ fun Annotation.permissionValue(): List<String> {
 }
 
 /**
- * Returns a list of enclosed elements annotated with the provided Annotations
+ * Returns a list of enclosed elements annotated with the provided Annotations.
  */
 fun <A : Annotation> Element.childElementsAnnotatedWith(annotationClass: Class<A>): List<ExecutableElement> =
         this.enclosedElements
@@ -62,6 +62,6 @@ fun <A : Annotation> Element.childElementsAnnotatedWith(annotationClass: Class<A
                 .map { it as ExecutableElement }
 
 /**
- * Returns whether or not a TypeMirror is a subtype of the provided other TypeMirror
+ * Returns whether or not a TypeMirror is a subtype of the provided other TypeMirror.
  */
 fun TypeMirror.isSubtypeOf(ofType: TypeMirror): Boolean = TYPE_UTILS.isSubtype(this, ofType)

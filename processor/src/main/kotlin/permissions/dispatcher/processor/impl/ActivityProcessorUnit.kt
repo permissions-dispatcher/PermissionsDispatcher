@@ -9,12 +9,13 @@ import javax.lang.model.element.ExecutableElement
 import javax.lang.model.type.TypeMirror
 
 /**
- * ProcessorUnit implementation for Activity classes
+ * ProcessorUnit implementation for Activity classes.
  */
 class ActivityProcessorUnit : BaseProcessorUnit() {
 
-    private val PERMISSION_UTILS: ClassName = ClassName.get("permissions.dispatcher", "PermissionUtils")
-    private val ACTIVITY_COMPAT: ClassName = ClassName.get("android.support.v4.app", "ActivityCompat")
+    private val PERMISSION_UTILS = ClassName.get("permissions.dispatcher", "PermissionUtils")
+
+    private val ACTIVITY_COMPAT = ClassName.get("android.support.v4.app", "ActivityCompat")
 
     override fun getTargetType(): TypeMirror {
         return typeMirrorOf("android.app.Activity")

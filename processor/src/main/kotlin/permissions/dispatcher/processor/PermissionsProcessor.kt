@@ -28,9 +28,6 @@ class PermissionsProcessor : AbstractProcessor() {
     /* List of available ProcessorUnits */
     var processorUnits: List<ProcessorUnit> by Delegates.notNull()
 
-    /**
-     * Initialization method
-     */
     override fun init(processingEnv: ProcessingEnvironment) {
         super.init(processingEnv)
 

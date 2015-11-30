@@ -11,14 +11,16 @@ import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
 
 /**
- * Base class for ProcessorUnit implementations. This generates the parts of code independent
- * from specific permission method signatures for different target objects
+ * Base class for ProcessorUnit implementations.
+ * <p>
+ * This generates the parts of code independent from specific permission method signatures for different target objects.
  */
 public abstract class BaseProcessorUnit : ProcessorUnit {
 
     /**
      * Creates the JavaFile for the provided @RuntimePermissions element.
-     * This will delegate to other methods that compose generated code
+     * <p>
+     * This will delegate to other methods that compose generated code.
      */
     override final fun createJavaFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): JavaFile {
         // Check the prerequisites for creating a Java file for this element
@@ -237,10 +239,10 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
             // to compose the method call and its parameters
             grantMethod.addCode(
                     CodeBlock.builder()
-                    .add("target.\$N(", needsMethod.simpleString())
-                    .add(varargsParametersCodeBlock(needsMethod))
-                    .addStatement(")")
-                    .build()
+                            .add("target.\$N(", needsMethod.simpleString())
+                            .add(varargsParametersCodeBlock(needsMethod))
+                            .addStatement(")")
+                            .build()
             )
             builder.addMethod(grantMethod.build())
         }
