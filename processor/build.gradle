@@ -1,4 +1,5 @@
 import org.gradle.internal.jvm.Jvm
+
 apply plugin: 'kotlin'
 apply plugin: 'com.novoda.bintray-release'
 
