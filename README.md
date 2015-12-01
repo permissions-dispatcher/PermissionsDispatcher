@@ -118,6 +118,10 @@ PermissionsDispatcher is supported on **API levels 4 and up**, with which you ge
 
 In case you rely on `android.app.Fragment` in your app, you can use these with PermissionsDispatcher as well! Simply add a dependency on the `support-v13` library alongside PermissionsDispatcher in your project, and it will enable support for native fragments.
 
+### For 1.x user
+
+- [Migrating to 2.x](https://github.com/hotchemi/PermissionsDispatcher/wiki/Migrating-to-2.x)
+
 ## Licence
 
 ```
