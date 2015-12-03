@@ -23,6 +23,22 @@ public class V13ProcessorTestSuite extends TestSuite {
         assertJavaSource(V13Source.OnePermissionWithRationaleNativeFragment);
     }
 
+    @Test public void onePermissionWithNeverAskAndRationaleNativeFragment() {
+        assertJavaSource(V13Source.OnePermissionWithNeverAskAndRationaleNativeFragment);
+    }
+
+    @Test public void onePermissionWithNeverAskRationaleAndDeniedNativeFragment() {
+        assertJavaSource(V13Source.OnePermissionWithNeverAskRationaleAndDeniedNativeFragment);
+    }
+
+    @Test public void onePermissionWithNeverAskNativeFragment() {
+        assertJavaSource(V13Source.OnePermissionWithNeverAskNativeFragment);
+    }
+
+    @Test public void onePermissionWithNeverAskAndDeniedNativeFragment() {
+        assertJavaSource(V13Source.OnePermissionWithNeverAskAndDeniedNativeFragment);
+    }
+
     @Test public void onePermissionWithDeniedNativeFragment() {
         assertJavaSource(V13Source.OnePermissionWithDeniedNativeFragment);
     }
