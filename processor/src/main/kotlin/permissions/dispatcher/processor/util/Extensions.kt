@@ -1,6 +1,7 @@
 package permissions.dispatcher.processor.util
 
 import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.processor.TYPE_UTILS
@@ -49,6 +50,8 @@ fun Annotation.permissionValue(): List<String> {
         return (this as OnShowRationale).value.asList()
     } else if (annotationType().equals(OnPermissionDenied::class.java)) {
         return (this as OnPermissionDenied).value.asList()
+    } else if (annotationType().equals(OnNeverAskAgain::class.java)) {
+        return (this as OnNeverAskAgain).value.asList()
     }
     return emptyList()
 }
