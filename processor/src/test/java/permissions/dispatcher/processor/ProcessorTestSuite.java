@@ -36,6 +36,11 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.DeniedWithNonVoidReturnType);
     }
 
+    @Test public void neverAskWithNonVoidReturnType() {
+        expectRuntimeException("Method 'onNeverAskForCamera()' must specify return type 'void', not 'int'");
+        assertJavaSource(Source.NeverAskWithNonVoidReturnType);
+    }
+
     @Test public void rationaleWithWrongParameters1() {
         expectRuntimeException("Method 'cameraRationale()' must declare parameters of type 'PermissionRequest'");
         assertJavaSource(Source.RationaleWithWrongParameters1);
@@ -56,6 +61,11 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.DeniedWithParameters);
     }
 
+    @Test public void neverAskWithParameters() {
+        expectRuntimeException("Method 'onNeverAskForCamera()' must not have any parameters");
+        assertJavaSource(Source.NeverAskWithParameters);
+    }
+
     @Test public void permissionWithThrows() {
         expectRuntimeException("Method 'showCamera()' must not have any 'throws' declaration in its signature");
         assertJavaSource(Source.PermissionWithThrows);
@@ -69,6 +79,11 @@ public class ProcessorTestSuite extends TestSuite {
     @Test public void deniedWithThrows() {
         expectRuntimeException("Method 'onCameraDenied()' must not have any 'throws' declaration in its signature");
         assertJavaSource(Source.DeniedWithThrows);
+    }
+
+    @Test public void neverAskWithThrows() {
+        expectRuntimeException("Method 'onNeverAskForCamera()' must not have any 'throws' declaration in its signature");
+        assertJavaSource(Source.NeverAskWithThrows);
     }
 
     @Test public void privatePermission() {
@@ -86,6 +101,11 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.PrivateDenied);
     }
 
+    @Test public void privateNeverAsk() {
+        expectRuntimeException("Method 'onNeverAskForCamera()' annotated with '@OnNeverAskAgain' must not be private");
+        assertJavaSource(Source.PrivateNeverAsk);
+    }
+
     @Test public void wrongAnnotatedClass() {
         expectRuntimeException("Class 'tests.MyService' can't be annotated with '@RuntimePermissions'");
         assertJavaSource(Source.WrongAnnotatedClass);
@@ -99,6 +119,11 @@ public class ProcessorTestSuite extends TestSuite {
     @Test public void duplicatedDenied() {
         expectRuntimeException("[android.permission.CAMERA] is duplicated in 'onCameraDenied2()' annotated with '@OnPermissionDenied'");
         assertJavaSource(Source.DuplicatedDenied);
+    }
+
+    @Test public void duplicatedNeverAsk() {
+        expectRuntimeException("[android.permission.CAMERA] is duplicated in 'onNeverAskForCamera2()' annotated with '@OnNeverAskAgain'");
+        assertJavaSource(Source.DuplicatedNeverAsk);
     }
 
     @Test public void onePermissionActivity() {
@@ -139,6 +164,26 @@ public class ProcessorTestSuite extends TestSuite {
 
     @Test public void onePermissionWithParametersRationaleAndDeniedSupportFragment() {
         assertJavaSource(Source.OnePermissionWithParametersRationaleAndDeniedSupportFragment);
+    }
+
+    @Test public void onePermissionWithNeverAskActivity() {
+        assertJavaSource(Source.OnePermissionWithNeverAskActivity);
+    }
+
+    @Test public void onePermissionWithNeverAskAndRationaleActivity() {
+        assertJavaSource(Source.OnePermissionWithNeverAskAndRationaleActivity);
+    }
+
+    @Test public void onePermissionWithNeverAskRationaleAndDeniedActivity() {
+        assertJavaSource(Source.OnePermissionWithNeverAskRationaleAndDeniedActivity);
+    }
+
+    @Test public void onePermissionWithNeverAskAndDeniedActivity() {
+        assertJavaSource(Source.OnePermissionWithNeverAskAndDeniedActivity);
+    }
+
+    @Test public void twoPermissionsWithNeverAskActivity() {
+        assertJavaSource(Source.TwoPermissionsWithNeverAskActivity);
     }
 
     @Test public void twoPermissionsActivity() {
@@ -191,6 +236,22 @@ public class ProcessorTestSuite extends TestSuite {
 
     @Test public void onePermissionWithRationaleSupportFragment() {
         assertJavaSource(Source.OnePermissionWithRationaleSupportFragment);
+    }
+
+    @Test public void onePermissionWithNeverAskAndRationaleSupportFragment() {
+        assertJavaSource(Source.OnePermissionWithNeverAskAndRationaleSupportFragment);
+    }
+
+    @Test public void onePermissionWithNeverAskRationaleAndDeniedSupportFragment() {
+        assertJavaSource(Source.OnePermissionWithNeverAskRationaleAndDeniedSupportFragment);
+    }
+
+    @Test public void onePermissionWithNeverAskSupportFragment() {
+        assertJavaSource(Source.OnePermissionWithNeverAskSupportFragment);
+    }
+
+    @Test public void onePermissionWithNeverAskAndDeniedSupportFragment() {
+        assertJavaSource(Source.OnePermissionWithNeverAskAndDeniedSupportFragment);
     }
 
     @Test public void twoPermissionsWithOneRationaleActivity() {

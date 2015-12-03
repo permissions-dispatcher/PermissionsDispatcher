@@ -105,13 +105,37 @@ class NativeFragmentProcessorUnit: BaseProcessorUnit() {
             builder.addStatement("target.\$N()", needsMethod.simpleString())
         }
 
-        // Add the conditional for "permission denied", if present
+        // Add the conditional for "permission denied" and/or "never ask again", if present
         val onDenied: ExecutableElement? = rpe.findOnDeniedForNeeds(needsMethod)
-        if (onDenied != null) {
+        val hasDenied = onDenied != null
+        val onNeverAsk: ExecutableElement? = rpe.findOnNeverAskForNeeds(needsMethod)
+        val hasNeverAsk = onNeverAsk != null
+
+        if (hasDenied || hasNeverAsk) {
             builder.nextControlFlow("else")
-            builder.addStatement("\$N.\$N()", targetParam, onDenied.simpleString())
         }
-        // Close the control flow
+        if (hasNeverAsk) {
+            // Split up the "else" case with another if condition checking for "never ask again" first
+            builder.beginControlFlow("if (!\$T.getInstance().shouldShowRequestPermissionRationale(target, \$N))", PERMISSION_UTILS_V13, permissionFieldName(needsMethod))
+            builder.addStatement("target.\$N()", onNeverAsk!!.simpleString())
+
+            // If a "permission denied" is present as well, go into an else case, otherwise close this temporary branch
+            if (hasDenied) {
+                builder.nextControlFlow("else")
+            } else {
+                builder.endControlFlow()
+            }
+        }
+        if (hasDenied) {
+            // Add the "permissionDenied" statement
+            builder.addStatement("\$N.\$N()", targetParam, onDenied!!.simpleString())
+
+            // Close the additional control flow potentially opened by a "never ask again" method
+            if (hasNeverAsk) {
+                builder.endControlFlow()
+            }
+        }
+        // Close the "switch" control flow
         builder.endControlFlow()
 
         // Remove the temporary pending request field, in case it was used for a method with parameters

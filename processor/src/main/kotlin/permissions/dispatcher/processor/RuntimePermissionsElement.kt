@@ -3,6 +3,7 @@ package permissions.dispatcher.processor
 import com.squareup.javapoet.TypeName
 import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.NeedsPermission
+import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.processor.util.*
 import javax.lang.model.element.ExecutableElement
@@ -16,11 +17,13 @@ class RuntimePermissionsElement(e: TypeElement) {
     val needsElements = e.childElementsAnnotatedWith(NeedsPermission::class.java)
     val onRationaleElements = e.childElementsAnnotatedWith(OnShowRationale::class.java)
     val onDeniedElements = e.childElementsAnnotatedWith(OnPermissionDenied::class.java)
+    val onNeverAskElements = e.childElementsAnnotatedWith(OnNeverAskAgain::class.java)
 
     init {
         validateNeedsMethods()
         validateRationaleMethods()
         validateDeniedMethods()
+        validateNeverAskMethods()
     }
 
     /* Begin private */
@@ -45,6 +48,13 @@ class RuntimePermissionsElement(e: TypeElement) {
         checkMethodParameters(onDeniedElements, 0)
     }
 
+    private fun validateNeverAskMethods() {
+        checkDuplicatedValue(onNeverAskElements, OnNeverAskAgain::class.java)
+        checkPrivateMethods(onNeverAskElements, OnNeverAskAgain::class.java)
+        checkMethodSignature(onNeverAskElements)
+        checkMethodParameters(onNeverAskElements, 0)
+    }
+
     /* Begin public */
 
     fun findOnRationaleForNeeds(needsElement: ExecutableElement): ExecutableElement? {
@@ -53,5 +63,9 @@ class RuntimePermissionsElement(e: TypeElement) {
 
     fun findOnDeniedForNeeds(needsElement: ExecutableElement): ExecutableElement? {
         return findMatchingMethodForNeeds(needsElement, onDeniedElements, OnPermissionDenied::class.java)
+    }
+
+    fun findOnNeverAskForNeeds(needsElement: ExecutableElement): ExecutableElement? {
+        return findMatchingMethodForNeeds(needsElement, onNeverAskElements, OnNeverAskAgain::class.java)
     }
 }
