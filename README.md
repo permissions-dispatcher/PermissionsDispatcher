@@ -22,8 +22,8 @@ buildscript {
 apply plugin: 'android-apt'
 
 dependencies {
-  compile 'com.github.hotchemi:permissionsdispatcher:2.0.0'
-  apt 'com.github.hotchemi:permissionsdispatcher-processor:2.0.0'
+  compile 'com.github.hotchemi:permissionsdispatcher:2.0.1'
+  apt 'com.github.hotchemi:permissionsdispatcher-processor:2.0.1'
 }
 ```
 
