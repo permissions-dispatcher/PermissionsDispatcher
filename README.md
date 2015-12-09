@@ -10,7 +10,7 @@ PermissionsDispatcher provides a simple annotation-based API to handle runtime p
 
 This library is only compatible with Gradle-based builds.
 
-To add it to your project, include the following in your `build.gradle` files:
+To add it to your project, include the following in your **project** `build.gradle` file:
 
 ```groovy
 buildscript {
@@ -18,7 +18,11 @@ buildscript {
     classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
   }
 }
+```
 
+And on your **app module** `build.gradle`:
+
+```groovy
 apply plugin: 'android-apt'
 
 dependencies {
