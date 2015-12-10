@@ -77,6 +77,7 @@ public class MainActivity extends AppCompatActivity {
     @OnPermissionDenied(Manifest.permission.CAMERA)
     void showDeniedForCamera() {
         Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show();
+	}
 		
 	@OnNeverAskAgain(Manifest.permission.CAMERA)
 	void showNeverAskForCamera() {
