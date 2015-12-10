@@ -1,5 +1,6 @@
 package permissions.dispatcher;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -25,12 +26,20 @@ public final class PermissionUtils {
     private static final SimpleArrayMap<String, Integer> MIN_SDK_PERMISSIONS;
     static {
         MIN_SDK_PERMISSIONS = new SimpleArrayMap<>(6);
-        MIN_SDK_PERMISSIONS.put("com.android.voicemail.permission.ADD_VOICEMAIL", ICE_CREAM_SANDWICH);
-        MIN_SDK_PERMISSIONS.put("android.permission.BODY_SENSORS", KITKAT_WATCH);
-        MIN_SDK_PERMISSIONS.put("android.permission.READ_CALL_LOG", JELLY_BEAN);
-        MIN_SDK_PERMISSIONS.put("android.permission.READ_EXTERNAL_STORAGE", JELLY_BEAN);
-        MIN_SDK_PERMISSIONS.put("android.permission.USE_SIP", GINGERBREAD);
-        MIN_SDK_PERMISSIONS.put("android.permission.WRITE_CALL_LOG", JELLY_BEAN);
+        if (Build.VERSION.SDK_INT >= GINGERBREAD) {
+            MIN_SDK_PERMISSIONS.put(Manifest.permission.USE_SIP, GINGERBREAD);
+        }
+        if (Build.VERSION.SDK_INT >= ICE_CREAM_SANDWICH) {
+            MIN_SDK_PERMISSIONS.put(Manifest.permission.ADD_VOICEMAIL, ICE_CREAM_SANDWICH);
+        }
+        if (Build.VERSION.SDK_INT >= JELLY_BEAN) {
+            MIN_SDK_PERMISSIONS.put(Manifest.permission.READ_CALL_LOG, JELLY_BEAN);
+            MIN_SDK_PERMISSIONS.put(Manifest.permission.READ_EXTERNAL_STORAGE, JELLY_BEAN);
+            MIN_SDK_PERMISSIONS.put(Manifest.permission.WRITE_CALL_LOG, JELLY_BEAN);
+        }
+        if (Build.VERSION.SDK_INT >= KITKAT_WATCH) {
+            MIN_SDK_PERMISSIONS.put(Manifest.permission.BODY_SENSORS, KITKAT_WATCH);
+        }
     }
 
     private PermissionUtils() {
