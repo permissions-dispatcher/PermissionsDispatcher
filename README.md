@@ -49,6 +49,7 @@ PermissionsDispatcher introduces only a few annotations, keeping its general API
 |`@NeedsPermission`|**✓**|Annotate a method which performs the action that requires one or more permissions|
 |`@OnShowRationale`||Annotate a method which explains why the permission/s is/are needed. It passes in a `PermissionRequest` object which can be used to continue or abort the current permission request upon user input|
 |`@OnPermissionDenied`||Annotate a method which is invoked if the user doesn't grant the permissions|
+|`@OnNeverAskAgain`||Annotate a method which is invoked if the user chose to have the device "never ask again" about a permission|
 
 > NOTE: Annotated methods must not be `private`.
 
@@ -76,6 +77,11 @@ public class MainActivity extends AppCompatActivity {
     @OnPermissionDenied(Manifest.permission.CAMERA)
     void showDeniedForCamera() {
         Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show();
+		
+	@OnNeverAskAgain(Manifest.permission.CAMERA)
+	void showNeverAskForCamera() {
+		Toast.makeText(this, R.string.permission_camera_neverask, Toast.LENGTH_SHORT).show();
+	}
 }
 ```
 
