@@ -1,5 +1,6 @@
 package permissions.dispatcher;
 
+import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -9,12 +10,29 @@ import android.os.Build;
 import android.provider.Settings;
 import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.util.SimpleArrayMap;
 
 import static android.os.Build.VERSION_CODES.FROYO;
 import static android.os.Build.VERSION_CODES.GINGERBREAD;
+import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
+import static android.os.Build.VERSION_CODES.KITKAT_WATCH;
+import static android.os.Build.VERSION_CODES.JELLY_BEAN;
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
 public final class PermissionUtils {
+
+    // Map of dangerous permissions introduced in later framework versions.
+    // Used to conditionally bypass permission-hold checks on older devices.
+    private static final SimpleArrayMap<String, Integer> MIN_SDK_PERMISSIONS;
+    static {
+        MIN_SDK_PERMISSIONS = new SimpleArrayMap<>(6);
+        MIN_SDK_PERMISSIONS.put(Manifest.permission.ADD_VOICEMAIL, ICE_CREAM_SANDWICH);
+        MIN_SDK_PERMISSIONS.put(Manifest.permission.BODY_SENSORS, KITKAT_WATCH);
+        MIN_SDK_PERMISSIONS.put(Manifest.permission.READ_CALL_LOG, JELLY_BEAN);
+        MIN_SDK_PERMISSIONS.put(Manifest.permission.READ_EXTERNAL_STORAGE, JELLY_BEAN);
+        MIN_SDK_PERMISSIONS.put(Manifest.permission.USE_SIP, GINGERBREAD);
+        MIN_SDK_PERMISSIONS.put(Manifest.permission.WRITE_CALL_LOG, JELLY_BEAN);
+    }
 
     private PermissionUtils() {
     }
@@ -35,6 +53,21 @@ public final class PermissionUtils {
     }
 
     /**
+     * Returns true if the permission exists in this SDK version
+     *
+     * @param permission permission
+     * @return returns true if the permission exists in this SDK version
+     */
+    private static boolean permissionExists(String permission) {
+        // Check if the permission could potentially be missing on this device
+        Integer minVersion = MIN_SDK_PERMISSIONS.get(permission);
+
+        // If null was returned from the above call, there is no need for a device API level check for the permission;
+        // otherwise, we check if its minimum API level requirement is met
+        return minVersion == null || Build.VERSION.SDK_INT >= minVersion;
+    }
+
+    /**
      * Returns true if the Activity or Fragment has access to all given permissions.
      *
      * @param context     context
@@ -43,7 +76,7 @@ public final class PermissionUtils {
      */
     public static boolean hasSelfPermissions(Context context, String... permissions) {
         for (String permission : permissions) {
-            if (checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (permissionExists(permission) && checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
                 return false;
             }
         }
