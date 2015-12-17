@@ -34,6 +34,11 @@ android {
 dependencies {
     compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:support-v13:$SUPPORT_LIBRARY_VERSION", optional
+
+    testCompile "junit:junit:$JUNIT_VERSION"
+    testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
+    testCompile "org.powermock:powermock-api-mockito:$POWERMOCK_VERSION"
+    testCompile "org.powermock:powermock-module-junit4:$POWERMOCK_VERSION"
 }
 
 publish {
