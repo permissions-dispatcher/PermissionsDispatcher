@@ -17,7 +17,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Fragment;",
@@ -46,7 +46,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -71,7 +71,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -96,7 +96,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -126,7 +126,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -161,7 +161,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -195,7 +195,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -229,7 +229,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -262,7 +262,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -298,7 +298,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -331,7 +331,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -364,7 +364,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -397,7 +397,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -426,7 +426,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -460,7 +460,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -493,7 +493,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -526,7 +526,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -555,7 +555,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -589,7 +589,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -622,7 +622,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -655,7 +655,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Service;",
@@ -684,7 +684,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -721,7 +721,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -757,7 +757,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -793,7 +793,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -810,7 +810,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
@@ -851,7 +851,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -868,7 +868,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.String;",
@@ -910,7 +910,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -927,7 +927,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
@@ -999,7 +999,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -1021,7 +1021,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
@@ -1097,7 +1097,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -1119,7 +1119,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
@@ -1196,7 +1196,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -1222,7 +1222,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
@@ -1303,7 +1303,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -1324,7 +1324,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
@@ -1369,7 +1369,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -1395,7 +1395,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
@@ -1462,7 +1462,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -1492,7 +1492,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
@@ -1564,7 +1564,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -1589,7 +1589,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
@@ -1636,7 +1636,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -1663,7 +1663,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
@@ -1726,7 +1726,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -1746,7 +1746,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
@@ -1801,7 +1801,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -1818,7 +1818,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
@@ -1859,7 +1859,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -1879,7 +1879,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.String;",
@@ -1936,7 +1936,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -1956,7 +1956,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
@@ -2036,7 +2036,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
@@ -2156,7 +2156,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
@@ -2244,7 +2244,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
@@ -2350,7 +2350,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -2372,7 +2372,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
@@ -2435,7 +2435,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -2457,7 +2457,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.Override;",
@@ -2521,7 +2521,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -2547,7 +2547,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.Override;",
@@ -2615,7 +2615,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -2645,7 +2645,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.Override;",
@@ -2718,7 +2718,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -2739,7 +2739,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.String;",
@@ -2785,7 +2785,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -2810,7 +2810,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.String;",
@@ -2858,7 +2858,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -2876,7 +2876,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.Override;",
@@ -2951,7 +2951,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -2973,7 +2973,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.Override;",
@@ -3052,7 +3052,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -3073,7 +3073,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.Override;",
@@ -3153,7 +3153,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -3179,7 +3179,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.Override;",
@@ -3263,7 +3263,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -3284,7 +3284,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.String;",
@@ -3341,7 +3341,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -3366,7 +3366,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.Override;",
@@ -3464,7 +3464,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -3488,7 +3488,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.String;",
@@ -3549,7 +3549,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -3578,7 +3578,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.Override;",
@@ -3686,7 +3686,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -3711,7 +3711,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
@@ -3788,7 +3788,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -3813,7 +3813,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.Override;",
@@ -3892,7 +3892,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -3920,7 +3920,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
@@ -4016,7 +4016,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -4044,7 +4044,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.Override;",
@@ -4142,7 +4142,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -4164,7 +4164,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
@@ -4205,7 +4205,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -4227,7 +4227,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.String;",
@@ -4269,7 +4269,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -4290,7 +4290,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
@@ -4333,7 +4333,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -4354,7 +4354,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.String;",
@@ -4398,7 +4398,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -4419,7 +4419,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
@@ -4460,7 +4460,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -4481,7 +4481,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.String;",
@@ -4523,7 +4523,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -4549,7 +4549,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
@@ -4617,7 +4617,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.support.v4.app.Fragment;",
@@ -4643,7 +4643,7 @@ public final class Source {
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.app.Activity;",
                     "import java.lang.Override;",
@@ -4712,7 +4712,7 @@ public final class Source {
 
         @Override
         protected String[] getActualSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.Manifest;",
                     "import android.app.Activity;",
@@ -4722,31 +4722,31 @@ public final class Source {
                     "import permissions.dispatcher.OnNeverAskAgain;",
                     "@RuntimePermissions",
                     "public class MyActivity extends Activity {",
-                        "@NeedsPermission({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE})",
-                        "public void showCamera() {",
-                        "}",
-                        "@OnPermissionDenied({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE})",
-                        "void onShowCameraDenied() {",
-                        "}",
-                        "@OnNeverAskAgain({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE})",
-                        "void onShowCameraNeverAsk() {",
-                        "}",
-                        "@NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)",
-                        "void showGetStorage() {",
-                        "}",
-                        "@OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)",
-                        "void onGetStorageDenied() {",
-                        "}",
-                        "@OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)",
-                        "void onGetStorageNeverAsk() {",
-                        "}",
+                    "   @NeedsPermission({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE})",
+                    "   public void showCamera() {",
+                    "   }",
+                    "   @OnPermissionDenied({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE})",
+                    "   void onShowCameraDenied() {",
+                    "   }",
+                    "   @OnNeverAskAgain({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE})",
+                    "   void onShowCameraNeverAsk() {",
+                    "   }",
+                    "   @NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)",
+                    "   void showGetStorage() {",
+                    "   }",
+                    "   @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)",
+                    "   void onGetStorageDenied() {",
+                    "   }",
+                    "   @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)",
+                    "   void onGetStorageNeverAsk() {",
+                    "   }",
                     "}"
             };
         }
 
         @Override
         protected String[] getExpectSource() {
-            return new String[] {
+            return new String[]{
                     "package tests;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
@@ -4802,6 +4802,42 @@ public final class Source {
                     "   }",
                     "}"
             };
+        }
+    };
+
+    public static final BaseTest DuplicatesInListsActivity = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "   @NeedsPermission({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE})",
+                    "   public void showCamera() {",
+                    "   }",
+                    "   @OnPermissionDenied({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE})",
+                    "   public void onCameraDenied() {",
+                    "   }",
+                    "   @OnPermissionDenied({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE})",
+                    "   void onCameraDenied2() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return EMPTY_SOURCE;
         }
     };
 }
