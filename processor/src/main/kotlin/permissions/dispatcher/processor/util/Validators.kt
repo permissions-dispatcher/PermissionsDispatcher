@@ -29,10 +29,10 @@ fun findAndValidateProcessorUnit(units: List<ProcessorUnit>, e: Element): Proces
  * Raises an exception if any annotation value is found multiple times.
  */
 fun <A : Annotation> checkDuplicatedValue(items: List<ExecutableElement>, annotationClass: Class<A>) {
-    val set: HashSet<String> = hashSetOf()
+    val set: HashSet<List<String>> = hashSetOf()
     items.forEach {
         val permissionValue = it.getAnnotation(annotationClass).permissionValue()
-        if (!set.addAll(permissionValue)) {
+        if (!set.add(permissionValue)) {
             throw DuplicatedValueException(permissionValue, it, annotationClass)
         }
     }

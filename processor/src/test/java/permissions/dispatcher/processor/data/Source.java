@@ -4703,4 +4703,105 @@ public final class Source {
             };
         }
     };
+
+    public static final BaseTest NoDuplicatesDespiteRepeatedValuesActivity = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "import permissions.dispatcher.OnNeverAskAgain;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                        "@NeedsPermission({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE})",
+                        "public void showCamera() {",
+                        "}",
+                        "@OnPermissionDenied({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE})",
+                        "void onShowCameraDenied() {",
+                        "}",
+                        "@OnNeverAskAgain({Manifest.permission.CAMERA,Manifest.permission.WRITE_EXTERNAL_STORAGE})",
+                        "void onShowCameraNeverAsk() {",
+                        "}",
+                        "@NeedsPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)",
+                        "void showGetStorage() {",
+                        "}",
+                        "@OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)",
+                        "void onGetStorageDenied() {",
+                        "}",
+                        "@OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)",
+                        "void onGetStorageNeverAsk() {",
+                        "}",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[] {
+                    "package tests;",
+                    "import android.support.v4.app.ActivityCompat;",
+                    "import java.lang.String;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyActivityPermissionsDispatcher {",
+                    "   private static final int REQUEST_SHOWCAMERA = 0;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA = new String[] {\"android.permission.CAMERA\", \"android.permission.WRITE_EXTERNAL_STORAGE\"};",
+                    "   private static final int REQUEST_SHOWGETSTORAGE = 1;",
+                    "   private static final String[] PERMISSION_SHOWGETSTORAGE = new String[] {\"android.permission.WRITE_EXTERNAL_STORAGE\"};",
+                    "   private MyActivityPermissionsDispatcher() {",
+                    "   }",
+                    "   static void showCameraWithCheck(MyActivity target) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
+                    "           target.showCamera();",
+                    "       } else {",
+                    "           ActivityCompat.requestPermissions(target, PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "       }",
+                    "   }",
+                    "   static void showGetStorageWithCheck(MyActivity target) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWGETSTORAGE)) {",
+                    "           target.showGetStorage();",
+                    "       } else {",
+                    "           ActivityCompat.requestPermissions(target, PERMISSION_SHOWGETSTORAGE, REQUEST_SHOWGETSTORAGE);",
+                    "       }",
+                    "   }",
+                    "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
+                    "       switch (requestCode) {",
+                    "           case REQUEST_SHOWCAMERA:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera();",
+                    "               } else {",
+                    "                   if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
+                    "                       target.onShowCameraNeverAsk();",
+                    "                   } else {",
+                    "                       target.onShowCameraDenied();",
+                    "                   }",
+                    "               }",
+                    "               break;",
+                    "           case REQUEST_SHOWGETSTORAGE:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showGetStorage();",
+                    "               } else {",
+                    "                   if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWGETSTORAGE)) {",
+                    "                       target.onGetStorageNeverAsk();",
+                    "                   } else {",
+                    "                       target.onGetStorageDenied();",
+                    "                   }",
+                    "               }",
+                    "               break;",
+                    "           default:",
+                    "               break;",
+                    "       }",
+                    "   }",
+                    "}"
+            };
+        }
+    };
 }

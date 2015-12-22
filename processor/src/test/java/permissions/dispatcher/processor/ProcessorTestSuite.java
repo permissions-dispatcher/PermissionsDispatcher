@@ -301,4 +301,9 @@ public class ProcessorTestSuite extends TestSuite {
     @Test public void onePermissionWithRationaleAndDeniedSupportFragment() {
         assertJavaSource(Source.OnePermissionWithRationaleAndDeniedSupportFragment);
     }
+
+    @Test public void noDuplicatesDespiteRepeatedValuesActivity() {
+        // Issue 63: https://github.com/hotchemi/PermissionsDispatcher/issues/63
+        assertJavaSource(Source.NoDuplicatesDespiteRepeatedValuesActivity);
+    }
 }
