@@ -1,5 +1,7 @@
 # ChangeLog
 
+- 2.0.1 2015/12/24
+    - Fix [#63](https://github.com/hotchemi/PermissionsDispatcher/issues/63).
 - 2.0.1 2015/12/04
     - Add `@NeverAskAgain`.
 - 1.2.1 2015/09/14
