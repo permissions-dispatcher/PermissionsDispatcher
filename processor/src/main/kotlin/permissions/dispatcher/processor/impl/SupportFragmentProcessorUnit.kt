@@ -13,7 +13,6 @@ import javax.lang.model.type.TypeMirror
  */
 class SupportFragmentProcessorUnit: BaseProcessorUnit() {
 
-    private val PERMISSION_UTILS: ClassName = ClassName.get("permissions.dispatcher", "PermissionUtils")
 
     private val ACTIVITY: ClassName = ClassName.get("android.app", "Activity")
 

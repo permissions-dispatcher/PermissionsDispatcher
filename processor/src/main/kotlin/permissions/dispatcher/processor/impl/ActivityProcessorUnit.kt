@@ -13,8 +13,6 @@ import javax.lang.model.type.TypeMirror
  */
 class ActivityProcessorUnit : BaseProcessorUnit() {
 
-    private val PERMISSION_UTILS = ClassName.get("permissions.dispatcher", "PermissionUtils")
-
     private val ACTIVITY_COMPAT = ClassName.get("android.support.v4.app", "ActivityCompat")
 
     override fun getTargetType(): TypeMirror {

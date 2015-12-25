@@ -11,7 +11,6 @@ import javax.lang.model.type.TypeMirror
 
 class NativeFragmentProcessorUnit: BaseProcessorUnit() {
 
-    private val PERMISSION_UTILS: ClassName = ClassName.get("permissions.dispatcher", "PermissionUtils")
     private val PERMISSION_UTILS_V13: ClassName = ClassName.get("permissions.dispatcher.v13", "PermissionUtilsV13")
 
     override fun getTargetType(): TypeMirror {

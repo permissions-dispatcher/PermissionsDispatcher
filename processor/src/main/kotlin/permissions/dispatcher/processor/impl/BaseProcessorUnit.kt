@@ -17,6 +17,8 @@ import javax.lang.model.element.Modifier
  */
 public abstract class BaseProcessorUnit : ProcessorUnit {
 
+    protected val PERMISSION_UTILS = ClassName.get("permissions.dispatcher", "PermissionUtils")
+
     /**
      * Creates the JavaFile for the provided @RuntimePermissions element.
      * <p>
