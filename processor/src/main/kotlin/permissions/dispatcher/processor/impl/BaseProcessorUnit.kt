@@ -37,11 +37,13 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
 
     abstract fun checkPrerequisites(rpe: RuntimePermissionsElement)
 
-    abstract fun addWithCheckBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String)
-
     abstract fun addResultCaseBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String, grantResultsParam: String)
 
     abstract fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String)
+
+    abstract fun addHasSelfPermissionsCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String)
+
+    abstract fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String)
 
     /* Begin private */
 
@@ -127,6 +129,58 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
         // Delegate method body generation to implementing classes
         addWithCheckBody(builder, method, rpe, targetParam)
         return builder.build()
+    }
+
+    fun addWithCheckBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String) {
+        // Create field names for the constants to use
+        val requestCodeField = requestCodeFieldName(needsMethod)
+        val permissionField = permissionFieldName(needsMethod)
+
+        // Add the conditional for when permission has already been granted
+        addHasSelfPermissionsCondition(builder, targetParam, permissionField)
+        //        builder.beginControlFlow("if (\$T.hasSelfPermissions(\$N, \$N))", PERMISSION_UTILS, targetParam, permissionField)
+        builder.addCode(CodeBlock.builder()
+                .add("\$N.\$N(", targetParam, needsMethod.simpleString())
+                .add(varargsParametersCodeBlock(needsMethod))
+                .addStatement(")")
+                .build()
+        )
+        builder.nextControlFlow("else")
+
+        // Add the conditional for "OnShowRationale", if present
+        val onRationale: ExecutableElement? = rpe.findOnRationaleForNeeds(needsMethod)
+        val hasParameters: Boolean = needsMethod.parameters.isNotEmpty()
+        if (hasParameters) {
+            // If the method has parameters, precede the potential OnRationale call with
+            // an instantiation of the temporary Request object
+            val varargsCall = CodeBlock.builder()
+                    .add("\$N = new \$N(\$N, ",
+                            pendingRequestFieldName(needsMethod),
+                            permissionRequestTypeName(needsMethod),
+                            targetParam
+                    )
+                    .add(varargsParametersCodeBlock(needsMethod))
+                    .addStatement(")")
+            builder.addCode(varargsCall.build())
+        }
+        if (onRationale != null) {
+            addShouldShowRequestPermissionRationaleCondition(builder, targetParam, permissionField)
+            if (hasParameters) {
+                // For methods with parameters, use the PermissionRequest instantiated above
+                builder.addStatement("\$N.\$N(\$N)", targetParam, onRationale.simpleString(), pendingRequestFieldName(needsMethod))
+            } else {
+                // Otherwise, create a new PermissionRequest on-the-fly
+                builder.addStatement("\$N.\$N(new \$N(\$N))", targetParam, onRationale.simpleString(), permissionRequestTypeName(needsMethod), targetParam)
+            }
+            builder.nextControlFlow("else")
+        }
+
+        // Add the branch for "request permission"
+        addRequestPermissionsStatement(builder, targetParam, permissionField, requestCodeField)
+        if (onRationale != null) {
+            builder.endControlFlow()
+        }
+        builder.endControlFlow()
     }
 
     private fun createPermissionResultMethod(rpe: RuntimePermissionsElement): MethodSpec {

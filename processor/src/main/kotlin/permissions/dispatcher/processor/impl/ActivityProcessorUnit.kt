@@ -1,7 +1,6 @@
 package permissions.dispatcher.processor.impl
 
 import com.squareup.javapoet.ClassName
-import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.MethodSpec
 import permissions.dispatcher.processor.RuntimePermissionsElement
 import permissions.dispatcher.processor.util.*
@@ -23,55 +22,12 @@ class ActivityProcessorUnit : BaseProcessorUnit() {
         // Nothing to check
     }
 
-    override fun addWithCheckBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String) {
-        // Create field names for the constants to use
-        val requestCodeField = requestCodeFieldName(needsMethod)
-        val permissionField = permissionFieldName(needsMethod)
-
-        // Add the conditional for when permission has already been granted
+    override fun addHasSelfPermissionsCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String) {
         builder.beginControlFlow("if (\$T.hasSelfPermissions(\$N, \$N))", PERMISSION_UTILS, targetParam, permissionField)
-        builder.addCode(CodeBlock.builder()
-                .add("\$N.\$N(", targetParam, needsMethod.simpleString())
-                .add(varargsParametersCodeBlock(needsMethod))
-                .addStatement(")")
-                .build()
-        )
-        builder.nextControlFlow("else")
+    }
 
-        // Add the conditional for "OnShowRationale", if present
-        val onRationale: ExecutableElement? = rpe.findOnRationaleForNeeds(needsMethod)
-        val hasParameters: Boolean = needsMethod.parameters.isNotEmpty()
-        if (hasParameters) {
-            // If the method has parameters, precede the potential OnRationale call with
-            // an instantiation of the temporary Request object
-            val varargsCall = CodeBlock.builder()
-                    .add("\$N = new \$N(\$N, ",
-                            pendingRequestFieldName(needsMethod),
-                            permissionRequestTypeName(needsMethod),
-                            targetParam
-                    )
-                    .add(varargsParametersCodeBlock(needsMethod))
-                    .addStatement(")")
-            builder.addCode(varargsCall.build())
-        }
-        if (onRationale != null) {
-            builder.beginControlFlow("if (\$T.shouldShowRequestPermissionRationale(\$N, \$N))", PERMISSION_UTILS, targetParam, permissionField)
-            if (hasParameters) {
-                // For methods with parameters, use the PermissionRequest instantiated above
-                builder.addStatement("\$N.\$N(\$N)", targetParam, onRationale.simpleString(), pendingRequestFieldName(needsMethod))
-            } else {
-                // Otherwise, create a new PermissionRequest on-the-fly
-                builder.addStatement("\$N.\$N(new \$N(\$N))", targetParam, onRationale.simpleString(), permissionRequestTypeName(needsMethod), targetParam)
-            }
-            builder.nextControlFlow("else")
-        }
-
-        // Add the branch for "request permission"
-        addRequestPermissionsStatement(builder, targetParam, permissionField, requestCodeField)
-        if (onRationale != null) {
-            builder.endControlFlow()
-        }
-        builder.endControlFlow()
+    override fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String) {
+        builder.beginControlFlow("if (\$T.shouldShowRequestPermissionRationale(\$N, \$N))", PERMISSION_UTILS, targetParam, permissionField)
     }
 
     override fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {
