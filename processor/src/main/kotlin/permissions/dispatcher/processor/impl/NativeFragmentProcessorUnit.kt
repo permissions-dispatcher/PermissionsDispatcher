@@ -32,8 +32,8 @@ class NativeFragmentProcessorUnit: BaseProcessorUnit() {
         }
     }
 
-    override fun addHasSelfPermissionsCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String) {
-        builder.beginControlFlow("if (\$T.hasSelfPermissions(\$N.getActivity(), \$N))", PERMISSION_UTILS, targetParam, permissionField)
+    override fun getActivityName(targetParam: String): String {
+        return targetParam + ".getActivity()"
     }
 
     override fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String) {

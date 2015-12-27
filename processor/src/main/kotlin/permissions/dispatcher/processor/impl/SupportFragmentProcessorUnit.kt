@@ -1,6 +1,5 @@
 package permissions.dispatcher.processor.impl
 
-import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.MethodSpec
 import permissions.dispatcher.processor.RuntimePermissionsElement
 import permissions.dispatcher.processor.util.*
@@ -11,10 +10,6 @@ import javax.lang.model.type.TypeMirror
  */
 class SupportFragmentProcessorUnit: BaseProcessorUnit() {
 
-    private val ACTIVITY_LOCAL_VAR = "activity"
-
-    private val ACTIVITY: ClassName = ClassName.get("android.app", "Activity")
-
     override fun getTargetType(): TypeMirror {
         return typeMirrorOf("android.support.v4.app.Fragment")
     }
@@ -23,14 +18,12 @@ class SupportFragmentProcessorUnit: BaseProcessorUnit() {
         // Nothing to check
     }
 
-    override fun addHasSelfPermissionsCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String) {
-        builder.addStatement("\$T \$N = \$N.getActivity()", ACTIVITY, ACTIVITY_LOCAL_VAR, targetParam)
-        // Add the conditional for when permission has already been granted
-        builder.beginControlFlow("if (\$T.hasSelfPermissions(\$N, \$N))", PERMISSION_UTILS, ACTIVITY_LOCAL_VAR, permissionField)
+    override fun getActivityName(targetParam: String): String {
+        return targetParam + ".getActivity()"
     }
 
     override fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String) {
-        builder.beginControlFlow("if (\$T.shouldShowRequestPermissionRationale(\$N, \$N))", PERMISSION_UTILS, ACTIVITY_LOCAL_VAR, permissionField)
+        builder.beginControlFlow("if (\$T.shouldShowRequestPermissionRationale(\$N.getActivity(), \$N))", PERMISSION_UTILS, targetParam, permissionField)
     }
 
     override fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {

@@ -21,8 +21,8 @@ class ActivityProcessorUnit : BaseProcessorUnit() {
         // Nothing to check
     }
 
-    override fun addHasSelfPermissionsCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String) {
-        builder.beginControlFlow("if (\$T.hasSelfPermissions(\$N, \$N))", PERMISSION_UTILS, targetParam, permissionField)
+    override fun getActivityName(targetParam: String): String {
+        return targetParam
     }
 
     override fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String) {
