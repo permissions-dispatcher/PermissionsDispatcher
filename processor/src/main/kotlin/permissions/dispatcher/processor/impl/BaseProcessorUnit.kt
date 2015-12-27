@@ -37,8 +37,6 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
 
     abstract fun checkPrerequisites(rpe: RuntimePermissionsElement)
 
-    abstract fun addResultCaseBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String, grantResultsParam: String)
-
     abstract fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String)
 
     abstract fun addHasSelfPermissionsCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String)
@@ -210,6 +208,61 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
                 .endControlFlow();
 
         return builder.build()
+    }
+
+    private fun addResultCaseBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String, grantResultsParam: String) {
+        // Add the conditional for "permission verified"
+        builder.beginControlFlow("if (\$T.verifyPermissions(\$N))", PERMISSION_UTILS, grantResultsParam)
+
+        // Based on whether or not the method has parameters, delegate to the "pending request" object or invoke the method directly
+        val hasParameters = needsMethod.parameters.isNotEmpty()
+        if (hasParameters) {
+            val pendingField = pendingRequestFieldName(needsMethod)
+            builder.beginControlFlow("if (\$N != null)", pendingField)
+            builder.addStatement("\$N.grant()", pendingField)
+            builder.endControlFlow()
+        } else {
+            builder.addStatement("target.\$N()", needsMethod.simpleString())
+        }
+
+        // Add the conditional for "permission denied" and/or "never ask again", if present
+        val onDenied: ExecutableElement? = rpe.findOnDeniedForNeeds(needsMethod)
+        val hasDenied = onDenied != null
+        val onNeverAsk: ExecutableElement? = rpe.findOnNeverAskForNeeds(needsMethod)
+        val hasNeverAsk = onNeverAsk != null
+
+        if (hasDenied || hasNeverAsk) {
+            builder.nextControlFlow("else")
+        }
+        if (hasNeverAsk) {
+            // Split up the "else" case with another if condition checking for "never ask again" first
+            addShouldShowRequestPermissionRationaleCondition(builder, targetParam, permissionFieldName(needsMethod))
+            builder.addStatement("target.\$N()", onNeverAsk!!.simpleString())
+
+            // If a "permission denied" is present as well, go into an else case, otherwise close this temporary branch
+            if (hasDenied) {
+                builder.nextControlFlow("else")
+            } else {
+                builder.endControlFlow()
+            }
+        }
+        if (hasDenied) {
+            // Add the "permissionDenied" statement
+            builder.addStatement("\$N.\$N()", targetParam, onDenied!!.simpleString())
+
+            // Close the additional control flow potentially opened by a "never ask again" method
+            if (hasNeverAsk) {
+                builder.endControlFlow()
+            }
+        }
+        // Close the "switch" control flow
+        builder.endControlFlow()
+
+        // Remove the temporary pending request field, in case it was used for a method with parameters
+        if (hasParameters) {
+            builder.addStatement("\$N = null", pendingRequestFieldName(needsMethod))
+        }
+        builder.addStatement("break");
     }
 
     private fun createPermissionRequestClasses(rpe: RuntimePermissionsElement): List<TypeSpec> {
