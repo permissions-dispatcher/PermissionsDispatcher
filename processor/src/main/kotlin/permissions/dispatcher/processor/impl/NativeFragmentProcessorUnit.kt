@@ -36,8 +36,8 @@ class NativeFragmentProcessorUnit: BaseProcessorUnit() {
         return targetParam + ".getActivity()"
     }
 
-    override fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String) {
-        builder.beginControlFlow("if (\$T.getInstance().shouldShowRequestPermissionRationale(\$N, \$N))", PERMISSION_UTILS_V13, targetParam, permissionField)
+    override fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String, isPositiveCondition: Boolean) {
+        builder.beginControlFlow("if (\$N\$T.getInstance().shouldShowRequestPermissionRationale(\$N, \$N))", if (isPositiveCondition) "" else "!", PERMISSION_UTILS_V13, targetParam, permissionField)
     }
 
     override fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {

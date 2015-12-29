@@ -45,7 +45,7 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
 
     abstract fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String)
 
-    abstract fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String)
+    abstract fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String, isPositiveCondition: Boolean = true)
 
     abstract fun getActivityName(targetParam: String): String
 
@@ -295,7 +295,7 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
         }
         if (hasNeverAsk) {
             // Split up the "else" case with another if condition checking for "never ask again" first
-            addShouldShowRequestPermissionRationaleCondition(builder, targetParam, permissionFieldName(needsMethod))
+            addShouldShowRequestPermissionRationaleCondition(builder, targetParam, permissionFieldName(needsMethod), false)
             builder.addStatement("target.\$N()", onNeverAsk!!.simpleString())
 
             // If a "permission denied" is present as well, go into an else case, otherwise close this temporary branch
