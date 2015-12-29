@@ -78,4 +78,12 @@ public class V13ProcessorTestSuite extends TestSuite {
     @Test public void twoPermissionsWithSameSignatureRationaleAndDeniedNativeFragment() {
         assertJavaSource(V13Source.TwoPermissionsWithSameSignatureRationaleAndDeniedNativeFragment);
     }
+
+    @Test public void writeSettingsFragment() {
+        assertJavaSource(V13Source.WriteSettingsFragment);
+    }
+
+    @Test public void SystemAlertWindowFragment() {
+        assertJavaSource(V13Source.SystemAlertWindowFragment);
+    }
 }
