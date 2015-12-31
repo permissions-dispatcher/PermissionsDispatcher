@@ -1,6 +1,5 @@
 package permissions.dispatcher.processor
 
-import com.squareup.javapoet.JavaFile
 import permissions.dispatcher.RuntimePermissions
 import permissions.dispatcher.processor.impl.ActivityProcessorUnit
 import permissions.dispatcher.processor.impl.NativeFragmentProcessorUnit
@@ -49,26 +48,26 @@ class PermissionsProcessor : AbstractProcessor() {
         return SourceVersion.latestSupported()
     }
 
-    override fun getSupportedAnnotationTypes(): MutableSet<String> {
+    override fun getSupportedAnnotationTypes(): Set<String> {
         return hashSetOf(RuntimePermissions::class.java.canonicalName)
     }
 
     /**
      * Main processing method
      */
-    override fun process(annotations: MutableSet<out TypeElement>?, roundEnv: RoundEnvironment?): Boolean {
+    override fun process(annotations: Set<TypeElement>, roundEnv: RoundEnvironment): Boolean {
         // Create a RequestCodeProvider which guarantees unique request codes for each permission request
         val requestCodeProvider = RequestCodeProvider()
 
-        roundEnv!!.getElementsAnnotatedWith(RuntimePermissions::class.java).forEach {
+        roundEnv.getElementsAnnotatedWith(RuntimePermissions::class.java).forEach {
             // Find a suitable ProcessorUnit for this element
             val processorUnit = findAndValidateProcessorUnit(processorUnits, it)
 
             // Create a RuntimePermissionsElement for this value
-            val rpe: RuntimePermissionsElement = RuntimePermissionsElement(it as TypeElement)
+            val rpe = RuntimePermissionsElement(it as TypeElement)
 
             // Create a JavaFile for this element and write it out
-            val javaFile: JavaFile = processorUnit.createJavaFile(rpe, requestCodeProvider)
+            val javaFile = processorUnit.createJavaFile(rpe, requestCodeProvider)
             javaFile.writeTo(filer)
         }
 
