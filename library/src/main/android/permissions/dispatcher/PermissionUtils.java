@@ -1,6 +1,5 @@
 package permissions.dispatcher;
 
-import android.Manifest;
 import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
@@ -12,11 +11,6 @@ import android.support.annotation.Nullable;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.util.SimpleArrayMap;
 
-import static android.os.Build.VERSION_CODES.FROYO;
-import static android.os.Build.VERSION_CODES.GINGERBREAD;
-import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
-import static android.os.Build.VERSION_CODES.KITKAT_WATCH;
-import static android.os.Build.VERSION_CODES.JELLY_BEAN;
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
 public final class PermissionUtils {
@@ -26,12 +20,12 @@ public final class PermissionUtils {
     private static final SimpleArrayMap<String, Integer> MIN_SDK_PERMISSIONS;
     static {
         MIN_SDK_PERMISSIONS = new SimpleArrayMap<>(6);
-        MIN_SDK_PERMISSIONS.put(Manifest.permission.ADD_VOICEMAIL, ICE_CREAM_SANDWICH);
-        MIN_SDK_PERMISSIONS.put(Manifest.permission.BODY_SENSORS, KITKAT_WATCH);
-        MIN_SDK_PERMISSIONS.put(Manifest.permission.READ_CALL_LOG, JELLY_BEAN);
-        MIN_SDK_PERMISSIONS.put(Manifest.permission.READ_EXTERNAL_STORAGE, JELLY_BEAN);
-        MIN_SDK_PERMISSIONS.put(Manifest.permission.USE_SIP, GINGERBREAD);
-        MIN_SDK_PERMISSIONS.put(Manifest.permission.WRITE_CALL_LOG, JELLY_BEAN);
+        MIN_SDK_PERMISSIONS.put("com.android.voicemail.permission.ADD_VOICEMAIL", 14);
+        MIN_SDK_PERMISSIONS.put("android.permission.BODY_SENSORS", 20);
+        MIN_SDK_PERMISSIONS.put("android.permission.READ_CALL_LOG", 16);
+        MIN_SDK_PERMISSIONS.put("android.permission.READ_EXTERNAL_STORAGE", 16);
+        MIN_SDK_PERMISSIONS.put("android.permission.USE_SIP", 9);
+        MIN_SDK_PERMISSIONS.put("android.permission.WRITE_CALL_LOG", 16);
     }
 
     private PermissionUtils() {
@@ -109,7 +103,7 @@ public final class PermissionUtils {
     public static @Nullable Intent createAppSettingsIntent(Context context) {
         Intent intent;
         String packageName = context.getPackageName();
-        if (Build.VERSION.SDK_INT >= GINGERBREAD) {
+        if (Build.VERSION.SDK_INT >= 9) {
             // Utilize the dedicated Settings Action on API 9+
             intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS);
             Uri uri = Uri.fromParts("package", packageName, null);
@@ -120,7 +114,7 @@ public final class PermissionUtils {
             intent = new Intent(Intent.ACTION_VIEW);
             intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             intent.setClassName("com.android.settings", "com.android.settings.InstalledAppDetails");
-            String extraKey = Build.VERSION.SDK_INT == FROYO ? "pkg" : "com.android.settings.ApplicationPkgName";
+            String extraKey = Build.VERSION.SDK_INT == 8 ? "pkg" : "com.android.settings.ApplicationPkgName";
             intent.putExtra(extraKey, packageName);
         }
 
