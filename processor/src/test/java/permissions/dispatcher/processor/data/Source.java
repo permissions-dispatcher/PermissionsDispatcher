@@ -870,7 +870,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyFragmentPermissionsDispatcher {",
@@ -879,8 +878,7 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
                     "           target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -1881,7 +1879,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyFragmentPermissionsDispatcher {",
@@ -1892,16 +1889,14 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
                     "           target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
                     "       }",
                     "   }",
                     "   static void accessContactsWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_ACCESSCONTACTS)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_ACCESSCONTACTS)) {",
                     "           target.accessContacts();",
                     "       } else {",
                     "           target.requestPermissions(PERMISSION_ACCESSCONTACTS, REQUEST_ACCESSCONTACTS);",
@@ -2459,7 +2454,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -2471,11 +2465,10 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -2549,7 +2542,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -2561,11 +2553,10 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -2647,7 +2638,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -2659,11 +2649,10 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -2741,7 +2730,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyFragmentPermissionsDispatcher {",
@@ -2750,8 +2738,7 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
                     "           target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -2812,7 +2799,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyFragmentPermissionsDispatcher {",
@@ -2821,8 +2807,7 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
                     "           target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -2878,7 +2863,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -2891,8 +2875,7 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target, int value, String name) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera(value, name);",
                     "       } else {",
                     "           PENDING_SHOWCAMERA = new ShowCameraPermissionRequest(target, value, name);",
@@ -2975,7 +2958,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -2988,12 +2970,11 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target, int value, String name) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera(value, name);",
                     "       } else {",
                     "           PENDING_SHOWCAMERA = new ShowCameraPermissionRequest(target, value, name);",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(PENDING_SHOWCAMERA);",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -3075,7 +3056,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -3088,8 +3068,7 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target, int value, String name) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera(value, name);",
                     "       } else {",
                     "           PENDING_SHOWCAMERA = new ShowCameraPermissionRequest(target, value, name);",
@@ -3181,7 +3160,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -3194,12 +3172,11 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target, int value, String name) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera(value, name);",
                     "       } else {",
                     "           PENDING_SHOWCAMERA = new ShowCameraPermissionRequest(target, value, name);",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(PENDING_SHOWCAMERA);",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -3286,7 +3263,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyFragmentPermissionsDispatcher {",
@@ -3297,16 +3273,14 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
                     "           target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
                     "       }",
                     "   }",
                     "   static void showCamera2WithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA2)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA2)) {",
                     "           target.showCamera2();",
                     "       } else {",
                     "           target.requestPermissions(PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
@@ -3368,7 +3342,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -3382,11 +3355,10 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -3394,11 +3366,10 @@ public final class Source {
                     "       }",
                     "   }",
                     "   static void showCamera2WithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA2)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA2)) {",
                     "           target.showCamera2();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA2)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA2)) {",
                     "               target.cameraRationale(new ShowCamera2PermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
@@ -3490,7 +3461,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyFragmentPermissionsDispatcher {",
@@ -3501,16 +3471,14 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
                     "           target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
                     "       }",
                     "   }",
                     "   static void showCamera2WithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA2)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA2)) {",
                     "           target.showCamera2();",
                     "       } else {",
                     "           target.requestPermissions(PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
@@ -3580,7 +3548,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -3594,11 +3561,10 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -3606,11 +3572,10 @@ public final class Source {
                     "       }",
                     "   }",
                     "   static void showCamera2WithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA2)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA2)) {",
                     "           target.showCamera2();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA2)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA2)) {",
                     "               target.cameraRationale(new ShowCamera2PermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
@@ -3815,7 +3780,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -3829,11 +3793,10 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -3841,8 +3804,7 @@ public final class Source {
                     "       }",
                     "   }",
                     "   static void accessContactsWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_ACCESSCONTACTS)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_ACCESSCONTACTS)) {",
                     "           target.accessContacts();",
                     "       } else {",
                     "           target.requestPermissions(PERMISSION_ACCESSCONTACTS, REQUEST_ACCESSCONTACTS);",
@@ -4046,7 +4008,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -4060,11 +4021,10 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -4072,11 +4032,10 @@ public final class Source {
                     "       }",
                     "   }",
                     "   static void accessContactsWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_ACCESSCONTACTS)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_ACCESSCONTACTS)) {",
                     "           target.accessContacts();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_ACCESSCONTACTS)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_ACCESSCONTACTS)) {",
                     "               target.contactsRationale(new AccessContactsPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_ACCESSCONTACTS, REQUEST_ACCESSCONTACTS);",
@@ -4229,7 +4188,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyFragmentPermissionsDispatcher {",
@@ -4238,8 +4196,7 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
                     "           target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -4356,7 +4313,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyFragmentPermissionsDispatcher {",
@@ -4365,8 +4321,7 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
                     "           target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -4483,7 +4438,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyFragmentPermissionsDispatcher {",
@@ -4492,8 +4446,7 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
                     "           target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -4645,7 +4598,6 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.app.Activity;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -4657,11 +4609,10 @@ public final class Source {
                     "   private MyActivityPermissionsDispatcher() {",
                     "   }",
                     "   static void showCameraWithCheck(MyFragment target) {",
-                    "       Activity activity = target.getActivity();",
-                    "       if (PermissionUtils.hasSelfPermissions(activity, PERMISSION_SHOWCAMERA)) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(activity, PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -4840,4 +4791,516 @@ public final class Source {
             return EMPTY_SOURCE;
         }
     };
+
+    public static final BaseTest WriteSettingsSupportFragment = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyFragment";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.Manifest;",
+                    "import android.support.v4.app.Fragment;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnNeverAskAgain;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "import permissions.dispatcher.OnShowRationale;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "@RuntimePermissions",
+                    "public class MyFragment extends Fragment {",
+                    "    @NeedsPermission(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettings() {",
+                    "    }",
+                    "    @OnShowRationale(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettingOnShowRationale(PermissionRequest request) {",
+                    "    }",
+                    "    @OnPermissionDenied(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettingOnPermissionDenied() {",
+                    "    }",
+                    "    @OnNeverAskAgain(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettingOnNeverAskAgain() {",
+                    "    }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.content.Intent;",
+                    "import android.net.Uri;",
+                    "import android.provider.Settings;",
+                    "import java.lang.Override;",
+                    "import java.lang.String;",
+                    "import java.lang.ref.WeakReference;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyFragmentPermissionsDispatcher {",
+                    "  private static final int REQUEST_WRITESETTINGS = 0;",
+                    "  private static final String[] PERMISSION_WRITESETTINGS = new String[] {\"android.permission.WRITE_SETTINGS\"};",
+                    "  private MyFragmentPermissionsDispatcher() {",
+                    "  }",
+                    "  static void writeSettingsWithCheck(MyFragment target) {",
+                    "    if (Settings.System.canWrite(target.getActivity())) {",
+                    "      target.writeSettings();",
+                    "    } else {",
+                    "      if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_WRITESETTINGS)) {",
+                    "        target.writeSettingOnShowRationale(new WriteSettingsPermissionRequest(target));",
+                    "      } else {",
+                    "        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse(\"package:\" + target.getActivity().getPackageName()));",
+                    "        target.getActivity().startActivityForResult(intent, REQUEST_WRITESETTINGS);",
+                    "      }",
+                    "    }",
+                    "  }",
+                    "  static void onActivityResult(MyFragment target, int requestCode, int[] grantResults) {",
+                    "    switch (requestCode) {",
+                    "      case REQUEST_WRITESETTINGS:",
+                    "      if (Settings.System.canWrite(target.getActivity())) {",
+                    "        target.writeSettings();",
+                    "      } else {",
+                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_WRITESETTINGS)) {",
+                    "          target.writeSettingOnNeverAskAgain();",
+                    "        } else {",
+                    "          target.writeSettingOnPermissionDenied();",
+                    "        }",
+                    "      }",
+                    "      break;",
+                    "      default:",
+                    "      break;",
+                    "    }",
+                    "  }",
+                    "  private static final class WriteSettingsPermissionRequest implements PermissionRequest {",
+                    "    private final WeakReference<MyFragment> weakTarget;",
+                    "    private WriteSettingsPermissionRequest(MyFragment target) {",
+                    "      this.weakTarget = new WeakReference<>(target);",
+                    "    }",
+                    "    @Override",
+                    "    public void proceed() {",
+                    "      MyFragment target = weakTarget.get();",
+                    "      if (target == null) return;",
+                    "      Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse(\"package:\" + target.getActivity().getPackageName()));",
+                    "      target.getActivity().startActivityForResult(intent, REQUEST_WRITESETTINGS);",
+                    "    }",
+                    "    @Override",
+                    "    public void cancel() {",
+                    "      MyFragment target = weakTarget.get();",
+                    "      if (target == null) return;",
+                    "      target.writeSettingOnPermissionDenied();",
+                    "    }",
+                    "  }",
+                    "}"
+            };
+        }
+    };
+
+    public static final BaseTest SystemAlertWindowSupportFragment = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyFragment";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.Manifest;",
+                    "import android.support.v4.app.Fragment;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnNeverAskAgain;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "import permissions.dispatcher.OnShowRationale;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "@RuntimePermissions",
+                    "public class MyFragment extends Fragment {",
+                    "    @NeedsPermission(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindow() {",
+                    "    }",
+                    "    @OnShowRationale(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindowOnShowRationale(PermissionRequest request) {",
+                    "    }",
+                    "    @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindowOnPermissionDenied() {",
+                    "    }",
+                    "    @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindowOnNeverAskAgain() {",
+                    "    }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.content.Intent;",
+                    "import android.net.Uri;",
+                    "import android.provider.Settings;",
+                    "import java.lang.Override;",
+                    "import java.lang.String;",
+                    "import java.lang.ref.WeakReference;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyFragmentPermissionsDispatcher {",
+                    "  private static final int REQUEST_SYSTEMALERTWINDOW = 0;",
+                    "  private static final String[] PERMISSION_SYSTEMALERTWINDOW = new String[] {\"android.permission.SYSTEM_ALERT_WINDOW\"};",
+                    "  private MyFragmentPermissionsDispatcher() {",
+                    "  }",
+                    "  static void systemAlertWindowWithCheck(MyFragment target) {",
+                    "    if (Settings.canDrawOverlays(target.getActivity())) {",
+                    "      target.systemAlertWindow();",
+                    "    } else {",
+                    "      if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SYSTEMALERTWINDOW)) {",
+                    "        target.systemAlertWindowOnShowRationale(new SystemAlertWindowPermissionRequest(target));",
+                    "      } else {",
+                    "        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(\"package:\" + target.getActivity().getPackageName()));",
+                    "        target.getActivity().startActivityForResult(intent, REQUEST_SYSTEMALERTWINDOW);",
+                    "      }",
+                    "    }",
+                    "  }",
+                    "  static void onActivityResult(MyFragment target, int requestCode, int[] grantResults) {",
+                    "    switch (requestCode) {",
+                    "      case REQUEST_SYSTEMALERTWINDOW:",
+                    "      if (Settings.canDrawOverlays(target.getActivity())) {",
+                    "        target.systemAlertWindow();",
+                    "      } else {",
+                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SYSTEMALERTWINDOW)) {",
+                    "          target.systemAlertWindowOnNeverAskAgain();",
+                    "        } else {",
+                    "          target.systemAlertWindowOnPermissionDenied();",
+                    "        }",
+                    "      }",
+                    "      break;",
+                    "      default:",
+                    "      break;",
+                    "    }",
+                    "  }",
+                    "  private static final class SystemAlertWindowPermissionRequest implements PermissionRequest {",
+                    "    private final WeakReference<MyFragment> weakTarget;",
+                    "    private SystemAlertWindowPermissionRequest(MyFragment target) {",
+                    "      this.weakTarget = new WeakReference<>(target);",
+                    "    }",
+                    "    @Override",
+                    "    public void proceed() {",
+                    "      MyFragment target = weakTarget.get();",
+                    "      if (target == null) return;",
+                    "      Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(\"package:\" + target.getActivity().getPackageName()));",
+                    "      target.getActivity().startActivityForResult(intent, REQUEST_SYSTEMALERTWINDOW);",
+                    "    }",
+                    "    @Override",
+                    "    public void cancel() {",
+                    "      MyFragment target = weakTarget.get();",
+                    "      if (target == null) return;",
+                    "      target.systemAlertWindowOnPermissionDenied();",
+                    "    }",
+                    "  }",
+                    "}",
+            };
+        }
+    };
+
+    public static final BaseTest WriteSettingsActivity = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnNeverAskAgain;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "import permissions.dispatcher.OnShowRationale;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "    @NeedsPermission(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettings() {",
+                    "    }",
+                    "    @OnShowRationale(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettingsOnShowRationale(PermissionRequest request) {",
+                    "    }",
+                    "    @OnPermissionDenied(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettingsOnPermissionDenied() {",
+                    "    }",
+                    "    @OnNeverAskAgain(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettingsOnNeverAskAgain() {",
+                    "    }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.content.Intent;",
+                    "import android.net.Uri;",
+                    "import android.provider.Settings;",
+                    "import java.lang.Override;",
+                    "import java.lang.String;",
+                    "import java.lang.ref.WeakReference;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyActivityPermissionsDispatcher {",
+                    "  private static final int REQUEST_WRITESETTINGS = 0;",
+                    "  private static final String[] PERMISSION_WRITESETTINGS = new String[] {\"android.permission.WRITE_SETTINGS\"};",
+                    "  private MyActivityPermissionsDispatcher() {",
+                    "  }",
+                    "  static void writeSettingsWithCheck(MyActivity target) {",
+                    "    if (Settings.System.canWrite(target)) {",
+                    "      target.writeSettings();",
+                    "    } else {",
+                    "      if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_WRITESETTINGS)) {",
+                    "        target.writeSettingsOnShowRationale(new WriteSettingsPermissionRequest(target));",
+                    "      } else {",
+                    "        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse(\"package:\" + target.getPackageName()));",
+                    "        target.startActivityForResult(intent, REQUEST_WRITESETTINGS);",
+                    "      }",
+                    "    }",
+                    "  }",
+                    "  static void onActivityResult(MyActivity target, int requestCode, int[] grantResults) {",
+                    "    switch (requestCode) {",
+                    "      case REQUEST_WRITESETTINGS:",
+                    "      if (Settings.System.canWrite(target)) {",
+                    "        target.writeSettings();",
+                    "      } else {",
+                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_WRITESETTINGS)) {",
+                    "          target.writeSettingsOnNeverAskAgain();",
+                    "        } else {",
+                    "          target.writeSettingsOnPermissionDenied();",
+                    "        }",
+                    "      }",
+                    "      break;",
+                    "      default:",
+                    "      break;",
+                    "    }",
+                    "  }",
+                    "  private static final class WriteSettingsPermissionRequest implements PermissionRequest {",
+                    "    private final WeakReference<MyActivity> weakTarget;",
+                    "    private WriteSettingsPermissionRequest(MyActivity target) {",
+                    "      this.weakTarget = new WeakReference<>(target);",
+                    "    }",
+                    "    @Override",
+                    "    public void proceed() {",
+                    "      MyActivity target = weakTarget.get();",
+                    "      if (target == null) return;",
+                    "      Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse(\"package:\" + target.getPackageName()));",
+                    "      target.startActivityForResult(intent, REQUEST_WRITESETTINGS);",
+                    "    }",
+                    "    @Override",
+                    "    public void cancel() {",
+                    "      MyActivity target = weakTarget.get();",
+                    "      if (target == null) return;",
+                    "      target.writeSettingsOnPermissionDenied();",
+                    "    }",
+                    "  }",
+                    "}"
+            };
+        }
+    };
+
+    public static final BaseTest SystemAlertWindowActivity = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnNeverAskAgain;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "import permissions.dispatcher.OnShowRationale;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "    @NeedsPermission(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindow() {",
+                    "    }",
+                    "    @OnShowRationale(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindowOnShowRationale(PermissionRequest request) {",
+                    "    }",
+                    "    @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindowOnPermissionDenied() {",
+                    "    }",
+                    "    @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindowOnNeverAskAgain() {",
+                    "    }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.content.Intent;",
+                    "import android.net.Uri;",
+                    "import android.provider.Settings;",
+                    "import java.lang.Override;",
+                    "import java.lang.String;",
+                    "import java.lang.ref.WeakReference;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyActivityPermissionsDispatcher {",
+                    "  private static final int REQUEST_SYSTEMALERTWINDOW = 0;",
+                    "  private static final String[] PERMISSION_SYSTEMALERTWINDOW = new String[] {\"android.permission.SYSTEM_ALERT_WINDOW\"};",
+                    "  private MyActivityPermissionsDispatcher() {",
+                    "  }",
+                    "  static void systemAlertWindowWithCheck(MyActivity target) {",
+                    "    if (Settings.canDrawOverlays(target)) {",
+                    "      target.systemAlertWindow();",
+                    "    } else {",
+                    "      if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SYSTEMALERTWINDOW)) {",
+                    "        target.systemAlertWindowOnShowRationale(new SystemAlertWindowPermissionRequest(target));",
+                    "      } else {",
+                    "        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(\"package:\" + target.getPackageName()));",
+                    "        target.startActivityForResult(intent, REQUEST_SYSTEMALERTWINDOW);",
+                    "      }",
+                    "    }",
+                    "  }",
+                    "  static void onActivityResult(MyActivity target, int requestCode, int[] grantResults) {",
+                    "    switch (requestCode) {",
+                    "      case REQUEST_SYSTEMALERTWINDOW:",
+                    "      if (Settings.canDrawOverlays(target)) {",
+                    "        target.systemAlertWindow();",
+                    "      } else {",
+                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SYSTEMALERTWINDOW)) {",
+                    "          target.systemAlertWindowOnNeverAskAgain();",
+                    "        } else {",
+                    "          target.systemAlertWindowOnPermissionDenied();",
+                    "        }",
+                    "      }",
+                    "      break;",
+                    "      default:",
+                    "      break;",
+                    "    }",
+                    "  }",
+                    "  private static final class SystemAlertWindowPermissionRequest implements PermissionRequest {",
+                    "    private final WeakReference<MyActivity> weakTarget;",
+                    "    private SystemAlertWindowPermissionRequest(MyActivity target) {",
+                    "      this.weakTarget = new WeakReference<>(target);",
+                    "    }",
+                    "    @Override",
+                    "    public void proceed() {",
+                    "      MyActivity target = weakTarget.get();",
+                    "      if (target == null) return;",
+                    "      Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(\"package:\" + target.getPackageName()));",
+                    "      target.startActivityForResult(intent, REQUEST_SYSTEMALERTWINDOW);",
+                    "    }",
+                    "    @Override",
+                    "    public void cancel() {",
+                    "      MyActivity target = weakTarget.get();",
+                    "      if (target == null) return;",
+                    "      target.systemAlertWindowOnPermissionDenied();",
+                    "    }",
+                    "  }",
+                    "}"
+            };
+        }
+    };
+
+    public static final BaseTest SystemAlertWindowMixPermissionCase = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "    @NeedsPermission({Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.INTERNET})",
+                    "    void systemAlertWindow() {",
+                    "    }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return null;
+        }
+    };
+
+    public static final BaseTest WriteSettingsMixPermissionCase = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "    @NeedsPermission({Manifest.permission.WRITE_SETTINGS, Manifest.permission.INTERNET})",
+                    "    void systemAlertWindow() {",
+                    "    }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return null;
+        }
+    };
+
+    public static final BaseTest SystemAlertWindowAndWriteSettingsMixPermissionCase = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "    @NeedsPermission({Manifest.permission.SYSTEM_ALERT_WINDOW, Manifest.permission.WRITE_SETTINGS})",
+                    "    void systemAlertWindow() {",
+                    "    }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return null;
+        }
+    };
+
 }

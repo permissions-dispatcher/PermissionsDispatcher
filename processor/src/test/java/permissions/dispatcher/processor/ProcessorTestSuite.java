@@ -311,4 +311,35 @@ public class ProcessorTestSuite extends TestSuite {
         // Issue 63: https://github.com/hotchemi/PermissionsDispatcher/issues/63
         assertJavaSource(Source.NoDuplicatesDespiteRepeatedValuesActivity);
     }
+
+    @Test public void writeSettingsSupportFragment() {
+        assertJavaSource(Source.WriteSettingsSupportFragment);
+    }
+
+    @Test public void writeSettingsActivity() {
+        assertJavaSource(Source.WriteSettingsActivity);
+    }
+
+    @Test public void systemAlertWindowSupportFragment() {
+        assertJavaSource(Source.SystemAlertWindowSupportFragment);
+    }
+
+    @Test public void systemAlertWindowActivity() {
+        assertJavaSource(Source.SystemAlertWindowActivity);
+    }
+
+    @Test public void mixSystemAlertWindowAndNormalPermissionCompileError() {
+        expectRuntimeException("Method 'systemAlertWindow()' defines 'android.permission.SYSTEM_ALERT_WINDOW' with other permissions at the same time.");
+        assertJavaSource(Source.SystemAlertWindowMixPermissionCase);
+    }
+
+    @Test public void mixWriteSettingsAndNormalPermissionCompileError() {
+        expectRuntimeException("Method 'systemAlertWindow()' defines 'android.permission.WRITE_SETTINGS' with other permissions at the same time.");
+        assertJavaSource(Source.WriteSettingsMixPermissionCase);
+    }
+
+    @Test public void mixSystemAlertWindowAndWriteSettingsPermissionCompileError() {
+        expectRuntimeException("Method 'systemAlertWindow()' defines 'android.permission.WRITE_SETTINGS' with other permissions at the same time.");
+        assertJavaSource(Source.SystemAlertWindowAndWriteSettingsMixPermissionCase);
+    }
 }
