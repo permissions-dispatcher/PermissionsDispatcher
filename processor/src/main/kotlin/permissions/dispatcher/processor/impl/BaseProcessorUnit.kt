@@ -20,7 +20,6 @@ import javax.lang.model.element.Modifier
 public abstract class BaseProcessorUnit : ProcessorUnit {
 
     protected val PERMISSION_UTILS = ClassName.get("permissions.dispatcher", "PermissionUtils")
-
     private val MANIFEST_WRITE_SETTING = "android.permission.WRITE_SETTINGS"
     private val MANIFEST_SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
     private val ADD_WITH_CHECK_BODY_MAP = hashMapOf(MANIFEST_SYSTEM_ALERT_WINDOW to SystemAlertWindowHelper(), MANIFEST_WRITE_SETTING to WriteSettingsHelper())
@@ -268,6 +267,18 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
     }
 
     private fun addResultCaseBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String, grantResultsParam: String) {
+
+        // just workaround, see https://github.com/hotchemi/PermissionsDispatcher/issues/45
+        val onDenied: ExecutableElement? = rpe.findOnDeniedForNeeds(needsMethod)
+        val hasDenied = onDenied != null
+        if (hasDenied) {
+            builder.beginControlFlow("if (!\$T.hasSelfPermissions(\$N, \$N))",
+                    PERMISSION_UTILS, getActivityName(targetParam), permissionFieldName(needsMethod))
+            builder.addStatement("\$N.\$N()", targetParam, onDenied!!.simpleString())
+            builder.addStatement("return")
+            builder.endControlFlow()
+        }
+
         val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
 
         // Add the conditional for "permission verified"
@@ -285,8 +296,6 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
         }
 
         // Add the conditional for "permission denied" and/or "never ask again", if present
-        val onDenied: ExecutableElement? = rpe.findOnDeniedForNeeds(needsMethod)
-        val hasDenied = onDenied != null
         val onNeverAsk: ExecutableElement? = rpe.findOnNeverAskForNeeds(needsMethod)
         val hasNeverAsk = onNeverAsk != null
 
