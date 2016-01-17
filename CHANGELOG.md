@@ -1,5 +1,8 @@
 # ChangeLog
 
+- 2.0.3 2016/01/18
+ - Add [#65](https://github.com/hotchemi/PermissionsDispatcher/pull/65).
+ - Add [#72](https://github.com/hotchemi/PermissionsDispatcher/pull/72).
 - 2.0.2 2016/01/13
  - Fix [#63](https://github.com/hotchemi/PermissionsDispatcher/issues/63).
 - 2.0.1 2015/12/04
