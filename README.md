@@ -133,10 +133,14 @@ In case you rely on `android.app.Fragment` in your app, you can use these with P
 
 - [Migrating to 2.x](https://github.com/hotchemi/PermissionsDispatcher/wiki/Migrating-to-2.x)
 
+### For Japanese
+
+- [Android - 5分で対応するMパーミッション - Qiita](http://qiita.com/kazy/items/0ded30d80cef9df54c98)
+
 ## Licence
 
 ```
-Copyright 2015 Shintaro Katafuchi, Marcel Schnelle
+Copyright 2016 Shintaro Katafuchi, Marcel Schnelle
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
