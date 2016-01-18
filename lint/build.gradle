@@ -1,0 +1,26 @@
+apply plugin: 'java'
+
+targetCompatibility = JavaVersion.VERSION_1_7
+sourceCompatibility = JavaVersion.VERSION_1_7
+
+configurations {
+    lintChecks
+}
+
+dependencies {
+    compile "com.android.tools.lint:lint-api:$LINT_VERSION"
+    compile "com.android.tools.lint:lint-checks:$LINT_VERSION"
+
+    testCompile "junit:junit:$JUNIT_VERSION"
+    testCompile "com.android.tools.lint:lint:$LINT_VERSION"
+    testCompile "com.android.tools.lint:lint-tests:$LINT_VERSION"
+    testCompile "com.android.tools:testutils:$LINT_VERSION"
+
+    lintChecks files(jar)
+}
+
+jar {
+    manifest {
+        attributes("Lint-Registry": "permissions.dispatcher.PermissionsDispatcherIssueRegistry")
+    }
+}
