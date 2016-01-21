@@ -1119,6 +1119,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
@@ -1142,7 +1143,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -1226,6 +1227,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
@@ -1253,7 +1255,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -1500,6 +1502,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
@@ -1525,7 +1528,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -1601,6 +1604,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
@@ -1619,7 +1623,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -2169,6 +2173,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
@@ -2196,7 +2201,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -2207,7 +2212,7 @@ public final class Source {
                     "               }",
                     "               break;",
                     "           case REQUEST_SHOWCAMERA2:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA2)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA2)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -2265,6 +2270,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
@@ -2303,7 +2309,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -2314,7 +2320,7 @@ public final class Source {
                     "               }",
                     "               break;",
                     "           case REQUEST_SHOWCAMERA2:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA2)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA2)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -2670,6 +2676,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -2694,7 +2701,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyFragment target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -2835,6 +2842,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyFragmentPermissionsDispatcher {",
@@ -2852,7 +2860,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyFragment target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -3096,6 +3104,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -3118,7 +3127,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyFragment target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -3204,6 +3213,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -3230,7 +3240,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyFragment target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -3509,6 +3519,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyFragmentPermissionsDispatcher {",
@@ -3535,7 +3546,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyFragment target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -3546,7 +3557,7 @@ public final class Source {
                     "               }",
                     "               break;",
                     "           case REQUEST_SHOWCAMERA2:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA2)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA2)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -3604,6 +3615,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -3641,7 +3653,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyFragment target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -3652,7 +3664,7 @@ public final class Source {
                     "               }",
                     "               break;",
                     "           case REQUEST_SHOWCAMERA2:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA2)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA2)) {",
                     "                   target.cameraDenied();",
                     "                   return;",
                     "               }",
@@ -4313,6 +4325,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
@@ -4331,7 +4344,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
                     "                   target.onCameraDenied();",
                     "                   return;",
                     "               }",
@@ -4381,6 +4394,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyFragmentPermissionsDispatcher {",
@@ -4398,7 +4412,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyFragment target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "                   target.onCameraDenied();",
                     "                   return;",
                     "               }",
@@ -4576,6 +4590,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
@@ -4601,7 +4616,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
                     "                   target.onCameraDenied();",
                     "                   return;",
                     "               }",
@@ -4674,6 +4689,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -4698,7 +4714,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyFragment target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "                   target.onCameraDenied();",
                     "                   return;",
                     "               }",
@@ -4779,6 +4795,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
+                    "import android.os.Build;",
                     "import android.support.v4.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
@@ -4806,7 +4823,7 @@ public final class Source {
                     "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
                     "       switch (requestCode) {",
                     "           case REQUEST_SHOWCAMERA:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {",
                     "                   target.onShowCameraDenied();",
                     "                   return;",
                     "               }",
@@ -4821,7 +4838,7 @@ public final class Source {
                     "               }",
                     "               break;",
                     "           case REQUEST_SHOWGETSTORAGE:",
-                    "               if (!PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWGETSTORAGE)) {",
+                    "               if (Build.VERSION.SDK_INT < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWGETSTORAGE)) {",
                     "                   target.onGetStorageDenied();",
                     "                   return;",
                     "               }",
@@ -4948,10 +4965,6 @@ public final class Source {
                     "  static void onActivityResult(MyFragment target, int requestCode, int[] grantResults) {",
                     "    switch (requestCode) {",
                     "      case REQUEST_WRITESETTINGS:",
-                    "      if (!PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_WRITESETTINGS)) {",
-                    "        target.writeSettingOnPermissionDenied();",
-                    "        return;",
-                    "      }",
                     "      if (Settings.System.canWrite(target.getActivity())) {",
                     "        target.writeSettings();",
                     "      } else {",
@@ -5058,10 +5071,6 @@ public final class Source {
                     "  static void onActivityResult(MyFragment target, int requestCode, int[] grantResults) {",
                     "    switch (requestCode) {",
                     "      case REQUEST_SYSTEMALERTWINDOW:",
-                    "      if (!PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SYSTEMALERTWINDOW)) {",
-                    "        target.systemAlertWindowOnPermissionDenied();",
-                    "        return;",
-                    "      }",
                     "      if (Settings.canDrawOverlays(target.getActivity())) {",
                     "        target.systemAlertWindow();",
                     "      } else {",
@@ -5168,10 +5177,6 @@ public final class Source {
                     "  static void onActivityResult(MyActivity target, int requestCode, int[] grantResults) {",
                     "    switch (requestCode) {",
                     "      case REQUEST_WRITESETTINGS:",
-                    "      if (!PermissionUtils.hasSelfPermissions(target, PERMISSION_WRITESETTINGS)) {",
-                    "        target.writeSettingsOnPermissionDenied();",
-                    "        return;",
-                    "      }",
                     "      if (Settings.System.canWrite(target)) {",
                     "        target.writeSettings();",
                     "      } else {",
@@ -5278,10 +5283,6 @@ public final class Source {
                     "  static void onActivityResult(MyActivity target, int requestCode, int[] grantResults) {",
                     "    switch (requestCode) {",
                     "      case REQUEST_SYSTEMALERTWINDOW:",
-                    "      if (!PermissionUtils.hasSelfPermissions(target, PERMISSION_SYSTEMALERTWINDOW)) {",
-                    "        target.systemAlertWindowOnPermissionDenied();",
-                    "        return;",
-                    "      }",
                     "      if (Settings.canDrawOverlays(target)) {",
                     "        target.systemAlertWindow();",
                     "      } else {",
