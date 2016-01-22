@@ -22,7 +22,6 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
     protected val PERMISSION_UTILS = ClassName.get("permissions.dispatcher", "PermissionUtils")
     private val MANIFEST_WRITE_SETTING = "android.permission.WRITE_SETTINGS"
     private val MANIFEST_SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
-    private val BUILD_CLASS = ClassName.get("android.os", "Build")
     private val ADD_WITH_CHECK_BODY_MAP = hashMapOf(MANIFEST_SYSTEM_ALERT_WINDOW to SystemAlertWindowHelper(), MANIFEST_WRITE_SETTING to WriteSettingsHelper())
 
     /**
@@ -273,10 +272,12 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
         val onDenied: ExecutableElement? = rpe.findOnDeniedForNeeds(needsMethod)
         val hasDenied = onDenied != null
         val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
-        if (hasDenied && !ADD_WITH_CHECK_BODY_MAP.containsKey(needsPermissionParameter)) {
-            builder.beginControlFlow("if (\$T.VERSION.SDK_INT < 23 && !\$T.hasSelfPermissions(\$N, \$N))",
-                    BUILD_CLASS, PERMISSION_UTILS, getActivityName(targetParam), permissionFieldName(needsMethod))
-            builder.addStatement("\$N.\$N()", targetParam, onDenied!!.simpleString())
+        if (!ADD_WITH_CHECK_BODY_MAP.containsKey(needsPermissionParameter)) {
+            builder.beginControlFlow("if (\$T.getTargetSdkVersion(\$N) < 23 && !\$T.hasSelfPermissions(\$N, \$N))",
+                    PERMISSION_UTILS, getActivityName(targetParam), PERMISSION_UTILS, getActivityName(targetParam), permissionFieldName(needsMethod))
+            if (hasDenied) {
+                builder.addStatement("\$N.\$N()", targetParam, onDenied!!.simpleString())
+            }
             builder.addStatement("return")
             builder.endControlFlow()
         }
