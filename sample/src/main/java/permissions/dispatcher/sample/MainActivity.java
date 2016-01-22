@@ -82,7 +82,12 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
     void onCameraDenied() {
         // NOTE: Deal with a denied permission, e.g. by showing specific UI
         // or disabling certain functionality
-        Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_LONG).show();
+        Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnNeverAskAgain(Manifest.permission.CAMERA)
+    void onCameraNeverAskAgain() {
+        Toast.makeText(this, R.string.permission_camera_never_askagain, Toast.LENGTH_SHORT).show();
     }
 
     public void onBackClick(View view) {

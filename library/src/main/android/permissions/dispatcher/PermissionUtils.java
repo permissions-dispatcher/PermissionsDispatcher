@@ -2,6 +2,7 @@ package permissions.dispatcher;
 
 import android.app.Activity;
 import android.content.Context;
+import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.support.v4.app.ActivityCompat;
@@ -51,7 +52,6 @@ public final class PermissionUtils {
     private static boolean permissionExists(String permission) {
         // Check if the permission could potentially be missing on this device
         Integer minVersion = MIN_SDK_PERMISSIONS.get(permission);
-
         // If null was returned from the above call, there is no need for a device API level check for the permission;
         // otherwise, we check if its minimum API level requirement is met
         return minVersion == null || Build.VERSION.SDK_INT >= minVersion;
@@ -87,6 +87,22 @@ public final class PermissionUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * Get target sdk version from context.
+     *
+     * @param context context
+     * @return target sdk version
+     */
+    public static int getTargetSdkVersion(Context context) {
+        try {
+            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+            return packageInfo.applicationInfo.targetSdkVersion;
+        }
+        catch (PackageManager.NameNotFoundException ignored) {
+        }
+        return -1;
     }
 
 }
