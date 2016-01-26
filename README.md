@@ -3,6 +3,8 @@
 [![Build Status](https://travis-ci.org/hotchemi/PermissionsDispatcher.svg)](https://travis-ci.org/hotchemi/PermissionsDispatcher)
 [![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg)](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
 
+![image](https://raw.githubusercontent.com/hotchemi/PermissionsDispatcher/master/art/logo.png)
+
 PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow.
 [Runtime permissions](https://developer.android.com/preview/features/runtime-permissions.html) are great for users, but can be tedious to implement correctly for developers, requiring a lot of boilerplate code. This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code clean and safe. The library is 100% reflection-free.
 
