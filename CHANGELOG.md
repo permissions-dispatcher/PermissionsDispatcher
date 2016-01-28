@@ -3,6 +3,7 @@
 - 2.0.4 2016/01/22
   - Fix [Issue #78](https://github.com/hotchemi/PermissionsDispatcher/issues/78)
 - 2.0.3 2016/01/18
+ - **This version has a bug which @OnNeverAskAgain is never called. Please don't use it.** 
  - Add [#65](https://github.com/hotchemi/PermissionsDispatcher/pull/65).
  - Add [#72](https://github.com/hotchemi/PermissionsDispatcher/pull/72).
 - 2.0.2 2016/01/13
