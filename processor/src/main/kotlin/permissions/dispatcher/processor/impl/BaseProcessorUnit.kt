@@ -406,6 +406,14 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
         }
         builder.addMethod(constructorBuilder.build())
 
+        // Add getPermissionName() override
+        val getPermissionNameMethod : MethodSpec.Builder = MethodSpec.methodBuilder("getPermissionName")
+                .addAnnotation(Override::class.java)
+                .addModifiers(Modifier.PUBLIC)
+                .returns(ClassName.get(String::class.java))
+                .addStatement("return \"${needsMethod.getAnnotation(NeedsPermission::class.java).value[0]}\"")
+        builder.addMethod(getPermissionNameMethod.build())
+
         // Add proceed() override
         val proceedMethod: MethodSpec.Builder = MethodSpec.methodBuilder("proceed")
                 .addAnnotation(Override::class.java)
