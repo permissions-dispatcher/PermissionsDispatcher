@@ -18,7 +18,7 @@ branches:
   except:
     - gh-pages
 
-script: ./gradlew check
+script: ./gradlew check --stacktrace
 
 cache:
   directories:
