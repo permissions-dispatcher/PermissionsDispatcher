@@ -1,5 +1,7 @@
 # ChangeLog
 
+- 2.0.5 2016/01/29
+  - Back to support JDK 1.7.
 - 2.0.4 2016/01/22
   - Fix [Issue #78](https://github.com/hotchemi/PermissionsDispatcher/issues/78)
 - 2.0.3 2016/01/18

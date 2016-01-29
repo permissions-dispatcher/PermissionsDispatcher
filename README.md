@@ -1,7 +1,6 @@
 # PermissionsDispatcher
 
 [![Build Status](https://travis-ci.org/hotchemi/PermissionsDispatcher.svg)](https://travis-ci.org/hotchemi/PermissionsDispatcher)
-[![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg)](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
 
 ![image](https://raw.githubusercontent.com/hotchemi/PermissionsDispatcher/master/art/logo.png)
 
@@ -24,12 +23,14 @@ buildscript {
 
 And on your **app module** `build.gradle`:
 
+`${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg)](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
+
 ```groovy
 apply plugin: 'android-apt'
 
 dependencies {
-  compile 'com.github.hotchemi:permissionsdispatcher:2.0.4'
-  apt 'com.github.hotchemi:permissionsdispatcher-processor:2.0.4'
+  compile 'com.github.hotchemi:permissionsdispatcher:${latest.version}'
+  apt 'com.github.hotchemi:permissionsdispatcher-processor:${latest.version}'
 }
 ```
 
@@ -69,22 +70,22 @@ public class MainActivity extends AppCompatActivity {
 
     @OnShowRationale(Manifest.permission.CAMERA)
     void showRationaleForCamera(PermissionRequest request) {
-		new AlertDialog.Builder(this)
-			.setMessage(R.string.permission_camera_rationale)
-			.setPositiveButton(R.string.button_allow, (dialog, button) -> request.proceed())
-			.setNegativeButton(R.string.button_deny, (dialog, button) -> request.cancel())
-			.show();
+        new AlertDialog.Builder(this)
+            .setMessage(R.string.permission_camera_rationale)
+            .setPositiveButton(R.string.button_allow, (dialog, button) -> request.proceed())
+            .setNegativeButton(R.string.button_deny, (dialog, button) -> request.cancel())
+            .show();
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA)
     void showDeniedForCamera() {
         Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show();
-	}
-		
-	@OnNeverAskAgain(Manifest.permission.CAMERA)
-	void showNeverAskForCamera() {
-		Toast.makeText(this, R.string.permission_camera_neverask, Toast.LENGTH_SHORT).show();
-	}
+    }
+
+    @OnNeverAskAgain(Manifest.permission.CAMERA)
+    void showNeverAskForCamera() {
+        Toast.makeText(this, R.string.permission_camera_neverask, Toast.LENGTH_SHORT).show();
+    }
 }
 ```
 
