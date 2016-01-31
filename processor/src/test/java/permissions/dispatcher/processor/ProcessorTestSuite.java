@@ -147,12 +147,20 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.OnePermissionWithParametersAndRationaleActivity);
     }
 
+    @Test public void onePermissionWithParametersAndRationaleEmptyAnnotationParametersActivity() {
+        assertJavaSource(Source.OnePermissionWithParametersAndRationaleEmptyAnnotationParametersActivity);
+    }
+
     @Test public void onePermissionWithParametersAndDeniedActivity() {
         assertJavaSource(Source.OnePermissionWithParametersAndDeniedActivity);
     }
 
     @Test public void onePermissionWithParametersRationaleAndDeniedActivity() {
         assertJavaSource(Source.OnePermissionWithParametersRationaleAndDeniedActivity);
+    }
+
+    @Test public void onePermissionWithParametersRationaleEmptyAnnotationParametersAndDeniedActivity() {
+        assertJavaSource(Source.OnePermissionWithParametersRationaleEmptyAnnotationParametersAndDeniedActivity);
     }
 
     @Test public void onePermissionWithParametersSupportFragment() {
@@ -163,12 +171,20 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.OnePermissionWithParametersAndRationaleSupportFragment);
     }
 
+    @Test public void onePermissionWithParametersAndRationaleEmptyAnnotationParametersSupportFragment() {
+        assertJavaSource(Source.OnePermissionWithParametersAndRationaleEmptyAnnotationParametersSupportFragment);
+    }
+
     @Test public void onePermissionWithParametersAndDeniedSupportFragment() {
         assertJavaSource(Source.OnePermissionWithParametersAndDeniedSupportFragment);
     }
 
     @Test public void onePermissionWithParametersRationaleAndDeniedSupportFragment() {
         assertJavaSource(Source.OnePermissionWithParametersRationaleAndDeniedSupportFragment);
+    }
+
+    @Test public void onePermissionWithParametersRationaleEmptyAnnotationParametersAndDeniedSupportFragment() {
+        assertJavaSource(Source.OnePermissionWithParametersRationaleEmptyAnnotationParametersAndDeniedSupportFragment);
     }
 
     @Test public void onePermissionWithNeverAskActivity() {
@@ -179,8 +195,16 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.OnePermissionWithNeverAskAndRationaleActivity);
     }
 
+    @Test public void onePermissionWithNeverAskAndRationaleEmptyAnnotationParametersActivity() {
+        assertJavaSource(Source.OnePermissionWithNeverAskAndRationaleEmptyAnnotationParametersActivity);
+    }
+
     @Test public void onePermissionWithNeverAskRationaleAndDeniedActivity() {
         assertJavaSource(Source.OnePermissionWithNeverAskRationaleAndDeniedActivity);
+    }
+
+    @Test public void onePermissionWithNeverAskRationaleEmptyAnnotationParametersAndDeniedActivity() {
+        assertJavaSource(Source.OnePermissionWithNeverAskRationaleEmptyAnnotationParametersAndDeniedActivity);
     }
 
     @Test public void onePermissionWithNeverAskAndDeniedActivity() {
@@ -203,12 +227,20 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.TwoPermissionsWithSameSignatureAndRationaleActivity);
     }
 
+    @Test public void twoPermissionsWithSameSignatureAndRationaleEmptyAnnotationParametersActivity() {
+        assertJavaSource(Source.TwoPermissionsWithSameSignatureAndRationaleEmptyAnnotationParametersActivity);
+    }
+
     @Test public void twoPermissionsWithSameSignatureAndDeniedActivity() {
         assertJavaSource(Source.TwoPermissionsWithSameSignatureAndDeniedActivity);
     }
 
     @Test public void twoPermissionsWithSameSignatureRationaleAndDeniedActivity() {
         assertJavaSource(Source.TwoPermissionsWithSameSignatureRationaleAndDeniedActivity);
+    }
+
+    @Test public void twoPermissionsWithSameSignatureRationaleEmptyAnnotationParametersAndDeniedActivity() {
+        assertJavaSource(Source.TwoPermissionsWithSameSignatureRationaleEmptyAnnotationParametersAndDeniedActivity);
     }
 
     @Test public void twoPermissionsWithSameSignatureSupportFragment() {
@@ -219,12 +251,20 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.TwoPermissionsWithSameSignatureAndRationaleSupportFragment);
     }
 
+    @Test public void twoPermissionsWithSameSignatureAndRationaleEmptyAnnotationParametersSupportFragment() {
+        assertJavaSource(Source.TwoPermissionsWithSameSignatureAndRationaleEmptyAnnotationParametersSupportFragment);
+    }
+
     @Test public void twoPermissionsWithSameSignatureAndDeniedSupportFragment() {
         assertJavaSource(Source.TwoPermissionsWithSameSignatureAndDeniedSupportFragment);
     }
 
     @Test public void twoPermissionsWithSameSignatureRationaleAndDeniedSupportFragment() {
         assertJavaSource(Source.TwoPermissionsWithSameSignatureRationaleAndDeniedSupportFragment);
+    }
+
+    @Test public void twoPermissionsWithSameSignatureRationaleEmptyAnnotationParametersAndDeniedSupportFragment() {
+        assertJavaSource(Source.TwoPermissionsWithSameSignatureRationaleEmptyAnnotationParametersAndDeniedSupportFragment);
     }
 
     @Test public void twoPermissionsAtOnceActivity() {
@@ -239,16 +279,32 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.OnePermissionWithRationaleActivity);
     }
 
+    @Test public void onePermissionWithRationaleEmptyAnnotationParametersActivity() {
+        assertJavaSource(Source.OnePermissionWithRationaleEmptyAnnotationParametersActivity);
+    }
+
     @Test public void onePermissionWithRationaleSupportFragment() {
         assertJavaSource(Source.OnePermissionWithRationaleSupportFragment);
+    }
+
+    @Test public void onePermissionWithRationaleEmptyAnnotationParametersSupportFragment() {
+        assertJavaSource(Source.OnePermissionWithRationaleEmptyAnnotationParametersSupportFragment);
     }
 
     @Test public void onePermissionWithNeverAskAndRationaleSupportFragment() {
         assertJavaSource(Source.OnePermissionWithNeverAskAndRationaleSupportFragment);
     }
 
+    @Test public void onePermissionWithNeverAskAndRationaleEmptyAnnotationParametersSupportFragment() {
+        assertJavaSource(Source.OnePermissionWithNeverAskAndRationaleEmptyAnnotationParametersSupportFragment);
+    }
+
     @Test public void onePermissionWithNeverAskRationaleAndDeniedSupportFragment() {
         assertJavaSource(Source.OnePermissionWithNeverAskRationaleAndDeniedSupportFragment);
+    }
+
+    @Test public void onePermissionWithNeverAskRationaleEmptyAnnotationParametersAndDeniedSupportFragment() {
+        assertJavaSource(Source.OnePermissionWithNeverAskRationaleEmptyAnnotationParametersAndDeniedSupportFragment);
     }
 
     @Test public void onePermissionWithNeverAskSupportFragment() {
@@ -263,16 +319,42 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.TwoPermissionsWithOneRationaleActivity);
     }
 
+    @Test public void twoPermissionsWithOneRationaleEmptyAnnotationParametersActivity() {
+        assertJavaSource(Source.TwoPermissionsWithOneRationaleEmptyAnnotationParametersActivity);
+    }
+
     @Test public void twoPermissionsWithOneRationaleSupportFragment() {
         assertJavaSource(Source.TwoPermissionsWithOneRationaleSupportFragment);
+    }
+
+    @Test public void twoPermissionsWithOneRationaleEmptyAnnotationParametersSupportFragment() {
+        assertJavaSource(Source.TwoPermissionsWithOneRationaleEmptyAnnotationParametersSupportFragment);
     }
 
     @Test public void twoPermissionsWithTwoRationalesActivity() {
         assertJavaSource(Source.TwoPermissionsWithTwoRationalesActivity);
     }
 
+    @Test public void twoPermissionsWithTwoRationalesEmptyAnnotationParametersActivity() {
+        expectRuntimeException("[] is duplicated in 'contactsRationale()' annotated with '@OnShowRationale'");
+        assertJavaSource(Source.TwoPermissionsWithTwoRationalesEmptyAnnotationParametersActivity);
+    }
+
+    @Test public void twoPermissionsWithTwoRationalesNonEmptyAndEmptyAnnotationParametersActivity() {
+        assertJavaSource(Source.TwoPermissionsWithTwoRationalesNonEmptyAndEmptyAnnotationParametersActivity);
+    }
+
     @Test public void twoPermissionsWithTwoRationalesSupportFragment() {
         assertJavaSource(Source.TwoPermissionsWithTwoRationalesSupportFragment);
+    }
+
+    @Test public void twoPermissionsWithTwoRationalesEmptyAnnotationParametersSupportFragment() {
+        expectRuntimeException("[] is duplicated in 'contactsRationale()' annotated with '@OnShowRationale'");
+        assertJavaSource(Source.TwoPermissionsWithTwoRationalesEmptyAnnotationParametersSupportFragment);
+    }
+
+    @Test public void twoPermissionsWithTwoRationalesNonEmptyAndEmptyAnnotationParametersSupportFragment() {
+        assertJavaSource(Source.TwoPermissionsWithTwoRationalesNonEmptyAndEmptyAnnotationParametersSupportFragment);
     }
 
     @Test public void onePermissionWithOtherRationaleActivity() {
