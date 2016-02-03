@@ -67,6 +67,7 @@ dependencies {
     testCompile "junit:junit:$JUNIT_VERSION"
     testCompile "com.google.testing.compile:compile-testing:$COMPILE_TESTING_VERSION"
     testCompile "com.google.android:android:$GOOGLE_ANDROID_VERSION"
+    testCompile 'commons-io:commons-io:2.4'
     testCompile fileTree(dir: './src/test/libs', includes: ['*.jar'])
     testCompile files(Jvm.current().getToolsJar())
 
