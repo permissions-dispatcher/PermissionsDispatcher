@@ -1,6 +1,6 @@
 # PermissionsDispatcher
 
-[![Build Status](https://travis-ci.org/hotchemi/PermissionsDispatcher.svg)](https://travis-ci.org/hotchemi/PermissionsDispatcher)
+[![Build Status](https://travis-ci.org/hotchemi/PermissionsDispatcher.svg?branch=master)](https://travis-ci.org/hotchemi/PermissionsDispatcher)
 
 ![image](https://raw.githubusercontent.com/hotchemi/PermissionsDispatcher/master/art/logo.png)
 
