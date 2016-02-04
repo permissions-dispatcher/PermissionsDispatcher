@@ -2,6 +2,8 @@ package permissions.dispatcher.processor.data;
 
 import permissions.dispatcher.processor.base.BaseTest;
 
+import static permissions.dispatcher.processor.utils.AssetsUtils.readString;
+
 public final class Source {
 
     private Source() {
@@ -14,27 +16,13 @@ public final class Source {
         protected String getName() {
             return "MyFragment";
         }
-
         @Override
-        protected String[] getActualSource() {
-            return new String[]{
-                    "package tests;",
-                    "import android.Manifest;",
-                    "import android.app.Fragment;",
-                    "import permissions.dispatcher.RuntimePermissions;",
-                    "import permissions.dispatcher.NeedsPermission;",
-                    "@RuntimePermissions",
-                    "public class MyFragment extends Fragment {",
-                    "   @NeedsPermission(Manifest.permission.CAMERA)",
-                    "   void showCamera() {",
-                    "   }",
-                    "}"
-            };
+        protected String getActualSource() {
+            return readString("actual/NativeFragmentNotSupported.java");
         }
-
         @Override
-        protected String[] getExpectSource() {
-            return EMPTY_SOURCE;
+        protected String getExpectSource() {
+            return readString("expected/EmptySource.java");
         }
     };
 

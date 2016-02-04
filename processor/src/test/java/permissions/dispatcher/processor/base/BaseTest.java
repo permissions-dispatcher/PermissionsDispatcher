@@ -15,6 +15,6 @@ public abstract class BaseTest {
     }
 
     protected abstract String getName();
-    protected abstract String[] getActualSource();
-    protected abstract String[] getExpectSource();
+    protected abstract String getActualSource();
+    protected abstract String getExpectSource();
 }
