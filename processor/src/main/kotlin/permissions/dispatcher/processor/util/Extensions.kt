@@ -45,10 +45,10 @@ fun <A : Annotation> Element.hasAnnotation(annotationType: Class<A>): Boolean =
  */
 fun Annotation.permissionValue(): List<String> {
     when(this){
-        is NeedsPermission -> this.value.asList()
-        is OnShowRationale -> this.value.asList()
-        is OnPermissionDenied -> this.value.asList()
-        is OnNeverAskAgain -> this.value.asList()
+        is NeedsPermission -> return this.value.asList()
+        is OnShowRationale -> return this.value.asList()
+        is OnPermissionDenied -> return this.value.asList()
+        is OnNeverAskAgain -> return this.value.asList()
     }
     return emptyList()
 }

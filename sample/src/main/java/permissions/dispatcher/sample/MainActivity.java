@@ -32,7 +32,7 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         mFab = findViewById(R.id.fab);
         mFab.setOnClickListener(this);
         mLayout = ((CoordinatorLayout) findViewById(R.id.coordinatorLayout));
-        setSupportActionBar(toolbar);
+//        setSupportActionBar(toolbar);
     }
 
 
