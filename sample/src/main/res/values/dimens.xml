@@ -3,9 +3,4 @@
     <dimen name="margin_medium">16dp</dimen>
     <dimen name="horizontal_page_margin">@dimen/margin_medium</dimen>
     <dimen name="vertical_page_margin">@dimen/margin_medium</dimen>
-
-    <!-- Default screen margins, per the Android Design guidelines. -->
-    <dimen name="activity_horizontal_margin">16dp</dimen>
-    <dimen name="activity_vertical_margin">16dp</dimen>
-    <dimen name="fab_margin">16dp</dimen>
 </resources>

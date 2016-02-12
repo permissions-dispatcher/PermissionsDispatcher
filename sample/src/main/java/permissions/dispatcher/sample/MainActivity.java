@@ -2,99 +2,114 @@ package permissions.dispatcher.sample;
 
 import android.Manifest;
 import android.content.DialogInterface;
-import android.content.Intent;
-import android.net.Uri;
 import android.os.Bundle;
-import android.provider.MediaStore;
-import android.provider.Settings;
 import android.support.annotation.NonNull;
-import android.support.design.widget.CoordinatorLayout;
-import android.support.design.widget.Snackbar;
+import android.support.annotation.StringRes;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
-import android.support.v7.widget.Toolbar;
 import android.view.View;
+import android.widget.Toast;
 import permissions.dispatcher.*;
+import permissions.dispatcher.sample.camera.CameraPreviewFragment;
+import permissions.dispatcher.sample.contacts.ContactsFragment;
 
 @RuntimePermissions
 public class MainActivity extends AppCompatActivity implements View.OnClickListener {
 
-    private View mFab;
-    private CoordinatorLayout mLayout;
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
-
-        setContentView(R.layout.second_main);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        mFab = findViewById(R.id.fab);
-        mFab.setOnClickListener(this);
-        mLayout = ((CoordinatorLayout) findViewById(R.id.coordinatorLayout));
-//        setSupportActionBar(toolbar);
+        setContentView(R.layout.activity_main);
+        findViewById(R.id.button_camera).setOnClickListener(this);
+        findViewById(R.id.button_contacts).setOnClickListener(this);
     }
 
+    @Override
+    public void onClick(@NonNull View v) {
+        switch (v.getId()) {
+            case R.id.button_camera:
+                // NOTE: delegate the permission handling to generated method
+                MainActivityPermissionsDispatcher.showCameraWithCheck(this);
+                break;
+            case R.id.button_contacts:
+                // NOTE: delegate the permission handling to generated method
+                MainActivityPermissionsDispatcher.showContactsWithCheck(this);
+                break;
+        }
+    }
 
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+        // NOTE: delegate the permission handling to generated method
+        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    }
 
     @NeedsPermission(Manifest.permission.CAMERA)
-    void shoCamera(final int requestCode, final Uri createImageUri){
-        Intent takePictureIntent = new Intent(MediaStore.ACTION_IMAGE_CAPTURE);
-        takePictureIntent.putExtra(MediaStore.EXTRA_OUTPUT, createImageUri);
-        takePictureIntent.putExtra("return-data", true);
-        startActivityForResult(takePictureIntent,requestCode);
+    void showCamera() {
+        // NOTE: Perform action that requires the permission. If this is run by PermissionsDispatcher, the permission will have been granted
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.sample_content_fragment, CameraPreviewFragment.newInstance())
+                .addToBackStack("camera")
+                .commitAllowingStateLoss();
+    }
 
-        if (takePictureIntent.resolveActivity(this.getPackageManager()) != null) {
-            this.startActivityForResult(takePictureIntent, requestCode);
-        }
+    @NeedsPermission({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})
+    void showContacts() {
+        // NOTE: Perform action that requires the permission.
+        // If this is run by PermissionsDispatcher, the permission will have been granted
+        getSupportFragmentManager().beginTransaction()
+                .replace(R.id.sample_content_fragment, ContactsFragment.newInstance())
+                .addToBackStack("contacts")
+                .commitAllowingStateLoss();
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
-    void showRationaleForCamera(final PermissionRequest request) {
-        new AlertDialog.Builder(this)
-                .setMessage(R.string.permission_camera_rationale)
-                .setCancelable(false)
-                .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
-                    @Override
-                    public void onClick(final DialogInterface dialog, final int which) {
-                        request.proceed();
-                    }
-                })
-                .show();
+    void showRationaleForCamera(PermissionRequest request) {
+        // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
+        // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
+        showRationaleDialog(R.string.permission_camera_rationale, request);
+    }
+
+    @OnShowRationale({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})
+    void showRationaleForContact(PermissionRequest request) {
+        // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
+        // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
+        showRationaleDialog(R.string.permission_contacts_rationale, request);
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA)
-    void showDeniedForCamera() {
-        Snackbar.make(mLayout, "Sorry you didn't granted us the premissions", Snackbar.LENGTH_LONG).setAction("Go to the App Permissions",this).show();
+    void onCameraDenied() {
+        // NOTE: Deal with a denied permission, e.g. by showing specific UI
+        // or disabling certain functionality
+        Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show();
     }
 
     @OnNeverAskAgain(Manifest.permission.CAMERA)
-    void showNeverAskForCamera() {
-        Snackbar.make(mLayout, "We don't have premssions to the camera",Snackbar.LENGTH_LONG).setAction("Go to the App Permissions",this).show();
+    void onCameraNeverAskAgain() {
+        Toast.makeText(this, R.string.permission_camera_never_askagain, Toast.LENGTH_SHORT).show();
     }
 
-    @Override
-    public void onClick(final View v) {
-        switch (v.getId()){
-            case R.id.fab:  Uri uri = ImageHelper.getUriToTakeAPhoto();
-                MainActivityPermissionsDispatcher.shoCameraWithCheck(MainActivity.this,12345,uri);
-                break;
-            default: showAppPermissionSettings();
-        }
-
+    public void onBackClick(View view) {
+        getSupportFragmentManager().popBackStack();
     }
 
-    void showAppPermissionSettings(){
-        Intent intent = new Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS,
-                Uri.fromParts("package", getPackageName(), null));
-        intent.addFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
-        startActivity(intent);
-    }
-
-    @Override
-    public void onRequestPermissionsResult(final int requestCode,
-                                           @NonNull final String[] permissions,
-                                           @NonNull final int[] grantResults) {
-        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+    private void showRationaleDialog(@StringRes int messageResId, final PermissionRequest request) {
+        new AlertDialog.Builder(this)
+                .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogInterface dialog, int which) {
+                        request.proceed();
+                    }
+                })
+                .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(@NonNull DialogInterface dialog, int which) {
+                        request.cancel();
+                    }
+                })
+                .setCancelable(false)
+                .setMessage(messageResId)
+                .show();
     }
 }
