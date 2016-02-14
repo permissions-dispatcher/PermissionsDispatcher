@@ -124,7 +124,7 @@ public void onRequestPermissionsResult(int requestCode, String[] permissions, in
 }
 ```
 
-Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/sample) and [generated class](https://gist.github.com/aurae/7821f3a2da098b949f7b) for more details.
+Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/sample) and [generated class](https://github.com/hotchemi/PermissionsDispatcher/blob/master/art/MainActivityPermissionsDispatcher.java) for more details.
 
 ## Support
 
