@@ -16,6 +16,7 @@ public final class PermissionUtils {
     // Map of dangerous permissions introduced in later framework versions.
     // Used to conditionally bypass permission-hold checks on older devices.
     private static final SimpleArrayMap<String, Integer> MIN_SDK_PERMISSIONS;
+
     static {
         MIN_SDK_PERMISSIONS = new SimpleArrayMap<>(6);
         MIN_SDK_PERMISSIONS.put("com.android.voicemail.permission.ADD_VOICEMAIL", 14);
@@ -106,8 +107,7 @@ public final class PermissionUtils {
         try {
             PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
             targetSdkVersion = packageInfo.applicationInfo.targetSdkVersion;
-        }
-        catch (PackageManager.NameNotFoundException ignored) {
+        } catch (PackageManager.NameNotFoundException ignored) {
         }
         if (targetSdkVersion == null) {
             return -1;
