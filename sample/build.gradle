@@ -22,7 +22,7 @@ android {
 
 dependencies {
     compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:design:$SUPPORT_LIBRARY_VERSION"
+
     // The 'exclude' clause simulates the optional dependency on support-v13 for local Project Dependencies
     compile (project(':library')) { exclude group: 'com.android.support', module: 'support-v13' }
     provided project(':processor')
