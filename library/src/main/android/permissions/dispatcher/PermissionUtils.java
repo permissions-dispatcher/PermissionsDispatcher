@@ -101,7 +101,8 @@ public final class PermissionUtils {
      */
     @TargetApi(Build.VERSION_CODES.DONUT)
     public static synchronized int getTargetSdkVersion(Context context) {
-        if (targetSdkVersion == -1) {
+        if (targetSdkVersion != -1) {
+            // target sdk version is already set
             return targetSdkVersion;
         }
         try {
