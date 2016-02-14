@@ -44,7 +44,7 @@ fun <A : Annotation> Element.hasAnnotation(annotationType: Class<A>): Boolean =
  * If this is invoked on an Annotation that's not defined by PermissionsDispatcher, this returns an empty list.
  */
 fun Annotation.permissionValue(): List<String> {
-    when(this){
+    when (this) {
         is NeedsPermission -> return this.value.asList()
         is OnShowRationale -> return this.value.asList()
         is OnPermissionDenied -> return this.value.asList()
