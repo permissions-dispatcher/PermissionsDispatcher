@@ -27,7 +27,7 @@ public final class PermissionUtils {
         MIN_SDK_PERMISSIONS.put("android.permission.WRITE_CALL_LOG", 16);
     }
 
-    private static int targetSdkVersion = -1;
+    private static volatile int targetSdkVersion = -1;
 
     private PermissionUtils() {
     }
@@ -100,15 +100,17 @@ public final class PermissionUtils {
      * @return target sdk version
      */
     @TargetApi(Build.VERSION_CODES.DONUT)
-    public static synchronized int getTargetSdkVersion(Context context) {
+    public static int getTargetSdkVersion(Context context) {
         if (targetSdkVersion != -1) {
             // target sdk version is already set
             return targetSdkVersion;
         }
-        try {
-            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            targetSdkVersion = packageInfo.applicationInfo.targetSdkVersion;
-        } catch (PackageManager.NameNotFoundException ignored) {
+        synchronized (PermissionUtils.class) {
+            try {
+                PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                targetSdkVersion = packageInfo.applicationInfo.targetSdkVersion;
+            } catch (PackageManager.NameNotFoundException ignored) {
+            }
         }
         return targetSdkVersion;
     }
