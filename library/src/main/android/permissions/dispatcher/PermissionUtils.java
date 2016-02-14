@@ -101,15 +101,15 @@ public final class PermissionUtils {
      */
     @TargetApi(Build.VERSION_CODES.DONUT)
     public static int getTargetSdkVersion(Context context) {
-        if (targetSdkVersion != -1) {
-            // target sdk version is already set
-            return targetSdkVersion;
-        }
-        synchronized (PermissionUtils.class) {
-            try {
-                PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-                targetSdkVersion = packageInfo.applicationInfo.targetSdkVersion;
-            } catch (PackageManager.NameNotFoundException ignored) {
+        if (targetSdkVersion == -1) {
+            synchronized (PermissionUtils.class) {
+                if (targetSdkVersion == -1) {
+                    try {
+                        PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                        targetSdkVersion = packageInfo.applicationInfo.targetSdkVersion;
+                    } catch (PackageManager.NameNotFoundException ignored) {
+                    }
+                }
             }
         }
         return targetSdkVersion;
