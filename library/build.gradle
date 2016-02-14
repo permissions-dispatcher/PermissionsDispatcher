@@ -31,6 +31,10 @@ android {
     }
 }
 
+configurations {
+    lintChecks
+}
+
 dependencies {
     compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
     compile "com.android.support:support-v13:$SUPPORT_LIBRARY_VERSION", optional
@@ -39,6 +43,8 @@ dependencies {
     testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
     testCompile "org.powermock:powermock-api-mockito:$POWERMOCK_VERSION"
     testCompile "org.powermock:powermock-module-junit4:$POWERMOCK_VERSION"
+
+    lintChecks project(path: ':lint', configuration: 'lintChecks')
 }
 
 publish {
@@ -80,4 +86,16 @@ task copyJarToOtherModules(type: Copy) {
 
 assemble.doLast {
     copyJarToOtherModules.execute()
+}
+
+task copyLintJar(type: Copy) {
+    from(configurations.lintChecks) {
+        rename { 'lint.jar' }
+    }
+    into 'build/intermediates/lint/'
+}
+
+project.afterEvaluate {
+    def compileLintTask = project.tasks.find { it.name == 'compileLint' }
+    compileLintTask.dependsOn(copyLintJar)
 }
