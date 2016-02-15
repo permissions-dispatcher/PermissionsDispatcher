@@ -1,5 +1,9 @@
 # ChangeLog
 
+- 2.0.6 2016/02/15
+  - Add lint support [#75](https://github.com/hotchemi/PermissionsDispatcher/pull/75).
+  - Update kotlin version [#91](https://github.com/hotchemi/PermissionsDispatcher/pull/91).
+  - Performance improvement [#93](https://github.com/hotchemi/PermissionsDispatcher/pull/93).
 - 2.0.5 2016/01/29
   - Back to support JDK 1.7.
 - 2.0.4 2016/01/22
