@@ -1,5 +1,6 @@
 package permissions.dispatcher;
 
+import android.annotation.TargetApi;
 import android.app.Activity;
 import android.content.Context;
 import android.content.pm.PackageInfo;
@@ -15,6 +16,7 @@ public final class PermissionUtils {
     // Map of dangerous permissions introduced in later framework versions.
     // Used to conditionally bypass permission-hold checks on older devices.
     private static final SimpleArrayMap<String, Integer> MIN_SDK_PERMISSIONS;
+
     static {
         MIN_SDK_PERMISSIONS = new SimpleArrayMap<>(6);
         MIN_SDK_PERMISSIONS.put("com.android.voicemail.permission.ADD_VOICEMAIL", 14);
@@ -24,6 +26,8 @@ public final class PermissionUtils {
         MIN_SDK_PERMISSIONS.put("android.permission.USE_SIP", 9);
         MIN_SDK_PERMISSIONS.put("android.permission.WRITE_CALL_LOG", 16);
     }
+
+    private static volatile int targetSdkVersion = -1;
 
     private PermissionUtils() {
     }
@@ -90,19 +94,25 @@ public final class PermissionUtils {
     }
 
     /**
-     * Get target sdk version from context.
+     * Get target sdk version.
      *
      * @param context context
      * @return target sdk version
      */
+    @TargetApi(Build.VERSION_CODES.DONUT)
     public static int getTargetSdkVersion(Context context) {
-        try {
-            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            return packageInfo.applicationInfo.targetSdkVersion;
+        if (targetSdkVersion == -1) {
+            synchronized (PermissionUtils.class) {
+                if (targetSdkVersion == -1) {
+                    try {
+                        PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
+                        targetSdkVersion = packageInfo.applicationInfo.targetSdkVersion;
+                    } catch (PackageManager.NameNotFoundException ignored) {
+                    }
+                }
+            }
         }
-        catch (PackageManager.NameNotFoundException ignored) {
-        }
-        return -1;
+        return targetSdkVersion;
     }
 
 }
