@@ -5,11 +5,14 @@
 ![image](https://raw.githubusercontent.com/hotchemi/PermissionsDispatcher/master/art/logo.png)
 
 PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow.
-[Runtime permissions](https://developer.android.com/preview/features/runtime-permissions.html) are great for users, but can be tedious to implement correctly for developers, requiring a lot of boilerplate code. This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code clean and safe. The library is 100% reflection-free.
+
+[Runtime permissions](https://developer.android.com/preview/features/runtime-permissions.html) are great for users, but can be tedious to implement correctly for developers, requiring a lot of boilerplate code.
+
+This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code clean and safe.
+
+**The library is 100% reflection-free.**
 
 ## Download
-
-This library is only compatible with Gradle-based builds.
 
 To add it to your project, include the following in your **project** `build.gradle` file:
 
@@ -46,6 +49,8 @@ Here's a minimum example, in which we register a `MainActivity` which requires `
 
 PermissionsDispatcher introduces only a few annotations, keeping its general API concise:
 
+> NOTE: Annotated methods must not be `private`.
+
 |Annotation|Required|Description|
 |---|---|---|
 |`@RuntimePermissions`|**✓**|Register an `Activity` or `Fragment` to handle permissions|
@@ -53,8 +58,6 @@ PermissionsDispatcher introduces only a few annotations, keeping its general API
 |`@OnShowRationale`||Annotate a method which explains why the permission/s is/are needed. It passes in a `PermissionRequest` object which can be used to continue or abort the current permission request upon user input|
 |`@OnPermissionDenied`||Annotate a method which is invoked if the user doesn't grant the permissions|
 |`@OnNeverAskAgain`||Annotate a method which is invoked if the user chose to have the device "never ask again" about a permission|
-
-> NOTE: Annotated methods must not be `private`.
 
 ```java
 @RuntimePermissions
@@ -91,29 +94,21 @@ public class MainActivity extends AppCompatActivity {
 
 ### 2. Delegate to generated class
 
-Upon compilation, PermissionsDispatcher generates a class for `MainActivity` (suffixed with `PermissionsDispatcher`), which you can use to safely access these permission-protected methods. The only step you have to do is delegating the work to this helper class:
+Upon compilation, PermissionsDispatcher generates a class for `MainActivityPermissionsDispatcher`, which you can use to safely access these permission-protected methods. The only step you have to do is delegating the work to this helper class:
 
 ```java
 @Override
 protected void onCreate(Bundle savedInstanceState) {
     super.onCreate(savedInstanceState);
     setContentView(R.layout.activity_main);
-    findViewById(R.id.button_camera).setOnClickListener(this);
-    findViewById(R.id.button_contacts).setOnClickListener(this);
-}
-
-@Override
-public void onClick(View v) {
-    switch (v.getId()) {
-        case R.id.button_camera:
-            // NOTE: delegate the permission handling to generated method
-            MainActivityPermissionsDispatcher.showCameraWithCheck(this);
-            break;
-        case R.id.button_contacts:
-            // NOTE: delegate the permission handling to generated method
-            MainActivityPermissionsDispatcher.showContactsWithCheck(this);
-            break;
-    }
+    findViewById(R.id.button_camera).setOnClickListener(v -> {
+      // NOTE: delegate the permission handling to generated method
+      MainActivityPermissionsDispatcher.showCameraWithCheck(this);
+    });
+    findViewById(R.id.button_contacts).setOnClickListener(v -> {
+      // NOTE: delegate the permission handling to generated method
+      MainActivityPermissionsDispatcher.showContactsWithCheck(this);
+    });
 }
 
 @Override
