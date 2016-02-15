@@ -1,5 +1,7 @@
 # ChangeLog
 
+- 2.0.7 2016/02/16
+  - Kotlin 1.0 support [#98](https://github.com/hotchemi/PermissionsDispatcher/pull/98).
 - 2.0.6 2016/02/15
   - Add lint support [#75](https://github.com/hotchemi/PermissionsDispatcher/pull/75).
   - Update kotlin version [#91](https://github.com/hotchemi/PermissionsDispatcher/pull/91).
