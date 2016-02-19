@@ -135,10 +135,6 @@ Simply add a dependency on the `support-v13` library alongside PermissionsDispat
 
 - [Migrating to 2.x](https://github.com/hotchemi/PermissionsDispatcher/wiki/Migrating-to-2.x)
 
-### For Japanese
-
-- [Android - 5分で対応するMパーミッション - Qiita](http://qiita.com/kazy/items/0ded30d80cef9df54c98)
-
 ## Licence
 
 ```
