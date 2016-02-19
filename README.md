@@ -94,7 +94,9 @@ public class MainActivity extends AppCompatActivity {
 
 ### 2. Delegate to generated class
 
-Upon compilation, PermissionsDispatcher generates a class for `MainActivityPermissionsDispatcher`, which you can use to safely access these permission-protected methods. The only step you have to do is delegating the work to this helper class:
+Upon compilation, PermissionsDispatcher generates a class for `MainActivityPermissionsDispatcher`, which you can use to safely access these permission-protected methods.
+
+The only step you have to do is delegating the work to this helper class:
 
 ```java
 @Override
@@ -125,7 +127,9 @@ Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/ma
 
 PermissionsDispatcher is supported on **API levels 4 and up**, with which you get support for annotating `android.app.Activity` and `android.support.v4.app.Fragment` sub-classes out of the box.
 
-In case you rely on `android.app.Fragment` in your app, you can use these with PermissionsDispatcher as well! Simply add a dependency on the `support-v13` library alongside PermissionsDispatcher in your project, and it will enable support for native fragments.
+In case you rely on `android.app.Fragment` in your app, you can use these with PermissionsDispatcher as well!
+
+Simply add a dependency on the `support-v13` library alongside PermissionsDispatcher in your project, and it will enable support for native fragments.
 
 ### For 1.x user
 
