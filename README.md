@@ -37,10 +37,6 @@ dependencies {
 }
 ```
 
-### Note
-
-PermissionsDispatcher depends on the `support-v4` library by default, in order to be able to use some permission compat classes.
-
 ## Usage
 
 Here's a minimum example, in which we register a `MainActivity` which requires `Manifest.permission.CAMERA`.
@@ -123,7 +119,12 @@ public void onRequestPermissionsResult(int requestCode, String[] permissions, in
 
 Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/sample) and [generated class](https://github.com/hotchemi/PermissionsDispatcher/blob/master/art/MainActivityPermissionsDispatcher.java) for more details.
 
-## Support
+## Note
+
+- PermissionsDispatcher depends on the `support-v4` library by default, in order to be able to use some permission compat classes.
+- You can use this library with JDK 1.6 or up, but we test library's behaviour on the JDK 1.8 because it has been becoming the default of Android development.
+
+### Fragment Support
 
 PermissionsDispatcher is supported on **API levels 4 and up**, with which you get support for annotating `android.app.Activity` and `android.support.v4.app.Fragment` sub-classes out of the box.
 
