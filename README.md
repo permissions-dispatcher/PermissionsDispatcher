@@ -139,7 +139,7 @@ Simply add a dependency on the `support-v13` library alongside PermissionsDispat
 ## Licence
 
 ```
-Copyright 2016 Shintaro Katafuchi, Marcel Schnelle
+Copyright 2016 Shintaro Katafuchi, Marcel Schnelle, Yoshinori Isogai
 
 Licensed under the Apache License, Version 2.0 (the "License");
 you may not use this file except in compliance with the License.
