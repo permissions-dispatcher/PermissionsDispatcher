@@ -29,6 +29,16 @@ public class NoCorrespondingNeedsPermissionDetector extends Detector implements 
             Severity.ERROR,
             new Implementation(NoCorrespondingNeedsPermissionDetector.class, EnumSet.of(Scope.JAVA_FILE)));
 
+    static final Set<String> NEEDS_PERMISSION_NAME = new HashSet<String>() {{
+        add("NeedsPermission");
+        add("permissions.dispatcher.NeedsPermission");
+    }};
+
+    static final Set<String> ON_SHOW_RATIONALE_NAME = new HashSet<String>() {{
+        add("OnShowRationale");
+        add("permissions.dispatcher.OnShowRationale");
+    }};
+
     @Override
     public AstVisitor createJavaVisitor(JavaContext context) {
         return new AnnotationChecker(context);
@@ -36,22 +46,11 @@ public class NoCorrespondingNeedsPermissionDetector extends Detector implements 
 
     static class AnnotationChecker extends ForwardingAstVisitor {
         private final JavaContext context;
-        private Set<String> needsPermissionName;
-        private Set<String> onShowRationaleName;
-
         private Set<Annotation> needsPermissionAnnotations;
         private Set<Annotation> onShowRationaleAnnotations;
 
         private AnnotationChecker(JavaContext context) {
             this.context = context;
-
-            needsPermissionName = new HashSet<>();
-            needsPermissionName.add("NeedsPermission");
-            needsPermissionName.add("permissions.dispatcher.NeedsPermission");
-
-            onShowRationaleName = new HashSet<>();
-            onShowRationaleName.add("OnShowRationale");
-            onShowRationaleName.add("permissions.dispatcher.OnShowRationale");
 
             needsPermissionAnnotations = new HashSet<>();
             onShowRationaleAnnotations = new HashSet<>();
@@ -65,9 +64,9 @@ public class NoCorrespondingNeedsPermissionDetector extends Detector implements 
 
             // Let's store NeedsPermission and OnShowRationale
             String type = node.astAnnotationTypeReference().getTypeName();
-            if (needsPermissionName.contains(type)) {
+            if (NEEDS_PERMISSION_NAME.contains(type)) {
                 needsPermissionAnnotations.add(node);
-            } else if (onShowRationaleName.contains(type)) {
+            } else if (ON_SHOW_RATIONALE_NAME.contains(type)) {
                 onShowRationaleAnnotations.add(node);
             }
             return super.visitAnnotation(node);
