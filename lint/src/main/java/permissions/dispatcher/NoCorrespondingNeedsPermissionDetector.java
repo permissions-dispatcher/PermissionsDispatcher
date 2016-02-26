@@ -102,7 +102,7 @@ public class NoCorrespondingNeedsPermissionDetector extends Detector implements 
                 return false;
             }
 
-            for (int i = 0; i < first.size(); i++) {
+            for (int i = 0, size = first.size(); i < size; i++) {
                 if (!first.get(i).toString().equals(second.get(i).toString())) {
                     return false;
                 }
