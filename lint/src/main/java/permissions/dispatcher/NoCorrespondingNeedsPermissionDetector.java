@@ -22,8 +22,8 @@ import lombok.ast.Node;
 public class NoCorrespondingNeedsPermissionDetector extends Detector implements Detector.JavaScanner {
 
     public static final Issue ISSUE = Issue.create("NoCorrespondingNeedsPermission",
-            "No corresponding @NeedsPermission found",
-            "The processor would ignore @OnShowRationale annotation if there is no corresponding @NeedsPermissions. For instance, if there is @OnShowRationale(Manifest.permission.CAMERA), then there must be @NeedsPermission(Manifest.permission.CAMERA) in the same class.",
+            "The method annotated with @OnShowRationale has no corresponding @NeedsPermission method, and will therefore be ignored by PermissionsDispatcher",
+            "The @OnShowRationale method with a certain signature is internally connected to another method annotated with @NeedsPermission and the same annotation value. Please ensure that there is a @NeedsPermission method with matching annotation values for this method.",
             Category.CORRECTNESS,
             4,
             Severity.ERROR,
@@ -89,7 +89,7 @@ public class NoCorrespondingNeedsPermissionDetector extends Detector implements 
                 }
 
                 if (!found) {
-                    context.report(ISSUE, context.getLocation(onShowRationaleAnnotation), "No corresponding @NeedsPermission found");
+                    context.report(ISSUE, context.getLocation(onShowRationaleAnnotation), "Useless @OnShowRationale declaration");
                 }
             }
 
