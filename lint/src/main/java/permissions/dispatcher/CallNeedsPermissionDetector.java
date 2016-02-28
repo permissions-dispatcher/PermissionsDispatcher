@@ -23,14 +23,14 @@ import lombok.ast.ForwardingAstVisitor;
 import lombok.ast.MethodInvocation;
 
 
-public class PermissionsDispatcherDetector extends Detector implements Detector.JavaScanner {
+public class CallNeedsPermissionDetector extends Detector implements Detector.JavaScanner {
     public static final Issue ISSUE = Issue.create("CallNeedsPermission",
             "Call the corresponding \"withCheck\" method of the generated PermissionsDispatcher class instead",
             "Directly invoking a method annotated with @NeedsPermission may lead to misleading behaviour on devices running Marshmallow and up. Therefore, it is advised to use the generated PermissionsDispatcher class instead, which provides a \"withCheck\" method that safely handles runtime permissions.",
             Category.CORRECTNESS,
             7,
             Severity.ERROR,
-            new Implementation(PermissionsDispatcherDetector.class, EnumSet.of(Scope.ALL_JAVA_FILES)));
+            new Implementation(CallNeedsPermissionDetector.class, EnumSet.of(Scope.ALL_JAVA_FILES)));
 
     static List<String> generatedClassNames = new ArrayList<>();
 
@@ -74,7 +74,7 @@ public class PermissionsDispatcherDetector extends Detector implements Detector.
             if (resolvedNode instanceof JavaParser.ResolvedClass) {
                 generatedClassNames.add(resolvedNode.getName() + "PermissionsDispatcher");
                 // let's check method call!
-                context.requestRepeat(new PermissionsDispatcherDetector(), EnumSet.of(Scope.ALL_JAVA_FILES));
+                context.requestRepeat(new CallNeedsPermissionDetector(), EnumSet.of(Scope.ALL_JAVA_FILES));
             }
             return super.visitAnnotation(node);
         }
