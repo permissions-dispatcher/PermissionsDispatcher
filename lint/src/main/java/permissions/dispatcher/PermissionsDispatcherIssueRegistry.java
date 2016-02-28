@@ -10,6 +10,6 @@ import java.util.List;
 public class PermissionsDispatcherIssueRegistry extends IssueRegistry {
     @Override
     public List<Issue> getIssues() {
-        return Arrays.asList(PermissionsDispatcherDetector.ISSUE);
+        return Arrays.asList(PermissionsDispatcherDetector.ISSUE, NoCorrespondingNeedsPermissionDetector.ISSUE);
     }
 }
