@@ -12,31 +12,6 @@ This library lifts the burden that comes with writing a bunch of check statement
 
 **The library is 100% reflection-free.**
 
-## Download
-
-To add it to your project, include the following in your **project** `build.gradle` file:
-
-```groovy
-buildscript {
-  dependencies {
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-  }
-}
-```
-
-And on your **app module** `build.gradle`:
-
-`${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg)](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
-
-```groovy
-apply plugin: 'android-apt'
-
-dependencies {
-  compile 'com.github.hotchemi:permissionsdispatcher:${latest.version}'
-  apt 'com.github.hotchemi:permissionsdispatcher-processor:${latest.version}'
-}
-```
-
 ## Usage
 
 Here's a minimum example, in which we register a `MainActivity` which requires `Manifest.permission.CAMERA`.
@@ -135,6 +110,31 @@ Simply add a dependency on the `support-v13` library alongside PermissionsDispat
 ### For 1.x user
 
 - [Migrating to 2.x](https://github.com/hotchemi/PermissionsDispatcher/wiki/Migrating-to-2.x)
+
+## Download
+
+To add it to your project, include the following in your **project** `build.gradle` file:
+
+```groovy
+buildscript {
+  dependencies {
+    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
+  }
+}
+```
+
+And on your **app module** `build.gradle`:
+
+`${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg)](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
+
+```groovy
+apply plugin: 'android-apt'
+
+dependencies {
+  compile 'com.github.hotchemi:permissionsdispatcher:${latest.version}'
+  apt 'com.github.hotchemi:permissionsdispatcher-processor:${latest.version}'
+}
+```
 
 ## Licence
 
