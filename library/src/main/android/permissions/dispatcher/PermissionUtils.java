@@ -70,11 +70,30 @@ public final class PermissionUtils {
      */
     public static boolean hasSelfPermissions(Context context, String... permissions) {
         for (String permission : permissions) {
-            if (permissionExists(permission) && checkSelfPermission(context, permission) != PackageManager.PERMISSION_GRANTED) {
+            if (permissionExists(permission) && !hasSelfPermission(context, permission)) {
                 return false;
             }
         }
         return true;
+    }
+
+    /**
+     * Determine context has access to the given permission.
+     *
+     * This is a workaround for RuntimeException of Parcel#readException.
+     * For more detail, check this issue https://github.com/hotchemi/PermissionsDispatcher/issues/107
+     *
+     * @param context context
+     * @param permission permission
+     * @return returns true if context has access to the given permission, false otherwise.
+     * @see #hasSelfPermissions(Context, String...)
+     */
+    private static boolean hasSelfPermission(Context context, String permission) {
+        try {
+            return checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+        } catch (RuntimeException t) {
+            return false;
+        }
     }
 
     /**
