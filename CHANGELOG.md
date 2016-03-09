@@ -1,5 +1,8 @@
 # ChangeLog
 
+- 2.0.8 2016/03/09
+  - Fix [#107](https://github.com/hotchemi/PermissionsDispatcher/issues/107).
+  - Fix [#109](https://github.com/hotchemi/PermissionsDispatcher/issues/109).
 - 2.0.7 2016/02/16
   - Kotlin 1.0 support [#98](https://github.com/hotchemi/PermissionsDispatcher/pull/98).
 - 2.0.6 2016/02/15
