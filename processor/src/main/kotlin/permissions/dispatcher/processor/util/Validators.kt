@@ -2,6 +2,7 @@ package permissions.dispatcher.processor.util
 
 import permissions.dispatcher.processor.ProcessorUnit
 import permissions.dispatcher.processor.RuntimePermissionsElement
+import permissions.dispatcher.processor.TYPE_UTILS
 import permissions.dispatcher.processor.exception.*
 import java.util.*
 import javax.lang.model.element.Element
@@ -102,7 +103,7 @@ fun checkMethodParameters(items: List<ExecutableElement>, numParams: Int, vararg
 
         params.forEachIndexed { i, param ->
             val requiredType = requiredTypes[i]
-            if (!param.asType().equals(requiredType)) {
+            if (!TYPE_UTILS.isSameType(param.asType(), requiredType)) {
                 throw WrongParametersException(it, requiredTypes)
             }
         }
