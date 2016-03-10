@@ -9,6 +9,6 @@ import java.lang.annotation.Target;
  * Register an <code>Activity</code> or <code>Fragment</code> to handle permissions.
  */
 @Target(ElementType.TYPE)
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.CLASS)
 public @interface RuntimePermissions {
 }

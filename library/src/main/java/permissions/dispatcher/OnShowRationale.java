@@ -9,7 +9,7 @@ import java.lang.annotation.Target;
  * Register some methods which explain why permissions are needed.
  */
 @Target(ElementType.METHOD)
-@Retention(RetentionPolicy.SOURCE)
+@Retention(RetentionPolicy.CLASS)
 public @interface OnShowRationale {
     String[] value();
 }
