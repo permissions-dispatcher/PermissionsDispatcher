@@ -39,6 +39,9 @@ public final class PermissionUtils {
      * @return returns true if all permissions have been granted.
      */
     public static boolean verifyPermissions(int... grantResults) {
+        if (grantResults.length == 0) {
+            return false;
+        }
         for (int result : grantResults) {
             if (result != PackageManager.PERMISSION_GRANTED) {
                 return false;
