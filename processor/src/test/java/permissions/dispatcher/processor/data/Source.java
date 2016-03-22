@@ -5421,6 +5421,228 @@ public final class Source {
         }
     };
 
+    public static final BaseTest SystemAlertWindowSupportGenericsFragment = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyFragment";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.Manifest;",
+                    "import android.support.v4.app.Fragment;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnNeverAskAgain;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "import permissions.dispatcher.OnShowRationale;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import java.lang.annotation.Annotation;",
+                    "import java.util.Map;",
+                    "@RuntimePermissions",
+                    "public class MyFragment<T, U extends Integer, V extends Map<? extends Annotation, ?>> extends Fragment {",
+                    "    @NeedsPermission(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindow() {",
+                    "    }",
+                    "    @OnShowRationale(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindowOnShowRationale(PermissionRequest request) {",
+                    "    }",
+                    "    @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindowOnPermissionDenied() {",
+                    "    }",
+                    "    @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindowOnNeverAskAgain() {",
+                    "    }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.content.Intent;",
+                    "import android.net.Uri;",
+                    "import android.provider.Settings;",
+                    "import java.lang.Integer;",
+                    "import java.lang.Override;",
+                    "import java.lang.String;",
+                    "import java.lang.annotation.Annotation;",
+                    "import java.lang.ref.WeakReference;",
+                    "import java.util.Map;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyFragmentPermissionsDispatcher {",
+                    "  private static final int REQUEST_SYSTEMALERTWINDOW = 0;",
+                    "  private static final String[] PERMISSION_SYSTEMALERTWINDOW = new String[] {\"android.permission.SYSTEM_ALERT_WINDOW\"};",
+                    "  private MyFragmentPermissionsDispatcher() {",
+                    "  }",
+                    "  static <T, U extends Integer, V extends Map<? extends Annotation, ?>> void systemAlertWindowWithCheck(MyFragment<T, U, V> target) {",
+                    "    if (Settings.canDrawOverlays(target.getActivity())) {",
+                    "      target.systemAlertWindow();",
+                    "    } else {",
+                    "      if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SYSTEMALERTWINDOW)) {",
+                    "        target.systemAlertWindowOnShowRationale(new SystemAlertWindowPermissionRequest(target));",
+                    "      } else {",
+                    "        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(\"package:\" + target.getActivity().getPackageName()));",
+                    "        target.getActivity().startActivityForResult(intent, REQUEST_SYSTEMALERTWINDOW);",
+                    "      }",
+                    "    }",
+                    "  }",
+                    "  static <T, U extends Integer, V extends Map<? extends Annotation, ?>> void onActivityResult(MyFragment<T, U, V> target, int requestCode) {",
+                    "    switch (requestCode) {",
+                    "      case REQUEST_SYSTEMALERTWINDOW:",
+                    "      if (Settings.canDrawOverlays(target.getActivity())) {",
+                    "        target.systemAlertWindow();",
+                    "      } else {",
+                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SYSTEMALERTWINDOW)) {",
+                    "          target.systemAlertWindowOnNeverAskAgain();",
+                    "        } else {",
+                    "          target.systemAlertWindowOnPermissionDenied();",
+                    "        }",
+                    "      }",
+                    "      break;",
+                    "      default:",
+                    "      break;",
+                    "    }",
+                    "  }",
+                    "  private static final class SystemAlertWindowPermissionRequest<T, U extends Integer, V extends Map<? extends Annotation, ?>> implements PermissionRequest {",
+                    "    private final WeakReference<MyFragment<T, U, V>> weakTarget;",
+                    "    private SystemAlertWindowPermissionRequest(MyFragment<T, U, V> target) {",
+                    "      this.weakTarget = new WeakReference<>(target);",
+                    "    }",
+                    "    @Override",
+                    "    public void proceed() {",
+                    "      MyFragment<T, U, V> target = weakTarget.get();",
+                    "      if (target == null) return;",
+                    "      Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(\"package:\" + target.getActivity().getPackageName()));",
+                    "      target.getActivity().startActivityForResult(intent, REQUEST_SYSTEMALERTWINDOW);",
+                    "    }",
+                    "    @Override",
+                    "    public void cancel() {",
+                    "      MyFragment<T, U, V> target = weakTarget.get();",
+                    "      if (target == null) return;",
+                    "      target.systemAlertWindowOnPermissionDenied();",
+                    "    }",
+                    "  }",
+                    "}",
+            };
+        }
+    };
+
+    public static final BaseTest SystemAlertWindowGenericsActivity = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnNeverAskAgain;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "import permissions.dispatcher.OnShowRationale;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import java.lang.annotation.Annotation;",
+                    "import java.util.Map;",
+                    "@RuntimePermissions",
+                    "public class MyActivity<T, U extends Integer, V extends Map<? extends Annotation, ?>> extends Activity {",
+                    "    @NeedsPermission(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindow() {",
+                    "    }",
+                    "    @OnShowRationale(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindowOnShowRationale(PermissionRequest request) {",
+                    "    }",
+                    "    @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindowOnPermissionDenied() {",
+                    "    }",
+                    "    @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindowOnNeverAskAgain() {",
+                    "    }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.content.Intent;",
+                    "import android.net.Uri;",
+                    "import android.provider.Settings;",
+                    "import java.lang.Integer;",
+                    "import java.lang.Override;",
+                    "import java.lang.String;",
+                    "import java.lang.annotation.Annotation;",
+                    "import java.lang.ref.WeakReference;",
+                    "import java.util.Map;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyActivityPermissionsDispatcher {",
+                    "  private static final int REQUEST_SYSTEMALERTWINDOW = 0;",
+                    "  private static final String[] PERMISSION_SYSTEMALERTWINDOW = new String[] {\"android.permission.SYSTEM_ALERT_WINDOW\"};",
+                    "  private MyActivityPermissionsDispatcher() {",
+                    "  }",
+                    "  static <T, U extends Integer, V extends Map<? extends Annotation, ?>> void systemAlertWindowWithCheck(MyActivity<T, U, V> target) {",
+                    "    if (Settings.canDrawOverlays(target)) {",
+                    "      target.systemAlertWindow();",
+                    "    } else {",
+                    "      if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SYSTEMALERTWINDOW)) {",
+                    "        target.systemAlertWindowOnShowRationale(new SystemAlertWindowPermissionRequest(target));",
+                    "      } else {",
+                    "        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(\"package:\" + target.getPackageName()));",
+                    "        target.startActivityForResult(intent, REQUEST_SYSTEMALERTWINDOW);",
+                    "      }",
+                    "    }",
+                    "  }",
+                    "  static <T, U extends Integer, V extends Map<? extends Annotation, ?>> void onActivityResult(MyActivity<T, U, V> target, int requestCode) {",
+                    "    switch (requestCode) {",
+                    "      case REQUEST_SYSTEMALERTWINDOW:",
+                    "      if (Settings.canDrawOverlays(target)) {",
+                    "        target.systemAlertWindow();",
+                    "      } else {",
+                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SYSTEMALERTWINDOW)) {",
+                    "          target.systemAlertWindowOnNeverAskAgain();",
+                    "        } else {",
+                    "          target.systemAlertWindowOnPermissionDenied();",
+                    "        }",
+                    "      }",
+                    "      break;",
+                    "      default:",
+                    "      break;",
+                    "    }",
+                    "  }",
+                    "  private static final class SystemAlertWindowPermissionRequest<T, U extends Integer, V extends Map<? extends Annotation, ?>> implements PermissionRequest {",
+                    "    private final WeakReference<MyActivity<T, U, V>> weakTarget;",
+                    "    private SystemAlertWindowPermissionRequest(MyActivity<T, U, V> target) {",
+                    "      this.weakTarget = new WeakReference<>(target);",
+                    "    }",
+                    "    @Override",
+                    "    public void proceed() {",
+                    "      MyActivity<T, U, V> target = weakTarget.get();",
+                    "      if (target == null) return;",
+                    "      Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(\"package:\" + target.getPackageName()));",
+                    "      target.startActivityForResult(intent, REQUEST_SYSTEMALERTWINDOW);",
+                    "    }",
+                    "    @Override",
+                    "    public void cancel() {",
+                    "      MyActivity<T, U, V> target = weakTarget.get();",
+                    "      if (target == null) return;",
+                    "      target.systemAlertWindowOnPermissionDenied();",
+                    "    }",
+                    "  }",
+                    "}"
+            };
+        }
+    };
+
     public static final BaseTest SystemAlertWindowMixPermissionCase = new BaseTest() {
         @Override
         protected String getName() {

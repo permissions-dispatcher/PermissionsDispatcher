@@ -342,4 +342,13 @@ public class ProcessorTestSuite extends TestSuite {
         expectRuntimeException("Method 'systemAlertWindow()' defines 'android.permission.WRITE_SETTINGS' with other permissions at the same time.");
         assertJavaSource(Source.SystemAlertWindowAndWriteSettingsMixPermissionCase);
     }
+
+    @Test public void systemAlertWindowGenericsActivity() {
+        assertJavaSource(Source.SystemAlertWindowGenericsActivity);
+    }
+
+    @Test public void systemAlertWindowSupportGenericsFragment() {
+        assertJavaSource(Source.SystemAlertWindowSupportGenericsFragment);
+    }
+
 }
