@@ -1,6 +1,7 @@
 package permissions.dispatcher.processor
 
 import com.squareup.javapoet.TypeName
+import com.squareup.javapoet.TypeVariableName
 import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
@@ -11,6 +12,7 @@ import javax.lang.model.element.TypeElement
 
 class RuntimePermissionsElement(e: TypeElement) {
     val typeName = TypeName.get(e.asType())
+    val typeVariables = e.typeParameters.map { TypeVariableName.get(it) }
     val packageName = e.packageName()
     val inputClassName = e.simpleString()
     val generatedClassName = inputClassName + GEN_CLASS_SUFFIX
