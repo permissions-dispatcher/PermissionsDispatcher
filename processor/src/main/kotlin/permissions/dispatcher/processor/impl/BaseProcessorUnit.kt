@@ -120,6 +120,7 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
     private fun createWithCheckMethod(rpe: RuntimePermissionsElement, method: ExecutableElement): MethodSpec {
         val targetParam = "target"
         val builder = MethodSpec.methodBuilder(withCheckMethodName(method))
+                .addTypeVariables(rpe.typeVariables)
                 .addModifiers(Modifier.STATIC)
                 .returns(TypeName.VOID)
                 .addParameter(rpe.typeName, targetParam)
@@ -206,6 +207,7 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
         val requestCodeParam = "requestCode"
         val grantResultsParam = "grantResults"
         val builder = MethodSpec.methodBuilder("onActivityResult")
+                .addTypeVariables(rpe.typeVariables)
                 .addModifiers(Modifier.STATIC)
                 .returns(TypeName.VOID)
                 .addParameter(rpe.typeName, targetParam)
@@ -236,6 +238,7 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
         val requestCodeParam = "requestCode"
         val grantResultsParam = "grantResults"
         val builder = MethodSpec.methodBuilder("onRequestPermissionsResult")
+                .addTypeVariables(rpe.typeVariables)
                 .addModifiers(Modifier.STATIC)
                 .returns(TypeName.VOID)
                 .addParameter(rpe.typeName, targetParam)
@@ -380,6 +383,7 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
 
         val targetType = rpe.typeName
         val builder = TypeSpec.classBuilder(permissionRequestTypeName(needsMethod))
+                .addTypeVariables(rpe.typeVariables)
                 .addSuperinterface(ClassName.get("permissions.dispatcher", superInterfaceName))
                 .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
 
