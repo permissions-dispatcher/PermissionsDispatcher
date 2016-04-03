@@ -210,7 +210,6 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
                 .returns(TypeName.VOID)
                 .addParameter(rpe.typeName, targetParam)
                 .addParameter(TypeName.INT, requestCodeParam)
-                .addParameter(ArrayTypeName.of(TypeName.INT), grantResultsParam)
 
         builder.beginControlFlow("switch (\$N)", requestCodeParam)
         for (needsMethod in rpe.needsElements) {
