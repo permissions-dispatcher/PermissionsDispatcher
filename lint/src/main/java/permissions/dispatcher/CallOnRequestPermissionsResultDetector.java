@@ -20,14 +20,14 @@ import lombok.ast.MethodDeclaration;
 import lombok.ast.MethodInvocation;
 import lombok.ast.VariableReference;
 
-public class CallOnRequestPermissionsResultDetector extends Detector implements Detector.JavaScanner {
+public class CallOnRequestPermissionsResultDetector extends Detector implements Detector.ClassScanner {
     public static final Issue ISSUE = Issue.create("NeedOnRequestPermissionsResult",
             "Call the \"onRequestPermissionsResult\" method of the generated PermissionsDispatcher class in the respective method of your Activity or Fragment",
             "You are required to inform the generated PermissionsDispatcher class about the results of a permission request. In your class annotated with @RuntimePermissions, override the \"onRequestPermissionsResult\" method and call through to the generated PermissionsDispatcher method with the same name.",
             Category.CORRECTNESS,
             5,
             Severity.ERROR,
-            new Implementation(CallOnRequestPermissionsResultDetector.class, EnumSet.of(Scope.JAVA_FILE)));
+            new Implementation(CallOnRequestPermissionsResultDetector.class, EnumSet.of(Scope.CLASS_FILE)));
 
     static final Set<String> RUNTIME_PERMISSIONS_NAME = new HashSet<String>() {{
         add("RuntimePermissions");
