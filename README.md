@@ -111,6 +111,10 @@ Simply add a dependency on the `support-v13` library alongside PermissionsDispat
 
 - [Migrating to 2.x](https://github.com/hotchemi/PermissionsDispatcher/wiki/Migrating-to-2.x)
 
+## ProGuard
+
+PermissionsDispatcher bundles ProGuard rules in its aar. No extra settings are required.
+
 ## Download
 
 To add it to your project, include the following in your **project** `build.gradle` file:
