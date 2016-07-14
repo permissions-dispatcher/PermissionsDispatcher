@@ -8,6 +8,7 @@ android {
     defaultConfig {
         minSdkVersion LIBRARY_MIN_SDK_VERSION
         targetSdkVersion 23
+        consumerProguardFiles 'proguard-rules.txt'
     }
 
     compileOptions {
