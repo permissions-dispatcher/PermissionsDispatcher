@@ -107,7 +107,11 @@ In case you rely on `android.app.Fragment` in your app, you can use these with P
 
 Simply add a dependency on the `support-v13` library alongside PermissionsDispatcher in your project, and it will enable support for native fragments.
 
-### For 1.x user
+### For AndroidAnnotations users
+
+If you use [AndroidAnnotations](http://androidannotations.org/), you need to add [AndroidAnnotationsPermissionsDispatcherPlugin](https://github.com/AleksanderMielczarek/AndroidAnnotationsPermissionsDispatcherPlugin) to your dependencies so PermissionsDispatcher's looks for AA's subclasses (your project won't compile otherwise).
+
+### For 1.x users
 
 - [Migrating to 2.x](https://github.com/hotchemi/PermissionsDispatcher/wiki/Migrating-to-2.x)
 
