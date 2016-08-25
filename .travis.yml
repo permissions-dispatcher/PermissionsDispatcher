@@ -18,8 +18,4 @@ branches:
   except:
     - gh-pages
 
-script: ./gradlew check --stacktrace
-
-cache:
-  directories:
-    - $HOME/.m2
+script: ./gradlew clean check --stacktrace
