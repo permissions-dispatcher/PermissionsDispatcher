@@ -13,9 +13,9 @@ import javax.lang.model.util.Types
 import kotlin.properties.Delegates
 
 /** Element Utilities, obtained from the processing environment */
-public var ELEMENT_UTILS: Elements by Delegates.notNull()
+var ELEMENT_UTILS: Elements by Delegates.notNull()
 /** Type Utilities, obtained from the processing environment */
-public var TYPE_UTILS: Types by Delegates.notNull()
+var TYPE_UTILS: Types by Delegates.notNull()
 
 class PermissionsProcessor : AbstractProcessor() {
 
