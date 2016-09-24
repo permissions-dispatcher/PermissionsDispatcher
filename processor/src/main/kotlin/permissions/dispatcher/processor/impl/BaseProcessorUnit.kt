@@ -17,9 +17,10 @@ import javax.lang.model.element.Modifier
  * <p>
  * This generates the parts of code independent from specific permission method signatures for different target objects.
  */
-public abstract class BaseProcessorUnit : ProcessorUnit {
+abstract class BaseProcessorUnit : ProcessorUnit {
 
     protected val PERMISSION_UTILS = ClassName.get("permissions.dispatcher", "PermissionUtils")
+    private val SDK_INT = ClassName.get("android.os", "Build")
     private val MANIFEST_WRITE_SETTING = "android.permission.WRITE_SETTINGS"
     private val MANIFEST_SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
     private val ADD_WITH_CHECK_BODY_MAP = hashMapOf(MANIFEST_SYSTEM_ALERT_WINDOW to SystemAlertWindowHelper(), MANIFEST_WRITE_SETTING to WriteSettingsHelper())
@@ -139,6 +140,19 @@ public abstract class BaseProcessorUnit : ProcessorUnit {
         // Create field names for the constants to use
         val requestCodeField = requestCodeFieldName(needsMethod)
         val permissionField = permissionFieldName(needsMethod)
+
+        // if maxSdkVersion is lower than os level don't check permission
+        val needsPermissionMaxSdkVersion = needsMethod.getAnnotation(NeedsPermission::class.java).maxSdkVersion
+        if (needsPermissionMaxSdkVersion > 0) {
+            builder.beginControlFlow("if (\$T.VERSION.SDK_INT > \$L}", SDK_INT, needsPermissionMaxSdkVersion)
+                    .addCode(CodeBlock.builder()
+                            .add("\$N.\$N(", targetParam, needsMethod.simpleString())
+                            .add(varargsParametersCodeBlock(needsMethod))
+                            .addStatement("return")
+                            .addStatement(")")
+                            .build())
+                    .endControlFlow()
+        }
 
         // Add the conditional for when permission has already been granted
         val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
