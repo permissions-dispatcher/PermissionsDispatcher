@@ -4,7 +4,7 @@ buildscript {
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$GRADLE_PLUGIN_VERSION"
-        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_PLUGIN_VERSION"
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
         classpath "com.neenbedankt.gradle.plugins:android-apt:$APT_PLUGIN_VERSION"
         classpath "com.novoda:bintray-release:$BINTRAY_PLUGIN_VERSION"
         classpath "com.netflix.nebula:gradle-extra-configurations-plugin:$CONFIG_PLUGIN_VERSION"
