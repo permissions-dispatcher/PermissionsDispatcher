@@ -141,7 +141,7 @@ abstract class BaseProcessorUnit : ProcessorUnit {
         val requestCodeField = requestCodeFieldName(needsMethod)
         val permissionField = permissionFieldName(needsMethod)
 
-        // if maxSdkVersion is lower than os level don't check permission
+        // if maxSdkVersion is lower than os level does nothing
         val needsPermissionMaxSdkVersion = needsMethod.getAnnotation(NeedsPermission::class.java).maxSdkVersion
         if (needsPermissionMaxSdkVersion > 0) {
             builder.beginControlFlow("if (\$T.VERSION.SDK_INT > \$L)", BUILD, needsPermissionMaxSdkVersion)
