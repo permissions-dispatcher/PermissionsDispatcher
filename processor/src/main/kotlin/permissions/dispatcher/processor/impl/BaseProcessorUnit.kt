@@ -20,7 +20,7 @@ import javax.lang.model.element.Modifier
 abstract class BaseProcessorUnit : ProcessorUnit {
 
     protected val PERMISSION_UTILS = ClassName.get("permissions.dispatcher", "PermissionUtils")
-    private val SDK_INT = ClassName.get("android.os", "Build")
+    private val BUILD = ClassName.get("android.os", "Build")
     private val MANIFEST_WRITE_SETTING = "android.permission.WRITE_SETTINGS"
     private val MANIFEST_SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
     private val ADD_WITH_CHECK_BODY_MAP = hashMapOf(MANIFEST_SYSTEM_ALERT_WINDOW to SystemAlertWindowHelper(), MANIFEST_WRITE_SETTING to WriteSettingsHelper())
@@ -144,7 +144,7 @@ abstract class BaseProcessorUnit : ProcessorUnit {
         // if maxSdkVersion is lower than os level don't check permission
         val needsPermissionMaxSdkVersion = needsMethod.getAnnotation(NeedsPermission::class.java).maxSdkVersion
         if (needsPermissionMaxSdkVersion > 0) {
-            builder.beginControlFlow("if (\$T.VERSION.SDK_INT > \$L)", SDK_INT, needsPermissionMaxSdkVersion)
+            builder.beginControlFlow("if (\$T.VERSION.SDK_INT > \$L)", BUILD, needsPermissionMaxSdkVersion)
                     .addCode(CodeBlock.builder()
                             .add("\$N.\$N(", targetParam, needsMethod.simpleString())
                             .add(varargsParametersCodeBlock(needsMethod))
