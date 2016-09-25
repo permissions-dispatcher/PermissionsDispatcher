@@ -4961,6 +4961,163 @@ public final class Source {
         }
     };
 
+    public static final BaseTest ValidMaxSdkVersion = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "import permissions.dispatcher.OnNeverAskAgain;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "   @NeedsPermission(value = Manifest.permission.WRITE_EXTERNAL_STORAGE, maxSdkVersion = 18)",
+                    "   void showGetStorage() {",
+                    "   }",
+                    "   @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)",
+                    "   void onGetStorageDenied() {",
+                    "   }",
+                    "   @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)",
+                    "   void onGetStorageNeverAsk() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[]{
+                    "package tests;",
+                    "import android.os.Build;",
+                    "import android.support.v4.app.ActivityCompat;",
+                    "import java.lang.String;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyActivityPermissionsDispatcher {",
+                    "   private static final int REQUEST_SHOWGETSTORAGE = 0;",
+                    "   private static final String[] PERMISSION_SHOWGETSTORAGE = new String[] {\"android.permission.WRITE_EXTERNAL_STORAGE\"};",
+                    "   private MyActivityPermissionsDispatcher() {",
+                    "   }",
+                    "   static void showGetStorageWithCheck(MyActivity target) {",
+                    "       if (Build.VERSION.SDK_INT > 18) {",
+                    "           target.showGetStorage();",
+                    "           return;",
+                    "       }",
+                    "       if (PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWGETSTORAGE)) {",
+                    "           target.showGetStorage();",
+                    "       } else {",
+                    "           ActivityCompat.requestPermissions(target, PERMISSION_SHOWGETSTORAGE, REQUEST_SHOWGETSTORAGE);",
+                    "       }",
+                    "   }",
+                    "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
+                    "       switch (requestCode) {",
+                    "           case REQUEST_SHOWGETSTORAGE:",
+                    "               if (PermissionUtils.getTargetSdkVersion(target) < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWGETSTORAGE)) {",
+                    "                   target.onGetStorageDenied();",
+                    "                   return;",
+                    "               }",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showGetStorage();",
+                    "               } else {",
+                    "                   if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWGETSTORAGE)) {",
+                    "                       target.onGetStorageNeverAsk();",
+                    "                   } else {",
+                    "                       target.onGetStorageDenied();",
+                    "                   }",
+                    "               }",
+                    "               break;",
+                    "           default:",
+                    "               break;",
+                    "       }",
+                    "   }",
+                    "}"
+            };
+        }
+    };
+
+    public static final BaseTest InValidMaxSdkVersion = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyActivity";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Activity;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "import permissions.dispatcher.OnNeverAskAgain;",
+                    "@RuntimePermissions",
+                    "public class MyActivity extends Activity {",
+                    "   @NeedsPermission(value = Manifest.permission.WRITE_EXTERNAL_STORAGE, maxSdkVersion = 0)",
+                    "   void showGetStorage() {",
+                    "   }",
+                    "   @OnPermissionDenied(Manifest.permission.WRITE_EXTERNAL_STORAGE)",
+                    "   void onGetStorageDenied() {",
+                    "   }",
+                    "   @OnNeverAskAgain(Manifest.permission.WRITE_EXTERNAL_STORAGE)",
+                    "   void onGetStorageNeverAsk() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[]{
+                    "package tests;",
+                    "import android.support.v4.app.ActivityCompat;",
+                    "import java.lang.String;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyActivityPermissionsDispatcher {",
+                    "   private static final int REQUEST_SHOWGETSTORAGE = 0;",
+                    "   private static final String[] PERMISSION_SHOWGETSTORAGE = new String[] {\"android.permission.WRITE_EXTERNAL_STORAGE\"};",
+                    "   private MyActivityPermissionsDispatcher() {",
+                    "   }",
+                    "   static void showGetStorageWithCheck(MyActivity target) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWGETSTORAGE)) {",
+                    "           target.showGetStorage();",
+                    "       } else {",
+                    "           ActivityCompat.requestPermissions(target, PERMISSION_SHOWGETSTORAGE, REQUEST_SHOWGETSTORAGE);",
+                    "       }",
+                    "   }",
+                    "   static void onRequestPermissionsResult(MyActivity target, int requestCode, int[] grantResults) {",
+                    "       switch (requestCode) {",
+                    "           case REQUEST_SHOWGETSTORAGE:",
+                    "               if (PermissionUtils.getTargetSdkVersion(target) < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWGETSTORAGE)) {",
+                    "                   target.onGetStorageDenied();",
+                    "                   return;",
+                    "               }",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showGetStorage();",
+                    "               } else {",
+                    "                   if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWGETSTORAGE)) {",
+                    "                       target.onGetStorageNeverAsk();",
+                    "                   } else {",
+                    "                       target.onGetStorageDenied();",
+                    "                   }",
+                    "               }",
+                    "               break;",
+                    "           default:",
+                    "               break;",
+                    "       }",
+                    "   }",
+                    "}"
+            };
+        }
+    };
+
     public static final BaseTest DuplicatesInListsActivity = new BaseTest() {
         @Override
         protected String getName() {

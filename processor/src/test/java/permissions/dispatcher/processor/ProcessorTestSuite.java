@@ -1,6 +1,7 @@
 package permissions.dispatcher.processor;
 
 import org.junit.Test;
+
 import permissions.dispatcher.processor.base.TestSuite;
 import permissions.dispatcher.processor.data.Source;
 
@@ -310,6 +311,14 @@ public class ProcessorTestSuite extends TestSuite {
     @Test public void noDuplicatesDespiteRepeatedValuesActivity() {
         // Issue 63: https://github.com/hotchemi/PermissionsDispatcher/issues/63
         assertJavaSource(Source.NoDuplicatesDespiteRepeatedValuesActivity);
+    }
+
+    @Test public void validMaxSdkVersion() {
+        assertJavaSource(Source.ValidMaxSdkVersion);
+    }
+
+    @Test public void invalidMaxSdkVersion() {
+        assertJavaSource(Source.InValidMaxSdkVersion);
     }
 
     @Test public void writeSettingsSupportFragment() {

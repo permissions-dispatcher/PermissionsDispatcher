@@ -144,12 +144,12 @@ abstract class BaseProcessorUnit : ProcessorUnit {
         // if maxSdkVersion is lower than os level don't check permission
         val needsPermissionMaxSdkVersion = needsMethod.getAnnotation(NeedsPermission::class.java).maxSdkVersion
         if (needsPermissionMaxSdkVersion > 0) {
-            builder.beginControlFlow("if (\$T.VERSION.SDK_INT > \$L}", SDK_INT, needsPermissionMaxSdkVersion)
+            builder.beginControlFlow("if (\$T.VERSION.SDK_INT > \$L)", SDK_INT, needsPermissionMaxSdkVersion)
                     .addCode(CodeBlock.builder()
                             .add("\$N.\$N(", targetParam, needsMethod.simpleString())
                             .add(varargsParametersCodeBlock(needsMethod))
-                            .addStatement("return")
                             .addStatement(")")
+                            .addStatement("return")
                             .build())
                     .endControlFlow()
         }
