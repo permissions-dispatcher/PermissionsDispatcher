@@ -3,6 +3,7 @@
 - 2.2.0 2016/09/25
   - Support maxSdkVersion [#204](https://github.com/hotchemi/PermissionsDispatcher/pull/204).
   - Add ProGuard support [#175](https://github.com/hotchemi/PermissionsDispatcher/pull/175).
+  - Some internal cleanup.
 - 2.1.3 2016/05/12
   - Fix [#147](https://github.com/hotchemi/PermissionsDispatcher/pull/147).
 - 2.1.2 2016/04/11
