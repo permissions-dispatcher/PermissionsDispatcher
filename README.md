@@ -65,7 +65,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### 2. Delegate to generated class
 
-Upon compilation, PermissionsDispatcher generates a class for `MainActivityPermissionsDispatcher`, which you can use to safely access these permission-protected methods.
+Upon compilation, PermissionsDispatcher generates a class for `MainActivityPermissionsDispatcher`([Activity Name] + PermissionsDispatcher), which you can use to safely access these permission-protected methods.
 
 The only step you have to do is delegating the work to this helper class:
 
