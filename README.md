@@ -43,7 +43,7 @@ public class MainActivity extends AppCompatActivity {
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
-    void showRationaleForCamera(PermissionRequest request) {
+    void showRationaleForCamera(final PermissionRequest request) {
         new AlertDialog.Builder(this)
             .setMessage(R.string.permission_camera_rationale)
             .setPositiveButton(R.string.button_allow, (dialog, button) -> request.proceed())
