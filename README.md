@@ -121,6 +121,22 @@ PermissionsDispatcher bundles ProGuard rules in its aar. No extra settings are r
 
 ## Download
 
+
+### For Android Gradle Plugin >= 2.2 users
+
+To add it to your project, include the following in your **app module** `build.gradle` file:
+
+`${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg)](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
+
+```groovy
+dependencies {
+  compile 'com.github.hotchemi:permissionsdispatcher:${latest.version}'
+  annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:${latest.version}'
+}
+```
+
+### For Android Gradle Plugin < 2.2 users
+
 To add it to your project, include the following in your **project** `build.gradle` file:
 
 ```groovy
