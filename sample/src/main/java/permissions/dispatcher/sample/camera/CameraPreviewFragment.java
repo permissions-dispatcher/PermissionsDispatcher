@@ -113,8 +113,7 @@ public class CameraPreviewFragment extends Fragment {
         releaseCamera();
     }
 
-    /** A safe way to get an instance of the Camera object.
-     */
+    /** A safe way to get an instance of the Camera object. */
     public static Camera getCameraInstance(int cameraId) {
         Camera c = null;
         try {
