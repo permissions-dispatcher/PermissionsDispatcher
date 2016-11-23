@@ -16,15 +16,16 @@
 
 package permissions.dispatcher.sample.camera;
 
-import android.app.Activity;
 import android.hardware.Camera;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.v4.app.Fragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.FrameLayout;
+
 import permissions.dispatcher.sample.R;
 
 /**
@@ -57,8 +58,16 @@ public class CameraPreviewFragment extends Fragment {
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
+        return inflater.inflate(R.layout.fragment_camera, null);
+    }
 
-        // Open an instance of the first camera and retrieve its info.
+    @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        initCamera();
+    }
+
+    private void initCamera() {
         mCamera = getCameraInstance(CAMERA_ID);
         Camera.CameraInfo cameraInfo = null;
 
@@ -68,18 +77,33 @@ public class CameraPreviewFragment extends Fragment {
             Camera.getCameraInfo(CAMERA_ID, cameraInfo);
         }
 
-        View root = inflater.inflate(R.layout.fragment_camera, null);
-
         // Get the rotation of the screen to adjust the preview image accordingly.
         final int displayRotation = getActivity().getWindowManager().getDefaultDisplay()
                 .getRotation();
 
-        // Create the Preview view and set it as the content of this Activity.
-        mPreview = new CameraPreview(getActivity(), mCamera, cameraInfo, displayRotation);
-        FrameLayout preview = (FrameLayout) root.findViewById(R.id.camera_preview);
-        preview.addView(mPreview);
+        if (getView() == null) {
+            return;
+        }
 
-        return root;
+        FrameLayout preview = (FrameLayout) getView().findViewById(R.id.camera_preview);
+        preview.removeAllViews();
+
+        if (mPreview == null) {
+            // Create the Preview view and set it as the content of this Activity.
+            mPreview = new CameraPreview(getActivity(), mCamera, cameraInfo, displayRotation);
+        } else {
+            mPreview.setCamera(mCamera, cameraInfo, displayRotation);
+        }
+
+        preview.addView(mPreview);
+    }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+        if (mCamera == null) {
+            initCamera();
+        }
     }
 
     @Override
@@ -89,7 +113,8 @@ public class CameraPreviewFragment extends Fragment {
         releaseCamera();
     }
 
-    /** A safe way to get an instance of the Camera object. */
+    /** A safe way to get an instance of the Camera object.
+     */
     public static Camera getCameraInstance(int cameraId) {
         Camera c = null;
         try {
@@ -105,12 +130,6 @@ public class CameraPreviewFragment extends Fragment {
         if (mCamera != null) {
             mCamera.release();        // release the camera for other applications
             mCamera = null;
-
-            Activity activity = getActivity();
-
-            if (activity != null) {
-                activity.onBackPressed();
-            }
         }
     }
 }
