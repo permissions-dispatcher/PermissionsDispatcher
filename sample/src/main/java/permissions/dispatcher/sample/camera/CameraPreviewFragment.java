@@ -16,6 +16,7 @@
 
 package permissions.dispatcher.sample.camera;
 
+import android.app.Activity;
 import android.hardware.Camera;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -104,6 +105,12 @@ public class CameraPreviewFragment extends Fragment {
         if (mCamera != null) {
             mCamera.release();        // release the camera for other applications
             mCamera = null;
+
+            Activity activity = getActivity();
+
+            if (activity != null) {
+                activity.onBackPressed();
+            }
         }
     }
 }
