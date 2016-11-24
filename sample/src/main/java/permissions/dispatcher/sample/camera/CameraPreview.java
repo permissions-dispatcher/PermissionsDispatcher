@@ -49,9 +49,7 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         if (camera == null || cameraInfo == null) {
             return;
         }
-        mCamera = camera;
-        mCameraInfo = cameraInfo;
-        mDisplayOrientation = displayOrientation;
+        setCamera(camera, cameraInfo, displayOrientation);
 
         // Install a SurfaceHolder.Callback so we get notified when the
         // underlying surface is created and destroyed.
@@ -138,5 +136,15 @@ public class CameraPreview extends SurfaceView implements SurfaceHolder.Callback
         }
 
         return result;
+    }
+
+    public void setCamera(Camera camera, Camera.CameraInfo cameraInfo, int displayOrientation) {
+        // Do not reinitialise if no camera has been set
+        if (camera == null || cameraInfo == null) {
+            return;
+        }
+        mCamera = camera;
+        mCameraInfo = cameraInfo;
+        mDisplayOrientation = displayOrientation;
     }
 }
