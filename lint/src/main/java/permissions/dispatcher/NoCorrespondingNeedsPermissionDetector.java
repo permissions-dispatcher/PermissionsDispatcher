@@ -52,8 +52,8 @@ public class NoCorrespondingNeedsPermissionDetector extends Detector implements 
         private AnnotationChecker(JavaContext context) {
             this.context = context;
 
-            needsPermissionAnnotations = new HashSet<>();
-            onShowRationaleAnnotations = new HashSet<>();
+            needsPermissionAnnotations = new HashSet<Annotation>();
+            onShowRationaleAnnotations = new HashSet<Annotation>();
         }
 
         @Override

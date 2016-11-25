@@ -415,7 +415,7 @@ abstract class BaseProcessorUnit : ProcessorUnit {
         val constructorBuilder = MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PRIVATE)
                 .addParameter(targetType, targetParam)
-                .addStatement("this.\$L = new WeakReference<>(\$N)", weakFieldName, targetParam)
+                .addStatement("this.\$L = new WeakReference<\$T>(\$N)", weakFieldName, targetType, targetParam)
         needsMethod.parameters.forEach {
             val fieldName = it.simpleString()
             constructorBuilder

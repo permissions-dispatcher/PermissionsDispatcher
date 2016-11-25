@@ -32,7 +32,7 @@ public class CallNeedsPermissionDetector extends Detector implements Detector.Ja
             Severity.ERROR,
             new Implementation(CallNeedsPermissionDetector.class, EnumSet.of(Scope.ALL_JAVA_FILES)));
 
-    static List<String> generatedClassNames = new ArrayList<>();
+    static List<String> generatedClassNames = new ArrayList<String>();
 
     @Override
     public AstVisitor createJavaVisitor(JavaContext context) {
@@ -54,7 +54,7 @@ public class CallNeedsPermissionDetector extends Detector implements Detector.Ja
         private AnnotationChecker(JavaContext context) {
             this.context = context;
 
-            matchingAnnotationTypeNames = new HashSet<>();
+            matchingAnnotationTypeNames = new HashSet<String>();
             matchingAnnotationTypeNames.add("RuntimePermissions");
             matchingAnnotationTypeNames.add("permissions.dispatcher.RuntimePermissions");
         }

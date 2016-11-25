@@ -2,11 +2,10 @@
 package permissions.dispatcher.sample;
 
 import android.support.v4.app.ActivityCompat;
-import java.lang.Override;
-import java.lang.String;
-import java.lang.ref.WeakReference;
 import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.PermissionUtils;
+
+import java.lang.ref.WeakReference;
 
 final class MainActivityPermissionsDispatcher {
     private static final int REQUEST_SHOWCAMERA = 0;
@@ -78,7 +77,7 @@ final class MainActivityPermissionsDispatcher {
         private final WeakReference<MainActivity> weakTarget;
 
         private ShowCameraPermissionRequest(MainActivity target) {
-            this.weakTarget = new WeakReference<>(target);
+            this.weakTarget = new WeakReference<MainActivity>(target);
         }
 
         @Override
@@ -100,7 +99,7 @@ final class MainActivityPermissionsDispatcher {
         private final WeakReference<MainActivity> weakTarget;
 
         private ShowContactsPermissionRequest(MainActivity target) {
-            this.weakTarget = new WeakReference<>(target);
+            this.weakTarget = new WeakReference<MainActivity>(target);
         }
 
         @Override
