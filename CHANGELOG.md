@@ -1,5 +1,8 @@
 # ChangeLog
 
+- 2.2.1 2016/12/08
+  - Lint update: Migrate to Psi APIs [#227](https://github.com/hotchemi/PermissionsDispatcher/pull/227).
+  - Make sure to support Java 1.6 [#222](https://github.com/hotchemi/PermissionsDispatcher/pull/222).
 - 2.2.0 2016/09/25
   - Support maxSdkVersion [#204](https://github.com/hotchemi/PermissionsDispatcher/pull/204).
   - Add ProGuard support [#175](https://github.com/hotchemi/PermissionsDispatcher/pull/175).
