@@ -10,9 +10,12 @@ import com.android.tools.lint.detector.api.Severity;
 import com.intellij.psi.JavaElementVisitor;
 import com.intellij.psi.JavaRecursiveElementVisitor;
 import com.intellij.psi.PsiAnnotation;
+import com.intellij.psi.PsiCallExpression;
 import com.intellij.psi.PsiClass;
 import com.intellij.psi.PsiCodeBlock;
 import com.intellij.psi.PsiElement;
+import com.intellij.psi.PsiExpression;
+import com.intellij.psi.PsiExpressionStatement;
 import com.intellij.psi.PsiMethod;
 import com.intellij.psi.PsiStatement;
 
@@ -64,8 +67,6 @@ public class CallOnRequestPermissionsResultDetector extends Detector
 
         private boolean hasRuntimePermissionAnnotation;
 
-        private String generatedClassName;
-
         private PsiClass psiClass;
 
         private OnRequestPermissionsResultChecker(JavaContext context, PsiClass psiClass) {
@@ -110,14 +111,37 @@ public class CallOnRequestPermissionsResultDetector extends Detector
     }
 
     private static boolean checkMethodCall(PsiMethod method, PsiClass psiClass) {
-        // FIXME: I'm sure there is a better way of checking if the on onRequestPermissionsResult
-        // method from the generated class is being called.
         PsiCodeBlock codeBlock = method.getBody();
+        if (codeBlock == null) {
+            return false;
+        }
+
         PsiStatement[] statements = codeBlock.getStatements();
-        for (int i = 0; i < statements.length; i++) {
-            if (statements[i].getText()
-                    .startsWith(psiClass.getName()
-                            + "PermissionsDispatcher.onRequestPermissionsResult")) {
+        for (PsiStatement statement : statements) {
+            if (!(statement instanceof PsiExpressionStatement)) {
+                continue;
+            }
+            PsiExpression expression = ((PsiExpressionStatement) statement)
+                    .getExpression();
+            if (!(expression instanceof PsiCallExpression)) {
+                continue;
+            }
+
+            PsiCallExpression callExpression = (PsiCallExpression) expression;
+            String targetClassName = psiClass.getName() + "PermissionsDispatcher";
+            PsiMethod resolveMethod = callExpression.resolveMethod();
+            if (resolveMethod == null) {
+                continue;
+            }
+
+            PsiClass containingClass = resolveMethod.getContainingClass();
+            if (containingClass == null) {
+                continue;
+            }
+
+            if (targetClassName.equals(containingClass.getName())
+                    && "onRequestPermissionsResult".equals(resolveMethod
+                            .getName())) {
                 return true;
             }
         }
