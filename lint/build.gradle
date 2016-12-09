@@ -10,9 +10,9 @@ configurations {
 dependencies {
     compile "com.android.tools.lint:lint-api:$LINT_VERSION"
     compile "com.android.tools.lint:lint-checks:$LINT_VERSION"
+    compile "com.android.tools.lint:lint:$LINT_VERSION"
 
     testCompile "junit:junit:$JUNIT_VERSION"
-    testCompile "com.android.tools.lint:lint:$LINT_VERSION"
     testCompile "com.android.tools.lint:lint-tests:$LINT_VERSION"
     testCompile "com.android.tools:testutils:$LINT_VERSION"
 
