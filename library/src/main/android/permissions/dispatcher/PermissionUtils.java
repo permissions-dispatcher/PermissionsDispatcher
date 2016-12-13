@@ -110,7 +110,7 @@ public final class PermissionUtils {
     private static boolean hasSelfPermissionForXiaomi(Context context, String permission) {
         AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
         int checkOp = appOpsManager.checkOp(AppOpsManager.permissionToOp(permission), Process.myUid(), context.getPackageName());
-        return checkOp == AppOpsManager.MODE_ALLOWED;
+        return checkOp == AppOpsManager.MODE_ALLOWED && ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
     /**
