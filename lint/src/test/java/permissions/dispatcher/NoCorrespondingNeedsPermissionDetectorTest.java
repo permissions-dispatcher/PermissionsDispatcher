@@ -24,8 +24,8 @@ public class NoCorrespondingNeedsPermissionDetectorTest extends BaseLintDetector
 
     @Test
     public void testNoNeedsPermissionAnnotationNoErrors() throws Exception {
-        String onNeeds = getOnNeedsPermission();
-        String onShow = getOnRationaleAnnotation();
+        @Language("JAVA") String onNeeds = getOnNeedsPermission();
+        @Language("JAVA") String onShow = getOnRationaleAnnotation();
         @Language("JAVA") String foo = ""
                 + PACKAGE
                 + "public class Foo {\n"
@@ -48,7 +48,7 @@ public class NoCorrespondingNeedsPermissionDetectorTest extends BaseLintDetector
     @Test
     public void testNoNeedsPermissionAnnotation() throws Exception {
 
-        String onShow = getOnRationaleAnnotation();
+        @Language("JAVA") String onShow = getOnRationaleAnnotation();
 
         @Language("JAVA") String foo = ""
                 + PACKAGE

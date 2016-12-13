@@ -10,9 +10,6 @@ import org.junit.Test;
 
 import java.util.List;
 
-/**
- * @author Henry Addo
- */
 public class CallOnRequestPermissionsResultDetectorTest extends BaseLintDetectorTest {
 
     @Override
@@ -23,7 +20,6 @@ public class CallOnRequestPermissionsResultDetectorTest extends BaseLintDetector
     @Override
     protected List<Issue> getIssues() {
         return ImmutableList.of(CallOnRequestPermissionsResultDetector.ISSUE);
-
     }
 
     @Test
@@ -73,11 +69,11 @@ public class CallOnRequestPermissionsResultDetectorTest extends BaseLintDetector
     @Test
     public void testCallOnRequestPermissionsResultDetector() throws Exception {
 
-        String runtimePerms = getRuntimePermission();
+        @Language("JAVA") String runtimePerms = getRuntimePermission();
 
-        String onNeeds = getOnNeedsPermission();
+        @Language("JAVA") String onNeeds = getOnNeedsPermission();
 
-        String onShow = getOnRationaleAnnotation();
+        @Language("JAVA") String onShow = getOnRationaleAnnotation();
 
         @Language("JAVA") String foo = ""
                 + "package permissions.dispatcher;\n"
@@ -94,8 +90,7 @@ public class CallOnRequestPermissionsResultDetectorTest extends BaseLintDetector
                 + "}";
 
         String result = lintProject(
-                java(SOURCE_PATH + "RuntimePermissions.java",
-                        runtimePerms.toString()),
+                java(SOURCE_PATH + "RuntimePermissions.java", runtimePerms),
                 java(SOURCE_PATH + "NeedsPermission.java", onNeeds),
                 java(SOURCE_PATH + "OnShowRationale.java", onShow),
                 java(SOURCE_PATH + "Foo.java", foo));
