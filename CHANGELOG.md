@@ -1,5 +1,8 @@
 # ChangeLog
 
+- 2.3.0 2016/12/14
+  - Start Xiaomi support. [#235](https://github.com/hotchemi/PermissionsDispatcher/pull/235).
+  - Fix slight bug for lint check. [#230](https://github.com/hotchemi/PermissionsDispatcher/pull/230).
 - 2.2.1 2016/12/08
   - Lint update: Migrate to Psi APIs [#227](https://github.com/hotchemi/PermissionsDispatcher/pull/227).
   - Make sure to support Java 1.6 [#222](https://github.com/hotchemi/PermissionsDispatcher/pull/222).
