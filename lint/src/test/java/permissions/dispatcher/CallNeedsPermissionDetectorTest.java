@@ -2,7 +2,6 @@ package permissions.dispatcher;
 
 import com.google.common.collect.ImmutableList;
 
-import com.android.tools.lint.checks.infrastructure.LintDetectorTest;
 import com.android.tools.lint.detector.api.Detector;
 import com.android.tools.lint.detector.api.Issue;
 
@@ -12,10 +11,9 @@ import org.junit.Test;
 import java.util.Collections;
 import java.util.List;
 
-public class CallNeedsPermissionDetectorTest extends LintDetectorTest {
+public class CallNeedsPermissionDetectorTest extends BaseLintDetectorTest {
 
     private static final String NO_WARNINGS = "No warnings.";
-
 
     @Override
     protected Detector getDetector() {
@@ -60,7 +58,7 @@ public class CallNeedsPermissionDetectorTest extends LintDetectorTest {
                 + "~~~~~~~~~~~~\n"
                 + "1 errors, 0 warnings\n";
 
-        assertEquals(result, error.toString());
+        assertEquals(result, error);
     }
 
     @Test
@@ -83,8 +81,8 @@ public class CallNeedsPermissionDetectorTest extends LintDetectorTest {
                 + "}";
 
         String result = lintProject(
-                java("src/com/example/Foo.java", foo.toString()),
-                java("src/com/example/Baz.java", baz.toString()));
+                java("src/com/example/Foo.java", foo),
+                java("src/com/example/Baz.java", baz));
 
         assertEquals(result, NO_WARNINGS);
     }

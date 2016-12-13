@@ -6,11 +6,11 @@ import org.intellij.lang.annotations.Language;
 
 public abstract class BaseLintDetectorTest extends LintDetectorTest {
 
-    protected static final String PACKAGE = "package permissions.dispatcher;\n";
+    static final String PACKAGE = "package permissions.dispatcher;\n";
 
-    protected static final String SOURCE_PATH = "src/permissions/dispatcher/";
+    static final String SOURCE_PATH = "src/permissions/dispatcher/";
 
-    protected String getOnNeedsPermission() {
+    String getOnNeedsPermission() {
         @Language("JAVA") String onNeedsPermission = ""
                 + PACKAGE
                 + "import java.lang.annotation.ElementType;\n"
@@ -26,7 +26,7 @@ public abstract class BaseLintDetectorTest extends LintDetectorTest {
         return onNeedsPermission;
     }
 
-    protected String getOnRationaleAnnotation() {
+    String getOnRationaleAnnotation() {
         @Language("JAVA") String onShow = ""
                 + PACKAGE
                 + "import java.lang.annotation.ElementType;\n"
@@ -39,5 +39,10 @@ public abstract class BaseLintDetectorTest extends LintDetectorTest {
                 + "String[] value();\n"
                 + "}";
         return onShow;
+    }
+
+    @Override
+    protected boolean allowCompilationErrors() {
+        return true;
     }
 }
