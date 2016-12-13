@@ -2,10 +2,12 @@ package permissions.dispatcher;
 
 import android.annotation.TargetApi;
 import android.app.Activity;
+import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
+import android.os.Process;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.util.SimpleArrayMap;
 
@@ -84,21 +86,31 @@ public final class PermissionUtils {
 
     /**
      * Determine context has access to the given permission.
-     *
+     * <p>
      * This is a workaround for RuntimeException of Parcel#readException.
      * For more detail, check this issue https://github.com/hotchemi/PermissionsDispatcher/issues/107
      *
-     * @param context context
+     * @param context    context
      * @param permission permission
      * @return returns true if context has access to the given permission, false otherwise.
      * @see #hasSelfPermissions(Context, String...)
      */
     private static boolean hasSelfPermission(Context context, String permission) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M && Build.MANUFACTURER.equalsIgnoreCase("Xiaomi")) {
+            return hasSelfPermissionForXiaomi(context, permission);
+        }
         try {
             return checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
         } catch (RuntimeException t) {
             return false;
         }
+    }
+
+    @TargetApi(Build.VERSION_CODES.M)
+    private static boolean hasSelfPermissionForXiaomi(Context context, String permission) {
+        AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
+        int checkOp = appOpsManager.checkOp(AppOpsManager.permissionToOp(permission), Process.myUid(), context.getPackageName());
+        return checkOp == AppOpsManager.MODE_ALLOWED && ActivityCompat.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
     /**
@@ -135,5 +147,4 @@ public final class PermissionUtils {
         }
         return targetSdkVersion;
     }
-
 }
