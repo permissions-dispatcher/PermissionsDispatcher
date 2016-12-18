@@ -96,7 +96,7 @@ public final class PermissionUtils {
      * @see #hasSelfPermissions(Context, String...)
      */
     private static boolean hasSelfPermission(Context context, String permission) {
-        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M && Build.MANUFACTURER.equalsIgnoreCase("Xiaomi")) {
+        if (Build.VERSION.SDK_INT > Build.VERSION_CODES.M && "Xiaomi".equalsIgnoreCase(Build.MANUFACTURER)) {
             return hasSelfPermissionForXiaomi(context, permission);
         }
         try {
