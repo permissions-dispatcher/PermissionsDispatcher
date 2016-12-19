@@ -147,6 +147,16 @@ buildscript {
 }
 ```
 
+Snapshots of the development version are available in [JFrog's snapshots repository](https://oss.jfrog.org/oss-snapshot-local/)). 
+Add the repo below to download `SNAPSHOT` releases.
+
+```groovy
+repositories {
+  jcenter()
+  maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
+}
+```
+
 And on your **app module** `build.gradle`:
 
 `${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg)](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
