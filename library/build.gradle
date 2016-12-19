@@ -78,13 +78,6 @@ artifacts {
     archives sourcesJar
 }
 
-// FIXME: Not sure this is the better way, but it's necessary for update test dependency!
-task copyJarToOtherModules(type: Copy) {
-    from 'build/libs'
-    into '../processor/src/test/libs'
-    include '*-sources.jar'
-}
-
 assemble.doLast {
     copyJarToOtherModules.execute()
 }
