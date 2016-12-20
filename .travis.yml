@@ -25,6 +25,9 @@ branches:
 
 script: ./gradlew check --stacktrace
 
+after_success:
+  - "./deploy_snapshot.sh"
+
 deploy:
   provider: script
   script: ./release.sh

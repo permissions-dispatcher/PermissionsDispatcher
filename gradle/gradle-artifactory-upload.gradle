@@ -1,0 +1,18 @@
+apply plugin: 'com.jfrog.artifactory'
+
+artifactory {
+    contextUrl = 'https://oss.jfrog.org/artifactory'
+    publish {
+        repository {
+            // The Artifactory repository key to publish to
+            repoKey = VERSION.endsWith('SNAPSHOT') ? 'oss-snapshot-local' : 'oss-release-local'
+            username = System.getenv('bintrayUser') // The publisher user name
+            password = System.getenv('bintrayKey') // The publisher password
+            maven = true
+        }
+        defaults {
+            publishArtifacts = true
+            publications('maven')
+        }
+    }
+}

@@ -86,3 +86,5 @@ publish {
     website = WEBSITE
     licences = LICENCES
 }
+
+apply from: rootProject.file('gradle/gradle-artifactory-upload.gradle')

@@ -8,6 +8,8 @@ buildscript {
         classpath "com.neenbedankt.gradle.plugins:android-apt:$APT_PLUGIN_VERSION"
         classpath "com.novoda:bintray-release:$BINTRAY_PLUGIN_VERSION"
         classpath "com.netflix.nebula:gradle-extra-configurations-plugin:$CONFIG_PLUGIN_VERSION"
+        // Need this to publish SNAPSHOTs to JFrog
+        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:$JFROG_PLUGIN_VERSION"
     }
 }
 

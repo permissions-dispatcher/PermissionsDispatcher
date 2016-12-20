@@ -93,3 +93,5 @@ project.afterEvaluate {
     def compileLintTask = project.tasks.find { it.name == 'compileLint' }
     compileLintTask.dependsOn(copyLintJar)
 }
+
+apply from: rootProject.file('gradle/gradle-artifactory-upload.gradle')
