@@ -147,7 +147,7 @@ buildscript {
 }
 ```
 
-Snapshots of the development version are available in [JFrog's snapshots repository](https://oss.jfrog.org/oss-snapshot-local/)). 
+Snapshots of the development version are available in [JFrog's snapshots repository](https://oss.jfrog.org/oss-snapshot-local/). 
 Add the repo below to download `SNAPSHOT` releases.
 
 ```groovy
