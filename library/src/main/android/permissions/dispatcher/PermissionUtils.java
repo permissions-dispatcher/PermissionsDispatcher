@@ -1,14 +1,13 @@
 package permissions.dispatcher;
 
-import android.annotation.TargetApi;
 import android.app.Activity;
-import android.app.AppOpsManager;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Process;
 import android.support.v4.app.ActivityCompat;
+import android.support.v4.app.AppOpsManagerCompat;
 import android.support.v4.util.SimpleArrayMap;
 
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
@@ -106,11 +105,14 @@ public final class PermissionUtils {
         }
     }
 
-    @TargetApi(Build.VERSION_CODES.M)
     private static boolean hasSelfPermissionForXiaomi(Context context, String permission) {
-        AppOpsManager appOpsManager = (AppOpsManager) context.getSystemService(Context.APP_OPS_SERVICE);
-        int checkOp = appOpsManager.checkOp(AppOpsManager.permissionToOp(permission), Process.myUid(), context.getPackageName());
-        return checkOp == AppOpsManager.MODE_ALLOWED && checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+        String permissionToOp = AppOpsManagerCompat.permissionToOp(permission);
+        if (permissionToOp == null) {
+            // in case of normal permissions(e.g. INTERNET)
+            return true;
+        }
+        int noteOp = AppOpsManagerCompat.noteOp(context, permissionToOp, Process.myUid(), context.getPackageName());
+        return noteOp == AppOpsManagerCompat.MODE_ALLOWED && checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
     /**
@@ -135,7 +137,6 @@ public final class PermissionUtils {
      * @param context context
      * @return target sdk version
      */
-    @TargetApi(Build.VERSION_CODES.DONUT)
     public static int getTargetSdkVersion(Context context) {
         if (targetSdkVersion != -1) {
             return targetSdkVersion;
