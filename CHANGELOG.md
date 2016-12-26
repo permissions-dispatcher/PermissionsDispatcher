@@ -1,5 +1,8 @@
 # ChangeLog
 
+- 2.3.1 2016/12/26
+  - Fix a bug related to Xiaomi. [#240](https://github.com/hotchemi/PermissionsDispatcher/issues/240).
+  - Address [#244](https://github.com/hotchemi/PermissionsDispatcher/issues/244) just in case.
 - 2.3.0 2016/12/14
   - Start Xiaomi support. [#235](https://github.com/hotchemi/PermissionsDispatcher/pull/235).
   - Fix slight bug for lint check. [#230](https://github.com/hotchemi/PermissionsDispatcher/pull/230).
