@@ -78,10 +78,6 @@ artifacts {
     archives sourcesJar
 }
 
-assemble.doLast {
-    copyJarToOtherModules.execute()
-}
-
 task copyLintJar(type: Copy) {
     from(configurations.lintChecks) {
         rename { 'lint.jar' }
