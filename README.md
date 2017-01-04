@@ -94,6 +94,103 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 
 Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/sample) and [generated class](https://github.com/hotchemi/PermissionsDispatcher/blob/master/art/MainActivityPermissionsDispatcher.java) for more details.
 
+## Getting Special Permissions
+
+PermissionsDispatcher takes care of special permissions `Manifest.permission.SYSTEM_ALERT_WINDOW` and `Manifest.permission.WRITE_SETTINGS`.
+
+The following sample is to grant `SYSTEM_ALERT_WINDOW`.
+
+### 0. Prepare AndroidManifest
+
+Add following line to `AndroidManifest.xml`
+ 
+`<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />`
+
+### 1. Attach annotations
+
+It's the same as other permissions
+
+```java
+@RuntimePermissions
+public class MainActivity extends AppCompatActivity {
+
+    @NeedsPermission(Manifest.permission.SYSTEM_ALERT_WINDOW)
+    void systemAlertWindow() {
+        // ...
+    }
+
+    @OnShowRationale(Manifest.permission.SYSTEM_ALERT_WINDOW)
+    void systemAlertWindowOnShowRationale(final PermissionRequest request) {
+        // ...
+    }
+
+    @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)
+    void systemAlertWindowOnPermissionDenied() {
+        // ...
+    }
+
+    @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)
+    void systemAlertWindowOnNeverAskAgain() {
+        // ...
+    }
+}
+```
+
+### 2. Delegate to generated class
+
+Unlike other permissions, special permissions require to call the delegation method at `onActivityResult`
+
+```java
+@Override
+protected void onCreate(Bundle savedInstanceState) {
+    super.onCreate(savedInstanceState);
+    setContentView(R.layout.activity_main);
+    findViewById(R.id.button_system_alert_window).setOnClickListener(v -> {
+      // NOTE: delegate the permission handling to generated method
+      MainActivityPermissionsDispatcher.systemAlertWindowWithCheck(this);
+    });
+}
+
+@Override
+public void onActivityResult(int requestCode, int resultCode, Intent data) {
+    MainActivityPermissionsDispatcher.onActivityResult(this, requestCode);
+}
+```
+
+That's it!
+
+## maxSdkVersion
+
+[<uses-permission>](https://developer.android.com/guide/topics/manifest/uses-permission-element.html) has an attribute call `maxSdkVersion`. PermissionsDispatcher support the feature as well.
+
+The following sample is for declaring `Manifest.permisison.WRITE_EXTERNAL_STORAGE` up to API level 18.
+
+### 0. AndroidManifest
+
+Declare the permission with `maxSdkVersion` attribute
+
+```xml
+<uses-permission
+     android:name="android.permission.WRITE_EXTERNAL_STORAGE"
+     android:maxSdkVersion="18" />
+```
+
+### 1. Attach annotations with `maxSdkVersion`
+
+```java
+@RuntimePermissions
+public class MainActivity extends AppCompatActivity {
+
+    @NeedsPermission(value = Manifest.permission.WRITE_EXTERNAL_STORAGE, maxSdkVersion = 18)
+    void getStorage() {
+        // ...
+    }
+    
+}
+```
+
+The rest is the same.
+
 ## Note
 
 - PermissionsDispatcher depends on the `support-v4` library by default, in order to be able to use some permission compat classes.
