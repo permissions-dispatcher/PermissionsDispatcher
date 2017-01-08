@@ -86,4 +86,14 @@ public class V13ProcessorTestSuite extends TestSuite {
     @Test public void SystemAlertWindowFragment() {
         assertJavaSource(V13Source.SystemAlertWindowFragment);
     }
+
+    @Test
+    public void nestedFragment() {
+        assertJavaSource(V13Source.NestedFragment);
+    }
+
+    @Test
+    public void nestedStaticFragment() {
+        assertJavaSource(V13Source.NestedStaticFragment);
+    }
 }

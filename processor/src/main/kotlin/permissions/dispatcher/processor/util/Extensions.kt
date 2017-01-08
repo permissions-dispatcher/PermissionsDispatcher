@@ -7,15 +7,21 @@ import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.processor.TYPE_UTILS
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
+import javax.lang.model.element.PackageElement
 import javax.lang.model.element.TypeElement
 import javax.lang.model.type.TypeMirror
 
 /**
  * Returns the package name of a TypeElement.
  */
-fun TypeElement.packageName(): String {
-    val qn = this.qualifiedName.toString()
-    return qn.substring(0, qn.lastIndexOf('.'))
+fun TypeElement.packageName() = enclosingElement.packageName()
+
+private fun Element?.packageName(): String {
+    return when (this) {
+        is TypeElement -> packageName()
+        is PackageElement -> qualifiedName.toString()
+        else -> this?.enclosingElement?.packageName() ?: ""
+    }
 }
 
 /**

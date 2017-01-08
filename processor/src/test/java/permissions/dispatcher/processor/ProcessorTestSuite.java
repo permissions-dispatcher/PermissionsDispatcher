@@ -1,7 +1,6 @@
 package permissions.dispatcher.processor;
 
 import org.junit.Test;
-
 import permissions.dispatcher.processor.base.TestSuite;
 import permissions.dispatcher.processor.data.Source;
 
@@ -360,4 +359,27 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.SystemAlertWindowSupportGenericsFragment);
     }
 
+    @Test public void nestedActivity() {
+        assertJavaSource(Source.NestedActivity);
+    }
+
+    @Test
+    public void nestedStaticActivity() {
+        assertJavaSource(Source.NestedStaticActivity);
+    }
+
+    @Test
+    public void nestedActivityWithDefaultPackage() {
+        assertJavaSource(Source.NestedActivityWithDefaultPackage);
+    }
+
+    @Test
+    public void nestedFragment() {
+        assertJavaSource(Source.NestedFragment);
+    }
+
+    @Test
+    public void nestedStaticFragment() {
+        assertJavaSource(Source.NestedStaticFragment);
+    }
 }
