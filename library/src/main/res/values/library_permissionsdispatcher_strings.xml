@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+
+<resources>
+	<string name="define_permissionsdispatcher"></string>
+	<!-- Author section -->
+	<string name="library_permissionsdispatcher_author">Shintaro Katafuchi</string>
+	<string name="library_permissionsdispatcher_authorWebsite">https://github.com/hotchemi</string>
+	<!-- Library section -->
+	<string name="library_permissionsdispatcher_libraryName">PermissionsDispatcher</string>
+	<string name="library_permissionsdispatcher_libraryDescription">PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow</string>
+	<string name="library_permissionsdispatcher_libraryWebsite">https://github.com/hotchemi/PermissionsDispatcher</string>
+	<string name="library_permissionsdispatcher_libraryVersion">2.2.0</string>
+	<!-- OpenSource section -->
+	<string name="library_permissionsdispatcher_isOpenSource">true</string>
+	<string name="library_permissionsdispatcher_repositoryLink">https://github.com/hotchemi/PermissionsDispatcher</string>
+	<!-- ClassPath for autoDetect section -->
+	<string name="library_permissionsdispatcher_classPath">permissions.dispatcher.RuntimePermissions</string>
+	<!-- License section -->
+	<string name="library_permissionsdispatcher_licenseId">apache_2_0</string>
+	<!-- Custom variables section -->
+</resources>
