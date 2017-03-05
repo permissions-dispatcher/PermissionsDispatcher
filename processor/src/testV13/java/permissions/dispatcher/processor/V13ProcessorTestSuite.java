@@ -11,6 +11,11 @@ public class V13ProcessorTestSuite extends TestSuite {
         assertJavaSource(V13Source.NativeFragmentWithoutNeeds);
     }
 
+    @Test public void needsPermissionMethodOverload() {
+        expectRuntimeException("'showCamera()' has duplicated '@NeedsPermission' method. The method annotated with '@NeedsPermission' must has the unique name.");
+        assertJavaSource(V13Source.needsPermissionMethodOverload);
+    }
+
     @Test public void onePermissionNativeFragment() {
         assertJavaSource(V13Source.OnePermissionNativeFragment);
     }

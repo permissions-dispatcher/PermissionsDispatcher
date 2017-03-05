@@ -122,3 +122,11 @@ fun <A : Annotation> checkMixPermissionType(items: List<ExecutableElement>, anno
         }
     }
 }
+
+fun checkDuplicatedMethodName(items: List<ExecutableElement>) {
+    items.forEach { item ->
+        items.firstOrNull { it != item && it.simpleName == item.simpleName }?.let {
+            throw DuplicatedMethodNameException(item)
+        }
+    }
+}
