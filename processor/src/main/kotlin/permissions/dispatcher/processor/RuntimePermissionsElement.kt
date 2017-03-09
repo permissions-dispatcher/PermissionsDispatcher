@@ -35,6 +35,7 @@ class RuntimePermissionsElement(e: TypeElement) {
         checkPrivateMethods(needsElements, NeedsPermission::class.java)
         checkMethodSignature(needsElements)
         checkMixPermissionType(needsElements, NeedsPermission::class.java)
+        checkDuplicatedMethodName(needsElements)
     }
 
     private fun validateRationaleMethods() {

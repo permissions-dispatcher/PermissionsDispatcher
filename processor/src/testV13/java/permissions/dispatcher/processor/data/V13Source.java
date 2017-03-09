@@ -1882,4 +1882,39 @@ public final class V13Source {
             };
         }
     };
+
+    public static final BaseTest needsPermissionMethodOverload = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "Foo";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Fragment;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "public class Foo {",
+                    "  @RuntimePermissions",
+                    "  public static class MyFragment extends Fragment {",
+                    "     @NeedsPermission(Manifest.permission.CAMERA)",
+                    "     void showCamera() {",
+                    "     }",
+                    "     @NeedsPermission(Manifest.permission.CAMERA)",
+                    "     void showCamera(int foo) {",
+                    "     }",
+                    "  }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return EMPTY_SOURCE;
+        }
+    };
+
 }
