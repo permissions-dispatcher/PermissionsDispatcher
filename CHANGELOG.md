@@ -1,5 +1,10 @@
 # ChangeLog
 
+- 2.3.2 2017/03/10
+  - Update minSdkVersion to API level 9 [#286](https://github.com/hotchemi/PermissionsDispatcher/pull/286).
+  - Add new compile-time check [#284](https://github.com/hotchemi/PermissionsDispatcher/pull/284).
+  - Fix the problem with receiver of startActivityForResult [#280](https://github.com/hotchemi/PermissionsDispatcher/pull/280)
+  - Support nested annotated class [#263](https://github.com/hotchemi/PermissionsDispatcher/pull/263)
 - 2.3.1 2016/12/26
   - Fix a bug related to Xiaomi. [#240](https://github.com/hotchemi/PermissionsDispatcher/issues/240).
   - Address [#244](https://github.com/hotchemi/PermissionsDispatcher/issues/244) just in case.
