@@ -4,17 +4,19 @@
 
 ![image](https://raw.githubusercontent.com/hotchemi/PermissionsDispatcher/master/art/logo.png)
 
-PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow.
-
-[Runtime permissions](https://developer.android.com/preview/features/runtime-permissions.html) are great for users, but can be tedious to implement correctly for developers, requiring a lot of boilerplate code.
+PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow, **100% reflection-free.**.
 
 This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code clean and safe.
-
-**The library is 100% reflection-free.**
 
 ## Usage
 
 Here's a minimum example, in which we register a `MainActivity` which requires `Manifest.permission.CAMERA`.
+
+### 0. Prepare AndroidManifest
+
+Add the following line to `AndroidManifest.xml`:
+ 
+`<uses-permission android:name="android.permission.CAMERA" />`
 
 ### 1. Attach annotations
 
@@ -78,10 +80,6 @@ protected void onCreate(Bundle savedInstanceState) {
       // NOTE: delegate the permission handling to generated method
       MainActivityPermissionsDispatcher.showCameraWithCheck(this);
     });
-    findViewById(R.id.button_contacts).setOnClickListener(v -> {
-      // NOTE: delegate the permission handling to generated method
-      MainActivityPermissionsDispatcher.showContactsWithCheck(this);
-    });
 }
 
 @Override
@@ -102,13 +100,13 @@ The following sample is to grant `SYSTEM_ALERT_WINDOW`.
 
 ### 0. Prepare AndroidManifest
 
-Add following line to `AndroidManifest.xml`
+Add the following line to `AndroidManifest.xml`:
  
 `<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />`
 
 ### 1. Attach annotations
 
-It's the same as other permissions
+It's the same as other permissions:
 
 ```java
 @RuntimePermissions
@@ -116,29 +114,25 @@ public class MainActivity extends AppCompatActivity {
 
     @NeedsPermission(Manifest.permission.SYSTEM_ALERT_WINDOW)
     void systemAlertWindow() {
-        // ...
     }
 
     @OnShowRationale(Manifest.permission.SYSTEM_ALERT_WINDOW)
     void systemAlertWindowOnShowRationale(final PermissionRequest request) {
-        // ...
     }
 
     @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)
     void systemAlertWindowOnPermissionDenied() {
-        // ...
     }
 
     @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)
     void systemAlertWindowOnNeverAskAgain() {
-        // ...
     }
 }
 ```
 
 ### 2. Delegate to generated class
 
-Unlike other permissions, special permissions require to call the delegation method at `onActivityResult`
+Unlike other permissions, special permissions require to call the delegation method at `onActivityResult`:
 
 ```java
 @Override
@@ -156,8 +150,6 @@ public void onActivityResult(int requestCode, int resultCode, Intent data) {
     MainActivityPermissionsDispatcher.onActivityResult(this, requestCode);
 }
 ```
-
-That's it!
 
 ## maxSdkVersion
 
@@ -189,8 +181,6 @@ public class MainActivity extends AppCompatActivity {
 }
 ```
 
-The rest is the same.
-
 ## Note
 
 - PermissionsDispatcher depends on the `support-v4` library by default, in order to be able to use some permission compat classes.
@@ -208,18 +198,11 @@ Simply add a dependency on the `support-v13` library alongside PermissionsDispat
 
 If you use [AndroidAnnotations](http://androidannotations.org/), you need to add [AndroidAnnotationsPermissionsDispatcherPlugin](https://github.com/AleksanderMielczarek/AndroidAnnotationsPermissionsDispatcherPlugin) to your dependencies so PermissionsDispatcher's looks for AA's subclasses (your project won't compile otherwise).
 
-### For 1.x users
-
-- [Migrating to 2.x](https://github.com/hotchemi/PermissionsDispatcher/wiki/Migrating-to-2.x)
-
 ## ProGuard
 
 PermissionsDispatcher bundles ProGuard rules in its aar. No extra settings are required.
 
 ## Download
-
-
-### For Android Gradle Plugin >= 2.2 users
 
 To add it to your project, include the following in your **app module** `build.gradle` file:
 
@@ -232,18 +215,6 @@ dependencies {
 }
 ```
 
-### For Android Gradle Plugin < 2.2 users
-
-To add it to your project, include the following in your **project** `build.gradle` file:
-
-```groovy
-buildscript {
-  dependencies {
-    classpath 'com.neenbedankt.gradle.plugins:android-apt:1.8'
-  }
-}
-```
-
 Snapshots of the development version are available in [JFrog's snapshots repository](https://oss.jfrog.org/oss-snapshot-local/). 
 Add the repo below to download `SNAPSHOT` releases.
 
@@ -251,19 +222,6 @@ Add the repo below to download `SNAPSHOT` releases.
 repositories {
   jcenter()
   maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
-}
-```
-
-And on your **app module** `build.gradle`:
-
-`${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg)](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
-
-```groovy
-apply plugin: 'android-apt'
-
-dependencies {
-  compile 'com.github.hotchemi:permissionsdispatcher:${latest.version}'
-  apt 'com.github.hotchemi:permissionsdispatcher-processor:${latest.version}'
 }
 ```
 
