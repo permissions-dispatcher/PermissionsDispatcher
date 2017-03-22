@@ -4,7 +4,7 @@
 
 ![image](https://raw.githubusercontent.com/hotchemi/PermissionsDispatcher/master/art/logo.png)
 
-PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow, **with 100% reflection-free.**.
+PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow, **100% reflection-free.**.
 
 This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code clean and safe.
 
@@ -14,9 +14,9 @@ Here's a minimum example, in which we register a `MainActivity` which requires `
 
 ### 0. Prepare AndroidManifest
 
-Add following line to `AndroidManifest.xml`
+Add the following line to `AndroidManifest.xml`:
  
-`<uses-permission android:name="android.permission.CAMERAW" />`
+`<uses-permission android:name="android.permission.CAMERA" />`
 
 ### 1. Attach annotations
 
@@ -100,13 +100,13 @@ The following sample is to grant `SYSTEM_ALERT_WINDOW`.
 
 ### 0. Prepare AndroidManifest
 
-Add following line to `AndroidManifest.xml`
+Add the following line to `AndroidManifest.xml`:
  
 `<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />`
 
 ### 1. Attach annotations
 
-It's the same as other permissions
+It's the same as other permissions:
 
 ```java
 @RuntimePermissions
@@ -132,7 +132,7 @@ public class MainActivity extends AppCompatActivity {
 
 ### 2. Delegate to generated class
 
-Unlike other permissions, special permissions require to call the delegation method at `onActivityResult`
+Unlike other permissions, special permissions require to call the delegation method at `onActivityResult`:
 
 ```java
 @Override
