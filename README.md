@@ -4,7 +4,7 @@
 
 ![image](https://raw.githubusercontent.com/hotchemi/PermissionsDispatcher/master/art/logo.png)
 
-PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow, **100% reflection-free.**.
+PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow, **100% reflection-free**.
 
 This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code clean and safe.
 
@@ -185,6 +185,7 @@ public class MainActivity extends AppCompatActivity {
 
 - PermissionsDispatcher depends on the `support-v4` library by default, in order to be able to use some permission compat classes.
 - You can use this library with JDK 1.6 or up, but we test library's behaviour on the JDK 1.8 because it has been becoming the default of Android development.
+- PermissionsDispatcher bundles ProGuard rules in its aar. No extra settings are required.
 
 ### Fragment Support
 
@@ -197,10 +198,6 @@ Simply add a dependency on the `support-v13` library alongside PermissionsDispat
 ### For AndroidAnnotations users
 
 If you use [AndroidAnnotations](http://androidannotations.org/), you need to add [AndroidAnnotationsPermissionsDispatcherPlugin](https://github.com/AleksanderMielczarek/AndroidAnnotationsPermissionsDispatcherPlugin) to your dependencies so PermissionsDispatcher's looks for AA's subclasses (your project won't compile otherwise).
-
-## ProGuard
-
-PermissionsDispatcher bundles ProGuard rules in its aar. No extra settings are required.
 
 ## Download
 
