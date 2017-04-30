@@ -31,17 +31,12 @@ abstract class BaseProcessorUnit : ProcessorUnit {
      * This will delegate to other methods that compose generated code.
      */
     override final fun createJavaFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): JavaFile {
-        // Check the prerequisites for creating a Java file for this element
-        checkPrerequisites(rpe)
-
         return JavaFile.builder(rpe.packageName, createTypeSpec(rpe, requestCodeProvider))
                 .addFileComment(FILE_COMMENT)
                 .build()
     }
 
     /* Begin abstract */
-
-    abstract fun checkPrerequisites(rpe: RuntimePermissionsElement)
 
     abstract fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String)
 

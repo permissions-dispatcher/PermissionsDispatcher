@@ -38,7 +38,7 @@ fun <A : Annotation> checkDuplicatedValue(items: List<ExecutableElement>, annota
         val permissionValue = it.getAnnotation(annotationClass).permissionValue()
         Collections.sort(permissionValue)
         allItems.forEach { oldItem ->
-            if (oldItem.equals(permissionValue)) {
+            if (oldItem == permissionValue) {
                 throw DuplicatedValueException(permissionValue, it, annotationClass)
             }
         }

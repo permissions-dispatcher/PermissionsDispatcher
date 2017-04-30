@@ -1,7 +1,6 @@
 package permissions.dispatcher.processor.impl
 
 import com.squareup.javapoet.MethodSpec
-import permissions.dispatcher.processor.RuntimePermissionsElement
 import permissions.dispatcher.processor.util.*
 import javax.lang.model.type.TypeMirror
 
@@ -14,16 +13,12 @@ class SupportFragmentProcessorUnit: BaseProcessorUnit() {
         return typeMirrorOf("android.support.v4.app.Fragment")
     }
 
-    override fun checkPrerequisites(rpe: RuntimePermissionsElement) {
-        // Nothing to check
-    }
-
     override fun getActivityName(targetParam: String): String {
         return targetParam + ".getActivity()"
     }
 
     override fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String, isPositiveCondition: Boolean) {
-        builder.beginControlFlow("if (\$N\$T.shouldShowRequestPermissionRationale(\$N.getActivity(), \$N))", if (isPositiveCondition) "" else "!", PERMISSION_UTILS, targetParam, permissionField)
+        builder.beginControlFlow("if (\$N\$T.shouldShowRequestPermissionRationale(\$N, \$N))", if (isPositiveCondition) "" else "!", PERMISSION_UTILS, targetParam, permissionField)
     }
 
     override fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {

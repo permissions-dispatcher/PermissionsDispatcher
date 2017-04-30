@@ -1,11 +1,13 @@
 package permissions.dispatcher;
 
 import android.app.Activity;
+import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Process;
+import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.AppOpsManagerCompat;
 import android.support.v4.util.SimpleArrayMap;
@@ -129,6 +131,49 @@ public final class PermissionUtils {
             }
         }
         return false;
+    }
+
+    /**
+     * Checks given permissions are needed to show rationale.
+     *
+     * @param fragment    fragment
+     * @param permissions permission list
+     * @return returns true if one of the permission is needed to show rationale.
+     */
+    public static boolean shouldShowRequestPermissionRationale(android.support.v4.app.Fragment fragment, String... permissions) {
+        for (String permission : permissions) {
+            if (fragment.shouldShowRequestPermissionRationale(permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks given permissions are needed to show rationale.
+     *
+     * @param fragment    fragment
+     * @param permissions permission list
+     * @return returns true if one of the permission is needed to show rationale.
+     */
+    public static boolean shouldShowRequestPermissionRationale(Fragment fragment, String... permissions) {
+        for (String permission : permissions) {
+            if (FragmentCompat.shouldShowRequestPermissionRationale(fragment, permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Requests the provided permissions for a Fragment instance.
+     *
+     * @param fragment    fragment
+     * @param permissions permissions list
+     * @param requestCode Request code connected to the permission request
+     */
+    public static void requestPermissions(Fragment fragment, String[] permissions, int requestCode) {
+        FragmentCompat.requestPermissions(fragment, permissions, requestCode);
     }
 
     /**

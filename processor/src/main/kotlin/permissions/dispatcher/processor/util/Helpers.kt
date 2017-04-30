@@ -25,7 +25,7 @@ fun permissionRequestTypeName(e: ExecutableElement): String = "${e.simpleString(
 fun <A : Annotation> findMatchingMethodForNeeds(needsElement: ExecutableElement, otherElements: List<ExecutableElement>, annotationType: Class<A>): ExecutableElement? {
     val value: List<String> = needsElement.getAnnotation(NeedsPermission::class.java).permissionValue()
     return otherElements.firstOrNull {
-        it.getAnnotation(annotationType).permissionValue().equals(value)
+        it.getAnnotation(annotationType).permissionValue() == value
     }
 }
 

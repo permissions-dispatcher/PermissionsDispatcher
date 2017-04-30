@@ -183,18 +183,6 @@ public class MainActivity extends AppCompatActivity {
 
 ## Note
 
-- PermissionsDispatcher depends on the `support-v4` library by default, in order to be able to use some permission compat classes.
-- You can use this library with JDK 1.6 or up, but we test library's behaviour on the JDK 1.8 because it has been becoming the default of Android development.
-- PermissionsDispatcher bundles ProGuard rules in its aar. No extra settings are required.
-
-### Fragment Support
-
-PermissionsDispatcher is supported on **API levels 4 and up**, with which you get support for annotating `android.app.Activity` and `android.support.v4.app.Fragment` sub-classes out of the box.
-
-In case you rely on `android.app.Fragment` in your app, you can use these with PermissionsDispatcher as well!
-
-Simply add a dependency on the `support-v13` library alongside PermissionsDispatcher in your project, and it will enable support for native fragments.
-
 ### For AndroidAnnotations users
 
 If you use [AndroidAnnotations](http://androidannotations.org/), you need to add [AndroidAnnotationsPermissionsDispatcherPlugin](https://github.com/AleksanderMielczarek/AndroidAnnotationsPermissionsDispatcherPlugin) to your dependencies so PermissionsDispatcher's looks for AA's subclasses (your project won't compile otherwise).
@@ -207,7 +195,10 @@ To add it to your project, include the following in your **app module** `build.g
 
 ```groovy
 dependencies {
-  compile 'com.github.hotchemi:permissionsdispatcher:${latest.version}'
+  compile 'com.github.hotchemi:permissionsdispatcher:${latest.version}' {
+      // if you don't use android.app.Fragment you can exclude support for them
+      exclude name: "support-v13"
+  }
   annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:${latest.version}'
 }
 ```

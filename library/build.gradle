@@ -1,14 +1,12 @@
 apply plugin: 'com.android.library'
 apply plugin: 'com.novoda.bintray-release'
-apply plugin: 'optional-base'
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION
     buildToolsVersion BUILD_TOOLS_VERSION
     defaultConfig {
-        minSdkVersion LIBRARY_MIN_SDK_VERSION
+        minSdkVersion 14
         targetSdkVersion 25
-        consumerProguardFiles 'proguard-rules.txt'
     }
 
     compileOptions {
@@ -37,8 +35,8 @@ configurations {
 }
 
 dependencies {
-    compile "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:support-v13:$SUPPORT_LIBRARY_VERSION", optional
+    compile "com.android.support:support-compat:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:support-v13:$SUPPORT_LIBRARY_VERSION"
 
     testCompile "junit:junit:$JUNIT_VERSION"
     testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
@@ -53,7 +51,7 @@ publish {
     groupId = GROUP_ID
     artifactId = ARTIFACT_ID_LIBRARY
     version = VERSION
-    description = DESCRIPTION
+    desc = DESCRIPTION
     website = WEBSITE
     licences = LICENCES
 }
