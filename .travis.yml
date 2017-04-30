@@ -23,7 +23,7 @@ branches:
   except:
     - gh-pages
 
-script: ./gradlew check --stacktrace
+script: ./gradlew clean check --stacktrace
 
 after_success:
   - "./deploy_snapshot.sh"

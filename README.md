@@ -26,7 +26,7 @@ PermissionsDispatcher introduces only a few annotations, keeping its general API
 
 |Annotation|Required|Description|
 |---|---|---|
-|`@RuntimePermissions`|**✓**|Register an `Activity` or `Fragment` to handle permissions|
+|`@RuntimePermissions`|**✓**|Register an `Activity` or `Fragment`(we support both) to handle permissions|
 |`@NeedsPermission`|**✓**|Annotate a method which performs the action that requires one or more permissions|
 |`@OnShowRationale`||Annotate a method which explains why the permission/s is/are needed. It passes in a `PermissionRequest` object which can be used to continue or abort the current permission request upon user input|
 |`@OnPermissionDenied`||Annotate a method which is invoked if the user doesn't grant the permissions|
@@ -183,18 +183,6 @@ public class MainActivity extends AppCompatActivity {
 
 ## Note
 
-- PermissionsDispatcher depends on the `support-v4` library by default, in order to be able to use some permission compat classes.
-- You can use this library with JDK 1.6 or up, but we test library's behaviour on the JDK 1.8 because it has been becoming the default of Android development.
-- PermissionsDispatcher bundles ProGuard rules in its aar. No extra settings are required.
-
-### Fragment Support
-
-PermissionsDispatcher is supported on **API levels 4 and up**, with which you get support for annotating `android.app.Activity` and `android.support.v4.app.Fragment` sub-classes out of the box.
-
-In case you rely on `android.app.Fragment` in your app, you can use these with PermissionsDispatcher as well!
-
-Simply add a dependency on the `support-v13` library alongside PermissionsDispatcher in your project, and it will enable support for native fragments.
-
 ### For AndroidAnnotations users
 
 If you use [AndroidAnnotations](http://androidannotations.org/), you need to add [AndroidAnnotationsPermissionsDispatcherPlugin](https://github.com/AleksanderMielczarek/AndroidAnnotationsPermissionsDispatcherPlugin) to your dependencies so PermissionsDispatcher's looks for AA's subclasses (your project won't compile otherwise).
@@ -207,7 +195,10 @@ To add it to your project, include the following in your **app module** `build.g
 
 ```groovy
 dependencies {
-  compile 'com.github.hotchemi:permissionsdispatcher:${latest.version}'
+  compile 'com.github.hotchemi:permissionsdispatcher:${latest.version}' {
+      // if you don't use android.app.Fragment you can exclude support for them
+      exclude module: "support-v13"
+  }
   annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:${latest.version}'
 }
 ```

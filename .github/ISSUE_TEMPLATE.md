@@ -1,7 +1,6 @@
 ## FAQs
 
 <!--
-
 Before you add the issue, please make sure to read over the following Frequently Asked Questions:
 
 **"XxxPermissionsDispatcher class is not generated"**
@@ -12,7 +11,6 @@ Before you add the issue, please make sure to read over the following Frequently
 - If you're in Kotlin, use `kapt`!
 - If you're using Realm 1.x., please consider upgrading to 2.x (refer to Issue #270: https://github.com/hotchemi/PermissionsDispatcher/issues/270)
 - If you checked all these steps, and the generated classes are still not showing up, then attach your Activity/Fragment class, and build.gradle.
-
 -->
  
 ___

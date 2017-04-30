@@ -2,7 +2,6 @@ package permissions.dispatcher.processor.impl
 
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.MethodSpec
-import permissions.dispatcher.processor.RuntimePermissionsElement
 import permissions.dispatcher.processor.util.*
 import javax.lang.model.type.TypeMirror
 
@@ -15,10 +14,6 @@ class ActivityProcessorUnit : BaseProcessorUnit() {
 
     override fun getTargetType(): TypeMirror {
         return typeMirrorOf("android.app.Activity")
-    }
-
-    override fun checkPrerequisites(rpe: RuntimePermissionsElement) {
-        // Nothing to check
     }
 
     override fun getActivityName(targetParam: String): String {

@@ -7,36 +7,7 @@ public final class Source {
     private Source() {
     }
 
-    static final String[] EMPTY_SOURCE = {};
-
-    public static final BaseTest NativeFragmentNotSupported = new BaseTest() {
-        @Override
-        protected String getName() {
-            return "MyFragment";
-        }
-
-        @Override
-        protected String[] getActualSource() {
-            return new String[]{
-                    "package tests;",
-                    "import android.Manifest;",
-                    "import android.app.Fragment;",
-                    "import permissions.dispatcher.RuntimePermissions;",
-                    "import permissions.dispatcher.NeedsPermission;",
-                    "@RuntimePermissions",
-                    "public class MyFragment extends Fragment {",
-                    "   @NeedsPermission(Manifest.permission.CAMERA)",
-                    "   void showCamera() {",
-                    "   }",
-                    "}"
-            };
-        }
-
-        @Override
-        protected String[] getExpectSource() {
-            return EMPTY_SOURCE;
-        }
-    };
+    private static final String[] EMPTY_SOURCE = {};
 
     public static final BaseTest NoPermissionActivity = new BaseTest() {
         @Override
@@ -53,6 +24,31 @@ public final class Source {
                     "import permissions.dispatcher.RuntimePermissions;",
                     "@RuntimePermissions",
                     "public class MyActivity extends Activity {",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return EMPTY_SOURCE;
+        }
+    };
+
+    public static final BaseTest NoPermissionNativeFragment = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyFragment";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Fragment;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "@RuntimePermissions",
+                    "public class MyFragment extends Fragment {",
                     "}"
             };
         }
@@ -901,6 +897,66 @@ public final class Source {
                     "               break;",
                     "       }",
                     "   }",
+                    "}"
+            };
+        }
+    };
+
+    public static final BaseTest OnePermissionNativeFragment = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyFragment";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import android.app.Fragment;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "@RuntimePermissions",
+                    "public class MyFragment extends Fragment {",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[]{
+                    "package tests;",
+                    "import java.lang.String;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyFragmentPermissionsDispatcher {",
+                    "    private static final int REQUEST_SHOWCAMERA = 0;",
+                    "    private static final String[] PERMISSION_SHOWCAMERA = new String[] {\"android.permission.CAMERA\"};",
+                    "    private  MyFragmentPermissionsDispatcher() {",
+                    "    }",
+                    "    static void showCameraWithCheck(MyFragment target) {",
+                    "        if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "            target.showCamera();",
+                    "        } else {",
+                    "            PermissionUtils.requestPermissions(target, PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "        }",
+                    "    }",
+                    "    static void onRequestPermissionsResult(MyFragment target, int requestCode, int[] grantResults) {",
+                    "        switch (requestCode) {",
+                    "            case REQUEST_SHOWCAMERA:",
+                    "                if (PermissionUtils.getTargetSdkVersion(target.getActivity()) < 23 && !PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "                    return;",
+                    "                }",
+                    "                if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                    target.showCamera();",
+                    "                }",
+                    "                break;",
+                    "            default:",
+                    "                break;",
+                    "        }",
+                    "    }",
                     "}"
             };
         }
@@ -2554,7 +2610,7 @@ public final class Source {
                     "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -2645,7 +2701,7 @@ public final class Source {
                     "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -2661,7 +2717,7 @@ public final class Source {
                     "               if (PermissionUtils.verifyPermissions(grantResults)) {",
                     "                   target.showCamera();",
                     "               } else {",
-                    "                   if (!PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "                   if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
                     "                       target.onNeverAskForCamera();",
                     "                   }",
                     "               }",
@@ -2744,7 +2800,7 @@ public final class Source {
                     "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -2761,7 +2817,7 @@ public final class Source {
                     "               if (PermissionUtils.verifyPermissions(grantResults)) {",
                     "                   target.showCamera();",
                     "               } else {",
-                    "                   if (!PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "                   if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
                     "                       target.onNeverAskForCamera();",
                     "                   } else {",
                     "                       target.cameraDenied();",
@@ -2849,7 +2905,7 @@ public final class Source {
                     "               if (PermissionUtils.verifyPermissions(grantResults)) {",
                     "                   target.showCamera();",
                     "               } else {",
-                    "                   if (!PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "                   if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
                     "                       target.onNeverAskForCamera();",
                     "                   }",
                     "               }",
@@ -2922,7 +2978,7 @@ public final class Source {
                     "               if (PermissionUtils.verifyPermissions(grantResults)) {",
                     "                   target.showCamera();",
                     "               } else {",
-                    "                   if (!PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "                   if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
                     "                       target.onNeverAskForCamera();",
                     "                   } else {",
                     "                       target.cameraDenied();",
@@ -3080,7 +3136,7 @@ public final class Source {
                     "           target.showCamera(value, name);",
                     "       } else {",
                     "           PENDING_SHOWCAMERA = new ShowCameraPermissionRequest(target, value, name);",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(PENDING_SHOWCAMERA);",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -3289,7 +3345,7 @@ public final class Source {
                     "           target.showCamera(value, name);",
                     "       } else {",
                     "           PENDING_SHOWCAMERA = new ShowCameraPermissionRequest(target, value, name);",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(PENDING_SHOWCAMERA);",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -3481,7 +3537,7 @@ public final class Source {
                     "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -3492,7 +3548,7 @@ public final class Source {
                     "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA2)) {",
                     "           target.showCamera2();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA2)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA2)) {",
                     "               target.cameraRationale(new ShowCamera2PermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
@@ -3701,7 +3757,7 @@ public final class Source {
                     "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -3712,7 +3768,7 @@ public final class Source {
                     "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA2)) {",
                     "           target.showCamera2();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA2)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA2)) {",
                     "               target.cameraRationale(new ShowCamera2PermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA2, REQUEST_SHOWCAMERA2);",
@@ -3947,7 +4003,7 @@ public final class Source {
                     "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -4187,7 +4243,7 @@ public final class Source {
                     "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -4198,7 +4254,7 @@ public final class Source {
                     "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_ACCESSCONTACTS)) {",
                     "           target.accessContacts();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_ACCESSCONTACTS)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_ACCESSCONTACTS)) {",
                     "               target.contactsRationale(new AccessContactsPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_ACCESSCONTACTS, REQUEST_ACCESSCONTACTS);",
@@ -4805,7 +4861,7 @@ public final class Source {
                     "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
                     "           target.showCamera();",
                     "       } else {",
-                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCAMERA)) {",
                     "               target.cameraRationale(new ShowCameraPermissionRequest(target));",
                     "           } else {",
                     "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
@@ -5211,7 +5267,7 @@ public final class Source {
                     "    if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_WRITESETTINGS) || Settings.System.canWrite(target.getActivity())) {",
                     "      target.writeSettings();",
                     "    } else {",
-                    "      if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_WRITESETTINGS)) {",
+                    "      if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_WRITESETTINGS)) {",
                     "        target.writeSettingOnShowRationale(new WriteSettingsPermissionRequest(target));",
                     "      } else {",
                     "        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse(\"package:\" + target.getActivity().getPackageName()));",
@@ -5225,7 +5281,113 @@ public final class Source {
                     "      if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_WRITESETTINGS) || Settings.System.canWrite(target.getActivity())) {",
                     "        target.writeSettings();",
                     "      } else {",
-                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_WRITESETTINGS)) {",
+                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_WRITESETTINGS)) {",
+                    "          target.writeSettingOnNeverAskAgain();",
+                    "        } else {",
+                    "          target.writeSettingOnPermissionDenied();",
+                    "        }",
+                    "      }",
+                    "      break;",
+                    "      default:",
+                    "      break;",
+                    "    }",
+                    "  }",
+                    "  private static final class WriteSettingsPermissionRequest implements PermissionRequest {",
+                    "    private final WeakReference<MyFragment> weakTarget;",
+                    "    private WriteSettingsPermissionRequest(MyFragment target) {",
+                    "      this.weakTarget = new WeakReference<MyFragment>(target);",
+                    "    }",
+                    "    @Override",
+                    "    public void proceed() {",
+                    "      MyFragment target = weakTarget.get();",
+                    "      if (target == null) return;",
+                    "      Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse(\"package:\" + target.getActivity().getPackageName()));",
+                    "      target.startActivityForResult(intent, REQUEST_WRITESETTINGS);",
+                    "    }",
+                    "    @Override",
+                    "    public void cancel() {",
+                    "      MyFragment target = weakTarget.get();",
+                    "      if (target == null) return;",
+                    "      target.writeSettingOnPermissionDenied();",
+                    "    }",
+                    "  }",
+                    "}"
+            };
+        }
+    };
+
+    public static final BaseTest WriteSettingsNativeFragment = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyFragment";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.Manifest;",
+                    "import android.app.Fragment;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnNeverAskAgain;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "import permissions.dispatcher.OnShowRationale;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "@RuntimePermissions",
+                    "public class MyFragment extends Fragment {",
+                    "    @NeedsPermission(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettings() {",
+                    "    }",
+                    "    @OnShowRationale(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettingOnShowRationale(PermissionRequest request) {",
+                    "    }",
+                    "    @OnPermissionDenied(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettingOnPermissionDenied() {",
+                    "    }",
+                    "    @OnNeverAskAgain(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettingOnNeverAskAgain() {",
+                    "    }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.content.Intent;",
+                    "import android.net.Uri;",
+                    "import android.provider.Settings;",
+                    "import java.lang.Override;",
+                    "import java.lang.String;",
+                    "import java.lang.ref.WeakReference;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyFragmentPermissionsDispatcher {",
+                    "  private static final int REQUEST_WRITESETTINGS = 0;",
+                    "  private static final String[] PERMISSION_WRITESETTINGS = new String[] {\"android.permission.WRITE_SETTINGS\"};",
+                    "  private MyFragmentPermissionsDispatcher() {",
+                    "  }",
+                    "  static void writeSettingsWithCheck(MyFragment target) {",
+                    "    if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_WRITESETTINGS) || Settings.System.canWrite(target.getActivity())) {",
+                    "      target.writeSettings();",
+                    "    } else {",
+                    "      if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_WRITESETTINGS)) {",
+                    "        target.writeSettingOnShowRationale(new WriteSettingsPermissionRequest(target));",
+                    "      } else {",
+                    "        Intent intent = new Intent(Settings.ACTION_MANAGE_WRITE_SETTINGS, Uri.parse(\"package:\" + target.getActivity().getPackageName()));",
+                    "        target.startActivityForResult(intent, REQUEST_WRITESETTINGS);",
+                    "      }",
+                    "    }",
+                    "  }",
+                    "  static void onActivityResult(MyFragment target, int requestCode) {",
+                    "    switch (requestCode) {",
+                    "      case REQUEST_WRITESETTINGS:",
+                    "      if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_WRITESETTINGS) || Settings.System.canWrite(target.getActivity())) {",
+                    "        target.writeSettings();",
+                    "      } else {",
+                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_WRITESETTINGS)) {",
                     "          target.writeSettingOnNeverAskAgain();",
                     "        } else {",
                     "          target.writeSettingOnPermissionDenied();",
@@ -5317,7 +5479,7 @@ public final class Source {
                     "    if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SYSTEMALERTWINDOW) || Settings.canDrawOverlays(target.getActivity())) {",
                     "      target.systemAlertWindow();",
                     "    } else {",
-                    "      if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SYSTEMALERTWINDOW)) {",
+                    "      if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SYSTEMALERTWINDOW)) {",
                     "        target.systemAlertWindowOnShowRationale(new SystemAlertWindowPermissionRequest(target));",
                     "      } else {",
                     "        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(\"package:\" + target.getActivity().getPackageName()));",
@@ -5331,7 +5493,7 @@ public final class Source {
                     "      if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SYSTEMALERTWINDOW) || Settings.canDrawOverlays(target.getActivity())) {",
                     "        target.systemAlertWindow();",
                     "      } else {",
-                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SYSTEMALERTWINDOW)) {",
+                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SYSTEMALERTWINDOW)) {",
                     "          target.systemAlertWindowOnNeverAskAgain();",
                     "        } else {",
                     "          target.systemAlertWindowOnPermissionDenied();",
@@ -5640,7 +5802,7 @@ public final class Source {
                     "    if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SYSTEMALERTWINDOW) || Settings.canDrawOverlays(target.getActivity())) {",
                     "      target.systemAlertWindow();",
                     "    } else {",
-                    "      if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SYSTEMALERTWINDOW)) {",
+                    "      if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SYSTEMALERTWINDOW)) {",
                     "        target.systemAlertWindowOnShowRationale(new SystemAlertWindowPermissionRequest(target));",
                     "      } else {",
                     "        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(\"package:\" + target.getActivity().getPackageName()));",
@@ -5654,7 +5816,7 @@ public final class Source {
                     "      if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SYSTEMALERTWINDOW) || Settings.canDrawOverlays(target.getActivity())) {",
                     "        target.systemAlertWindow();",
                     "      } else {",
-                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SYSTEMALERTWINDOW)) {",
+                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SYSTEMALERTWINDOW)) {",
                     "          target.systemAlertWindowOnNeverAskAgain();",
                     "        } else {",
                     "          target.systemAlertWindowOnPermissionDenied();",

@@ -2,9 +2,6 @@
 local.properties
 
 build/
-captures/
 
 .idea/
 *.iml
-
-.DS_Store
