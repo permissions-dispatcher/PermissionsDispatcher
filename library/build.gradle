@@ -5,8 +5,8 @@ android {
     compileSdkVersion COMPILE_SDK_VERSION
     buildToolsVersion BUILD_TOOLS_VERSION
     defaultConfig {
-        minSdkVersion 14
-        targetSdkVersion 25
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
     }
 
     compileOptions {

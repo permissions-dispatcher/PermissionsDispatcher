@@ -5,7 +5,8 @@ android {
     buildToolsVersion BUILD_TOOLS_VERSION
     defaultConfig {
         applicationId "permissions.dispatcher.sample"
-        minSdkVersion 14
+        targetSdkVersion TARGET_SDK_VERSION
+        minSdkVersion MIN_SDK_VERSION
         versionCode 1
         versionName "1.0"
     }
@@ -16,19 +17,12 @@ android {
     lintOptions {
         abortOnError false
     }
-    productFlavors {
-        marshmallow {
-            targetSdkVersion 23
-        }
-        pre23 {
-            targetSdkVersion 22
-        }
-    }
 }
 
 dependencies {
     compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
-    // The 'exclude' clause simulates the optional dependency on support-v13 for local Project Dependencies
-    compile (project(':library')) { exclude group: 'com.android.support', module: 'support-v13' }
+    compile (project(':library')) {
+        exclude module: "support-v13"
+    }
     provided project(':processor')
 }

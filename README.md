@@ -26,7 +26,7 @@ PermissionsDispatcher introduces only a few annotations, keeping its general API
 
 |Annotation|Required|Description|
 |---|---|---|
-|`@RuntimePermissions`|**✓**|Register an `Activity` or `Fragment` to handle permissions|
+|`@RuntimePermissions`|**✓**|Register an `Activity` or `Fragment`(we support both) to handle permissions|
 |`@NeedsPermission`|**✓**|Annotate a method which performs the action that requires one or more permissions|
 |`@OnShowRationale`||Annotate a method which explains why the permission/s is/are needed. It passes in a `PermissionRequest` object which can be used to continue or abort the current permission request upon user input|
 |`@OnPermissionDenied`||Annotate a method which is invoked if the user doesn't grant the permissions|
@@ -197,7 +197,7 @@ To add it to your project, include the following in your **app module** `build.g
 dependencies {
   compile 'com.github.hotchemi:permissionsdispatcher:${latest.version}' {
       // if you don't use android.app.Fragment you can exclude support for them
-      exclude name: "support-v13"
+      exclude module: "support-v13"
   }
   annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:${latest.version}'
 }
