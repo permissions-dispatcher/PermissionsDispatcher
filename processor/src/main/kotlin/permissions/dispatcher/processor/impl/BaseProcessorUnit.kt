@@ -284,15 +284,6 @@ abstract class BaseProcessorUnit : ProcessorUnit {
         val hasDenied = onDenied != null
         val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
         val permissionField = permissionFieldName(needsMethod)
-        if (!ADD_WITH_CHECK_BODY_MAP.containsKey(needsPermissionParameter)) {
-            builder.beginControlFlow("if (\$T.getTargetSdkVersion(\$N) < 23 && !\$T.hasSelfPermissions(\$N, \$N))",
-                    PERMISSION_UTILS, getActivityName(targetParam), PERMISSION_UTILS, getActivityName(targetParam), permissionField)
-            if (hasDenied) {
-                builder.addStatement("\$N.\$N()", targetParam, onDenied!!.simpleString())
-            }
-            builder.addStatement("return")
-            builder.endControlFlow()
-        }
 
         // Add the conditional for "permission verified"
         ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, getActivityName(targetParam), permissionField) ?: builder.beginControlFlow("if (\$T.verifyPermissions(\$N))", PERMISSION_UTILS, grantResultsParam)
