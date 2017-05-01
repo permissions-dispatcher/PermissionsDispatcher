@@ -26,11 +26,11 @@ branches:
 script: ./gradlew clean check --stacktrace
 
 after_success:
-  - "./deploy_snapshot.sh"
+  - "./scripts/deploy_snapshot.sh"
 
 deploy:
   provider: script
-  script: ./release.sh
+  script: ./scripts/release.sh
   on:
     tags: true
     repo: hotchemi/PermissionsDispatcher
