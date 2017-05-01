@@ -3,7 +3,6 @@ package permissions.dispatcher;
 import android.app.Activity;
 import android.app.Fragment;
 import android.content.Context;
-import android.content.pm.PackageInfo;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Process;
@@ -15,7 +14,6 @@ import android.support.v4.util.SimpleArrayMap;
 import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
 public final class PermissionUtils {
-
     // Map of dangerous permissions introduced in later framework versions.
     // Used to conditionally bypass permission-hold checks on older devices.
     private static final SimpleArrayMap<String, Integer> MIN_SDK_PERMISSIONS;
@@ -31,8 +29,6 @@ public final class PermissionUtils {
         MIN_SDK_PERMISSIONS.put("android.permission.SYSTEM_ALERT_WINDOW", 23);
         MIN_SDK_PERMISSIONS.put("android.permission.WRITE_SETTINGS", 23);
     }
-
-    private static volatile int targetSdkVersion = -1;
 
     private PermissionUtils() {
     }
@@ -174,23 +170,5 @@ public final class PermissionUtils {
      */
     public static void requestPermissions(Fragment fragment, String[] permissions, int requestCode) {
         FragmentCompat.requestPermissions(fragment, permissions, requestCode);
-    }
-
-    /**
-     * Get target sdk version.
-     *
-     * @param context context
-     * @return target sdk version
-     */
-    public static int getTargetSdkVersion(Context context) {
-        if (targetSdkVersion != -1) {
-            return targetSdkVersion;
-        }
-        try {
-            PackageInfo packageInfo = context.getPackageManager().getPackageInfo(context.getPackageName(), 0);
-            targetSdkVersion = packageInfo.applicationInfo.targetSdkVersion;
-        } catch (PackageManager.NameNotFoundException ignored) {
-        }
-        return targetSdkVersion;
     }
 }
