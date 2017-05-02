@@ -34,8 +34,4 @@ public final class PermissionUtils {
 
     public static void requestPermissions(android.app.Fragment fragment, String[] permissions, int requestCode) {
     }
-
-    public static int getTargetSdkVersion(Context context) {
-        return 0;
-    }
 }

@@ -1,5 +1,11 @@
 # ChangeLog
 
+- 2.4.0 2017/05/01
+  - Fix `SupportV13MissingException` with newer Gradle [#279](https://github.com/hotchemi/PermissionsDispatcher/issues/279).
+    - Now we bundle support v13 library in the library, you don't have to add v13 dependency by yourself.
+      - If you don't need v13 remove it rxpressly. ref: [README](https://github.com/hotchemi/PermissionsDispatcher#download)
+  - Remove a workaround in the case `targetSdkVersion < 23` [#305](https://github.com/hotchemi/PermissionsDispatcher/issues/305).
+    - If you need the workaround please use  older version.
 - 2.3.2 2017/03/10
   - Update minSdkVersion to API level 9 [#286](https://github.com/hotchemi/PermissionsDispatcher/pull/286).
   - Add new compile-time check [#284](https://github.com/hotchemi/PermissionsDispatcher/pull/284).
