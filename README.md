@@ -2,7 +2,7 @@
 
 [![Build Status](https://travis-ci.org/hotchemi/PermissionsDispatcher.svg?branch=master)](https://travis-ci.org/hotchemi/PermissionsDispatcher)
 
-![image](https://raw.githubusercontent.com/hotchemi/PermissionsDispatcher/master/art/logo.png)
+![image](https://raw.githubusercontent.com/hotchemi/PermissionsDispatcher/master/doc/logo.png)
 
 PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow, **100% reflection-free**.
 
@@ -90,7 +90,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 }
 ```
 
-Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/sample) and [generated class](https://github.com/hotchemi/PermissionsDispatcher/blob/master/art/MainActivityPermissionsDispatcher.java) for more details.
+Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/sample) and [generated class](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/MainActivityPermissionsDispatcher.java) for more details.
 
 ## Getting Special Permissions
 
