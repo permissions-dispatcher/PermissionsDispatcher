@@ -12,10 +12,6 @@ final class MainActivityPermissionsDispatcher {
 
     private static final String[] PERMISSION_SHOWCAMERA = new String[] {"android.permission.CAMERA"};
 
-    private static final int REQUEST_SHOWCONTACTS = 1;
-
-    private static final String[] PERMISSION_SHOWCONTACTS = new String[] {"android.permission.READ_CONTACTS","android.permission.WRITE_CONTACTS"};
-
     private MainActivityPermissionsDispatcher() {
     }
 
@@ -31,25 +27,9 @@ final class MainActivityPermissionsDispatcher {
         }
     }
 
-    static void showContactsWithCheck(MainActivity target) {
-        if (PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCONTACTS)) {
-            target.showContacts();
-        } else {
-            if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SHOWCONTACTS)) {
-                target.showRationaleForContact(new ShowContactsPermissionRequest(target));
-            } else {
-                ActivityCompat.requestPermissions(target, PERMISSION_SHOWCONTACTS, REQUEST_SHOWCONTACTS);
-            }
-        }
-    }
-
     static void onRequestPermissionsResult(MainActivity target, int requestCode, int[] grantResults) {
         switch (requestCode) {
             case REQUEST_SHOWCAMERA:
-                if (PermissionUtils.getTargetSdkVersion(target) < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCAMERA)) {
-                    target.onCameraDenied();
-                    return;
-                }
                 if (PermissionUtils.verifyPermissions(grantResults)) {
                     target.showCamera();
                 } else {
@@ -58,14 +38,6 @@ final class MainActivityPermissionsDispatcher {
                     } else {
                         target.onCameraDenied();
                     }
-                }
-                break;
-            case REQUEST_SHOWCONTACTS:
-                if (PermissionUtils.getTargetSdkVersion(target) < 23 && !PermissionUtils.hasSelfPermissions(target, PERMISSION_SHOWCONTACTS)) {
-                    return;
-                }
-                if (PermissionUtils.verifyPermissions(grantResults)) {
-                    target.showContacts();
                 }
                 break;
             default:
@@ -92,25 +64,6 @@ final class MainActivityPermissionsDispatcher {
             MainActivity target = weakTarget.get();
             if (target == null) return;
             target.onCameraDenied();
-        }
-    }
-
-    private static final class ShowContactsPermissionRequest implements PermissionRequest {
-        private final WeakReference<MainActivity> weakTarget;
-
-        private ShowContactsPermissionRequest(MainActivity target) {
-            this.weakTarget = new WeakReference<MainActivity>(target);
-        }
-
-        @Override
-        public void proceed() {
-            MainActivity target = weakTarget.get();
-            if (target == null) return;
-            ActivityCompat.requestPermissions(target, PERMISSION_SHOWCONTACTS, REQUEST_SHOWCONTACTS);
-        }
-
-        @Override
-        public void cancel() {
         }
     }
 }
