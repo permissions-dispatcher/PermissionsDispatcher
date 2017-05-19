@@ -4,7 +4,11 @@
 
 ![image](https://raw.githubusercontent.com/hotchemi/PermissionsDispatcher/master/doc/logo.png)
 
-PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow, **100% reflection-free**.
+- **100% reflection-free**
+- **Special Permissions support**
+- **Xiaomi support**
+
+PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow.
 
 This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code clean and safe.
 
@@ -94,98 +98,30 @@ Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/ma
 
 ## Getting Special Permissions
 
-PermissionsDispatcher takes care of special permissions `Manifest.permission.SYSTEM_ALERT_WINDOW` and `Manifest.permission.WRITE_SETTINGS`.
-
-The following sample is to grant `SYSTEM_ALERT_WINDOW`.
-
-### 0. Prepare AndroidManifest
-
-Add the following line to `AndroidManifest.xml`:
- 
-`<uses-permission android:name="android.permission.SYSTEM_ALERT_WINDOW" />`
-
-### 1. Attach annotations
-
-It's the same as other permissions:
-
-```java
-@RuntimePermissions
-public class MainActivity extends AppCompatActivity {
-
-    @NeedsPermission(Manifest.permission.SYSTEM_ALERT_WINDOW)
-    void systemAlertWindow() {
-    }
-
-    @OnShowRationale(Manifest.permission.SYSTEM_ALERT_WINDOW)
-    void systemAlertWindowOnShowRationale(final PermissionRequest request) {
-    }
-
-    @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)
-    void systemAlertWindowOnPermissionDenied() {
-    }
-
-    @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)
-    void systemAlertWindowOnNeverAskAgain() {
-    }
-}
-```
-
-### 2. Delegate to generated class
-
-Unlike other permissions, special permissions require to call the delegation method at `onActivityResult`:
-
-```java
-@Override
-protected void onCreate(Bundle savedInstanceState) {
-    super.onCreate(savedInstanceState);
-    setContentView(R.layout.activity_main);
-    findViewById(R.id.button_system_alert_window).setOnClickListener(v -> {
-      // NOTE: delegate the permission handling to generated method
-      MainActivityPermissionsDispatcher.systemAlertWindowWithCheck(this);
-    });
-}
-
-@Override
-public void onActivityResult(int requestCode, int resultCode, Intent data) {
-    MainActivityPermissionsDispatcher.onActivityResult(this, requestCode);
-}
-```
+- See [doc](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/special_permissions.md).
 
 ## maxSdkVersion
 
-[\<uses-permission\>](https://developer.android.com/guide/topics/manifest/uses-permission-element.html) has an attribute call `maxSdkVersion`. PermissionsDispatcher support the feature as well.
+- See [doc](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/maxsdkversion.md).
 
-The following sample is for declaring `Manifest.permisison.WRITE_EXTERNAL_STORAGE` up to API level 18.
+## Misc
 
-### 0. AndroidManifest
+### Xiaomi
 
-Declare the permission with `maxSdkVersion` attribute
-
-```xml
-<uses-permission
-     android:name="android.permission.WRITE_EXTERNAL_STORAGE"
-     android:maxSdkVersion="18" />
-```
-
-### 1. Attach annotations with `maxSdkVersion`
-
-```java
-@RuntimePermissions
-public class MainActivity extends AppCompatActivity {
-
-    @NeedsPermission(value = Manifest.permission.WRITE_EXTERNAL_STORAGE, maxSdkVersion = 18)
-    void getStorage() {
-        // ...
-    }
-    
-}
-```
-
-## Note
+Since Xiaomi manipulates something around runtime permission mechanism Google's recommended way [doesn't work well](https://github.com/hotchemi/PermissionsDispatcher/issues/187).
+But don't worry, PermissionsDispatcher supports it! Check related [PR](https://github.com/hotchemi/PermissionsDispatcher/issues/187) for more detail.
 
 ### For AndroidAnnotations users
 
 If you use [AndroidAnnotations](http://androidannotations.org/), you need to add [AndroidAnnotationsPermissionsDispatcherPlugin](https://github.com/AleksanderMielczarek/AndroidAnnotationsPermissionsDispatcherPlugin) to your dependencies so PermissionsDispatcher's looks for AA's subclasses (your project won't compile otherwise).
+
+### Knows issues
+
+See [doc](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/maxsdkversion.md).
+
+### Users
+
+We've got hundreds of [users](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/users.md) around the world!
 
 ## Download
 
