@@ -7,6 +7,7 @@ More detail, please check [appbrain](http://www.appbrain.com/stats/libraries/det
 - [Cookpad international](https://play.google.com/store/apps/details?id=com.mufumbo.android.recipe.search)
 - [Mercari](https://play.google.com/store/apps/details?id=com.kouzoh.mercari)
 - [Mercari Atte](https://play.google.com/store/apps/details?id=com.souzoh.android.atte)
+- [mitene](https://play.google.com/store/apps/details?id=us.mitene)
 - [Monsterstrike](https://play.google.com/store/apps/details?id=jp.co.mixi.monsterstrike)
 - [Matchbook](https://play.google.com/store/apps/details?id=jp.co.recruit.mtl.matchbook.android&hl=en)
 - [kidsly](https://play.google.com/store/apps/details?id=jp.recruit.kidsly)
