@@ -6,6 +6,8 @@ package permissions.dispatcher;
  */
 public interface PermissionRequest {
 
+    String[] getPermissionNames();
+
     void proceed();
 
     void cancel();
