@@ -117,7 +117,7 @@ If you use [AndroidAnnotations](http://androidannotations.org/), you need to add
 
 ### Knows issues
 
-See [doc](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/maxsdkversion.md).
+See [doc](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/known_issues.md).
 
 ### Users
 
