@@ -153,13 +153,7 @@ repositories {
 }
 ```
 
-If you're in trouble and use Jitpack check this [doc](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/jitpack.md)).
-
-```
-Error: Module depends on one or more Android Libraries but is a jar
-```
-
-In short, please ensure that the `jcenter()` repository is located *above* Jitpack's repository in your `repositories` block!
+If you're in trouble and use Jitpack check this [doc](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/jitpack.md).
 
 ## Licence
 
