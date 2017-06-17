@@ -111,6 +111,10 @@ Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/ma
 Since Xiaomi manipulates something around runtime permission mechanism Google's recommended way [doesn't work well](https://github.com/hotchemi/PermissionsDispatcher/issues/187).
 But don't worry, PermissionsDispatcher supports it! Check related [PR](https://github.com/hotchemi/PermissionsDispatcher/issues/187) for more detail.
 
+### IntelliJ plugin
+
+You can use [IntelliJ plugin](https://github.com/shiraji/permissions-dispatcher-plugin) developed by [@shiraji](https://github.com/shiraji).
+
 ### For AndroidAnnotations users
 
 If you use [AndroidAnnotations](http://androidannotations.org/), you need to add [AndroidAnnotationsPermissionsDispatcherPlugin](https://github.com/AleksanderMielczarek/AndroidAnnotationsPermissionsDispatcherPlugin) to your dependencies so PermissionsDispatcher's looks for AA's subclasses (your project won't compile otherwise).
@@ -121,7 +125,7 @@ See [doc](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/know
 
 ### Users
 
-We've got hundreds of [users](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/users.md) around the world!
+Thankfully we've got hundreds of [users](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/users.md) around the world!
 
 ## Download
 
@@ -149,9 +153,7 @@ repositories {
 }
 ```
 
-### For Jitpack users
-
-If you include [Jitpack.io](https://jitpack.io/) dependencies in your project, it is important to review the order of the repositories available to your app module. Because of the library's artifact ID, Jitpack might be tempted to resolve the dependency on its own, which could lead to an error during Gradle's configuration time:
+If you're in trouble and use Jitpack check this [doc](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/jitpack.md)).
 
 ```
 Error: Module depends on one or more Android Libraries but is a jar
