@@ -155,6 +155,29 @@ repositories {
 
 If you're in trouble and use Jitpack check this [doc](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/jitpack.md).
 
+## Kotlin
+
+> Known issues:
+> - [Annotated method with internal modifier cause wrong kapt generation](https://github.com/hotchemi/PermissionsDispatcher/issues/171)
+
+To add it to your Kotlin project, include the following in your **app module** `build.gradle` file:
+
+```groovy
+kapt {
+    // generate *PermissionsDispatcher stubs for Kotlin compiler
+    generateStubs = true
+}
+
+dependencies {
+  compile('com.github.hotchemi:permissionsdispatcher:${latest.version}') {
+      // if you don't use android.app.Fragment you can exclude support for them
+      exclude module: "support-v13"
+  }
+  kapt 'com.github.hotchemi:permissionsdispatcher-processor:${latest.version}'
+}
+```
+
+
 ## Licence
 
 ```
