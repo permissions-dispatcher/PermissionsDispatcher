@@ -135,11 +135,11 @@ To add it to your project, include the following in your **app module** `build.g
 
 ```groovy
 dependencies {
-  compile('com.github.hotchemi:permissionsdispatcher:${latest.version}') {
+  compile("com.github.hotchemi:permissionsdispatcher:${latest.version}") {
       // if you don't use android.app.Fragment you can exclude support for them
       exclude module: "support-v13"
   }
-  annotationProcessor 'com.github.hotchemi:permissionsdispatcher-processor:${latest.version}'
+  annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:${latest.version}"
 }
 ```
 
