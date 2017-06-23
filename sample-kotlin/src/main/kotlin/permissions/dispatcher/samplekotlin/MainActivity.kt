@@ -23,16 +23,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     override fun onClick(v: View) {
         when (v.id) {
-            R.id.button_camera -> {
-                // NOTE: delegate the permission handling to generated method
-                MainActivityPermissionsDispatcher.showCameraWithCheck(this)
-            }
+            // NOTE: delegate the permission handling to generated method
+            R.id.button_camera -> MainActivityPermissionsDispatcher.showCameraWithCheck(this)
 
-            R.id.button_contacts -> {
-                // NOTE: delegate the permission handling to generated method
-                MainActivityPermissionsDispatcher.showContactsWithCheck(this)
-            }
-
+            // NOTE: delegate the permission handling to generated method
+            R.id.button_contacts -> MainActivityPermissionsDispatcher.showContactsWithCheck(this)
         }
     }
 
@@ -42,6 +37,8 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults)
     }
 
+    // NOTE: methods with NeedsPermission annotation must be public
+    // see https://github.com/hotchemi/PermissionsDispatcher/issues/171
     @NeedsPermission(Manifest.permission.CAMERA)
     fun showCamera() {
         // NOTE: Perform action that requires the permission. If this is run by PermissionsDispatcher, the permission will have been granted
@@ -87,14 +84,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
         Toast.makeText(this, R.string.permission_camera_never_askagain, Toast.LENGTH_SHORT).show()
     }
 
-    fun onBackClick(view: View) {
-        supportFragmentManager.popBackStack()
-    }
+    fun onBackClick(view: View) = supportFragmentManager.popBackStack()
 
     private fun showRationaleDialog(@StringRes messageResId: Int, request: PermissionRequest) {
         AlertDialog.Builder(this)
-                .setPositiveButton(R.string.button_allow) { dialog, which -> request.proceed() }
-                .setNegativeButton(R.string.button_deny) { dialog, which -> request.cancel() }
+                .setPositiveButton(R.string.button_allow) { _, _ -> request.proceed() }
+                .setNegativeButton(R.string.button_deny) { _, _ -> request.cancel() }
                 .setCancelable(false)
                 .setMessage(messageResId)
                 .show()

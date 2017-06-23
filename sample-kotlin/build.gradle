@@ -18,9 +18,14 @@ android {
     lintOptions {
         abortOnError false
     }
+    sourceSets {
+        main.java.srcDirs += "src/main/kotlin"
+    }
 }
 
+
 kapt {
+    // generate *PermissionsDispatcher stubs for Kotlin compiler
     generateStubs = true
 }
 
