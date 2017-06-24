@@ -1,0 +1,20 @@
+<resources>
+    <string name="app_name">PermissionsDispatcher Sample</string>
+    <string name="contacts_string">Total number of contacts: %1$,d\nFirst contact:<b>%2$s</b></string>
+    <string name="contacts_empty">Contacts not loaded.</string>
+    <string name="add_contact">Add a contact</string>
+    <string name="show_contact">Show first contact</string>
+    <string name="contacts_intro">This fragment demonstrates access to the contact database on the device.\n
+            Clicking \"Add a contact\" adds a new contact named "__DUMMY ENTRY" directly into the database.\n
+    Clicking \"Show first contact\" accesses the contact database to display the name of the first contact.</string>
+    <string name="back">Back</string>
+    <string name="show_camera">Show camera preview</string>
+    <string name="show_contacts">Show and add contacts</string>
+    <string name="main_introduction">Click the buttons below to show a camera preview or access the contacts database.\nNote that the contacts option is only available on Android M to illustrate the use of optional, M-only permissions that are not requested on lower SDK platforms.</string>
+    <string name="permission_camera_rationale">Camera permission is needed to show the camera preview.</string>
+    <string name="permission_contacts_rationale">Contacts permissions are needed to demonstrate access to the contacts database.</string>
+    <string name="permission_camera_denied">Camera permission was denied. Please consider granting it in order to access the camera!</string>
+    <string name="permission_camera_never_askagain">Camera permission was denied with never ask again.</string>
+    <string name="button_allow">Allow</string>
+    <string name="button_deny">Deny</string>
+</resources>
