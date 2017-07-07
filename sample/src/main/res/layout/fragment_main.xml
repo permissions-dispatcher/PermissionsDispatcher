@@ -7,7 +7,7 @@
               android:paddingTop="@dimen/vertical_page_margin"
               android:paddingBottom="@dimen/vertical_page_margin"
               android:orientation="vertical"
-              tools:context=".MainActivityFragment">
+              tools:context=".MainActivity">
 
     <TextView
             android:text="@string/main_introduction"
@@ -18,15 +18,12 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/show_camera"
-            android:id="@+id/button_camera"
-            android:onClick="showCamera"/>
-
+            android:id="@+id/button_camera"/>
 
     <Button
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/show_contacts"
-            android:id="@+id/button_contacts"
-            android:onClick="showContacts"/>
+            android:id="@+id/button_contacts"/>
 
 </LinearLayout>
