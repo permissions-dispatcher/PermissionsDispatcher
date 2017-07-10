@@ -15,6 +15,14 @@ sourceSets {
             ]
         }
     }
+    test {
+        java {
+            srcDirs = [
+                    'src/main/kotlin',
+                    '../library/src/main/java'
+            ]
+        }
+    }
 }
 
 task sourcesJar(type: Jar) {
