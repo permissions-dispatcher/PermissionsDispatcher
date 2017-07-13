@@ -59,7 +59,10 @@ abstract class BaseProcessorUnit : ProcessorUnit {
 
     private fun createFields(needsElements: List<ExecutableElement>, requestCodeProvider: RequestCodeProvider): List<FieldSpec> {
         val fields: ArrayList<FieldSpec> = arrayListOf()
-        needsElements.forEach {
+
+        // The Set of annotated elements needs to be ordered
+        // in order to achieve Deterministic, Reproducible Builds
+        needsElements.sortedBy { it.simpleString() }.forEach {
             // For each method annotated with @NeedsPermission, add REQUEST integer and PERMISSION String[] fields
             fields.add(createRequestCodeField(it, requestCodeProvider.nextRequestCode()))
             fields.add(createPermissionField(it))

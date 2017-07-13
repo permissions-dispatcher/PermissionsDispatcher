@@ -59,17 +59,21 @@ class PermissionsProcessor : AbstractProcessor() {
         // Create a RequestCodeProvider which guarantees unique request codes for each permission request
         val requestCodeProvider = RequestCodeProvider()
 
-        roundEnv.getElementsAnnotatedWith(RuntimePermissions::class.java).forEach {
-            // Find a suitable ProcessorUnit for this element
-            val processorUnit = findAndValidateProcessorUnit(processorUnits, it)
+        // The Set of annotated elements needs to be ordered
+        // in order to achieve Deterministic, Reproducible Builds
+        roundEnv.getElementsAnnotatedWith(RuntimePermissions::class.java)
+                .sortedBy { it.simpleName.toString() }
+                .forEach {
+                    // Find a suitable ProcessorUnit for this element
+                    val processorUnit = findAndValidateProcessorUnit(processorUnits, it)
 
-            // Create a RuntimePermissionsElement for this value
-            val rpe = RuntimePermissionsElement(it as TypeElement)
+                    // Create a RuntimePermissionsElement for this value
+                    val rpe = RuntimePermissionsElement(it as TypeElement)
 
-            // Create a JavaFile for this element and write it out
-            val javaFile = processorUnit.createJavaFile(rpe, requestCodeProvider)
-            javaFile.writeTo(filer)
-        }
+                    // Create a JavaFile for this element and write it out
+                    val javaFile = processorUnit.createJavaFile(rpe, requestCodeProvider)
+                    javaFile.writeTo(filer)
+                }
 
         return true
     }
