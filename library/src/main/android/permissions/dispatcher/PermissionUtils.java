@@ -72,7 +72,7 @@ public final class PermissionUtils {
      * @param permissions permission list
      * @return returns true if the Activity or Fragment has access to all given permissions.
      */
-    public static boolean hasSelfPermissions(Context context, String... permissions) {
+    public static boolean hasSelfPermissions(Context context, String[] permissions) {
         for (String permission : permissions) {
             if (permissionExists(permission) && !hasSelfPermission(context, permission)) {
                 return false;
@@ -120,7 +120,7 @@ public final class PermissionUtils {
      * @param permissions permission list
      * @return returns true if one of the permission is needed to show rationale.
      */
-    public static boolean shouldShowRequestPermissionRationale(Activity activity, String... permissions) {
+    public static boolean shouldShowRequestPermissionRationale(Activity activity, String[] permissions) {
         for (String permission : permissions) {
             if (ActivityCompat.shouldShowRequestPermissionRationale(activity, permission)) {
                 return true;
