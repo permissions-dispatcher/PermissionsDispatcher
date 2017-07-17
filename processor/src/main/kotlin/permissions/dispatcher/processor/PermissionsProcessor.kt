@@ -5,6 +5,8 @@ import permissions.dispatcher.processor.impl.ActivityProcessorUnit
 import permissions.dispatcher.processor.impl.NativeFragmentProcessorUnit
 import permissions.dispatcher.processor.impl.SupportFragmentProcessorUnit
 import permissions.dispatcher.processor.util.findAndValidateProcessorUnit
+import permissions.dispatcher.processor.util.getProcessorUnits
+import permissions.dispatcher.processor.util.isKotlin
 import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
@@ -20,28 +22,15 @@ var TYPE_UTILS: Types by Delegates.notNull()
 class PermissionsProcessor : AbstractProcessor() {
 
     /* Processing Environment helpers */
-
     var filer: Filer by Delegates.notNull()
     var messager: Messager by Delegates.notNull()
 
-    /* List of available ProcessorUnits */
-    var processorUnits: List<ProcessorUnit> by Delegates.notNull()
-
     override fun init(processingEnv: ProcessingEnvironment) {
         super.init(processingEnv)
-
-        // Setup helper objects
         filer = processingEnv.filer
         messager = processingEnv.messager
         ELEMENT_UTILS = processingEnv.elementUtils
         TYPE_UTILS = processingEnv.typeUtils
-
-        // Setup the list of ProcessorUnits to handle code generation with
-        processorUnits = listOf(
-                ActivityProcessorUnit(),
-                SupportFragmentProcessorUnit(),
-                NativeFragmentProcessorUnit()
-        )
     }
 
     override fun getSupportedSourceVersion(): SourceVersion? {
@@ -64,6 +53,9 @@ class PermissionsProcessor : AbstractProcessor() {
         roundEnv.getElementsAnnotatedWith(RuntimePermissions::class.java)
                 .sortedBy { it.simpleName.toString() }
                 .forEach {
+                    val isKotlin = it.getAnnotation(RuntimePermissions::class.java).isKotlin()
+                    val processorUnits = getProcessorUnits(isKotlin)
+
                     // Find a suitable ProcessorUnit for this element
                     val processorUnit = findAndValidateProcessorUnit(processorUnits, it)
 

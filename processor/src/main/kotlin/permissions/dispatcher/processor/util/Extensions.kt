@@ -1,9 +1,6 @@
 package permissions.dispatcher.processor.util
 
-import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.OnNeverAskAgain
-import permissions.dispatcher.OnPermissionDenied
-import permissions.dispatcher.OnShowRationale
+import permissions.dispatcher.*
 import permissions.dispatcher.processor.TYPE_UTILS
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
@@ -57,6 +54,16 @@ fun Annotation.permissionValue(): List<String> {
         is OnNeverAskAgain -> return this.value.asList()
     }
     return emptyList()
+}
+
+/**
+ * Returns true if user specify kotlin argument as true, otherwise false.
+ */
+fun Annotation.isKotlin(): Boolean {
+    when (this) {
+        is RuntimePermissions -> return this.isKotlin()
+        else -> return false
+    }
 }
 
 /**

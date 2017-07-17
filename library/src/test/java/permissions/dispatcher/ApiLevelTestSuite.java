@@ -17,6 +17,7 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+import java.util.Arrays;
 
 import static android.os.Build.VERSION_CODES.GINGERBREAD;
 import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;
@@ -77,47 +78,47 @@ public class ApiLevelTestSuite {
     public void testAddVoicemailPermission() throws Exception {
         // ADD_VOICEMAIL:
         // Added in API level 14 ("Ice Cream Sandwich")
-        iteratePermissionCheck(Manifest.permission.ADD_VOICEMAIL, ICE_CREAM_SANDWICH);
+        iteratePermissionCheck(ICE_CREAM_SANDWICH, Manifest.permission.ADD_VOICEMAIL);
     }
 
     @Test
     public void testBodySensorsPermission() throws Exception {
         // BODY_SENSORS:
         // Added in API level 20 ("KitKat Watch")
-        iteratePermissionCheck(Manifest.permission.BODY_SENSORS, KITKAT_WATCH);
+        iteratePermissionCheck(KITKAT_WATCH, Manifest.permission.BODY_SENSORS);
     }
 
     @Test
     public void testReadCallLogPermission() throws Exception {
         // READ_CALL_LOG:
         // Added in API level 16 ("Jelly Bean")
-        iteratePermissionCheck(Manifest.permission.READ_CALL_LOG, JELLY_BEAN);
+        iteratePermissionCheck(JELLY_BEAN, Manifest.permission.READ_CALL_LOG);
     }
 
     @Test
     public void testReadExternalStoragePermission() throws Exception {
         // READ_EXTERNAL_STORAGE:
         // Added in API level 16 ("Jelly Bean")
-        iteratePermissionCheck(Manifest.permission.READ_EXTERNAL_STORAGE, JELLY_BEAN);
+        iteratePermissionCheck(JELLY_BEAN, Manifest.permission.READ_EXTERNAL_STORAGE);
     }
 
     @Test
     public void testUseSipPermission() throws Exception {
         // USE_SIP:
         // Added in API level 9 ("Gingerbread")
-        iteratePermissionCheck(Manifest.permission.USE_SIP, GINGERBREAD);
+        iteratePermissionCheck(GINGERBREAD, Manifest.permission.USE_SIP);
     }
 
     @Test
     public void testWriteCallLogPermission() throws Exception {
         // WRITE_CALL_LOG:
         // Added in API level 16 ("Jelly Bean")
-        iteratePermissionCheck(Manifest.permission.WRITE_CALL_LOG, JELLY_BEAN);
+        iteratePermissionCheck(JELLY_BEAN, Manifest.permission.WRITE_CALL_LOG);
     }
 
 	/* Begin private */
 
-    private void iteratePermissionCheck(String permission, int permissionMinLevel) throws Exception {
+    private void iteratePermissionCheck(int permissionMinLevel, String... permissions) throws Exception {
         for (int apiLevel = 0; apiLevel <= MOST_RECENT_API_LEVEL; apiLevel++) {
             // Adjust the current API level
             assumeApiLevel(apiLevel);
@@ -126,12 +127,12 @@ public class ApiLevelTestSuite {
             // below the minimum available level. For all other API levels, the permission
             // shouldn't be auto-granted.
             boolean shouldAutoGrantPermission = apiLevel < permissionMinLevel;
-            boolean hasPermission = PermissionUtils.hasSelfPermissions(mockContext, permission);
+            boolean hasPermission = PermissionUtils.hasSelfPermissions(mockContext, permissions);
 
             if (shouldAutoGrantPermission != hasPermission) {
                 // Mismatch, because the permission shouldn't be granted because the API level requires a check,
                 // OR the permission should be granted because it doesn't exist on the current API level
-                throw new AssertionError(permission + " check on API level " + apiLevel + " shouldn't return auto-grant=" + shouldAutoGrantPermission + " amd has-permission=" + hasPermission);
+                throw new AssertionError(Arrays.toString(permissions) + " check on API level " + apiLevel + " shouldn't return auto-grant=" + shouldAutoGrantPermission + " amd has-permission=" + hasPermission);
             }
         }
     }
