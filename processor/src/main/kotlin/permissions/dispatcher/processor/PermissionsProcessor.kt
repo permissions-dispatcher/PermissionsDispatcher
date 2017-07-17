@@ -1,17 +1,16 @@
 package permissions.dispatcher.processor
 
 import permissions.dispatcher.RuntimePermissions
-import permissions.dispatcher.processor.impl.ActivityProcessorUnit
-import permissions.dispatcher.processor.impl.NativeFragmentProcessorUnit
-import permissions.dispatcher.processor.impl.SupportFragmentProcessorUnit
 import permissions.dispatcher.processor.util.findAndValidateProcessorUnit
 import permissions.dispatcher.processor.util.getProcessorUnits
 import permissions.dispatcher.processor.util.isKotlin
+import java.io.File
 import javax.annotation.processing.*
 import javax.lang.model.SourceVersion
 import javax.lang.model.element.TypeElement
 import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
+import javax.tools.Diagnostic
 import kotlin.properties.Delegates
 
 /** Element Utilities, obtained from the processing environment */
@@ -20,6 +19,10 @@ var ELEMENT_UTILS: Elements by Delegates.notNull()
 var TYPE_UTILS: Types by Delegates.notNull()
 
 class PermissionsProcessor : AbstractProcessor() {
+
+    companion object {
+        const val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated"
+    }
 
     /* Processing Environment helpers */
     var filer: Filer by Delegates.notNull()
@@ -41,9 +44,6 @@ class PermissionsProcessor : AbstractProcessor() {
         return hashSetOf(RuntimePermissions::class.java.canonicalName)
     }
 
-    /**
-     * Main processing method
-     */
     override fun process(annotations: Set<TypeElement>, roundEnv: RoundEnvironment): Boolean {
         // Create a RequestCodeProvider which guarantees unique request codes for each permission request
         val requestCodeProvider = RequestCodeProvider()
@@ -62,11 +62,19 @@ class PermissionsProcessor : AbstractProcessor() {
                     // Create a RuntimePermissionsElement for this value
                     val rpe = RuntimePermissionsElement(it as TypeElement)
 
-                    // Create a JavaFile for this element and write it out
-                    val javaFile = processorUnit.createJavaFile(rpe, requestCodeProvider)
-                    javaFile.writeTo(filer)
-                }
-
+                    if (isKotlin) {
+                        val kaptKotlinGeneratedDir = processingEnv.options[KAPT_KOTLIN_GENERATED_OPTION_NAME] ?: run {
+                            processingEnv.messager.printMessage(Diagnostic.Kind.ERROR, "Can't find the target directory for generated Kotlin files.")
+                            return false
+                        }
+                        val file = File(kaptKotlinGeneratedDir, "testGenerated.kt")
+                        val kotlinFile = processorUnit.createKotlinFile(rpe, requestCodeProvider)
+                        kotlinFile?.writeTo(file)
+                    } else {
+                        val javaFile = processorUnit.createJavaFile(rpe, requestCodeProvider)
+                        javaFile.writeTo(filer)
+                    }
+               }
         return true
     }
 }

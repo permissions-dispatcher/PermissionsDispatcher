@@ -61,7 +61,7 @@ fun Annotation.permissionValue(): List<String> {
  */
 fun Annotation.isKotlin(): Boolean {
     when (this) {
-        is RuntimePermissions -> return this.isKotlin()
+        is RuntimePermissions -> return this.kotlin
         else -> return false
     }
 }
