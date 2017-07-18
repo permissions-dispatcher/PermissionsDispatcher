@@ -1,8 +1,14 @@
 package permissions.dispatcher.processor
 
 import permissions.dispatcher.RuntimePermissions
+import permissions.dispatcher.processor.impl.java.ActivityProcessorUnit
+import permissions.dispatcher.processor.impl.java.NativeFragmentProcessorUnit
+import permissions.dispatcher.processor.impl.java.SupportFragmentProcessorUnit
+import permissions.dispatcher.processor.impl.kotlin.ActivityKtProcessorUnit
+import permissions.dispatcher.processor.impl.kotlin.NativeFragmentKtProcessorUnit
+import permissions.dispatcher.processor.impl.kotlin.SupportFragmentKtProcessorUnit
+import permissions.dispatcher.processor.util.findAndValidateKtProcessorUnit
 import permissions.dispatcher.processor.util.findAndValidateProcessorUnit
-import permissions.dispatcher.processor.util.getProcessorUnits
 import permissions.dispatcher.processor.util.isKotlin
 import java.io.File
 import javax.annotation.processing.*
@@ -53,24 +59,33 @@ class PermissionsProcessor : AbstractProcessor() {
         roundEnv.getElementsAnnotatedWith(RuntimePermissions::class.java)
                 .sortedBy { it.simpleName.toString() }
                 .forEach {
-                    val isKotlin = it.getAnnotation(RuntimePermissions::class.java).isKotlin()
-                    val processorUnits = getProcessorUnits(isKotlin)
-
-                    // Find a suitable ProcessorUnit for this element
-                    val processorUnit = findAndValidateProcessorUnit(processorUnits, it)
-
                     // Create a RuntimePermissionsElement for this value
                     val rpe = RuntimePermissionsElement(it as TypeElement)
-
+                    val isKotlin = it.getAnnotation(RuntimePermissions::class.java).isKotlin()
                     if (isKotlin) {
+                        val processorUnits = listOf(
+                                ActivityKtProcessorUnit(),
+                                SupportFragmentKtProcessorUnit(),
+                                NativeFragmentKtProcessorUnit())
+                        // Find a suitable ProcessorUnit for this element
+                        val processorUnit = findAndValidateKtProcessorUnit(processorUnits, it)
+
+                        // FIXME: refer to official sample but seems there's more clever way...
+                        // https://github.com/JetBrains/kotlin-examples/blob/master/gradle/kotlin-code-generation/annotation-processor/src/main/java/TestAnnotationProcessor.kt#L26
                         val kaptKotlinGeneratedDir = processingEnv.options[KAPT_KOTLIN_GENERATED_OPTION_NAME] ?: run {
                             processingEnv.messager.printMessage(Diagnostic.Kind.ERROR, "Can't find the target directory for generated Kotlin files.")
                             return false
                         }
-                        val file = File(kaptKotlinGeneratedDir, "testGenerated.kt")
-                        val kotlinFile = processorUnit.createJavaFile(rpe, requestCodeProvider)
-                        kotlinFile?.writeTo(file)
+                        val file = File(kaptKotlinGeneratedDir, rpe.generatedClassName)
+                        val kotlinFile = processorUnit.createKotlinFile(rpe, requestCodeProvider)
+                        kotlinFile.writeTo(file)
                     } else {
+                        val processorUnits = listOf(
+                                ActivityProcessorUnit(),
+                                SupportFragmentProcessorUnit(),
+                                NativeFragmentProcessorUnit())
+                        // Find a suitable ProcessorUnit for this element
+                        val processorUnit = findAndValidateProcessorUnit(processorUnits, it)
                         val javaFile = processorUnit.createJavaFile(rpe, requestCodeProvider)
                         javaFile.writeTo(filer)
                     }

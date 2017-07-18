@@ -2,7 +2,6 @@ package permissions.dispatcher.processor
 
 import com.squareup.javapoet.TypeName
 import com.squareup.javapoet.TypeVariableName
-import com.squareup.kotlinpoet.ClassName
 import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
@@ -12,8 +11,8 @@ import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 
 class RuntimePermissionsElement(e: TypeElement) {
-    val typeName = TypeName.get(e.asType())
-    val ktTypeName = ClassName.bestGuess(e.qualifiedName.toString()) // FIXME: TypeName.get is not exposed for now
+    val typeName: TypeName = TypeName.get(e.asType())
+    val ktTypeName = e.asType().asTypeName() // can we combine with typeName?
     val typeVariables = e.typeParameters.map { TypeVariableName.get(it) }
     val ktTypeVariables = e.typeParameters.map { com.squareup.kotlinpoet.TypeVariableName.get(it) }
     val packageName = e.packageName()

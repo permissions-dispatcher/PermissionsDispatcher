@@ -1,9 +1,7 @@
 package permissions.dispatcher.processor.util
 
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.KotlinFile
-import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.TypeName.Companion.asTypeName
 import permissions.dispatcher.*
 import permissions.dispatcher.processor.TYPE_UTILS
 import javax.lang.model.element.Element
@@ -97,3 +95,9 @@ fun KotlinFile.Builder.addTypes(types: List<TypeSpec>): KotlinFile.Builder {
     types.forEach { addType(it) }
     return this
 }
+
+// we need this extensions to expose `asTypeName`. Is it a bug of KotlinPoet?
+fun TypeMirror.asTypeName(): TypeName {
+    return this.asTypeName()
+}
+

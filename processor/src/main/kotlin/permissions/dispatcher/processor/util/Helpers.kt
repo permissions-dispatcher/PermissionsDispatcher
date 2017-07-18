@@ -44,6 +44,17 @@ fun varargsParametersCodeBlock(needsElement: ExecutableElement): CodeBlock {
     return varargsCall.build()
 }
 
+fun varargsKtParametersCodeBlock(needsElement: ExecutableElement): com.squareup.kotlinpoet.CodeBlock {
+    val varargsCall = com.squareup.kotlinpoet.CodeBlock.builder()
+    needsElement.parameters.forEachIndexed { i, it ->
+        varargsCall.add("\$L", it.simpleString())
+        if (i < needsElement.parameters.size - 1) {
+            varargsCall.add(", ")
+        }
+    }
+    return varargsCall.build()
+}
+
 /**
  * Setup the list of ProcessorUnits to handle code generation with
  */
