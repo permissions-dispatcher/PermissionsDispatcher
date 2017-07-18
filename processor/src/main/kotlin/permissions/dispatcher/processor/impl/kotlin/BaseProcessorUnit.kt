@@ -1,7 +1,6 @@
 package permissions.dispatcher.processor.impl.kotlin
 
-import com.squareup.javapoet.*
-import com.squareup.kotlinpoet.KotlinFile
+import com.squareup.kotlinpoet.*
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.KtProcessorUnit
 import permissions.dispatcher.processor.RequestCodeProvider
@@ -20,63 +19,54 @@ import javax.lang.model.element.Modifier
  */
 abstract class BaseKtProcessorUnit : KtProcessorUnit {
 
-    protected val PERMISSION_UTILS = ClassName.get("permissions.dispatcher", "PermissionUtils")
-    private val BUILD = ClassName.get("android.os", "Build")
+    /* Begin abstract */
+
+    abstract fun addRequestPermissionsStatement(builder: FunSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String)
+
+    abstract fun addShouldShowRequestPermissionRationaleCondition(builder: FunSpec.Builder, targetParam: String, permissionField: String, isPositiveCondition: Boolean = true)
+
+    abstract fun getActivityName(targetParam: String): String
+
+    protected val PERMISSION_UTILS = ClassName.bestGuess("permissions.dispatcher.PermissionUtils")
+    private val BUILD = ClassName.bestGuess("android.os.Build")
     private val MANIFEST_WRITE_SETTING = "android.permission.WRITE_SETTINGS"
     private val MANIFEST_SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
     private val ADD_WITH_CHECK_BODY_MAP = hashMapOf(MANIFEST_SYSTEM_ALERT_WINDOW to SystemAlertWindowHelper(), MANIFEST_WRITE_SETTING to WriteSettingsHelper())
 
     override fun createKotlinFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): KotlinFile {
-        val kotlinFile = KotlinFile.get(rpe.packageName, createTypeSpec(rpe, requestCodeProvider))
-        return kotlinFile
-    }
-
-    /* Begin abstract */
-
-    abstract fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String)
-
-    abstract fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String, isPositiveCondition: Boolean = true)
-
-    abstract fun getActivityName(targetParam: String): String
-
-    /* Begin private */
-
-    private fun createTypeSpec(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): TypeSpec {
-        return TypeSpec.classBuilder(rpe.generatedClassName)
-                .addModifiers(Modifier.FINAL)
-                .addFields(createFields(rpe.needsElements, requestCodeProvider))
-                .addMethod(createConstructor())
-                .addMethods(createWithCheckMethods(rpe))
-                .addMethods(createPermissionHandlingMethods(rpe))
+        return KotlinFile.builder(rpe.packageName, rpe.generatedClassName)
+                .addFileComment(FILE_COMMENT)
+                .addProperties(createProperties(rpe.needsElements, requestCodeProvider))
+                .addFunctions(createWithCheckFuns(rpe))
+                .addFunctions(createPermissionHandlingMethods(rpe))
                 .addTypes(createPermissionRequestClasses(rpe))
                 .build()
     }
 
-    private fun createFields(needsElements: List<ExecutableElement>, requestCodeProvider: RequestCodeProvider): List<FieldSpec> {
-        val fields: ArrayList<FieldSpec> = arrayListOf()
+    /* Begin private */
 
+    private fun createProperties(needsElements: List<ExecutableElement>, requestCodeProvider: RequestCodeProvider): List<PropertySpec> {
+        val properties: ArrayList<PropertySpec> = arrayListOf()
         // The Set of annotated elements needs to be ordered
         // in order to achieve Deterministic, Reproducible Builds
         needsElements.sortedBy { it.simpleString() }.forEach {
             // For each method annotated with @NeedsPermission, add REQUEST integer and PERMISSION String[] fields
-            fields.add(createRequestCodeField(it, requestCodeProvider.nextRequestCode()))
-            fields.add(createPermissionField(it))
-
+            properties.add(createRequestCodeProperty(it, requestCodeProvider.nextRequestCode()))
+            properties.add(createPermissionProperty(it))
             if (it.parameters.isNotEmpty()) {
-                fields.add(createPendingRequestField(it))
+                properties.add(createPendingRequestProperty(it))
             }
         }
-        return fields
+        return properties
     }
 
-    private fun createRequestCodeField(e: ExecutableElement, index: Int): FieldSpec {
-        return FieldSpec.builder(Int::class.java, requestCodeFieldName(e))
-                .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
+    private fun createRequestCodeProperty(e: ExecutableElement, index: Int): PropertySpec {
+        return PropertySpec.builder(requestCodeFieldName(e), Int::class.java, KModifier.PRIVATE)
                 .initializer("\$L", index)
                 .build()
     }
 
-    private fun createPermissionField(e: ExecutableElement): FieldSpec {
+    private fun createPermissionProperty(e: ExecutableElement): PropertySpec {
         val permissionValue: List<String> = e.getAnnotation(NeedsPermission::class.java).permissionValue()
         val formattedValue: String = permissionValue.joinToString(
                 separator = ",",
@@ -84,40 +74,32 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
                 postfix = "}",
                 transform = { "\"$it\"" }
         )
-        return FieldSpec.builder(ArrayTypeName.of(String::class.java), permissionFieldName(e))
-                .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
+        return PropertySpec.builder(permissionFieldName(e), Array<String>::class, KModifier.PRIVATE, KModifier.FINAL)
                 .initializer("\$N", "new String[] $formattedValue")
                 .build()
     }
 
-    private fun createPendingRequestField(e: ExecutableElement): FieldSpec {
-        return FieldSpec.builder(ClassName.get("permissions.dispatcher", "GrantableRequest"), pendingRequestFieldName(e))
-                .addModifiers(Modifier.PRIVATE, Modifier.STATIC)
+    private fun createPendingRequestProperty(e: ExecutableElement): PropertySpec {
+        return PropertySpec
+                .builder(pendingRequestFieldName(e), ClassName.bestGuess("permissions.dispatcher.GrantableRequest"), KModifier.PRIVATE)
                 .build()
     }
 
-    private fun createConstructor(): MethodSpec {
-        return MethodSpec.constructorBuilder()
-                .addModifiers(Modifier.PRIVATE)
-                .build()
-    }
-
-    private fun createWithCheckMethods(rpe: RuntimePermissionsElement): List<MethodSpec> {
-        val methods: ArrayList<MethodSpec> = arrayListOf()
+    private fun createWithCheckFuns(rpe: RuntimePermissionsElement): List<FunSpec> {
+        val methods: ArrayList<FunSpec> = arrayListOf()
         rpe.needsElements.forEach {
             // For each @NeedsPermission method, create the "WithCheck" equivalent
-            methods.add(createWithCheckMethod(rpe, it))
+            methods.add(createWithCheckFun(rpe, it))
         }
         return methods
     }
 
-    private fun createWithCheckMethod(rpe: RuntimePermissionsElement, method: ExecutableElement): MethodSpec {
-        val targetParam = "target"
-        val builder = MethodSpec.methodBuilder(withCheckMethodName(method))
-                .addTypeVariables(rpe.typeVariables)
-                .addModifiers(Modifier.STATIC)
-                .returns(TypeName.VOID)
-                .addParameter(rpe.typeName, targetParam)
+    private fun createWithCheckFun(rpe: RuntimePermissionsElement, method: ExecutableElement): FunSpec {
+        val builder = FunSpec.builder(withCheckMethodName(method))
+                .addTypeVariables(rpe.ktTypeVariables)
+                .receiver(rpe.ktTypeName)
+                .addModifiers(KModifier.INLINE)
+                .returns(UNIT)
 
         // If the method has parameters, add those as well
         method.parameters.forEach {
