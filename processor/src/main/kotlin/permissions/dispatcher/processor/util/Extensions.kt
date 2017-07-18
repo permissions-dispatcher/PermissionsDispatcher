@@ -96,18 +96,8 @@ fun KotlinFile.Builder.addTypes(types: List<TypeSpec>): KotlinFile.Builder {
     return this
 }
 
-// we need this extensions to expose `asTypeName`. Is it a bug of KotlinPoet?
+// we need this extensions to expose `asTypeName`.
+// Is it a bug of KotlinPoet?
 fun TypeMirror.asTypeName(): TypeName {
     return this.asTypeName()
 }
-
-//fun KotlinFile.test(): Array<Element> {
-//    val originatingElements = mutableListOf<Element>()
-//    for (member in members) {
-//        when (member) {
-//            is TypeSpec -> originatingElements += member.originatingElements
-//            else -> throw AssertionError()
-//        }
-//    }
-//    return originatingElements.toTypedArray()
-//}

@@ -4,10 +4,6 @@ import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.TypeName
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.ELEMENT_UTILS
-import permissions.dispatcher.processor.ProcessorUnit
-import permissions.dispatcher.processor.impl.java.ActivityProcessorUnit
-import permissions.dispatcher.processor.impl.java.NativeFragmentProcessorUnit
-import permissions.dispatcher.processor.impl.java.SupportFragmentProcessorUnit
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.type.TypeMirror
@@ -53,15 +49,4 @@ fun varargsKtParametersCodeBlock(needsElement: ExecutableElement): com.squareup.
         }
     }
     return varargsCall.build()
-}
-
-/**
- * Setup the list of ProcessorUnits to handle code generation with
- */
-fun getProcessorUnits(isKotlin: Boolean) : List<ProcessorUnit> {
-    if (isKotlin) {
-        return listOf(ActivityProcessorUnit(), SupportFragmentProcessorUnit(), NativeFragmentProcessorUnit())
-    } else {
-        return listOf(ActivityProcessorUnit(), SupportFragmentProcessorUnit(), NativeFragmentProcessorUnit())
-    }
 }

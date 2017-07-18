@@ -114,7 +114,7 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
         // if maxSdkVersion is lower than os level does nothing
         val maxSdkVersion = needsMethod.getAnnotation(NeedsPermission::class.java).maxSdkVersion
         if (maxSdkVersion > 0) {
-            builder.beginControlFlow("if (\$T.VERSION.SDK_INT > %L)", BUILD, maxSdkVersion)
+            builder.beginControlFlow("if (%T.VERSION.SDK_INT > %L)", BUILD, maxSdkVersion)
                     .addCode(CodeBlock.builder()
                             .add("%N(", needsMethod.simpleString())
                             .add(varargsKtParametersCodeBlock(needsMethod))
@@ -192,7 +192,6 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
         val grantResultsParam = "grantResults"
         val builder = FunSpec.builder("onActivityResult")
                 .addTypeVariables(rpe.ktTypeVariables)
-                .returns(UNIT)
                 .addParameter(requestCodeParam, INT)
 
         builder.beginControlFlow("when (%N)", requestCodeParam)
@@ -217,7 +216,6 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
         val builder = FunSpec.builder("onRequestPermissionsResult")
                 .addTypeVariables(rpe.ktTypeVariables)
                 .receiver(rpe.ktTypeName)
-                .returns(UNIT)
                 .addParameter(requestCodeParam, INT)
                 .addParameter(grantResultsParam, INT_ARRAY)
 

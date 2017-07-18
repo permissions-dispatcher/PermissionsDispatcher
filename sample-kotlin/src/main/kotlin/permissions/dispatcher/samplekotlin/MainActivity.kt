@@ -38,7 +38,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     // NOTE: methods with NeedsPermission annotation must be public
     // see https://github.com/hotchemi/PermissionsDispatcher/issues/171
     @NeedsPermission(Manifest.permission.CAMERA)
-    fun showCamera() {
+    internal fun showCamera() {
         // NOTE: Perform action that requires the permission. If this is run by PermissionsDispatcher, the permission will have been granted
         supportFragmentManager.beginTransaction()
                 .replace(R.id.sample_content_fragment, CameraPreviewFragment.newInstance())
@@ -47,7 +47,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     @NeedsPermission(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
-    fun showContacts() {
+    internal fun showContacts() {
         // NOTE: Perform action that requires the permission.
         // If this is run by PermissionsDispatcher, the permission will have been granted
         supportFragmentManager.beginTransaction()
