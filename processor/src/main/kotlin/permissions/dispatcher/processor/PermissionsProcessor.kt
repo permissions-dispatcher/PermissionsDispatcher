@@ -24,6 +24,7 @@ var ELEMENT_UTILS: Elements by Delegates.notNull()
 /** Type Utilities, obtained from the processing environment */
 var TYPE_UTILS: Types by Delegates.notNull()
 
+@SupportedOptions(PermissionsProcessor.KAPT_KOTLIN_GENERATED_OPTION_NAME)
 class PermissionsProcessor : AbstractProcessor() {
 
     companion object {
@@ -63,27 +64,29 @@ class PermissionsProcessor : AbstractProcessor() {
                     val rpe = RuntimePermissionsElement(it as TypeElement)
                     val isKotlin = it.getAnnotation(RuntimePermissions::class.java).isKotlin()
                     if (isKotlin) {
-                        val processorUnits = listOf(
-                                ActivityKtProcessorUnit(),
-                                SupportFragmentKtProcessorUnit(),
-                                NativeFragmentKtProcessorUnit())
+                        val processorUnits = listOf(ActivityKtProcessorUnit(), SupportFragmentKtProcessorUnit(), NativeFragmentKtProcessorUnit())
                         // Find a suitable ProcessorUnit for this element
                         val processorUnit = findAndValidateKtProcessorUnit(processorUnits, it)
 
-                        // FIXME: refer to official sample but seems there's more clever way...
+                        // refer to official sample but seems there's more clever way...
                         // https://github.com/JetBrains/kotlin-examples/blob/master/gradle/kotlin-code-generation/annotation-processor/src/main/java/TestAnnotationProcessor.kt#L26
                         val kaptKotlinGeneratedDir = processingEnv.options[KAPT_KOTLIN_GENERATED_OPTION_NAME] ?: run {
                             processingEnv.messager.printMessage(Diagnostic.Kind.ERROR, "Can't find the target directory for generated Kotlin files.")
                             return false
                         }
-                        val file = File(kaptKotlinGeneratedDir, rpe.generatedClassName)
+
+                        // FIXME: KAPT_KOTLIN_GENERATED_OPTION_NAME creates source code under kaptKotlin dir
+                        // but it seems the dir is not managed by build variants so it will cause compile error
+                        // this is pretty much ad hoc address...
+                        val kaptDir = kaptKotlinGeneratedDir.replace("kaptKotlin", "kapt")
+                        val file = File(kaptDir)
+                        if (!file.parentFile.exists()) {
+                            file.parentFile.mkdirs()
+                        }
                         val kotlinFile = processorUnit.createKotlinFile(rpe, requestCodeProvider)
                         kotlinFile.writeTo(file)
                     } else {
-                        val processorUnits = listOf(
-                                ActivityProcessorUnit(),
-                                SupportFragmentProcessorUnit(),
-                                NativeFragmentProcessorUnit())
+                        val processorUnits = listOf(ActivityProcessorUnit(), SupportFragmentProcessorUnit(), NativeFragmentProcessorUnit())
                         // Find a suitable ProcessorUnit for this element
                         val processorUnit = findAndValidateProcessorUnit(processorUnits, it)
                         val javaFile = processorUnit.createJavaFile(rpe, requestCodeProvider)

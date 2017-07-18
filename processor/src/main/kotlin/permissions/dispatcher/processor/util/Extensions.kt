@@ -101,3 +101,13 @@ fun TypeMirror.asTypeName(): TypeName {
     return this.asTypeName()
 }
 
+//fun KotlinFile.test(): Array<Element> {
+//    val originatingElements = mutableListOf<Element>()
+//    for (member in members) {
+//        when (member) {
+//            is TypeSpec -> originatingElements += member.originatingElements
+//            else -> throw AssertionError()
+//        }
+//    }
+//    return originatingElements.toTypedArray()
+//}

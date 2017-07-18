@@ -1,5 +1,6 @@
 apply plugin: 'com.android.application'
 apply plugin: 'kotlin-android'
+apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION
@@ -20,21 +21,12 @@ android {
     }
 }
 
-
-kapt {
-    // generate *PermissionsDispatcher stubs for Kotlin compiler
-    generateStubs = true
-}
-
 dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
     compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
     compile (project(':library')) {
         exclude module: "support-v13"
     }
-
     provided project(':processor')
-
     kapt project(':processor')
-
 }

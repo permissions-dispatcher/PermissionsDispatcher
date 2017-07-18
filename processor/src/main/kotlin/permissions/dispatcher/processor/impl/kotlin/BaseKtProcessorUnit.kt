@@ -60,20 +60,19 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
 
     private fun createRequestCodeProperty(e: ExecutableElement, index: Int): PropertySpec {
         return PropertySpec.builder(requestCodeFieldName(e), Int::class.java, KModifier.PRIVATE)
-                .initializer("\$L", index)
+                .initializer("%L", index)
                 .build()
     }
 
     private fun createPermissionProperty(e: ExecutableElement): PropertySpec {
         val permissionValue: List<String> = e.getAnnotation(NeedsPermission::class.java).permissionValue()
         val formattedValue: String = permissionValue.joinToString(
-                separator = ",",
-                prefix = "{",
-                postfix = "}",
+                separator = ", ",
                 transform = { "\"$it\"" }
         )
-        return PropertySpec.builder(permissionFieldName(e), Array<String>::class, KModifier.PRIVATE, KModifier.FINAL)
-                .initializer("\$N", "new String[] $formattedValue")
+        val parameterType = ParameterizedTypeName.get(ARRAY, ClassName("kotlin", "String"))
+        return PropertySpec.builder(permissionFieldName(e), parameterType, KModifier.PRIVATE)
+                .initializer("%N", "arrayOf($formattedValue)")
                 .build()
     }
 
@@ -96,8 +95,6 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
         val builder = FunSpec.builder(withCheckMethodName(method))
                 .addTypeVariables(rpe.ktTypeVariables)
                 .receiver(rpe.ktTypeName)
-                .addModifiers(KModifier.INLINE)
-                .returns(UNIT)
 
         // If the method has parameters, add those as well
         method.parameters.forEach {
@@ -117,9 +114,9 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
         // if maxSdkVersion is lower than os level does nothing
         val maxSdkVersion = needsMethod.getAnnotation(NeedsPermission::class.java).maxSdkVersion
         if (maxSdkVersion > 0) {
-            builder.beginControlFlow("if (\$T.VERSION.SDK_INT > \$L)", BUILD, maxSdkVersion)
+            builder.beginControlFlow("if (\$T.VERSION.SDK_INT > %L)", BUILD, maxSdkVersion)
                     .addCode(CodeBlock.builder()
-                            .add("\$N(", needsMethod.simpleString())
+                            .add("%N(", needsMethod.simpleString())
                             .add(varargsKtParametersCodeBlock(needsMethod))
                             .addStatement(")")
                             .addStatement("return")
@@ -131,9 +128,9 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
         val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
         val activity = getActivityName()
         ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, activity, permissionField)
-                ?: builder.beginControlFlow("if (\$T.hasSelfPermissions(\$N, \$N))", PERMISSION_UTILS, activity, permissionField)
+                ?: builder.beginControlFlow("if (%T.hasSelfPermissions(%N, %N))", PERMISSION_UTILS, activity, permissionField)
         builder.addCode(CodeBlock.builder()
-                .add("this.\$N(", needsMethod.simpleString())
+                .add("%N(", needsMethod.simpleString())
                 .add(varargsKtParametersCodeBlock(needsMethod))
                 .addStatement(")")
                 .build()
@@ -147,7 +144,7 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
             // If the method has parameters, precede the potential OnRationale call with
             // an instantiation of the temporary Request object
             val varargsCall = CodeBlock.builder()
-                    .add("\$N = \$N(this, ",
+                    .add("%N = %N(this, ",
                             pendingRequestFieldName(needsMethod),
                             permissionRequestTypeName(needsMethod)
                     )
@@ -159,10 +156,10 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
             addShouldShowRequestPermissionRationaleCondition(builder, permissionField)
             if (hasParameters) {
                 // For methods with parameters, use the PermissionRequest instantiated above
-                builder.addStatement("\$N(\$N)", onRationale.simpleString(), pendingRequestFieldName(needsMethod))
+                builder.addStatement("%N(%N)", onRationale.simpleString(), pendingRequestFieldName(needsMethod))
             } else {
                 // Otherwise, create a new PermissionRequest on-the-fly
-                builder.addStatement("\$N(\$N(this))", onRationale.simpleString(), permissionRequestTypeName(needsMethod))
+                builder.addStatement("%N(%N(this))", onRationale.simpleString(), permissionRequestTypeName(needsMethod))
             }
             builder.nextControlFlow("else")
         }
@@ -198,14 +195,14 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
                 .returns(UNIT)
                 .addParameter(requestCodeParam, INT)
 
-        builder.beginControlFlow("when (\$N)", requestCodeParam)
+        builder.beginControlFlow("when (%N)", requestCodeParam)
         for (needsMethod in rpe.needsElements) {
             val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
             if (!ADD_WITH_CHECK_BODY_MAP.containsKey(needsPermissionParameter)) {
                 continue
             }
 
-            builder.addCode("\$N ->\n", requestCodeFieldName(needsMethod))
+            builder.addCode("%N ->\n", requestCodeFieldName(needsMethod))
 
             addResultCaseBody(builder, needsMethod, rpe, grantResultsParam)
         }
@@ -225,14 +222,14 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
                 .addParameter(grantResultsParam, INT_ARRAY)
 
         // For each @NeedsPermission method, add a switch case
-        builder.beginControlFlow("when (\$N)", requestCodeParam)
+        builder.beginControlFlow("when (%N)", requestCodeParam)
         for (needsMethod in rpe.needsElements) {
             val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
             if (ADD_WITH_CHECK_BODY_MAP.containsKey(needsPermissionParameter)) {
                 continue
             }
 
-            builder.addCode("\$N ->\n", requestCodeFieldName(needsMethod))
+            builder.addCode("%N ->\n", requestCodeFieldName(needsMethod))
             // Delegate switch-case generation to implementing classes
             addResultCaseBody(builder, needsMethod, rpe, grantResultsParam)
         }
@@ -254,17 +251,17 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
         // Add the conditional for "permission verified"
         val activity = getActivityName()
         ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, activity, permissionField)
-                ?: builder.beginControlFlow("if (\$T.verifyPermissions(*\$N))", PERMISSION_UTILS, grantResultsParam)
+                ?: builder.beginControlFlow("if (%T.verifyPermissions(*%N))", PERMISSION_UTILS, grantResultsParam)
 
         // Based on whether or not the method has parameters, delegate to the "pending request" object or invoke the method directly
         val hasParameters = needsMethod.parameters.isNotEmpty()
         if (hasParameters) {
             val pendingField = pendingRequestFieldName(needsMethod)
-            builder.beginControlFlow("if (\$N != null)", pendingField)
-            builder.addStatement("\$N.grant()", pendingField)
+            builder.beginControlFlow("if (%N != null)", pendingField)
+            builder.addStatement("%N.grant()", pendingField)
             builder.endControlFlow()
         } else {
-            builder.addStatement("\$N()", needsMethod.simpleString())
+            builder.addStatement("%N()", needsMethod.simpleString())
         }
 
         // Add the conditional for "permission denied" and/or "never ask again", if present
@@ -277,7 +274,7 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
         if (onNeverAsk != null) {
             // Split up the "else" case with another if condition checking for "never ask again" first
             addShouldShowRequestPermissionRationaleCondition(builder, permissionFieldName(needsMethod), false)
-            builder.addStatement("\$N()", onNeverAsk.simpleString())
+            builder.addStatement("%N()", onNeverAsk.simpleString())
 
             // If a "permission denied" is present as well, go into an else case, otherwise close this temporary branch
             if (hasDenied) {
@@ -288,7 +285,7 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
         }
         if (hasDenied) {
             // Add the "permissionDenied" statement
-            builder.addStatement("\$N()", onDenied!!.simpleString())
+            builder.addStatement("%N()", onDenied!!.simpleString())
             // Close the additional control flow potentially opened by a "never ask again" method
             if (hasNeverAsk) {
                 builder.endControlFlow()
@@ -299,7 +296,7 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
 
         // Remove the temporary pending request field, in case it was used for a method with parameters
         if (hasParameters) {
-            builder.addStatement("\$N = null", pendingRequestFieldName(needsMethod))
+            builder.addStatement("%N = null", pendingRequestFieldName(needsMethod))
         }
     }
 
@@ -350,15 +347,14 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
 
         val builder = TypeSpec.classBuilder(permissionRequestTypeName(needsMethod))
                 .addTypeVariables(rpe.ktTypeVariables)
-                .addSuperinterface(ClassName.bestGuess("permissions.dispatcher$superInterfaceName"))
+                .addSuperinterface(ClassName.bestGuess("permissions.dispatcher.$superInterfaceName"))
                 .addModifiers(KModifier.PRIVATE)
 
         // Add required fields to the target
-        val weakFieldName = "weakTarget"
-        val weakFieldType = ClassName.bestGuess("java.lang.ref.WeakReference")
-
-        val propertySpec = PropertySpec.builder(weakFieldName, weakFieldType, KModifier.PRIVATE)
-        propertySpec.initializer("%S", "WeakReference(target)") // FIXME
+        val propName = "weakTarget"
+        val parameterType = ParameterizedTypeName.get(ClassName("java.lang.ref", "WeakReference"), rpe.ktTypeName)
+        val propertySpec = PropertySpec.builder(propName, parameterType, KModifier.PRIVATE)
+        propertySpec.initializer("%N", "WeakReference(target)")
         builder.addProperty(propertySpec.build())
 
         needsMethod.parameters.forEach {
@@ -375,9 +371,8 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
 
         // Add proceed() override
         val proceedFun = FunSpec.builder("proceed")
-                .addAnnotation(Override::class.java)
-                .returns(UNIT)
-                .addStatement("val target = \$N.get() ?: return", weakFieldName)
+                .addModifiers(KModifier.OVERRIDE)
+                .addStatement("val target = %N.get() ?: return", propName)
         val requestCodeField = requestCodeFieldName(needsMethod)
         ADD_WITH_CHECK_BODY_MAP[needsMethod.getAnnotation(NeedsPermission::class.java).value[0]]?.addRequestPermissionsStatement(proceedFun, targetParam, requestCodeField)
                 ?: addRequestPermissionsStatement(proceedFun, targetParam, permissionFieldName(needsMethod), requestCodeField)
@@ -385,29 +380,27 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
 
         // Add cancel() override method
         val cancelFun = FunSpec.builder("cancel")
-                .addAnnotation(Override::class.java)
-                .returns(UNIT)
+                .addModifiers(KModifier.OVERRIDE)
         val onDenied = rpe.findOnDeniedForNeeds(needsMethod)
         if (onDenied != null) {
             cancelFun
-                    .addStatement("val target = \$N.get() ?: return", weakFieldName)
-                    .addStatement("target.\$N()", onDenied.simpleString())
+                    .addStatement("val target = %N.get() ?: return", propName)
+                    .addStatement("target.%N()", onDenied.simpleString())
         }
         builder.addFun(cancelFun.build())
 
         // For classes with additional parameters, add a "grant()" method
         if (hasParameters) {
             val grantFun = FunSpec.builder("grant")
-                    .addAnnotation(Override::class.java)
-                    .returns(UNIT)
-                    .addStatement("val target = \$N.get() ?: return", weakFieldName)
+                    .addModifiers(KModifier.OVERRIDE)
+                    .addStatement("val target = %N.get() ?: return", propName)
 
             // Compose the call to the permission-protected method;
             // since the number of parameters is variable, utilize the low-level CodeBlock here
             // to compose the method call and its parameters
             grantFun.addCode(
                     CodeBlock.builder()
-                            .add("target.\$N(", needsMethod.simpleString())
+                            .add("target.%N(", needsMethod.simpleString())
                             .add(varargsKtParametersCodeBlock(needsMethod))
                             .addStatement(")")
                             .build()

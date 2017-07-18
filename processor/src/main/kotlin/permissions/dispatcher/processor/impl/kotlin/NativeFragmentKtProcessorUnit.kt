@@ -13,11 +13,10 @@ class NativeFragmentKtProcessorUnit: BaseKtProcessorUnit() {
     override fun addShouldShowRequestPermissionRationaleCondition(builder: FunSpec.Builder, permissionField: String, isPositiveCondition: Boolean) {
         val condition = if (isPositiveCondition) "" else "!"
         val activity = getActivityName()
-        builder.beginControlFlow("if (\$N\$T.shouldShowRequestPermissionRationale(\$N, \$N))", condition, PERMISSION_UTILS, activity, permissionField)
+        builder.beginControlFlow("if (%N%T.shouldShowRequestPermissionRationale(%N, %N))", condition, PERMISSION_UTILS, activity, permissionField)
     }
 
     override fun addRequestPermissionsStatement(builder: FunSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {
-        val activity = getActivityName()
-        builder.addStatement("\$T.requestPermissions(\$N, \$N, \$N)", PERMISSION_UTILS, activity, permissionField, requestCodeField)
+        builder.addStatement("%T.requestPermissions(%N, %N, %N)", PERMISSION_UTILS, targetParam, permissionField, requestCodeField)
     }
 }
