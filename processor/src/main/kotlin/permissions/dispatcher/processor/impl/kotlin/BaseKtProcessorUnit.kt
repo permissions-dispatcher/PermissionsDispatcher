@@ -128,7 +128,7 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
         val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
         val activity = getActivityName()
         ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, activity, permissionField)
-                ?: builder.beginControlFlow("if (%T.hasSelfPermissions(%N, %N))", PERMISSION_UTILS, activity, permissionField)
+                ?: builder.beginControlFlow("if (%T.hasSelfPermissions(%N, *%N))", PERMISSION_UTILS, activity, permissionField)
         builder.addCode(CodeBlock.builder()
                 .add("%N(", needsMethod.simpleString())
                 .add(varargsKtParametersCodeBlock(needsMethod))

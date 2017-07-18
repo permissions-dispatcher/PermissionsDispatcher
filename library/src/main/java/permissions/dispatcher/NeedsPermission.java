@@ -12,5 +12,6 @@ import java.lang.annotation.Target;
 @Retention(RetentionPolicy.CLASS)
 public @interface NeedsPermission {
     String[] value();
+
     int maxSdkVersion() default 0;
 }

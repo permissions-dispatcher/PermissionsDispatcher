@@ -11,5 +11,12 @@ import java.lang.annotation.Target;
 @Target(ElementType.TYPE)
 @Retention(RetentionPolicy.CLASS)
 public @interface RuntimePermissions {
+    /**
+     * If returns true generates .kt file at compile time.
+     * Otherwise generate .java file even annotated class is Kotlin.
+     * <b>NOTE:</b> This is a beta feature.
+     *
+     * @return generates .kt file or not.
+     */
     boolean kotlin() default false;
 }

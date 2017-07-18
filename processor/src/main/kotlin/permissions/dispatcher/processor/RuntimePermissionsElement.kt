@@ -12,7 +12,7 @@ import javax.lang.model.element.TypeElement
 
 class RuntimePermissionsElement(e: TypeElement) {
     val typeName: TypeName = TypeName.get(e.asType())
-    val ktTypeName = e.asType().asTypeName() // can we combine with typeName?
+    val ktTypeName = e.asType().asTypeName()
     val typeVariables = e.typeParameters.map { TypeVariableName.get(it) }
     val ktTypeVariables = e.typeParameters.map { com.squareup.kotlinpoet.TypeVariableName.get(it) }
     val packageName = e.packageName()
