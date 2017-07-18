@@ -24,17 +24,15 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     override fun onClick(v: View) {
         when (v.id) {
             // NOTE: delegate the permission handling to generated method
-            R.id.button_camera -> MainActivityPermissionsDispatcher.showCameraWithCheck(this)
-
-            // NOTE: delegate the permission handling to generated method
-            R.id.button_contacts -> MainActivityPermissionsDispatcher.showContactsWithCheck(this)
+            R.id.button_camera -> showCameraWithCheck()
+            R.id.button_contacts -> showContactsWithCheck()
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // NOTE: delegate the permission handling to generated method
-        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults)
+        onRequestPermissionsResult(requestCode, grantResults)
     }
 
     // NOTE: methods with NeedsPermission annotation must be public

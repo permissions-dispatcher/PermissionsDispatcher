@@ -67,9 +67,9 @@ class PermissionsProcessor : AbstractProcessor() {
                             processingEnv.messager.printMessage(Diagnostic.Kind.ERROR, "Can't find the target directory for generated Kotlin files.")
                             return false
                         }
-                        val file = File(kaptKotlinGeneratedDir, "testGenerated.kt")
-                        val kotlinFile = processorUnit.createKotlinFile(rpe, requestCodeProvider)
-                        kotlinFile?.writeTo(file)
+//                        val file = File(kaptKotlinGeneratedDir, "testGenerated.kt")
+//                        val kotlinFile = processorUnit.createKotlinFile(rpe, requestCodeProvider)
+//                        kotlinFile?.writeTo(file)
                     } else {
                         val javaFile = processorUnit.createJavaFile(rpe, requestCodeProvider)
                         javaFile.writeTo(filer)

@@ -1,4 +1,4 @@
-package permissions.dispatcher.processor.impl.helper
+package permissions.dispatcher.processor.impl.java
 
 import com.squareup.javapoet.MethodSpec
 
