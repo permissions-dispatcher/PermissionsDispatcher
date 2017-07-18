@@ -23,10 +23,17 @@ private fun Element?.packageName(): String {
     }
 }
 
+// to address kotlin internal method try to remove `$module_name_build_variant` from element info.
+// ex: showCamera$sample_kotlin_debug → showCamera
+internal fun String.trimDollarIfNeeded(): String {
+    val index = indexOf("$")
+    return if (index == -1) this else substring(0, index)
+}
+
 /**
  * Returns the simple name of an Element as a string.
  */
-fun Element.simpleString(): String = this.simpleName.toString()
+fun Element.simpleString() = this.simpleName.toString().trimDollarIfNeeded()
 
 /**
  * Returns the simple name of a TypeMirror as a string.

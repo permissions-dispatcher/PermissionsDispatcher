@@ -12,15 +12,15 @@ fun typeMirrorOf(className: String): TypeMirror = ELEMENT_UTILS.getTypeElement(c
 
 fun typeNameOf(it: Element): TypeName = TypeName.get(it.asType())
 
-fun requestCodeFieldName(e: ExecutableElement): String = "$GEN_REQUESTCODE_PREFIX${e.simpleString().toUpperCase()}"
+fun requestCodeFieldName(e: ExecutableElement) = "$GEN_REQUESTCODE_PREFIX${e.simpleString().trimDollarIfNeeded().toUpperCase()}"
 
-fun permissionFieldName(e: ExecutableElement): String = "$GEN_PERMISSION_PREFIX${e.simpleString().toUpperCase()}"
+fun permissionFieldName(e: ExecutableElement) = "$GEN_PERMISSION_PREFIX${e.simpleString().trimDollarIfNeeded().toUpperCase()}"
 
-fun pendingRequestFieldName(e: ExecutableElement): String = "$GEN_PENDING_PREFIX${e.simpleString().toUpperCase()}"
+fun pendingRequestFieldName(e: ExecutableElement) = "$GEN_PENDING_PREFIX${e.simpleString().trimDollarIfNeeded().toUpperCase()}"
 
-fun withCheckMethodName(e: ExecutableElement): String = "${e.simpleString()}$GEN_WITHCHECK_SUFFIX"
+fun withCheckMethodName(e: ExecutableElement) = "${e.simpleString().trimDollarIfNeeded()}$GEN_WITHCHECK_SUFFIX"
 
-fun permissionRequestTypeName(e: ExecutableElement): String = "${e.simpleString().capitalize()}$GEN_PERMISSIONREQUEST_SUFFIX"
+fun permissionRequestTypeName(e: ExecutableElement)= "${e.simpleString().trimDollarIfNeeded().capitalize()}$GEN_PERMISSIONREQUEST_SUFFIX"
 
 fun <A : Annotation> findMatchingMethodForNeeds(needsElement: ExecutableElement, otherElements: List<ExecutableElement>, annotationType: Class<A>): ExecutableElement? {
     val value: List<String> = needsElement.getAnnotation(NeedsPermission::class.java).permissionValue()
