@@ -12,20 +12,16 @@ import permissions.dispatcher.samplekotlin.camera.CameraPreviewFragment
 import permissions.dispatcher.samplekotlin.contacts.ContactsFragment
 
 @RuntimePermissions(kotlin = true)
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        findViewById(R.id.button_camera).setOnClickListener(this)
-        findViewById(R.id.button_contacts).setOnClickListener(this)
-    }
-
-    override fun onClick(v: View) {
-        when (v.id) {
-            // NOTE: delegate the permission handling to generated method
-            R.id.button_camera -> showCameraWithCheck()
-            R.id.button_contacts -> showContactsWithCheck()
+        findViewById(R.id.button_camera).setOnClickListener {
+            showCameraWithCheck()
+        }
+        findViewById(R.id.button_contacts).setOnClickListener {
+            showContactsWithCheck()
         }
     }
 

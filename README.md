@@ -1,18 +1,19 @@
-# PermissionsDispatcher
-
-[![Build Status](https://travis-ci.org/hotchemi/PermissionsDispatcher.svg?branch=master)](https://travis-ci.org/hotchemi/PermissionsDispatcher)
+# PermissionsDispatcher [![Build Status](https://travis-ci.org/hotchemi/PermissionsDispatcher.svg?branch=master)](https://travis-ci.org/hotchemi/PermissionsDispatcher)
 
 ![image](https://raw.githubusercontent.com/hotchemi/PermissionsDispatcher/master/doc/logo.png)
 
 - **100% reflection-free**
-- **Special Permissions support**
+- [**Special Permissions support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/special_permissions.md)
 - **Xiaomi support**
+- [**Fully Kotlin support(experimental)**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_support.md)
 
 PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow.
 
 This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code clean and safe.
 
 ## Usage
+
+> If you're using Kotlin consider [.kt file generation](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_support.md) to make code much more concise!
 
 Here's a minimum example, in which we register a `MainActivity` which requires `Manifest.permission.CAMERA`.
 
@@ -94,7 +95,7 @@ public void onRequestPermissionsResult(int requestCode, @NonNull String[] permis
 }
 ```
 
-Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/sample) and [generated class](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/MainActivityPermissionsDispatcher.java) for more details.
+Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/sample) for more details.
 
 ## Getting Special Permissions
 
