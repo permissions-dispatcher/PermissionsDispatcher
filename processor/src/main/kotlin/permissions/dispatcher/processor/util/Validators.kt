@@ -1,5 +1,6 @@
 package permissions.dispatcher.processor.util
 
+import permissions.dispatcher.processor.KtProcessorUnit
 import permissions.dispatcher.processor.ProcessorUnit
 import permissions.dispatcher.processor.RuntimePermissionsElement
 import permissions.dispatcher.processor.TYPE_UTILS
@@ -15,10 +16,23 @@ private val WRITE_SETTINGS = "android.permission.WRITE_SETTINGS"
 private val SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
 
 /**
- * Obtains the ProcessorUnit implementation for the provided element.
+ * Obtains the [ProcessorUnit] implementation for the provided element.
  * Raises an exception if no suitable implementation exists
  */
 fun findAndValidateProcessorUnit(units: List<ProcessorUnit>, e: Element): ProcessorUnit {
+    val type = e.asType()
+    try {
+        return units.first { type.isSubtypeOf(it.getTargetType()) }
+    } catch (ex: NoSuchElementException) {
+        throw WrongClassException(type)
+    }
+}
+
+/**
+ * Obtains the [KtProcessorUnit] implementation for the provided element.
+ * Raises an exception if no suitable implementation exists
+ */
+fun findAndValidateKtProcessorUnit(units: List<KtProcessorUnit>, e: Element): KtProcessorUnit {
     val type = e.asType()
     try {
         return units.first { type.isSubtypeOf(it.getTargetType()) }

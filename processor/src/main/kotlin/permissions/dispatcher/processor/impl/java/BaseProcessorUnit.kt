@@ -1,12 +1,10 @@
-package permissions.dispatcher.processor.impl
+package permissions.dispatcher.processor.impl.java
 
 import com.squareup.javapoet.*
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.ProcessorUnit
 import permissions.dispatcher.processor.RequestCodeProvider
 import permissions.dispatcher.processor.RuntimePermissionsElement
-import permissions.dispatcher.processor.impl.helper.SystemAlertWindowHelper
-import permissions.dispatcher.processor.impl.helper.WriteSettingsHelper
 import permissions.dispatcher.processor.util.*
 import java.util.*
 import javax.lang.model.element.ExecutableElement

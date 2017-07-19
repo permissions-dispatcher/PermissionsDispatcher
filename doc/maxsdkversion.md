@@ -1,7 +1,5 @@
 ## maxSdkVersion
 
-- See [doc](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/special_permissions.md)
-
 [\<uses-permission\>](https://developer.android.com/guide/topics/manifest/uses-permission-element.html) has an attribute call `maxSdkVersion`. PermissionsDispatcher support the feature as well.
 
 The following sample is for declaring `Manifest.permisison.WRITE_EXTERNAL_STORAGE` up to API level 18.

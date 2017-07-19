@@ -11,36 +11,30 @@ import permissions.dispatcher.*
 import permissions.dispatcher.samplekotlin.camera.CameraPreviewFragment
 import permissions.dispatcher.samplekotlin.contacts.ContactsFragment
 
-@RuntimePermissions
-class MainActivity : AppCompatActivity(), View.OnClickListener {
+@RuntimePermissions(kotlin = true)
+class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        findViewById(R.id.button_camera).setOnClickListener(this)
-        findViewById(R.id.button_contacts).setOnClickListener(this)
-    }
-
-    override fun onClick(v: View) {
-        when (v.id) {
-            // NOTE: delegate the permission handling to generated method
-            R.id.button_camera -> MainActivityPermissionsDispatcher.showCameraWithCheck(this)
-
-            // NOTE: delegate the permission handling to generated method
-            R.id.button_contacts -> MainActivityPermissionsDispatcher.showContactsWithCheck(this)
+        findViewById(R.id.button_camera).setOnClickListener {
+            showCameraWithCheck()
+        }
+        findViewById(R.id.button_contacts).setOnClickListener {
+            showContactsWithCheck()
         }
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         // NOTE: delegate the permission handling to generated method
-        MainActivityPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults)
+        onRequestPermissionsResult(requestCode, grantResults)
     }
 
     // NOTE: methods with NeedsPermission annotation must be public
     // see https://github.com/hotchemi/PermissionsDispatcher/issues/171
     @NeedsPermission(Manifest.permission.CAMERA)
-    fun showCamera() {
+    internal fun showCamera() {
         // NOTE: Perform action that requires the permission. If this is run by PermissionsDispatcher, the permission will have been granted
         supportFragmentManager.beginTransaction()
                 .replace(R.id.sample_content_fragment, CameraPreviewFragment.newInstance())
@@ -49,7 +43,7 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     @NeedsPermission(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
-    fun showContacts() {
+    internal fun showContacts() {
         // NOTE: Perform action that requires the permission.
         // If this is run by PermissionsDispatcher, the permission will have been granted
         supportFragmentManager.beginTransaction()
@@ -59,28 +53,28 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
-    fun showRationaleForCamera(request: PermissionRequest) {
+    internal fun showRationaleForCamera(request: PermissionRequest) {
         // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
         // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
         showRationaleDialog(R.string.permission_camera_rationale, request)
     }
 
     @OnShowRationale(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
-    fun showRationaleForContact(request: PermissionRequest) {
+    internal fun showRationaleForContact(request: PermissionRequest) {
         // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
         // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
         showRationaleDialog(R.string.permission_contacts_rationale, request)
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA)
-    fun onCameraDenied() {
+    internal fun onCameraDenied() {
         // NOTE: Deal with a denied permission, e.g. by showing specific UI
         // or disabling certain functionality
         Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show()
     }
 
     @OnNeverAskAgain(Manifest.permission.CAMERA)
-    fun onCameraNeverAskAgain() {
+    internal fun onCameraNeverAskAgain() {
         Toast.makeText(this, R.string.permission_camera_never_askagain, Toast.LENGTH_SHORT).show()
     }
 

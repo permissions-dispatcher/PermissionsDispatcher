@@ -1,9 +1,8 @@
 package permissions.dispatcher.processor.util
 
-import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.OnNeverAskAgain
-import permissions.dispatcher.OnPermissionDenied
-import permissions.dispatcher.OnShowRationale
+import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.TypeName.Companion.asTypeName
+import permissions.dispatcher.*
 import permissions.dispatcher.processor.TYPE_UTILS
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
@@ -24,10 +23,17 @@ private fun Element?.packageName(): String {
     }
 }
 
+// to address kotlin internal method try to remove `$module_name_build_variant` from element info.
+// ex: showCamera$sample_kotlin_debug → showCamera
+internal fun String.trimDollarIfNeeded(): String {
+    val index = indexOf("$")
+    return if (index == -1) this else substring(0, index)
+}
+
 /**
  * Returns the simple name of an Element as a string.
  */
-fun Element.simpleString(): String = this.simpleName.toString()
+fun Element.simpleString() = this.simpleName.toString().trimDollarIfNeeded()
 
 /**
  * Returns the simple name of a TypeMirror as a string.
@@ -60,6 +66,16 @@ fun Annotation.permissionValue(): List<String> {
 }
 
 /**
+ * Returns true if user specify kotlin argument as true, otherwise false.
+ */
+fun Annotation.isKotlin(): Boolean {
+    when (this) {
+        is RuntimePermissions -> return this.kotlin
+        else -> return false
+    }
+}
+
+/**
  * Returns a list of enclosed elements annotated with the provided Annotations.
  */
 fun <A : Annotation> Element.childElementsAnnotatedWith(annotationClass: Class<A>): List<ExecutableElement> =
@@ -71,3 +87,24 @@ fun <A : Annotation> Element.childElementsAnnotatedWith(annotationClass: Class<A
  * Returns whether or not a TypeMirror is a subtype of the provided other TypeMirror.
  */
 fun TypeMirror.isSubtypeOf(ofType: TypeMirror): Boolean = TYPE_UTILS.isSubtype(this, ofType)
+
+fun KotlinFile.Builder.addProperties(properties: List<PropertySpec>): KotlinFile.Builder {
+    properties.forEach { addProperty(it) }
+    return this
+}
+
+fun KotlinFile.Builder.addFunctions(functions: List<FunSpec>): KotlinFile.Builder {
+    functions.forEach { addFun(it) }
+    return this
+}
+
+fun KotlinFile.Builder.addTypes(types: List<TypeSpec>): KotlinFile.Builder {
+    types.forEach { addType(it) }
+    return this
+}
+
+// we need this extensions to expose `asTypeName`.
+// Is it a bug of KotlinPoet?
+fun TypeMirror.asTypeName(): TypeName {
+    return this.asTypeName()
+}

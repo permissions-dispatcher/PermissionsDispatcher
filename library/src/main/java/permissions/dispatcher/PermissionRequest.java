@@ -5,7 +5,6 @@ package permissions.dispatcher;
  * or cancellation of a permission request.
  */
 public interface PermissionRequest {
-
     void proceed();
 
     void cancel();

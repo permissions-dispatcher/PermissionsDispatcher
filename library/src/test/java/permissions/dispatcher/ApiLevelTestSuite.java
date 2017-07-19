@@ -115,7 +115,7 @@ public class ApiLevelTestSuite {
         iteratePermissionCheck(Manifest.permission.WRITE_CALL_LOG, JELLY_BEAN);
     }
 
-	/* Begin private */
+    /* Begin private */
 
     private void iteratePermissionCheck(String permission, int permissionMinLevel) throws Exception {
         for (int apiLevel = 0; apiLevel <= MOST_RECENT_API_LEVEL; apiLevel++) {
