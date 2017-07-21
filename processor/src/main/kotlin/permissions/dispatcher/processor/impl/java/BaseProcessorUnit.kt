@@ -11,13 +11,13 @@ import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
 
 /**
- * Base class for ProcessorUnit implementations.
+ * Base class for [ProcessorUnit] implementations.
  * <p>
  * This generates the parts of code independent from specific permission method signatures for different target objects.
  */
 abstract class BaseProcessorUnit : ProcessorUnit {
 
-    protected val PERMISSION_UTILS = ClassName.get("permissions.dispatcher", "PermissionUtils")
+    protected val PERMISSION_UTILS: ClassName = ClassName.get("permissions.dispatcher", "PermissionUtils")
     private val BUILD = ClassName.get("android.os", "Build")
     private val MANIFEST_WRITE_SETTING = "android.permission.WRITE_SETTINGS"
     private val MANIFEST_SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
@@ -238,7 +238,7 @@ abstract class BaseProcessorUnit : ProcessorUnit {
         builder
                 .addCode("default:\n")
                 .addStatement("break")
-                .endControlFlow();
+                .endControlFlow()
 
         return builder.build()
     }
@@ -273,7 +273,7 @@ abstract class BaseProcessorUnit : ProcessorUnit {
         builder
                 .addCode("default:\n")
                 .addStatement("break")
-                .endControlFlow();
+                .endControlFlow()
 
         return builder.build()
     }
@@ -335,17 +335,17 @@ abstract class BaseProcessorUnit : ProcessorUnit {
         if (hasParameters) {
             builder.addStatement("\$N = null", pendingRequestFieldName(needsMethod))
         }
-        builder.addStatement("break");
+        builder.addStatement("break")
     }
 
     private fun hasNormalPermission(rpe: RuntimePermissionsElement): Boolean {
         rpe.needsElements.forEach {
             val permissionValue: List<String> = it.getAnnotation(NeedsPermission::class.java).permissionValue()
             if (!permissionValue.contains(MANIFEST_SYSTEM_ALERT_WINDOW) && !permissionValue.contains(MANIFEST_WRITE_SETTING)) {
-                return true;
+                return true
             }
         }
-        return false;
+        return false
     }
 
     private fun hasSystemAlertWindowPermission(rpe: RuntimePermissionsElement): Boolean {
@@ -360,10 +360,10 @@ abstract class BaseProcessorUnit : ProcessorUnit {
         rpe.needsElements.forEach {
             val permissionValue: List<String> = it.getAnnotation(NeedsPermission::class.java).permissionValue()
             if (permissionValue.contains(permissionName)) {
-                return true;
+                return true
             }
         }
-        return false;
+        return false
     }
 
     private fun createPermissionRequestClasses(rpe: RuntimePermissionsElement): List<TypeSpec> {

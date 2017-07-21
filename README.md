@@ -118,7 +118,8 @@ You can use [IntelliJ plugin](https://github.com/shiraji/permissions-dispatcher-
 
 ### For AndroidAnnotations users
 
-If you use [AndroidAnnotations](http://androidannotations.org/), you need to add [AndroidAnnotationsPermissionsDispatcherPlugin](https://github.com/AleksanderMielczarek/AndroidAnnotationsPermissionsDispatcherPlugin) to your dependencies so PermissionsDispatcher's looks for AA's subclasses (your project won't compile otherwise). Moreover, you should not delegate to PermissionsDispatcher's generated classes, because AA will do that for you, just call your methods directly. See the AndroidAnnotationsPermissionsDispatcherPlugin readme for details.
+If you use [AndroidAnnotations](http://androidannotations.org/), you need to add [AndroidAnnotationsPermissionsDispatcherPlugin](https://github.com/AleksanderMielczarek/AndroidAnnotationsPermissionsDispatcherPlugin) to your dependencies so PermissionsDispatcher's looks for AA's subclasses (your project won't compile otherwise).
+Moreover, you should not delegate to PermissionsDispatcher's generated classes, because AA will do that for you, just call your methods directly. See the AndroidAnnotationsPermissionsDispatcherPlugin readme for details.
 
 ### Knows issues
 
