@@ -1,6 +1,7 @@
 package permissions.dispatcher.processor.impl.kotlin
 
 import com.squareup.kotlinpoet.ARRAY
+import com.squareup.kotlinpoet.AnnotationSpec
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.CodeBlock
 import com.squareup.kotlinpoet.FunSpec
@@ -10,6 +11,7 @@ import com.squareup.kotlinpoet.KotlinFile
 import com.squareup.kotlinpoet.ParameterizedTypeName
 import com.squareup.kotlinpoet.PropertySpec
 import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.asTypeName
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.KtProcessorUnit
 import permissions.dispatcher.processor.RequestCodeProvider
@@ -18,7 +20,6 @@ import permissions.dispatcher.processor.util.FILE_COMMENT
 import permissions.dispatcher.processor.util.addFunctions
 import permissions.dispatcher.processor.util.addProperties
 import permissions.dispatcher.processor.util.addTypes
-import permissions.dispatcher.processor.util.asTypeName
 import permissions.dispatcher.processor.util.pendingRequestFieldName
 import permissions.dispatcher.processor.util.permissionFieldName
 import permissions.dispatcher.processor.util.permissionRequestTypeName
@@ -55,6 +56,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
     override fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): KotlinFile {
         return KotlinFile.builder(rpe.packageName, rpe.generatedClassName)
                 .addFileComment(FILE_COMMENT)
+                .addFileAnnotation(createFileAnnotation(rpe))
                 .addProperties(createProperties(rpe.needsElements, requestCodeProvider))
                 .addFunctions(createWithCheckFuns(rpe))
                 .addFunctions(createPermissionHandlingFuns(rpe))
@@ -63,6 +65,11 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
     }
 
     /* Begin private */
+
+    private fun createFileAnnotation(rpe: RuntimePermissionsElement): AnnotationSpec =
+            AnnotationSpec.builder(JvmName::class)
+                    .addMember("name", "\"${rpe.generatedClassName}\"")
+                    .build()
 
     private fun createProperties(needsElements: List<ExecutableElement>, requestCodeProvider: RequestCodeProvider): List<PropertySpec> {
         val properties: ArrayList<PropertySpec> = arrayListOf()
