@@ -2,7 +2,7 @@ package permissions.dispatcher.processor.impl.java
 
 import com.squareup.javapoet.*
 import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.processor.ProcessorUnit
+import permissions.dispatcher.processor.JavaProcessorUnit
 import permissions.dispatcher.processor.RequestCodeProvider
 import permissions.dispatcher.processor.RuntimePermissionsElement
 import permissions.dispatcher.processor.util.*
@@ -11,11 +11,11 @@ import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
 
 /**
- * Base class for [ProcessorUnit] implementations.
+ * Base class for [JavaProcessorUnit] implementations.
  * <p>
  * This generates the parts of code independent from specific permission method signatures for different target objects.
  */
-abstract class BaseProcessorUnit : ProcessorUnit {
+abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
 
     protected val PERMISSION_UTILS: ClassName = ClassName.get("permissions.dispatcher", "PermissionUtils")
     private val BUILD = ClassName.get("android.os", "Build")
@@ -28,7 +28,7 @@ abstract class BaseProcessorUnit : ProcessorUnit {
      * <p>
      * This will delegate to other methods that compose generated code.
      */
-    override final fun createJavaFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): JavaFile {
+    override final fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): JavaFile {
         return JavaFile.builder(rpe.packageName, createTypeSpec(rpe, requestCodeProvider))
                 .addFileComment(FILE_COMMENT)
                 .build()

@@ -14,7 +14,7 @@ import javax.lang.model.element.ExecutableElement
  * <p>
  * This generates the parts of code independent from specific permission method signatures for different target objects.
  */
-abstract class BaseKtProcessorUnit : KtProcessorUnit {
+abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
     protected val PERMISSION_UTILS = ClassName.bestGuess("permissions.dispatcher.PermissionUtils")
     private val BUILD = ClassName.bestGuess("android.os.Build")
@@ -31,7 +31,7 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
 
     abstract fun getActivityName(): String
 
-    override fun createKotlinFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): KotlinFile {
+    override fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): KotlinFile {
         return KotlinFile.builder(rpe.packageName, rpe.generatedClassName)
                 .addFileComment(FILE_COMMENT)
                 .addProperties(createProperties(rpe.needsElements, requestCodeProvider))

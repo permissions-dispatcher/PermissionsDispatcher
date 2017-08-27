@@ -66,16 +66,6 @@ fun Annotation.permissionValue(): List<String> {
 }
 
 /**
- * Returns true if user specify kotlin argument as true, otherwise false.
- */
-fun Annotation.isKotlin(): Boolean {
-    when (this) {
-        is RuntimePermissions -> return this.kotlin
-        else -> return false
-    }
-}
-
-/**
  * Returns a list of enclosed elements annotated with the provided Annotations.
  */
 fun <A : Annotation> Element.childElementsAnnotatedWith(annotationClass: Class<A>): List<ExecutableElement> =

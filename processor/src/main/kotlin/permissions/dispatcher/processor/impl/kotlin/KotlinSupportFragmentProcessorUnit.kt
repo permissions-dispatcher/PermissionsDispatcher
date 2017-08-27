@@ -1,20 +1,17 @@
 package permissions.dispatcher.processor.impl.kotlin
 
-import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.FunSpec
 import permissions.dispatcher.processor.util.*
 import javax.lang.model.type.TypeMirror
 
 /**
- * [permissions.dispatcher.processor.KtProcessorUnit] implementation for Activity classes.
+ * [permissions.dispatcher.processor.KtProcessorUnit] implementation for Fragments defined in the support-v4 library.
  */
-class ActivityKtProcessorUnit : BaseKtProcessorUnit() {
+class KotlinSupportFragmentProcessorUnit : KotlinBaseProcessorUnit() {
 
-    private val ACTIVITY_COMPAT = ClassName.bestGuess("android.support.v4.app.ActivityCompat")
+    override fun getTargetType(): TypeMirror = typeMirrorOf("android.support.v4.app.Fragment")
 
-    override fun getTargetType(): TypeMirror = typeMirrorOf("android.app.Activity")
-
-    override fun getActivityName(): String = "this"
+    override fun getActivityName(): String = "activity"
 
     override fun addShouldShowRequestPermissionRationaleCondition(builder: FunSpec.Builder, permissionField: String, isPositiveCondition: Boolean) {
         val condition = if (isPositiveCondition) "" else "!"
@@ -23,6 +20,6 @@ class ActivityKtProcessorUnit : BaseKtProcessorUnit() {
     }
 
     override fun addRequestPermissionsStatement(builder: FunSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {
-        builder.addStatement("%T.requestPermissions(%N, %N, %N)", ACTIVITY_COMPAT, targetParam, permissionField, requestCodeField)
+        builder.addStatement("%N.requestPermissions(%N, %N)", targetParam, permissionField, requestCodeField)
     }
 }

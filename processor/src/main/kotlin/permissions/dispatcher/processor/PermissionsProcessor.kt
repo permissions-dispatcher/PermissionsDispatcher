@@ -1,18 +1,24 @@
 package permissions.dispatcher.processor
 
 import permissions.dispatcher.RuntimePermissions
-import permissions.dispatcher.processor.impl.java.ActivityProcessorUnit
-import permissions.dispatcher.processor.impl.java.NativeFragmentProcessorUnit
-import permissions.dispatcher.processor.impl.java.SupportFragmentProcessorUnit
-import permissions.dispatcher.processor.impl.kotlin.ActivityKtProcessorUnit
-import permissions.dispatcher.processor.impl.kotlin.NativeFragmentKtProcessorUnit
-import permissions.dispatcher.processor.impl.kotlin.SupportFragmentKtProcessorUnit
-import permissions.dispatcher.processor.util.findAndValidateKtProcessorUnit
+import permissions.dispatcher.processor.impl.java.JavaActivityProcessorUnit
+import permissions.dispatcher.processor.impl.java.JavaNativeFragmentProcessorUnit
+import permissions.dispatcher.processor.impl.java.JavaSupportFragmentProcessorUnit
+import permissions.dispatcher.processor.impl.javaProcessorUnits
+import permissions.dispatcher.processor.impl.kotlin.KotlinActivityProcessorUnit
+import permissions.dispatcher.processor.impl.kotlin.KotlinNativeFragmentProcessorUnit
+import permissions.dispatcher.processor.impl.kotlin.KotlinSupportFragmentProcessorUnit
+import permissions.dispatcher.processor.impl.kotlinProcessorUnits
 import permissions.dispatcher.processor.util.findAndValidateProcessorUnit
-import permissions.dispatcher.processor.util.isKotlin
+import permissions.dispatcher.processor.util.kotlinMetadataClass
 import java.io.File
-import javax.annotation.processing.*
+import javax.annotation.processing.AbstractProcessor
+import javax.annotation.processing.Filer
+import javax.annotation.processing.Messager
+import javax.annotation.processing.ProcessingEnvironment
+import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.SourceVersion
+import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
@@ -61,30 +67,38 @@ class PermissionsProcessor : AbstractProcessor() {
                 .sortedBy { it.simpleName.toString() }
                 .forEach {
                     val rpe = RuntimePermissionsElement(it as TypeElement)
-                    val isKotlin = it.getAnnotation(RuntimePermissions::class.java).isKotlin()
-                    if (isKotlin) {
-                        // FIXME: weirdly under kaptKotlin files is not recognized as source file on AS or IntelliJ
-                        // so as a workaround we generate .kt file in generated/source/kapt/$sourceSetName
-                        // ref: https://github.com/hotchemi/PermissionsDispatcher/issues/320#issuecomment-316175775
-                        val kaptGeneratedDirPath = processingEnv.options[KAPT_KOTLIN_GENERATED_OPTION_NAME]?.replace("kaptKotlin", "kapt") ?: run {
-                            processingEnv.messager.printMessage(Diagnostic.Kind.ERROR, "Can't find the target directory for generated Kotlin files.")
-                            return false
-                        }
-                        val kaptGeneratedDir = File(kaptGeneratedDirPath)
-                        if (!kaptGeneratedDir.parentFile.exists()) {
-                            kaptGeneratedDir.parentFile.mkdirs()
-                        }
-                        val processorUnits = listOf(ActivityKtProcessorUnit(), SupportFragmentKtProcessorUnit(), NativeFragmentKtProcessorUnit())
-                        val processorUnit = findAndValidateKtProcessorUnit(processorUnits, it)
-                        val kotlinFile = processorUnit.createKotlinFile(rpe, requestCodeProvider)
-                        kotlinFile.writeTo(kaptGeneratedDir)
+                    val kotlinMetadata = it.getAnnotation(kotlinMetadataClass)
+                    if (kotlinMetadata != null) {
+                        processKotlin(it, rpe, requestCodeProvider)
                     } else {
-                        val processorUnits = listOf(ActivityProcessorUnit(), SupportFragmentProcessorUnit(), NativeFragmentProcessorUnit())
-                        val processorUnit = findAndValidateProcessorUnit(processorUnits, it)
-                        val javaFile = processorUnit.createJavaFile(rpe, requestCodeProvider)
-                        javaFile.writeTo(filer)
+                        processJava(it, rpe, requestCodeProvider)
                     }
                }
         return true
+    }
+
+    private fun processKotlin(element: Element, rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider) {
+        // FIXME: weirdly under kaptKotlin files is not recognized as source file on AS or IntelliJ
+        // so as a workaround we generate .kt file in generated/source/kapt/$sourceSetName
+        // ref: https://github.com/hotchemi/PermissionsDispatcher/issues/320#issuecomment-316175775
+        val kaptGeneratedDirPath = processingEnv.options[KAPT_KOTLIN_GENERATED_OPTION_NAME]?.replace("kaptKotlin", "kapt") ?: run {
+            processingEnv.messager.printMessage(Diagnostic.Kind.ERROR, "Can't find the target directory for generated Kotlin files.")
+            return
+        }
+
+        val kaptGeneratedDir = File(kaptGeneratedDirPath)
+        if (!kaptGeneratedDir.parentFile.exists()) {
+            kaptGeneratedDir.parentFile.mkdirs()
+        }
+
+        val processorUnit = findAndValidateProcessorUnit(kotlinProcessorUnits(), element)
+        val kotlinFile = processorUnit.createFile(rpe, requestCodeProvider)
+        kotlinFile.writeTo(kaptGeneratedDir)
+    }
+
+    private fun processJava(element: Element, rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider) {
+        val processorUnit = findAndValidateProcessorUnit(javaProcessorUnits(), element)
+        val javaFile = processorUnit.createFile(rpe, requestCodeProvider)
+        javaFile.writeTo(filer)
     }
 }

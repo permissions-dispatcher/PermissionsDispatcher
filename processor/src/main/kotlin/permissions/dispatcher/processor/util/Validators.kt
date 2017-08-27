@@ -1,10 +1,18 @@
 package permissions.dispatcher.processor.util
 
-import permissions.dispatcher.processor.KtProcessorUnit
 import permissions.dispatcher.processor.ProcessorUnit
 import permissions.dispatcher.processor.RuntimePermissionsElement
 import permissions.dispatcher.processor.TYPE_UTILS
-import permissions.dispatcher.processor.exception.*
+import permissions.dispatcher.processor.exception.DuplicatedMethodNameException
+import permissions.dispatcher.processor.exception.DuplicatedValueException
+import permissions.dispatcher.processor.exception.MixPermissionTypeException
+import permissions.dispatcher.processor.exception.NoAnnotatedMethodsException
+import permissions.dispatcher.processor.exception.NoParametersAllowedException
+import permissions.dispatcher.processor.exception.NoThrowsAllowedException
+import permissions.dispatcher.processor.exception.PrivateMethodException
+import permissions.dispatcher.processor.exception.WrongClassException
+import permissions.dispatcher.processor.exception.WrongParametersException
+import permissions.dispatcher.processor.exception.WrongReturnTypeException
 import java.util.*
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
@@ -19,21 +27,8 @@ private val SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
  * Obtains the [ProcessorUnit] implementation for the provided element.
  * Raises an exception if no suitable implementation exists
  */
-fun findAndValidateProcessorUnit(units: List<ProcessorUnit>, e: Element): ProcessorUnit {
-    val type = e.asType()
-    try {
-        return units.first { type.isSubtypeOf(it.getTargetType()) }
-    } catch (ex: NoSuchElementException) {
-        throw WrongClassException(type)
-    }
-}
-
-/**
- * Obtains the [KtProcessorUnit] implementation for the provided element.
- * Raises an exception if no suitable implementation exists
- */
-fun findAndValidateKtProcessorUnit(units: List<KtProcessorUnit>, e: Element): KtProcessorUnit {
-    val type = e.asType()
+fun <K> findAndValidateProcessorUnit(units: List<ProcessorUnit<K>>, element: Element) : ProcessorUnit<K> {
+    val type = element.asType()
     try {
         return units.first { type.isSubtypeOf(it.getTargetType()) }
     } catch (ex: NoSuchElementException) {

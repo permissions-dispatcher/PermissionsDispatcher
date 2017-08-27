@@ -4,7 +4,7 @@ import com.squareup.kotlinpoet.FunSpec
 import permissions.dispatcher.processor.util.*
 import javax.lang.model.type.TypeMirror
 
-class NativeFragmentKtProcessorUnit: BaseKtProcessorUnit() {
+class KotlinNativeFragmentProcessorUnit : KotlinBaseProcessorUnit() {
 
     override fun getTargetType(): TypeMirror = typeMirrorOf("android.app.Fragment")
 

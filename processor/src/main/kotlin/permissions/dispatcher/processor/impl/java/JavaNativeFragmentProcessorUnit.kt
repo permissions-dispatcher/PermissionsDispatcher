@@ -4,13 +4,10 @@ import com.squareup.javapoet.MethodSpec
 import permissions.dispatcher.processor.util.*
 import javax.lang.model.type.TypeMirror
 
-/**
- * ProcessorUnit implementation for Fragments defined in the support-v4 library.
- */
-class SupportFragmentProcessorUnit: BaseProcessorUnit() {
+class JavaNativeFragmentProcessorUnit : JavaBaseProcessorUnit() {
 
     override fun getTargetType(): TypeMirror {
-        return typeMirrorOf("android.support.v4.app.Fragment")
+        return typeMirrorOf("android.app.Fragment")
     }
 
     override fun getActivityName(targetParam: String): String {
@@ -22,7 +19,6 @@ class SupportFragmentProcessorUnit: BaseProcessorUnit() {
     }
 
     override fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {
-        builder.addStatement("\$N.requestPermissions(\$N, \$N)", targetParam, permissionField, requestCodeField)
+        builder.addStatement("\$T.requestPermissions(\$N, \$N, \$N)", PERMISSION_UTILS, targetParam, permissionField, requestCodeField)
     }
-
 }

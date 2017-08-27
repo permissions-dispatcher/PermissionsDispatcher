@@ -11,7 +11,7 @@ import permissions.dispatcher.*
 import permissions.dispatcher.samplekotlin.camera.CameraPreviewFragment
 import permissions.dispatcher.samplekotlin.contacts.ContactsFragment
 
-@RuntimePermissions(kotlin = true)
+@RuntimePermissions
 class MainActivity : AppCompatActivity() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
