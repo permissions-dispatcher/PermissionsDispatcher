@@ -1,11 +1,32 @@
 package permissions.dispatcher.processor.impl.kotlin
 
-import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ARRAY
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.CodeBlock
+import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.INT
+import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.KotlinFile
+import com.squareup.kotlinpoet.ParameterizedTypeName
+import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.TypeSpec
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.KtProcessorUnit
 import permissions.dispatcher.processor.RequestCodeProvider
 import permissions.dispatcher.processor.RuntimePermissionsElement
-import permissions.dispatcher.processor.util.*
+import permissions.dispatcher.processor.util.FILE_COMMENT
+import permissions.dispatcher.processor.util.addFunctions
+import permissions.dispatcher.processor.util.addProperties
+import permissions.dispatcher.processor.util.addTypes
+import permissions.dispatcher.processor.util.asTypeName
+import permissions.dispatcher.processor.util.pendingRequestFieldName
+import permissions.dispatcher.processor.util.permissionFieldName
+import permissions.dispatcher.processor.util.permissionRequestTypeName
+import permissions.dispatcher.processor.util.permissionValue
+import permissions.dispatcher.processor.util.requestCodeFieldName
+import permissions.dispatcher.processor.util.simpleString
+import permissions.dispatcher.processor.util.varargsKtParametersCodeBlock
+import permissions.dispatcher.processor.util.withCheckMethodName
 import java.util.*
 import javax.lang.model.element.ExecutableElement
 
@@ -166,7 +187,8 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
         // Add the branch for "request permission"
         ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addRequestPermissionsStatement(builder, activity, requestCodeField)
-                ?: addRequestPermissionsStatement(builder, activity, permissionField, requestCodeField)
+                // TODO hardcoded "this"
+                ?: addRequestPermissionsStatement(builder, "this", permissionField, requestCodeField)
         if (onRationale != null) {
             builder.endControlFlow()
         }
