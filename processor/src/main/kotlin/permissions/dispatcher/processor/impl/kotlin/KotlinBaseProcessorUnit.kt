@@ -174,7 +174,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
             val varargsCall = CodeBlock.builder()
                     .add("%N = %N(this, ",
                             pendingRequestFieldName(needsMethod),
-                            permissionRequestTypeName(needsMethod)
+                            permissionRequestTypeName(rpe, needsMethod)
                     )
                     .add(varargsKtParametersCodeBlock(needsMethod))
                     .addStatement(")")
@@ -187,7 +187,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
                 builder.addStatement("%N(%N)", onRationale.simpleString(), pendingRequestFieldName(needsMethod))
             } else {
                 // Otherwise, create a new PermissionRequest on-the-fly
-                builder.addStatement("%N(%N(this))", onRationale.simpleString(), permissionRequestTypeName(needsMethod))
+                builder.addStatement("%N(%N(this))", onRationale.simpleString(), permissionRequestTypeName(rpe, needsMethod))
             }
             builder.nextControlFlow("else")
         }
@@ -372,7 +372,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         val hasParameters = needsMethod.parameters.isNotEmpty()
         val superInterfaceName = if (hasParameters) "GrantableRequest" else "PermissionRequest"
 
-        val builder = TypeSpec.classBuilder(permissionRequestTypeName(needsMethod))
+        val builder = TypeSpec.classBuilder(permissionRequestTypeName(rpe, needsMethod))
                 .addTypeVariables(rpe.ktTypeVariables)
                 .addSuperinterface(ClassName.bestGuess("permissions.dispatcher.$superInterfaceName"))
                 .addModifiers(KModifier.PRIVATE)

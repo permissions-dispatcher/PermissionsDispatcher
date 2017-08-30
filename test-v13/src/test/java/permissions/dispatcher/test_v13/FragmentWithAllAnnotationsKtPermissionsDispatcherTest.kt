@@ -1,6 +1,5 @@
 package permissions.dispatcher.test_v13
 
-
 import android.content.pm.PackageManager
 import android.os.Process
 import android.support.v13.app.FragmentCompat
@@ -40,8 +39,9 @@ class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
         @BeforeClass
         @JvmStatic
         fun setUpForClass() {
-            requestCode = getRequestCameraConstant(FragmentWithAllAnnotationsKtPermissionsDispatcher::class.java)
-            requestPermissions = getPermissionRequestConstant(FragmentWithAllAnnotationsKtPermissionsDispatcher::class.java)
+            // TODO Reflection on Kotlin top-level properties?
+            requestCode = 1
+            requestPermissions = arrayOf("android.permission.CAMERA")
         }
     }
 
@@ -59,7 +59,7 @@ class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
     fun `already granted call the method`() {
         mockCheckSelfPermission(true)
 
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.showCameraWithCheck(fragment)
+        fragment.showCameraWithCheck()
 
         Mockito.verify(fragment, Mockito.times(1)).showCamera()
     }
@@ -69,7 +69,7 @@ class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
         mockCheckSelfPermission(false)
         mockShouldShowRequestPermissionRationaleFragment(true)
 
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.showCameraWithCheck(fragment)
+        fragment.showCameraWithCheck()
 
         Mockito.verify(fragment, Mockito.times(0)).showCamera()
     }
@@ -79,7 +79,7 @@ class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
         mockCheckSelfPermission(false)
         mockShouldShowRequestPermissionRationaleFragment(true)
 
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.showCameraWithCheck(fragment)
+        fragment.showCameraWithCheck()
 
         Mockito.verify(fragment, Mockito.times(1)).showRationaleForCamera(any(PermissionRequest::class.java))
     }
@@ -89,21 +89,21 @@ class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
         mockCheckSelfPermission(false)
         mockShouldShowRequestPermissionRationaleFragment(false)
 
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.showCameraWithCheck(fragment)
+        fragment.showCameraWithCheck()
 
         Mockito.verify(fragment, Mockito.times(0)).showRationaleForCamera(any(PermissionRequest::class.java))
     }
 
     @Test
     fun `the method is called if verifyPermission is true`() {
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.onRequestPermissionsResult(fragment, requestCode, intArrayOf(PackageManager.PERMISSION_GRANTED))
+        fragment.onRequestPermissionsResult(requestCode, intArrayOf(PackageManager.PERMISSION_GRANTED))
 
         Mockito.verify(fragment, Mockito.times(1)).showCamera()
     }
 
     @Test
     fun `the method is not called if verifyPermission is false`() {
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.onRequestPermissionsResult(fragment, requestCode, intArrayOf(PackageManager.PERMISSION_DENIED))
+        fragment.onRequestPermissionsResult(requestCode, intArrayOf(PackageManager.PERMISSION_DENIED))
 
         Mockito.verify(fragment, Mockito.times(0)).showCamera()
     }
@@ -112,7 +112,7 @@ class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
     fun `show never ask method is call if verifyPermission is false and shouldShowRequestPermissionRationale is false`() {
         mockShouldShowRequestPermissionRationaleFragment(false)
 
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.onRequestPermissionsResult(fragment, requestCode, intArrayOf(PackageManager.PERMISSION_DENIED))
+        fragment.onRequestPermissionsResult(requestCode, intArrayOf(PackageManager.PERMISSION_DENIED))
 
         Mockito.verify(fragment, Mockito.times(1)).showNeverAskForCamera()
     }
@@ -121,28 +121,28 @@ class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
     fun `show deny method is call if verifyPermission is false and shouldShowRequestPermissionRationale is true`() {
         mockShouldShowRequestPermissionRationaleFragment(true)
 
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.onRequestPermissionsResult(fragment, requestCode, intArrayOf(PackageManager.PERMISSION_DENIED))
+        fragment.onRequestPermissionsResult(requestCode, intArrayOf(PackageManager.PERMISSION_DENIED))
 
         Mockito.verify(fragment, Mockito.times(1)).showDeniedForCamera()
     }
 
     @Test
     fun `no the method call if request code is not related to the library`() {
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.onRequestPermissionsResult(fragment, requestCode + 1000, null)
+        fragment.onRequestPermissionsResult(requestCode + 1000, intArrayOf())
 
         Mockito.verify(fragment, Mockito.times(0)).showCamera()
     }
 
     @Test
     fun `no denied method call if request code is not related to the library`() {
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.onRequestPermissionsResult(fragment, requestCode + 1000, null)
+        fragment.onRequestPermissionsResult(requestCode + 1000, intArrayOf())
 
         Mockito.verify(fragment, Mockito.times(0)).showDeniedForCamera()
     }
 
     @Test
     fun `no never ask method call if request code is not related to the library`() {
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.onRequestPermissionsResult(fragment, requestCode + 1000, null)
+        fragment.onRequestPermissionsResult(requestCode + 1000, intArrayOf())
 
         Mockito.verify(fragment, Mockito.times(0)).showNeverAskForCamera()
     }
@@ -152,7 +152,7 @@ class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
         testForXiaomi()
         mockPermissionToOp(null)
 
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.showCameraWithCheck(fragment)
+        fragment.showCameraWithCheck()
 
         Mockito.verify(fragment, Mockito.times(1)).showCamera()
     }
@@ -165,7 +165,7 @@ class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
         mockCheckSelfPermission(true)
         mockGetActivity(fragment, Mockito.mock(AppCompatActivity::class.java))
 
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.showCameraWithCheck(fragment)
+        fragment.showCameraWithCheck()
 
         Mockito.verify(fragment, Mockito.times(1)).showCamera()
     }
@@ -178,7 +178,7 @@ class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
         mockCheckSelfPermission(true)
         mockGetActivity(fragment, Mockito.mock(AppCompatActivity::class.java))
 
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.showCameraWithCheck(fragment)
+        fragment.showCameraWithCheck()
 
         Mockito.verify(fragment, Mockito.times(0)).showCamera()
     }
@@ -191,7 +191,7 @@ class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
         mockCheckSelfPermission(false)
         mockGetActivity(fragment, Mockito.mock(AppCompatActivity::class.java))
 
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.showCameraWithCheck(fragment)
+        fragment.showCameraWithCheck()
 
         Mockito.verify(fragment, Mockito.times(0)).showCamera()
     }
@@ -201,7 +201,7 @@ class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
         overwriteCustomSdkInt(22)
         mockCheckSelfPermission(false)
 
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.showCameraWithCheck(fragment)
+        fragment.showCameraWithCheck()
 
         Mockito.verify(fragment, Mockito.times(0)).showCamera()
     }
@@ -211,7 +211,7 @@ class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
         overwriteCustomSdkInt(22)
         mockCheckSelfPermission(true)
 
-        FragmentWithAllAnnotationsKtPermissionsDispatcher.showCameraWithCheck(fragment)
+        fragment.showCameraWithCheck()
 
         Mockito.verify(fragment, Mockito.times(1)).showCamera()
     }

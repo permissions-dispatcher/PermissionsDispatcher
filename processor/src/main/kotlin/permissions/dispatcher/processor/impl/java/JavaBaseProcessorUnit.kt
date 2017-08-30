@@ -171,7 +171,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
             val varargsCall = CodeBlock.builder()
                     .add("\$N = new \$N(\$N, ",
                             pendingRequestFieldName(needsMethod),
-                            permissionRequestTypeName(needsMethod),
+                            permissionRequestTypeName(rpe, needsMethod),
                             targetParam
                     )
                     .add(varargsParametersCodeBlock(needsMethod))
@@ -185,7 +185,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
                 builder.addStatement("\$N.\$N(\$N)", targetParam, onRationale.simpleString(), pendingRequestFieldName(needsMethod))
             } else {
                 // Otherwise, create a new PermissionRequest on-the-fly
-                builder.addStatement("\$N.\$N(new \$N(\$N))", targetParam, onRationale.simpleString(), permissionRequestTypeName(needsMethod), targetParam)
+                builder.addStatement("\$N.\$N(new \$N(\$N))", targetParam, onRationale.simpleString(), permissionRequestTypeName(rpe, needsMethod), targetParam)
             }
             builder.nextControlFlow("else")
         }
@@ -384,7 +384,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
         val superInterfaceName: String = if (hasParameters) "GrantableRequest" else "PermissionRequest"
 
         val targetType = rpe.typeName
-        val builder = TypeSpec.classBuilder(permissionRequestTypeName(needsMethod))
+        val builder = TypeSpec.classBuilder(permissionRequestTypeName(rpe, needsMethod))
                 .addTypeVariables(rpe.typeVariables)
                 .addSuperinterface(ClassName.get("permissions.dispatcher", superInterfaceName))
                 .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
