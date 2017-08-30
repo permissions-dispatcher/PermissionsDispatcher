@@ -9,7 +9,7 @@ targetCompatibility = JavaVersion.VERSION_1_6
 sourceSets {
     main {
         java {
-            srcDirs = [
+            srcDirs += [
                     'src/main/kotlin',
                     '../library/src/main/java'
             ]
@@ -17,7 +17,7 @@ sourceSets {
     }
     test {
         java {
-            srcDirs = [
+            srcDirs += [
                     'src/main/kotlin',
                     '../library/src/main/java'
             ]

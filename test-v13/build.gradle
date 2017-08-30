@@ -35,6 +35,7 @@ dependencies {
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
     compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
+    compile "com.android.support:support-v13:$SUPPORT_LIBRARY_VERSION"
 
     testCompile "junit:junit:$JUNIT_VERSION"
     testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
