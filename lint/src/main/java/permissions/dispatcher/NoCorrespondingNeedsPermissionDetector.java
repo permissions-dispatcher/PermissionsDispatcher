@@ -73,9 +73,8 @@ public final class NoCorrespondingNeedsPermissionDetector extends Detector imple
         @Override
         public boolean visitAnnotation(UAnnotation node) {
             if (!context.isEnabled(ISSUE)) {
-                return super.visitAnnotation(node);
+                return true;
             }
-
             // Let's store NeedsPermission and OnShowRationale
             String type = node.getQualifiedName();
             if (NEEDS_PERMISSION_NAME.contains(type)) {
@@ -83,16 +82,14 @@ public final class NoCorrespondingNeedsPermissionDetector extends Detector imple
             } else if (ON_SHOW_RATIONALE_NAME.contains(type)) {
                 onShowRationaleAnnotations.add(node);
             }
-
             if (onShowRationaleAnnotations.isEmpty()) {
-                return super.visitAnnotation(node);
+                return true;
             }
             // If there is OnShowRationale, find corresponding NeedsPermission
             boolean found = false;
             for (UAnnotation onShowRationaleAnnotation : onShowRationaleAnnotations) {
                 for (UAnnotation needsPermissionAnnotation : needsPermissionAnnotations) {
-                    if (hasSameNodes(onShowRationaleAnnotation.getAttributeValues(),
-                            needsPermissionAnnotation.getAttributeValues())) {
+                    if (hasSameNodes(onShowRationaleAnnotation.getAttributeValues(), needsPermissionAnnotation.getAttributeValues())) {
                         found = true;
                     }
                 }
@@ -100,7 +97,7 @@ public final class NoCorrespondingNeedsPermissionDetector extends Detector imple
                     context.report(ISSUE, context.getLocation(onShowRationaleAnnotation), "Useless @OnShowRationale declaration");
                 }
             }
-            return super.visitAnnotation(node);
+            return true;
         }
 
         private static boolean hasSameNodes(List<UNamedExpression> first, List<UNamedExpression> second) {

@@ -1,34 +1,18 @@
 package permissions.dispatcher;
 
-import com.google.common.collect.ImmutableList;
-
-import com.android.tools.lint.detector.api.Detector;
-import com.android.tools.lint.detector.api.Issue;
-
 import org.intellij.lang.annotations.Language;
 import org.junit.Test;
 
 import java.util.Collections;
-import java.util.List;
 
-public class CallNeedsPermissionDetectorTest extends BaseLintDetectorTest {
+import static com.android.tools.lint.checks.infrastructure.TestFiles.java;
+import static com.android.tools.lint.checks.infrastructure.TestLintTask.lint;
 
-    private static final String NO_WARNINGS = "No warnings.";
-
-    @Override
-    protected Detector getDetector() {
-        return new CallNeedsPermissionDetector();
-    }
-
-    @Override
-    protected List<Issue> getIssues() {
-        return ImmutableList.of(CallNeedsPermissionDetector.ISSUE);
-    }
+public final class CallNeedsPermissionDetectorTest {
 
     @Test
-    public void testCallNeedsPermissionMethod() throws Exception {
+    public void callNeedsPermissionMethod() throws Exception {
         CallNeedsPermissionDetector.methods = Collections.singletonList("fooBar");
-
         @Language("JAVA") String foo = ""
                 + "package com.example;\n"
                 + "public class Foo {\n"
@@ -37,7 +21,6 @@ public class CallNeedsPermissionDetectorTest extends BaseLintDetectorTest {
                 + "baz.fooBar();  "
                 + "}\n"
                 + "}";
-
         @Language("JAVA") String baz = ""
                 + "package com.example;\n"
                 + "public class Baz {\n"
@@ -45,24 +28,19 @@ public class CallNeedsPermissionDetectorTest extends BaseLintDetectorTest {
                 + "}\n"
                 + "}";
 
-        String result = lintProject(
-                java("src/com/example/Foo.java", foo),
-                java("src/com/example/Baz.java", baz));
-
-        String error = ""
-                + "src/com/example/Foo.java:4: Error: Trying to access permission-protected method directly "
-                + "["
-                + CallNeedsPermissionDetector.ISSUE.getId()
-                + "]\n"
-                + "baz.fooBar();  }\n"
-                + "~~~~~~~~~~~~\n"
-                + "1 errors, 0 warnings\n";
-
-        assertEquals(result, error);
+        lint()
+                .files(
+                        java("src/com/example/Foo.java", foo),
+                        java("src/com/example/Baz.java", baz))
+                .issues(CallNeedsPermissionDetector.ISSUE)
+                .run()
+                .expectErrorCount(1)
+                .expectWarningCount(0);
     }
 
     @Test
-    public void testCallNeedsPermissionMethodNoError() throws Exception {
+    public void callNeedsPermissionMethodNoError() throws Exception {
+        CallNeedsPermissionDetector.methods = Collections.singletonList("fooBar");
 
         @Language("JAVA") String foo = ""
                 + "package com.example;\n"
@@ -72,7 +50,6 @@ public class CallNeedsPermissionDetectorTest extends BaseLintDetectorTest {
                 + "baz.noFooBar();\n"
                 + "}\n"
                 + "}";
-
         @Language("JAVA") String baz = ""
                 + "package com.example;\n"
                 + "public class Baz {\n"
@@ -80,10 +57,12 @@ public class CallNeedsPermissionDetectorTest extends BaseLintDetectorTest {
                 + "}\n"
                 + "}";
 
-        String result = lintProject(
-                java("src/com/example/Foo.java", foo),
-                java("src/com/example/Baz.java", baz));
-
-        assertEquals(result, NO_WARNINGS);
+        lint()
+                .files(
+                        java("src/com/example/Foo.java", foo),
+                        java("src/com/example/Baz.java", baz))
+                .issues(CallNeedsPermissionDetector.ISSUE)
+                .run()
+                .expectClean();
     }
 }

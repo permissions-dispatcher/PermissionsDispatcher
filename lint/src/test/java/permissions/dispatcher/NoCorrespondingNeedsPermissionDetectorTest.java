@@ -1,29 +1,19 @@
 package permissions.dispatcher;
 
-import com.google.common.collect.ImmutableList;
-
-import com.android.tools.lint.detector.api.Detector;
-import com.android.tools.lint.detector.api.Issue;
-
 import org.intellij.lang.annotations.Language;
 import org.junit.Test;
 
-import java.util.List;
+import static com.android.tools.lint.checks.infrastructure.TestFiles.java;
+import static com.android.tools.lint.checks.infrastructure.TestLintTask.lint;
+import static permissions.dispatcher.Utils.PACKAGE;
+import static permissions.dispatcher.Utils.SOURCE_PATH;
+import static permissions.dispatcher.Utils.getOnNeedsPermission;
+import static permissions.dispatcher.Utils.getOnRationaleAnnotation;
 
-public class NoCorrespondingNeedsPermissionDetectorTest extends BaseLintDetectorTest {
-
-    @Override
-    protected Detector getDetector() {
-        return new NoCorrespondingNeedsPermissionDetector();
-    }
-
-    @Override
-    protected List<Issue> getIssues() {
-        return ImmutableList.of(NoCorrespondingNeedsPermissionDetector.ISSUE);
-    }
+public final class NoCorrespondingNeedsPermissionDetectorTest {
 
     @Test
-    public void testNoNeedsPermissionAnnotationNoErrors() throws Exception {
+    public void noNeedsPermissionAnnotationNoErrors() throws Exception {
         @Language("JAVA") String onNeeds = getOnNeedsPermission();
         @Language("JAVA") String onShow = getOnRationaleAnnotation();
         @Language("JAVA") String foo = ""
@@ -37,19 +27,19 @@ public class NoCorrespondingNeedsPermissionDetectorTest extends BaseLintDetector
                 + "}\n"
                 + "}";
 
-        String result = lintProject(
-                java(SOURCE_PATH + "NeedsPermission.java", onNeeds),
-                java(SOURCE_PATH + "OnShowRationale.java", onShow),
-                java(SOURCE_PATH + "Foo.java", foo));
-
-        assertEquals(result, "No warnings.");
+        lint()
+                .files(
+                        java(SOURCE_PATH + "NeedsPermission.java", onNeeds),
+                        java(SOURCE_PATH + "OnShowRationale.java", onShow),
+                        java(SOURCE_PATH + "Foo.java", foo))
+                .issues(NoCorrespondingNeedsPermissionDetector.ISSUE)
+                .run()
+                .expectClean();
     }
 
     @Test
-    public void testNoNeedsPermissionAnnotation() throws Exception {
-
+    public void noNeedsPermisionAnnotation() throws Exception {
         @Language("JAVA") String onShow = getOnRationaleAnnotation();
-
         @Language("JAVA") String foo = ""
                 + PACKAGE
                 + "public class Foo {\n"
@@ -58,18 +48,13 @@ public class NoCorrespondingNeedsPermissionDetectorTest extends BaseLintDetector
                 + "}\n"
                 + "}";
 
-        String result = lintProject(
-                java(SOURCE_PATH + "OnShowRationale.java", onShow),
-                java(SOURCE_PATH + "Foo.java", foo));
-
-        String error = ""
-                + SOURCE_PATH + "Foo.java:3: Error: Useless @OnShowRationale declaration "
-                + "["
-                + NoCorrespondingNeedsPermissionDetector.ISSUE.getId()
-                + "]\n"
-                + "@OnShowRationale(\"Camera\")\n"
-                + "~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
-                + "1 errors, 0 warnings\n";
-        assertEquals(result, error);
+        lint()
+                .files(
+                        java(SOURCE_PATH + "OnShowRationale.java", onShow),
+                        java(SOURCE_PATH + "Foo.java", foo))
+                .issues(NoCorrespondingNeedsPermissionDetector.ISSUE)
+                .run()
+                .expectErrorCount(1)
+                .expectWarningCount(0);
     }
 }
