@@ -21,7 +21,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class NoCorrespondingNeedsPermissionDetector extends Detector implements Detector.UastScanner {
+public final class NoCorrespondingNeedsPermissionDetector extends Detector implements Detector.UastScanner {
 
     static final Issue ISSUE = Issue.create("NoCorrespondingNeedsPermission",
             "The method annotated with @OnShowRationale has no corresponding @NeedsPermission method, and will therefore be ignored by PermissionsDispatcher",

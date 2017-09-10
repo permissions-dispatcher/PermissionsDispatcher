@@ -26,7 +26,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CallNeedsPermissionDetector extends Detector implements Detector.UastScanner {
+public final class CallNeedsPermissionDetector extends Detector implements Detector.UastScanner {
 
     static final Issue ISSUE = Issue.create("CallNeedsPermission",
             "Call the corresponding \"withCheck\" method of the generated PermissionsDispatcher class instead",
@@ -101,11 +101,11 @@ public class CallNeedsPermissionDetector extends Detector implements Detector.Ua
                 super.visitAnnotation(annotation);
                 return true;
             }
-            UFile sourceFile = context.getUastFile();
-            if (sourceFile == null) {
+            UFile file = context.getUastFile();
+            if (file == null) {
                 return true;
             }
-            List<UClass> classes = sourceFile.getClasses();
+            List<UClass> classes = file.getClasses();
             if (!classes.isEmpty() && classes.get(0).getName() != null) {
                 generatedClassNames.add(classes.get(0).getName() + "PermissionsDispatcher");
                 // let's check method call!

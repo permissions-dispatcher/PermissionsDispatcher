@@ -28,7 +28,7 @@ public class CallOnRequestPermissionsResultDetectorTest extends BaseLintDetector
 
         @Language("JAVA") String onNeeds = getOnNeedsPermission();
 
-        String onShow = getOnRationaleAnnotation();
+        @Language("JAVA") String onShow = getOnRationaleAnnotation();
 
         @Language("JAVA") String foo = ""
                 + "package permissions.dispatcher;\n"
@@ -55,12 +55,10 @@ public class CallOnRequestPermissionsResultDetectorTest extends BaseLintDetector
                 + "}";
 
         String result = lintProject(
-                java("src/permissions/dispatcher/RuntimePermissions.java",
-                        runtimePerms.toString()),
+                java("src/permissions/dispatcher/RuntimePermissions.java", runtimePerms),
                 java("src/permissions/dispatcher/NeedsPermission.java", onNeeds),
                 java("src/permissions/dispatcher/OnShowRationale.java", onShow),
-                java("src/permissions/dispatcher/FooPermissionsDispatcher.java",
-                        generatedClass),
+                java("src/permissions/dispatcher/FooPermissionsDispatcher.java", generatedClass),
                 java("src/permissions/dispatcher/Foo.java", foo));
 
         assertEquals(result, "No warnings.");

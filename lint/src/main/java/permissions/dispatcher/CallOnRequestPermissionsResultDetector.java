@@ -70,7 +70,7 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CallOnRequestPermissionsResultDetector extends Detector implements Detector.UastScanner {
+public final class CallOnRequestPermissionsResultDetector extends Detector implements Detector.UastScanner {
 
     static final Issue ISSUE = Issue.create("NeedOnRequestPermissionsResult",
             "Call the \"onRequestPermissionsResult\" method of the generated PermissionsDispatcher class in the respective method of your Activity or Fragment",
@@ -104,9 +104,9 @@ public class CallOnRequestPermissionsResultDetector extends Detector implements 
 
         private final JavaContext context;
 
-        private boolean hasRuntimePermissionAnnotation;
-
         private final UClass sourceFile;
+
+        private boolean hasRuntimePermissionAnnotation;
 
         private OnRequestPermissionsResultChecker(JavaContext context, UClass sourceFile) {
             this.context = context;
