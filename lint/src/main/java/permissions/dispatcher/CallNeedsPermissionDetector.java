@@ -93,12 +93,10 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
         @Override
         public boolean visitAnnotation(UAnnotation annotation) {
             if (!context.isEnabled(ISSUE)) {
-                super.visitAnnotation(annotation);
                 return true;
             }
             String type = annotation.getQualifiedName();
             if (!matchingAnnotationTypeNames.contains(type)) {
-                super.visitAnnotation(annotation);
                 return true;
             }
             UFile file = context.getUastFile();

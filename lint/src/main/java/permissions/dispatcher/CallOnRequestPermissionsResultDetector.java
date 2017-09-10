@@ -8,19 +8,17 @@ import com.android.tools.lint.detector.api.Issue;
 import com.android.tools.lint.detector.api.JavaContext;
 import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiMethod;
 
 import org.jetbrains.uast.UAnnotation;
 import org.jetbrains.uast.UBlockExpression;
-import org.jetbrains.uast.UCallExpression;
 import org.jetbrains.uast.UClass;
 import org.jetbrains.uast.UElement;
 import org.jetbrains.uast.UExpression;
 import org.jetbrains.uast.UMethod;
+import org.jetbrains.uast.UQualifiedReferenceExpression;
 import org.jetbrains.uast.visitor.AbstractUastVisitor;
 
-import java.util.Arrays;
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
@@ -44,7 +42,7 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
 
     @Override
     public List<Class<? extends UElement>> getApplicableUastTypes() {
-        return Arrays.asList(UAnnotation.class, UMethod.class);
+        return Collections.<Class<? extends UElement>>singletonList(UClass.class);
     }
 
     @Override
@@ -74,10 +72,10 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
         public boolean visitAnnotation(UAnnotation node) {
             String type = node.getQualifiedName();
             if (!RUNTIME_PERMISSIONS_NAME.contains(type)) {
-                return super.visitAnnotation(node);
+                return true;
             }
             hasRuntimePermissionAnnotation = true;
-            return super.visitAnnotation(node);
+            return true;
         }
 
         @Override
@@ -103,22 +101,14 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
                 UBlockExpression methodBodyExpression = (UBlockExpression) methodBody;
                 List<UExpression> expressions = methodBodyExpression.getExpressions();
                 for (UExpression expression : expressions) {
-                    if (!(expression instanceof UCallExpression)) {
+                    if (!(expression instanceof UQualifiedReferenceExpression)) {
                         continue;
                     }
-                    UCallExpression callExpression = (UCallExpression) expression;
-                    String targetClassName = klass.getName() + "PermissionsDispatcher";
-                    PsiMethod resolveMethod = callExpression.resolve();
-                    if (resolveMethod == null) {
-                        continue;
-                    }
-                    PsiClass containingClass = resolveMethod.getContainingClass();
-                    if (containingClass == null) {
-                        continue;
-                    }
-                    if (targetClassName.equals(containingClass.getName())
-                            && "onRequestPermissionsResult".equals(resolveMethod
-                            .getName())) {
+                    UQualifiedReferenceExpression referenceExpression = (UQualifiedReferenceExpression) expression;
+                    String targetClass = klass.getName() + "PermissionsDispatcher";
+                    String targetMethod = "onRequestPermissionsResult(requestCode, permissions, grantResults)";
+                    if (targetClass.equals(referenceExpression.getReceiver().toString())
+                            && targetMethod.equals( referenceExpression.getSelector().toString())) {
                         return true;
                     }
                 }

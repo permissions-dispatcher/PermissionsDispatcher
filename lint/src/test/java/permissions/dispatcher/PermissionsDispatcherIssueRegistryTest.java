@@ -4,7 +4,7 @@ import org.junit.Test;
 
 import static com.google.common.truth.Truth.assertThat;
 
-public final class LintRegistryTest {
+public final class PermissionsDispatcherIssueRegistryTest {
     @Test
     public void issues() {
         assertThat(new PermissionsDispatcherIssueRegistry().getIssues()).containsAllOf(

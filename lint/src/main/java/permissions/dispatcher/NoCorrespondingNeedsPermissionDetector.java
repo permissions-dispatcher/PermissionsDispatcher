@@ -44,7 +44,7 @@ public final class NoCorrespondingNeedsPermissionDetector extends Detector imple
 
     @Override
     public List<Class<? extends UElement>> getApplicableUastTypes() {
-        return Collections.<Class<? extends UElement>>singletonList(UAnnotation.class);
+        return Collections.<Class<? extends UElement>>singletonList(UClass.class);
     }
 
     @Override

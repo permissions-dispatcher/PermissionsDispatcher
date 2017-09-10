@@ -13,6 +13,7 @@ public final class CallNeedsPermissionDetectorTest {
     @Test
     public void callNeedsPermissionMethod() throws Exception {
         CallNeedsPermissionDetector.methods = Collections.singletonList("fooBar");
+
         @Language("JAVA") String foo = ""
                 + "package com.example;\n"
                 + "public class Foo {\n"
@@ -21,6 +22,7 @@ public final class CallNeedsPermissionDetectorTest {
                 + "baz.fooBar();  "
                 + "}\n"
                 + "}";
+
         @Language("JAVA") String baz = ""
                 + "package com.example;\n"
                 + "public class Baz {\n"
@@ -50,6 +52,7 @@ public final class CallNeedsPermissionDetectorTest {
                 + "baz.noFooBar();\n"
                 + "}\n"
                 + "}";
+
         @Language("JAVA") String baz = ""
                 + "package com.example;\n"
                 + "public class Baz {\n"

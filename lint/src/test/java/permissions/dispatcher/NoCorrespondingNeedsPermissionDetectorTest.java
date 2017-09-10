@@ -15,7 +15,9 @@ public final class NoCorrespondingNeedsPermissionDetectorTest {
     @Test
     public void noNeedsPermissionAnnotationNoErrors() throws Exception {
         @Language("JAVA") String onNeeds = getOnNeedsPermission();
+
         @Language("JAVA") String onShow = getOnRationaleAnnotation();
+
         @Language("JAVA") String foo = ""
                 + PACKAGE
                 + "public class Foo {\n"
@@ -38,8 +40,10 @@ public final class NoCorrespondingNeedsPermissionDetectorTest {
     }
 
     @Test
-    public void noNeedsPermisionAnnotation() throws Exception {
+    public void noNeedsPermissionAnnotation() throws Exception {
+
         @Language("JAVA") String onShow = getOnRationaleAnnotation();
+
         @Language("JAVA") String foo = ""
                 + PACKAGE
                 + "public class Foo {\n"

@@ -15,14 +15,17 @@ public final class CallOnRequestPermissionsResultDetectorTest {
     @Test
     public void callOnRequestPermissionsResultDetectorNoError() throws Exception {
         @Language("JAVA") String runtimePerms = getRuntimePermission();
+
         @Language("JAVA") String onNeeds = getOnNeedsPermission();
+
         @Language("JAVA") String onShow = getOnRationaleAnnotation();
+
         @Language("JAVA") String foo = ""
                 + "package permissions.dispatcher;\n"
                 + "@RuntimePermissions\n"
                 + "public class Foo {\n"
                 + "public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {\n"
-                + "FooPermissionsDispatcher.onRequestPermissionsResult();\n"
+                + "FooPermissionsDispatcher.onRequestPermissionsResult(requestCode, permissions, grantResults);\n"
                 + "}\n"
                 + "@NeedsPermission(\"Camera\")"
                 + "public void showCamera() {"
@@ -31,12 +34,11 @@ public final class CallOnRequestPermissionsResultDetectorTest {
                 + "public void someMethod() {"
                 + "}\n"
                 + "}";
+
         @Language("JAVA") String generatedClass = ""
                 + "package permissions.dispatcher;\n"
                 + "public class FooPermissionsDispatcher {\n"
-                + "public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {\n"
-                + "}\n"
-                + "public static void onRequestPermissionsResult() {"
+                + "public static void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {\n"
                 + "}\n"
                 + "}";
 
@@ -55,8 +57,11 @@ public final class CallOnRequestPermissionsResultDetectorTest {
     @Test
     public void testCallOnRequestPermissionsResultDetector() throws Exception {
         @Language("JAVA") String runtimePerms = getRuntimePermission();
+
         @Language("JAVA") String onNeeds = getOnNeedsPermission();
+
         @Language("JAVA") String onShow = getOnRationaleAnnotation();
+
         @Language("JAVA") String foo = ""
                 + "package permissions.dispatcher;\n"
                 + "@RuntimePermissions\n"
