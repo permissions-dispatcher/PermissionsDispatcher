@@ -83,7 +83,7 @@ protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_main);
     findViewById(R.id.button_camera).setOnClickListener(v -> {
       // NOTE: delegate the permission handling to generated method
-      MainActivityPermissionsDispatcher.showCameraWithCheck(this);
+      MainActivityPermissionsDispatcher.showCameraWithPermissionCheck(this);
     });
 }
 

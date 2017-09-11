@@ -27,7 +27,7 @@ import permissions.dispatcher.processor.util.permissionValue
 import permissions.dispatcher.processor.util.requestCodeFieldName
 import permissions.dispatcher.processor.util.simpleString
 import permissions.dispatcher.processor.util.varargsKtParametersCodeBlock
-import permissions.dispatcher.processor.util.withCheckMethodName
+import permissions.dispatcher.processor.util.WithPermissionCheckMethodName
 import java.util.*
 import javax.lang.model.element.ExecutableElement
 
@@ -58,7 +58,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
                 .addFileComment(FILE_COMMENT)
                 .addFileAnnotation(createFileAnnotation(rpe))
                 .addProperties(createProperties(rpe.needsElements, requestCodeProvider))
-                .addFunctions(createWithCheckFuns(rpe))
+                .addFunctions(createWithPermissionCheckFuns(rpe))
                 .addFunctions(createPermissionHandlingFuns(rpe))
                 .addTypes(createPermissionRequestClasses(rpe))
                 .build()
@@ -110,17 +110,17 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
                 .build()
     }
 
-    private fun createWithCheckFuns(rpe: RuntimePermissionsElement): List<FunSpec> {
+    private fun createWithPermissionCheckFuns(rpe: RuntimePermissionsElement): List<FunSpec> {
         val methods: ArrayList<FunSpec> = arrayListOf()
         rpe.needsElements.forEach {
-            // For each @NeedsPermission method, create the "WithCheck" equivalent
-            methods.add(createWithCheckFun(rpe, it))
+            // For each @NeedsPermission method, create the "WithPermissionCheck" equivalent
+            methods.add(createWithPermissionCheckFun(rpe, it))
         }
         return methods
     }
 
-    private fun createWithCheckFun(rpe: RuntimePermissionsElement, method: ExecutableElement): FunSpec {
-        val builder = FunSpec.builder(withCheckMethodName(method))
+    private fun createWithPermissionCheckFun(rpe: RuntimePermissionsElement, method: ExecutableElement): FunSpec {
+        val builder = FunSpec.builder(WithPermissionCheckMethodName(method))
                 .addTypeVariables(rpe.ktTypeVariables)
                 .receiver(rpe.ktTypeName)
 
@@ -130,11 +130,11 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         }
 
         // Delegate method body generation to implementing classes
-        addWithCheckBody(builder, method, rpe)
+        addWithPermissionCheckBody(builder, method, rpe)
         return builder.build()
     }
 
-    fun addWithCheckBody(builder: FunSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement) {
+    fun addWithPermissionCheckBody(builder: FunSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement) {
         // Create field names for the constants to use
         val requestCodeField = requestCodeFieldName(needsMethod)
         val permissionField = permissionFieldName(needsMethod)

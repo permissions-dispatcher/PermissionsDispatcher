@@ -49,7 +49,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
                 .addModifiers(Modifier.FINAL)
                 .addFields(createFields(rpe.needsElements, requestCodeProvider))
                 .addMethod(createConstructor())
-                .addMethods(createWithCheckMethods(rpe))
+                .addMethods(createWithPermissionCheckMethods(rpe))
                 .addMethods(createPermissionHandlingMethods(rpe))
                 .addTypes(createPermissionRequestClasses(rpe))
                 .build()
@@ -105,18 +105,18 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
                 .build()
     }
 
-    private fun createWithCheckMethods(rpe: RuntimePermissionsElement): List<MethodSpec> {
+    private fun createWithPermissionCheckMethods(rpe: RuntimePermissionsElement): List<MethodSpec> {
         val methods: ArrayList<MethodSpec> = arrayListOf()
         rpe.needsElements.forEach {
-            // For each @NeedsPermission method, create the "WithCheck" equivalent
-            methods.add(createWithCheckMethod(rpe, it))
+            // For each @NeedsPermission method, create the "WithPermissionCheck" equivalent
+            methods.add(createWithPermissionCheckMethod(rpe, it))
         }
         return methods
     }
 
-    private fun createWithCheckMethod(rpe: RuntimePermissionsElement, method: ExecutableElement): MethodSpec {
+    private fun createWithPermissionCheckMethod(rpe: RuntimePermissionsElement, method: ExecutableElement): MethodSpec {
         val targetParam = "target"
-        val builder = MethodSpec.methodBuilder(withCheckMethodName(method))
+        val builder = MethodSpec.methodBuilder(WithPermissionCheckMethodName(method))
                 .addTypeVariables(rpe.typeVariables)
                 .addModifiers(Modifier.STATIC)
                 .returns(TypeName.VOID)
@@ -128,11 +128,11 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
         }
 
         // Delegate method body generation to implementing classes
-        addWithCheckBody(builder, method, rpe, targetParam)
+        addWithPermissionCheckBody(builder, method, rpe, targetParam)
         return builder.build()
     }
 
-    fun addWithCheckBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String) {
+    fun addWithPermissionCheckBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String) {
         // Create field names for the constants to use
         val requestCodeField = requestCodeFieldName(needsMethod)
         val permissionField = permissionFieldName(needsMethod)

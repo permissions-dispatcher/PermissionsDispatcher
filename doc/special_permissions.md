@@ -47,7 +47,7 @@ protected void onCreate(Bundle savedInstanceState) {
     setContentView(R.layout.activity_main);
     findViewById(R.id.button_system_alert_window).setOnClickListener(v -> {
       // NOTE: delegate the permission handling to generated method
-      MainActivityPermissionsDispatcher.systemAlertWindowWithCheck(this);
+      MainActivityPermissionsDispatcher.systemAlertWindowWithPermissionCheck(this);
     });
 }
 
