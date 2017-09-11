@@ -107,9 +107,9 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
                         continue;
                     }
                     UQualifiedReferenceExpression referenceExpression = (UQualifiedReferenceExpression) expression;
-                    String targetMethod = "onRequestPermissionsResult(requestCode, permissions, grantResults)";
+                    String targetMethodName = "onRequestPermissionsResult";
                     if (targetClasses.contains(referenceExpression.getReceiver().toString())
-                            && targetMethod.equals(referenceExpression.getSelector().toString())) {
+                            && referenceExpression.getSelector().toString().startsWith(targetMethodName)) {
                         return true;
                     }
                 }
