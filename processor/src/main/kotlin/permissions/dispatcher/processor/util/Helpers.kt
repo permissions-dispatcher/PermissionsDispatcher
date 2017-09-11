@@ -4,9 +4,24 @@ import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.TypeName
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.ELEMENT_UTILS
+import permissions.dispatcher.processor.RuntimePermissionsElement
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.type.TypeMirror
+
+/**
+ * Class Reference to the kotlin.Metadata annotation class,
+ * used by the processor to tell apart Kotlin from Java files during code generation.
+ */
+val kotlinMetadataClass: Class<Annotation>? by lazy {
+    try {
+        @Suppress("UNCHECKED_CAST")
+        Class.forName("kotlin.Metadata") as Class<Annotation>
+    } catch (e: Throwable) {
+        // Java-only environment, or outdated Kotlin version
+        null
+    }
+}
 
 fun typeMirrorOf(className: String): TypeMirror = ELEMENT_UTILS.getTypeElement(className).asType()
 
@@ -20,7 +35,8 @@ fun pendingRequestFieldName(e: ExecutableElement) = "$GEN_PENDING_PREFIX${e.simp
 
 fun withCheckMethodName(e: ExecutableElement) = "${e.simpleString().trimDollarIfNeeded()}$GEN_WITHCHECK_SUFFIX"
 
-fun permissionRequestTypeName(e: ExecutableElement)= "${e.simpleString().trimDollarIfNeeded().capitalize()}$GEN_PERMISSIONREQUEST_SUFFIX"
+fun permissionRequestTypeName(rpe: RuntimePermissionsElement, e: ExecutableElement) =
+        "${rpe.inputClassName}${e.simpleString().trimDollarIfNeeded().capitalize()}$GEN_PERMISSIONREQUEST_SUFFIX"
 
 fun <A : Annotation> findMatchingMethodForNeeds(needsElement: ExecutableElement, otherElements: List<ExecutableElement>, annotationType: Class<A>): ExecutableElement? {
     val value: List<String> = needsElement.getAnnotation(NeedsPermission::class.java).permissionValue()

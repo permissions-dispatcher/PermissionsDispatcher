@@ -8,7 +8,7 @@ import javax.lang.model.type.TypeMirror
 /**
  * ProcessorUnit implementation for Activity classes.
  */
-class ActivityProcessorUnit : BaseProcessorUnit() {
+class JavaActivityProcessorUnit : JavaBaseProcessorUnit() {
 
     private val ACTIVITY_COMPAT = ClassName.get("android.support.v4.app", "ActivityCompat")
 

@@ -1,10 +1,13 @@
 package permissions.dispatcher.processor
 
 import com.squareup.javapoet.JavaFile
+import com.squareup.kotlinpoet.KotlinFile
 import javax.lang.model.type.TypeMirror
 
-interface ProcessorUnit {
+interface ProcessorUnit<out K> {
     fun getTargetType(): TypeMirror
-
-    fun createJavaFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): JavaFile
+    fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): K
 }
+
+interface JavaProcessorUnit : ProcessorUnit<JavaFile>
+interface KtProcessorUnit : ProcessorUnit<KotlinFile>

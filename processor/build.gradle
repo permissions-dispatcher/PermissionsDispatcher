@@ -6,24 +6,8 @@ apply plugin: 'com.novoda.bintray-release'
 sourceCompatibility = JavaVersion.VERSION_1_6
 targetCompatibility = JavaVersion.VERSION_1_6
 
-sourceSets {
-    main {
-        java {
-            srcDirs = [
-                    'src/main/kotlin',
-                    '../library/src/main/java'
-            ]
-        }
-    }
-    test {
-        java {
-            srcDirs = [
-                    'src/main/kotlin',
-                    '../library/src/main/java'
-            ]
-        }
-    }
-}
+sourceSets.main.java.srcDir project(":library").file("src/main/java")
+sourceSets.test.java.srcDir project(":library").file("src/main/android")
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.java.srcDirs

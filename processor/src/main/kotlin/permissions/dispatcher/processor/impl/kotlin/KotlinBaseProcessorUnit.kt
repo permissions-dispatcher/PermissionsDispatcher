@@ -1,11 +1,33 @@
 package permissions.dispatcher.processor.impl.kotlin
 
-import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ARRAY
+import com.squareup.kotlinpoet.AnnotationSpec
+import com.squareup.kotlinpoet.ClassName
+import com.squareup.kotlinpoet.CodeBlock
+import com.squareup.kotlinpoet.FunSpec
+import com.squareup.kotlinpoet.INT
+import com.squareup.kotlinpoet.KModifier
+import com.squareup.kotlinpoet.KotlinFile
+import com.squareup.kotlinpoet.ParameterizedTypeName
+import com.squareup.kotlinpoet.PropertySpec
+import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.asTypeName
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.KtProcessorUnit
 import permissions.dispatcher.processor.RequestCodeProvider
 import permissions.dispatcher.processor.RuntimePermissionsElement
-import permissions.dispatcher.processor.util.*
+import permissions.dispatcher.processor.util.FILE_COMMENT
+import permissions.dispatcher.processor.util.addFunctions
+import permissions.dispatcher.processor.util.addProperties
+import permissions.dispatcher.processor.util.addTypes
+import permissions.dispatcher.processor.util.pendingRequestFieldName
+import permissions.dispatcher.processor.util.permissionFieldName
+import permissions.dispatcher.processor.util.permissionRequestTypeName
+import permissions.dispatcher.processor.util.permissionValue
+import permissions.dispatcher.processor.util.requestCodeFieldName
+import permissions.dispatcher.processor.util.simpleString
+import permissions.dispatcher.processor.util.varargsKtParametersCodeBlock
+import permissions.dispatcher.processor.util.withCheckMethodName
 import java.util.*
 import javax.lang.model.element.ExecutableElement
 
@@ -14,7 +36,7 @@ import javax.lang.model.element.ExecutableElement
  * <p>
  * This generates the parts of code independent from specific permission method signatures for different target objects.
  */
-abstract class BaseKtProcessorUnit : KtProcessorUnit {
+abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
     protected val PERMISSION_UTILS = ClassName.bestGuess("permissions.dispatcher.PermissionUtils")
     private val BUILD = ClassName.bestGuess("android.os.Build")
@@ -31,9 +53,10 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
 
     abstract fun getActivityName(): String
 
-    override fun createKotlinFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): KotlinFile {
+    override fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): KotlinFile {
         return KotlinFile.builder(rpe.packageName, rpe.generatedClassName)
                 .addFileComment(FILE_COMMENT)
+                .addFileAnnotation(createFileAnnotation(rpe))
                 .addProperties(createProperties(rpe.needsElements, requestCodeProvider))
                 .addFunctions(createWithCheckFuns(rpe))
                 .addFunctions(createPermissionHandlingFuns(rpe))
@@ -42,6 +65,11 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
     }
 
     /* Begin private */
+
+    private fun createFileAnnotation(rpe: RuntimePermissionsElement): AnnotationSpec =
+            AnnotationSpec.builder(JvmName::class)
+                    .addMember("name", "\"${rpe.generatedClassName}\"")
+                    .build()
 
     private fun createProperties(needsElements: List<ExecutableElement>, requestCodeProvider: RequestCodeProvider): List<PropertySpec> {
         val properties: ArrayList<PropertySpec> = arrayListOf()
@@ -146,7 +174,7 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
             val varargsCall = CodeBlock.builder()
                     .add("%N = %N(this, ",
                             pendingRequestFieldName(needsMethod),
-                            permissionRequestTypeName(needsMethod)
+                            permissionRequestTypeName(rpe, needsMethod)
                     )
                     .add(varargsKtParametersCodeBlock(needsMethod))
                     .addStatement(")")
@@ -159,14 +187,15 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
                 builder.addStatement("%N(%N)", onRationale.simpleString(), pendingRequestFieldName(needsMethod))
             } else {
                 // Otherwise, create a new PermissionRequest on-the-fly
-                builder.addStatement("%N(%N(this))", onRationale.simpleString(), permissionRequestTypeName(needsMethod))
+                builder.addStatement("%N(%N(this))", onRationale.simpleString(), permissionRequestTypeName(rpe, needsMethod))
             }
             builder.nextControlFlow("else")
         }
 
         // Add the branch for "request permission"
         ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addRequestPermissionsStatement(builder, activity, requestCodeField)
-                ?: addRequestPermissionsStatement(builder, activity, permissionField, requestCodeField)
+                // TODO hardcoded "this"
+                ?: addRequestPermissionsStatement(builder, "this", permissionField, requestCodeField)
         if (onRationale != null) {
             builder.endControlFlow()
         }
@@ -343,7 +372,7 @@ abstract class BaseKtProcessorUnit : KtProcessorUnit {
         val hasParameters = needsMethod.parameters.isNotEmpty()
         val superInterfaceName = if (hasParameters) "GrantableRequest" else "PermissionRequest"
 
-        val builder = TypeSpec.classBuilder(permissionRequestTypeName(needsMethod))
+        val builder = TypeSpec.classBuilder(permissionRequestTypeName(rpe, needsMethod))
                 .addTypeVariables(rpe.ktTypeVariables)
                 .addSuperinterface(ClassName.bestGuess("permissions.dispatcher.$superInterfaceName"))
                 .addModifiers(KModifier.PRIVATE)
