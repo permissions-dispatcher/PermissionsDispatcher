@@ -47,7 +47,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
     /* Begin abstract */
 
-    abstract fun addRequestPermissionsStatement(builder: FunSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String)
+    abstract fun addRequestPermissionsStatement(builder: FunSpec.Builder, targetParam: String = "this", permissionField: String, requestCodeField: String)
 
     abstract fun addShouldShowRequestPermissionRationaleCondition(builder: FunSpec.Builder, permissionField: String, isPositiveCondition: Boolean = true)
 
@@ -194,8 +194,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
         // Add the branch for "request permission"
         ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addRequestPermissionsStatement(builder, activity, requestCodeField)
-                // TODO hardcoded "this"
-                ?: addRequestPermissionsStatement(builder, "this", permissionField, requestCodeField)
+                ?: addRequestPermissionsStatement(builder = builder, permissionField = permissionField, requestCodeField = requestCodeField)
         if (onRationale != null) {
             builder.endControlFlow()
         }
