@@ -81,8 +81,6 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, R.string.permission_camera_never_askagain, Toast.LENGTH_SHORT).show()
     }
 
-    fun onBackClick(view: View) = supportFragmentManager.popBackStack()
-
     private fun showRationaleDialog(@StringRes messageResId: Int, request: PermissionRequest) {
         AlertDialog.Builder(this)
                 .setPositiveButton(R.string.button_allow) { _, _ -> request.proceed() }

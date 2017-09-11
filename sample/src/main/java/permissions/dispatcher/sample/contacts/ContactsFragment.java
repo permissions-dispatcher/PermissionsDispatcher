@@ -53,20 +53,16 @@ import java.util.ArrayList;
 public class ContactsFragment extends Fragment implements LoaderManager.LoaderCallbacks<Cursor> {
 
     private static final String TAG = "Contacts";
-    private TextView mMessageText = null;
-
-    private static String DUMMY_CONTACT_NAME = "__DUMMY CONTACT from runtime permissions sample";
+    private TextView messageText = null;
 
     /**
      * Projection for the content provider query includes the id and primary name of a contact.
      */
-    private static final String[] PROJECTION = {ContactsContract.Contacts._ID,
-            ContactsContract.Contacts.DISPLAY_NAME_PRIMARY};
+    private static final String[] PROJECTION = {ContactsContract.Contacts._ID, ContactsContract.Contacts.DISPLAY_NAME_PRIMARY};
     /**
      * Sort order for the query. Sorted by primary name in ascending order.
      */
     private static final String ORDER = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " ASC";
-
 
     /**
      * Creates a new instance of a ContactsFragment.
@@ -75,17 +71,23 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
         return new ContactsFragment();
     }
 
-
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
             Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_contacts, container, false);
 
-        mMessageText = (TextView) rootView.findViewById(R.id.contact_message);
+        messageText = rootView.findViewById(R.id.contact_message);
 
-        // Register a listener to add a dummy contact when a button is clicked.
-        Button button = (Button) rootView.findViewById(R.id.contact_add);
+        Button backButton = rootView.findViewById(R.id.back);
+        backButton.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                onBackClick();
+            }
+        });
+
+        Button button = rootView.findViewById(R.id.contact_add);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -94,7 +96,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
         });
 
         // Register a listener to display the first contact when a button is clicked.
-        button = (Button) rootView.findViewById(R.id.contact_load);
+        button = rootView.findViewById(R.id.contact_load);
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -102,6 +104,10 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
             }
         });
         return rootView;
+    }
+
+    private void onBackClick() {
+        getFragmentManager().popBackStack();
     }
 
     /**
@@ -120,7 +126,6 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
                 null, null, ORDER);
     }
 
-
     /**
      * Dislays either the name of the first contact or a message.
      */
@@ -133,21 +138,21 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
                 cursor.moveToFirst();
                 String name = cursor
                         .getString(cursor.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME));
-                mMessageText.setText(
+                messageText.setText(
                         getResources().getString(R.string.contacts_string, totalCount, name));
                 Log.d(TAG, "First contact loaded: " + name);
                 Log.d(TAG, "Total number of contacts: " + totalCount);
                 Log.d(TAG, "Total number of contacts: " + totalCount);
             } else {
                 Log.d(TAG, "List of contacts is empty.");
-                mMessageText.setText(R.string.contacts_empty);
+                messageText.setText(R.string.contacts_empty);
             }
         }
     }
 
     @Override
     public void onLoaderReset(Loader<Cursor> loader) {
-        mMessageText.setText(R.string.contacts_empty);
+        messageText.setText(R.string.contacts_empty);
     }
 
     /**
@@ -157,7 +162,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
      */
     private void insertDummyContact() {
         // Two operations are needed to insert a new contact.
-        ArrayList<ContentProviderOperation> operations = new ArrayList<ContentProviderOperation>(2);
+        ArrayList<ContentProviderOperation> operations = new ArrayList<>(2);
 
         // First, set up a new raw contact.
         ContentProviderOperation.Builder op =
@@ -167,6 +172,7 @@ public class ContactsFragment extends Fragment implements LoaderManager.LoaderCa
         operations.add(op.build());
 
         // Next, set the name for the contact.
+        String DUMMY_CONTACT_NAME = "__DUMMY CONTACT from runtime permissions sample";
         op = ContentProviderOperation.newInsert(ContactsContract.Data.CONTENT_URI)
                 .withValueBackReference(ContactsContract.Data.RAW_CONTACT_ID, 0)
                 .withValue(ContactsContract.Data.MIMETYPE,

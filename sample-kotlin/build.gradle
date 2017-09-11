@@ -6,7 +6,7 @@ android {
     compileSdkVersion COMPILE_SDK_VERSION
     buildToolsVersion BUILD_TOOLS_VERSION
     defaultConfig {
-        applicationId "permissions.dispatcher.sample"
+        applicationId "permissions.dispatcher.samplekotlin"
         targetSdkVersion TARGET_SDK_VERSION
         minSdkVersion MIN_SDK_VERSION
         versionCode 1

@@ -8,6 +8,7 @@ import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Button
 import android.widget.FrameLayout
 
 import permissions.dispatcher.samplekotlin.R
@@ -36,8 +37,12 @@ class CameraPreviewFragment : Fragment() {
                               savedInstanceState: Bundle?): View? =
             inflater.inflate(R.layout.fragment_camera, null)
 
-    override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        val button: Button? = view.findViewById(R.id.back)
+        button?.setOnClickListener {
+            fragmentManager.popBackStack()
+        }
         initCamera()
     }
 

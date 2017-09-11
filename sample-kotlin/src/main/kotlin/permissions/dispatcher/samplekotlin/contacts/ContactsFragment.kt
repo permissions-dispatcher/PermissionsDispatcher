@@ -45,6 +45,11 @@ class ContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
         messageText = view.findViewById(R.id.contact_message)
 
+        val button: Button? = view.findViewById(R.id.back)
+        button?.setOnClickListener {
+            fragmentManager.popBackStack()
+        }
+
         val addButton: Button = view.findViewById(R.id.contact_add)
         addButton.setOnClickListener {
             insertDummyContact()
