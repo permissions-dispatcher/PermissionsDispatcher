@@ -17,7 +17,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.TextView
 import permissions.dispatcher.samplekotlin.R
-import java.util.*
+import kotlin.properties.Delegates
 
 /**
  * Displays the first contact stored on the device and contains an option to add a dummy contact.
@@ -34,18 +34,25 @@ import java.util.*
  * https://developer.android.com/training/contacts-provider/retrieve-names.html
  */
 class ContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
-    private val mMessageText: TextView by lazy { view!!.findViewById(R.id.contact_message) as TextView }
+
+    private var messageText: TextView by Delegates.notNull<TextView>()
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
                               savedInstanceState: Bundle?) = inflater.inflate(R.layout.fragment_contacts, container, false)!!
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
-        // Register a listener to add a dummy contact when a button is clicked.
-        (view.findViewById(R.id.contact_add) as Button).setOnClickListener { insertDummyContact() }
 
-        // Register a listener to display the first contact when a button is clicked.
-        (view.findViewById(R.id.contact_load) as Button).setOnClickListener { loadContact() }
+        messageText = view.findViewById(R.id.contact_message)
+
+        val addButton: Button = view.findViewById(R.id.contact_add)
+        addButton.setOnClickListener {
+            insertDummyContact()
+        }
+        val loadButton: Button = view.findViewById(R.id.contact_load)
+        loadButton.setOnClickListener {
+            loadContact()
+        }
     }
 
     /**
@@ -67,19 +74,19 @@ class ContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
             if (totalCount > 0) {
                 it.moveToFirst()
                 val name = it.getString(it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
-                mMessageText.text = resources.getString(R.string.contacts_string, totalCount, name)
+                messageText.text = resources.getString(R.string.contacts_string, totalCount, name)
 
                 Log.d(TAG, "First contact loaded: " + name)
                 Log.d(TAG, "Total number of contacts: " + totalCount)
                 Log.d(TAG, "Total number of contacts: " + totalCount)
             } else {
                 Log.d(TAG, "List of contacts is empty.")
-                mMessageText.setText(R.string.contacts_empty)
+                messageText.setText(R.string.contacts_empty)
             }
         }
     }
 
-    override fun onLoaderReset(loader: Loader<Cursor>) = mMessageText.setText(R.string.contacts_empty)
+    override fun onLoaderReset(loader: Loader<Cursor>) = messageText.setText(R.string.contacts_empty)
 
     /**
      * Accesses the Contacts content provider directly to insert a new contact.
@@ -115,11 +122,9 @@ class ContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
         } catch (e: OperationApplicationException) {
             Log.d(TAG, "Could not add a new contact: " + e.message)
         }
-
     }
 
     companion object {
-
         private val TAG = "Contacts"
 
         private val DUMMY_CONTACT_NAME = "__DUMMY CONTACT from runtime permissions sample"
@@ -132,7 +137,6 @@ class ContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
          * Sort order for the query. Sorted by primary name in ascending order.
          */
         private val ORDER = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " ASC"
-
 
         /**
          * Creates a new instance of a ContactsFragment.

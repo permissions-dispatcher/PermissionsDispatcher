@@ -1,12 +1,12 @@
 buildscript {
     repositories {
         jcenter()
+        google()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$GRADLE_PLUGIN_VERSION"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
         classpath "com.novoda:bintray-release:$BINTRAY_PLUGIN_VERSION"
-        // Need this to publish SNAPSHOTs to JFrog
         classpath "org.jfrog.buildinfo:build-info-extractor-gradle:$JFROG_PLUGIN_VERSION"
     }
 }
@@ -14,6 +14,6 @@ buildscript {
 allprojects {
     repositories {
         jcenter()
-        mavenCentral()
+        google()
     }
 }

@@ -29,7 +29,6 @@ dependencies {
     compile(project(':library')) {
         exclude module: "support-v13"
     }
-    provided project(':processor')
     kapt project(':processor')
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"

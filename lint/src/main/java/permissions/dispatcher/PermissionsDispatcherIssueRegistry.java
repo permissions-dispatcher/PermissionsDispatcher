@@ -7,11 +7,12 @@ import java.util.Arrays;
 import java.util.List;
 
 @SuppressWarnings("unused")
-public class PermissionsDispatcherIssueRegistry extends IssueRegistry {
+public final class PermissionsDispatcherIssueRegistry extends IssueRegistry {
     @Override
     public List<Issue> getIssues() {
-        return Arrays.asList(CallNeedsPermissionDetector.ISSUE,
-                NoCorrespondingNeedsPermissionDetector.ISSUE,
-                CallOnRequestPermissionsResultDetector.ISSUE);
+        return Arrays.asList(
+                CallNeedsPermissionDetector.ISSUE,
+                CallOnRequestPermissionsResultDetector.ISSUE,
+                NoCorrespondingNeedsPermissionDetector.ISSUE);
     }
 }

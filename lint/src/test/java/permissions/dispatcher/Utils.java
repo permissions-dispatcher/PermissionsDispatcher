@@ -1,16 +1,30 @@
 package permissions.dispatcher;
 
-import com.android.tools.lint.checks.infrastructure.LintDetectorTest;
-
 import org.intellij.lang.annotations.Language;
 
-public abstract class BaseLintDetectorTest extends LintDetectorTest {
+final class Utils {
+
+    private Utils() {}
 
     static final String PACKAGE = "package permissions.dispatcher;\n";
 
     static final String SOURCE_PATH = "src/permissions/dispatcher/";
 
-    String getOnNeedsPermission() {
+    static String getRuntimePermission() {
+        @Language("JAVA") String runPermissions = ""
+                + "package permissions.dispatcher;\n"
+                + "import java.lang.annotation.ElementType;\n"
+                + "import java.lang.annotation.Retention;\n"
+                + "import java.lang.annotation.RetentionPolicy;\n"
+                + "import java.lang.annotation.Target;\n"
+                + "@Target(ElementType.TYPE)\n"
+                + "@Retention(RetentionPolicy.CLASS)\n"
+                + "public @interface RuntimePermissions {\n"
+                + "}";
+        return runPermissions;
+    }
+
+    static String getOnNeedsPermission() {
         @Language("JAVA") String onNeedsPermission = ""
                 + PACKAGE
                 + "import java.lang.annotation.ElementType;\n"
@@ -26,7 +40,7 @@ public abstract class BaseLintDetectorTest extends LintDetectorTest {
         return onNeedsPermission;
     }
 
-    String getOnRationaleAnnotation() {
+    static String getOnRationaleAnnotation() {
         @Language("JAVA") String onShow = ""
                 + PACKAGE
                 + "import java.lang.annotation.ElementType;\n"
@@ -39,10 +53,5 @@ public abstract class BaseLintDetectorTest extends LintDetectorTest {
                 + "String[] value();\n"
                 + "}";
         return onShow;
-    }
-
-    @Override
-    protected boolean allowCompilationErrors() {
-        return true;
     }
 }
