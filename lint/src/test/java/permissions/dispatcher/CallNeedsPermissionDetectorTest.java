@@ -30,12 +30,22 @@ public final class CallNeedsPermissionDetectorTest {
                 + "}\n"
                 + "}";
 
+        String expectedText = ""
+                + "src/com/example/Foo.java:4: Error: Trying to access permission-protected method directly "
+                + "["
+                + CallNeedsPermissionDetector.ISSUE.getId()
+                + "]\n"
+                + "baz.fooBar();  }\n"
+                + "~~~~~~~~~~~~\n"
+                + "1 errors, 0 warnings\n";
+
         lint()
                 .files(
                         java("src/com/example/Foo.java", foo),
                         java("src/com/example/Baz.java", baz))
                 .issues(CallNeedsPermissionDetector.ISSUE)
                 .run()
+                .expect(expectedText)
                 .expectErrorCount(1)
                 .expectWarningCount(0);
     }

@@ -52,12 +52,22 @@ public final class NoCorrespondingNeedsPermissionDetectorTest {
                 + "}\n"
                 + "}";
 
+        String expectedText = ""
+                + SOURCE_PATH + "Foo.java:3: Error: Useless @OnShowRationale declaration "
+                + "["
+                + NoCorrespondingNeedsPermissionDetector.ISSUE.getId()
+                + "]\n"
+                + "@OnShowRationale(\"Camera\")\n"
+                + "~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
+                + "1 errors, 0 warnings\n";
+
         lint()
                 .files(
                         java(SOURCE_PATH + "OnShowRationale.java", onShow),
                         java(SOURCE_PATH + "Foo.java", foo))
                 .issues(NoCorrespondingNeedsPermissionDetector.ISSUE)
                 .run()
+                .expect(expectedText)
                 .expectErrorCount(1)
                 .expectWarningCount(0);
     }

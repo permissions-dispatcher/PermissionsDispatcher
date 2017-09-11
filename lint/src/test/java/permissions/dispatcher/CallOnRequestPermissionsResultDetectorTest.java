@@ -77,6 +77,12 @@ public final class CallOnRequestPermissionsResultDetectorTest {
                 + "}\n"
                 + "}";
 
+        String expectedText = ""
+                + SOURCE_PATH + "Foo.java:4: Error: Generated onRequestPermissionsResult method not called [NeedOnRequestPermissionsResult]\n"
+                + "public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {\n"
+                + "^\n"
+                + "1 errors, 0 warnings\n";
+
         lint()
                 .files(
                         java(SOURCE_PATH + "RuntimePermissions.java", runtimePerms),
