@@ -85,7 +85,7 @@ public class CameraPreviewFragment extends Fragment {
             return;
         }
 
-        FrameLayout preview = (FrameLayout) getView().findViewById(R.id.camera_preview);
+        FrameLayout preview = getView().findViewById(R.id.camera_preview);
         preview.removeAllViews();
 
         if (mPreview == null) {

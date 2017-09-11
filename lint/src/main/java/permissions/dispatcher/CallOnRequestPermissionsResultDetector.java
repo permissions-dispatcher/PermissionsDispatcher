@@ -59,13 +59,15 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
 
         private final JavaContext context;
 
-        private final UClass sourceFile;
+        private final Set<String> targetClasses;
 
         private boolean hasRuntimePermissionAnnotation;
 
-        private OnRequestPermissionsResultChecker(JavaContext context, UClass sourceFile) {
+        private OnRequestPermissionsResultChecker(JavaContext context, UClass klass) {
             this.context = context;
-            this.sourceFile = sourceFile;
+            this.targetClasses = new HashSet<String>(2);
+            targetClasses.add("super");
+            targetClasses.add(klass.getName());
         }
 
         @Override
@@ -86,13 +88,13 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
             if (!"onRequestPermissionsResult".equals(node.getName())) {
                 return true;
             }
-            if (hasRuntimePermissionAnnotation && !checkMethodCall(node, sourceFile)) {
+            if (hasRuntimePermissionAnnotation && !checkMethodCall(node, targetClasses)) {
                 context.report(ISSUE, context.getLocation(node), "Generated onRequestPermissionsResult method not called");
             }
             return true;
         }
 
-        private static boolean checkMethodCall(UMethod method, UClass klass) {
+        private static boolean checkMethodCall(UMethod method, Set<String> targetClasses) {
             UExpression methodBody = method.getUastBody();
             if (methodBody == null) {
                 return false;
@@ -105,10 +107,9 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
                         continue;
                     }
                     UQualifiedReferenceExpression referenceExpression = (UQualifiedReferenceExpression) expression;
-                    String targetClass = klass.getName() + "PermissionsDispatcher";
                     String targetMethod = "onRequestPermissionsResult(requestCode, permissions, grantResults)";
-                    if (targetClass.equals(referenceExpression.getReceiver().toString())
-                            && targetMethod.equals( referenceExpression.getSelector().toString())) {
+                    if (targetClasses.contains(referenceExpression.getReceiver().toString())
+                            && targetMethod.equals(referenceExpression.getSelector().toString())) {
                         return true;
                     }
                 }

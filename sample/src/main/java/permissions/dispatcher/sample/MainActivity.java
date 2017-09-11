@@ -90,10 +90,6 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         Toast.makeText(this, R.string.permission_camera_never_askagain, Toast.LENGTH_SHORT).show();
     }
 
-    public void onBackClick(View view) {
-        getSupportFragmentManager().popBackStack();
-    }
-
     private void showRationaleDialog(@StringRes int messageResId, final PermissionRequest request) {
         new AlertDialog.Builder(this)
                 .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {

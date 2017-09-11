@@ -86,8 +86,8 @@ public final class NoCorrespondingNeedsPermissionDetector extends Detector imple
                 return true;
             }
             // If there is OnShowRationale, find corresponding NeedsPermission
-            boolean found = false;
             for (UAnnotation onShowRationaleAnnotation : onShowRationaleAnnotations) {
+                boolean found = false;
                 for (UAnnotation needsPermissionAnnotation : needsPermissionAnnotations) {
                     if (hasSameNodes(onShowRationaleAnnotation.getAttributeValues(), needsPermissionAnnotation.getAttributeValues())) {
                         found = true;
