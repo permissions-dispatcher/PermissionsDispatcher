@@ -29,8 +29,8 @@ import java.util.Set;
 public final class CallNeedsPermissionDetector extends Detector implements Detector.UastScanner {
 
     static final Issue ISSUE = Issue.create("CallNeedsPermission",
-            "Call the corresponding \"withCheck\" method of the generated PermissionsDispatcher class instead",
-            "Directly invoking a method annotated with @NeedsPermission may lead to misleading behaviour on devices running Marshmallow and up. Therefore, it is advised to use the generated PermissionsDispatcher class instead, which provides a \"withCheck\" method that safely handles runtime permissions.",
+            "Call the corresponding \"WithPermissionCheck\" method of the generated PermissionsDispatcher class instead",
+            "Directly invoking a method annotated with @NeedsPermission may lead to misleading behaviour on devices running Marshmallow and up. Therefore, it is advised to use the generated PermissionsDispatcher class instead, which provides a \"WithPermissionCheck\" method that safely handles runtime permissions.",
             Category.CORRECTNESS,
             7,
             Severity.ERROR,

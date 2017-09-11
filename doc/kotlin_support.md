@@ -58,7 +58,7 @@ Now generated functions become much more concise and intuitive than Java version
         setContentView(R.layout.activity_main)
         findViewById(R.id.button_camera).setOnClickListener {
             // NOTE: delegate the permission handling to generated function
-            showCameraWithCheck()
+            showCameraWithPermissionCheck()
         }
     }
 

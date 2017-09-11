@@ -46,7 +46,7 @@ class ActivityWithShowRationalePermissionsDispatcherTest {
     fun `already granted call the method`() {
         mockCheckSelfPermission(true)
 
-        ActivityWithShowRationalePermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithShowRationalePermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(1)).showCamera()
     }
@@ -56,7 +56,7 @@ class ActivityWithShowRationalePermissionsDispatcherTest {
         mockCheckSelfPermission(false)
         mockShouldShowRequestPermissionRationaleActivity(true)
 
-        ActivityWithShowRationalePermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithShowRationalePermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(0)).showCamera()
     }
@@ -66,7 +66,7 @@ class ActivityWithShowRationalePermissionsDispatcherTest {
         mockCheckSelfPermission(false)
         mockShouldShowRequestPermissionRationaleActivity(true)
 
-        ActivityWithShowRationalePermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithShowRationalePermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(1)).showRationaleForCamera(Matchers.any(PermissionRequest::class.java))
     }
@@ -76,7 +76,7 @@ class ActivityWithShowRationalePermissionsDispatcherTest {
         mockCheckSelfPermission(false)
         mockShouldShowRequestPermissionRationaleActivity(false)
 
-        ActivityWithShowRationalePermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithShowRationalePermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(0)).showRationaleForCamera(Matchers.any(PermissionRequest::class.java))
     }
@@ -107,7 +107,7 @@ class ActivityWithShowRationalePermissionsDispatcherTest {
         testForXiaomi()
         mockPermissionToOp(null)
 
-        ActivityWithShowRationalePermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithShowRationalePermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(1)).showCamera()
     }
@@ -119,7 +119,7 @@ class ActivityWithShowRationalePermissionsDispatcherTest {
         mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
         mockCheckSelfPermission(true)
 
-        ActivityWithShowRationalePermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithShowRationalePermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(1)).showCamera()
     }
@@ -131,7 +131,7 @@ class ActivityWithShowRationalePermissionsDispatcherTest {
         mockNoteOp(AppOpsManagerCompat.MODE_IGNORED)
         mockCheckSelfPermission(true)
 
-        ActivityWithShowRationalePermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithShowRationalePermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(0)).showCamera()
     }
@@ -143,7 +143,7 @@ class ActivityWithShowRationalePermissionsDispatcherTest {
         mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
         mockCheckSelfPermission(false)
 
-        ActivityWithShowRationalePermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithShowRationalePermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(0)).showCamera()
     }
@@ -153,7 +153,7 @@ class ActivityWithShowRationalePermissionsDispatcherTest {
         overwriteCustomSdkInt(22)
         mockCheckSelfPermission(false)
 
-        ActivityWithShowRationalePermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithShowRationalePermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(0)).showCamera()
     }
@@ -163,7 +163,7 @@ class ActivityWithShowRationalePermissionsDispatcherTest {
         overwriteCustomSdkInt(22)
         mockCheckSelfPermission(true)
 
-        ActivityWithShowRationalePermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithShowRationalePermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(1)).showCamera()
     }

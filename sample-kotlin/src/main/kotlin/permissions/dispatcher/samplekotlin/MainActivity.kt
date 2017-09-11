@@ -20,11 +20,11 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val buttonCamera: Button = findViewById(R.id.button_camera)
         buttonCamera.setOnClickListener {
-            showCameraWithCheck()
+            showCameraWithPermissionCheck()
         }
         val buttonContacts: Button = findViewById(R.id.button_contacts)
         buttonContacts.setOnClickListener {
-            showContactsWithCheck()
+            showContactsWithPermissionCheck()
         }
     }
 

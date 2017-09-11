@@ -29,11 +29,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         switch (v.getId()) {
             case R.id.button_camera:
                 // NOTE: delegate the permission handling to generated method
-                MainActivityPermissionsDispatcher.showCameraWithCheck(this);
+                MainActivityPermissionsDispatcher.showCameraWithPermissionCheck(this);
                 break;
             case R.id.button_contacts:
                 // NOTE: delegate the permission handling to generated method
-                MainActivityPermissionsDispatcher.showContactsWithCheck(this);
+                MainActivityPermissionsDispatcher.showContactsWithPermissionCheck(this);
                 break;
         }
     }

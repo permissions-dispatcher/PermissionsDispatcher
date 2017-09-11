@@ -43,7 +43,7 @@ class ActivityWithOnPermissionDeniedPermissionsDispatcherTest {
     fun `already granted call the method`() {
         mockCheckSelfPermission(true)
 
-        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(1)).showCamera()
     }
@@ -53,7 +53,7 @@ class ActivityWithOnPermissionDeniedPermissionsDispatcherTest {
         mockCheckSelfPermission(false)
         mockShouldShowRequestPermissionRationaleActivity(true)
 
-        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(0)).showCamera()
     }
@@ -100,7 +100,7 @@ class ActivityWithOnPermissionDeniedPermissionsDispatcherTest {
         testForXiaomi()
         mockPermissionToOp(null)
 
-        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(1)).showCamera()
     }
@@ -112,7 +112,7 @@ class ActivityWithOnPermissionDeniedPermissionsDispatcherTest {
         mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
         mockCheckSelfPermission(true)
 
-        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(1)).showCamera()
     }
@@ -124,7 +124,7 @@ class ActivityWithOnPermissionDeniedPermissionsDispatcherTest {
         mockNoteOp(AppOpsManagerCompat.MODE_IGNORED)
         mockCheckSelfPermission(true)
 
-        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(0)).showCamera()
     }
@@ -136,7 +136,7 @@ class ActivityWithOnPermissionDeniedPermissionsDispatcherTest {
         mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
         mockCheckSelfPermission(false)
 
-        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(0)).showCamera()
     }
@@ -146,7 +146,7 @@ class ActivityWithOnPermissionDeniedPermissionsDispatcherTest {
         overwriteCustomSdkInt(22)
         mockCheckSelfPermission(false)
 
-        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(0)).showCamera()
     }
@@ -156,7 +156,7 @@ class ActivityWithOnPermissionDeniedPermissionsDispatcherTest {
         overwriteCustomSdkInt(22)
         mockCheckSelfPermission(true)
 
-        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnPermissionDeniedPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(1)).showCamera()
     }

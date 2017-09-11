@@ -43,7 +43,7 @@ class ActivityWithOnNeverAskAgainPermissionsDispatcherTest {
     fun `already granted call the method`() {
         mockCheckSelfPermission(true)
 
-        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(1)).showCamera()
     }
@@ -53,7 +53,7 @@ class ActivityWithOnNeverAskAgainPermissionsDispatcherTest {
         mockCheckSelfPermission(false)
         mockShouldShowRequestPermissionRationaleActivity(true)
 
-        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(0)).showCamera()
     }
@@ -100,7 +100,7 @@ class ActivityWithOnNeverAskAgainPermissionsDispatcherTest {
         testForXiaomi()
         mockPermissionToOp(null)
 
-        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(1)).showCamera()
     }
@@ -112,7 +112,7 @@ class ActivityWithOnNeverAskAgainPermissionsDispatcherTest {
         mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
         mockCheckSelfPermission(true)
 
-        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(1)).showCamera()
     }
@@ -124,7 +124,7 @@ class ActivityWithOnNeverAskAgainPermissionsDispatcherTest {
         mockNoteOp(AppOpsManagerCompat.MODE_IGNORED)
         mockCheckSelfPermission(true)
 
-        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(0)).showCamera()
     }
@@ -136,7 +136,7 @@ class ActivityWithOnNeverAskAgainPermissionsDispatcherTest {
         mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
         mockCheckSelfPermission(false)
 
-        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(0)).showCamera()
     }
@@ -146,7 +146,7 @@ class ActivityWithOnNeverAskAgainPermissionsDispatcherTest {
         overwriteCustomSdkInt(22)
         mockCheckSelfPermission(false)
 
-        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(0)).showCamera()
     }
@@ -156,7 +156,7 @@ class ActivityWithOnNeverAskAgainPermissionsDispatcherTest {
         overwriteCustomSdkInt(22)
         mockCheckSelfPermission(true)
 
-        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithCheck(activity)
+        ActivityWithOnNeverAskAgainPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
         Mockito.verify(activity, Mockito.times(1)).showCamera()
     }
