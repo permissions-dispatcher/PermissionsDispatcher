@@ -30,7 +30,6 @@ dependencies {
     compile fileTree(dir: 'libs', include: ['*.jar'])
 
     compile(project(':library'))
-    provided project(':processor')
     kapt project(':processor')
 
     compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"

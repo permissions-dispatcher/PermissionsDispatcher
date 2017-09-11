@@ -12,7 +12,6 @@ import android.widget.FrameLayout
 
 import permissions.dispatcher.samplekotlin.R
 
-
 /**
  * Displays a [CameraPreview] of the first [Camera].
  * An error message is displayed if the Camera is not available.
@@ -28,8 +27,8 @@ import permissions.dispatcher.samplekotlin.R
  */
 class CameraPreviewFragment : Fragment() {
 
-    private var mPreview: CameraPreview? = null
-    private var mCamera: Camera? = null
+    private var preview: CameraPreview? = null
+    private var camera: Camera? = null
 
     @SuppressLint("InflateParams")
     override fun onCreateView(inflater: LayoutInflater,
@@ -37,39 +36,29 @@ class CameraPreviewFragment : Fragment() {
                               savedInstanceState: Bundle?): View? =
             inflater.inflate(R.layout.fragment_camera, null)
 
-
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         initCamera()
     }
 
     private fun initCamera() {
-        mCamera = getCameraInstance(CAMERA_ID)?.also { camera ->
-            // Get camera info only if the camera is available
+        camera = getCameraInstance(CAMERA_ID)?.also { camera ->
             val cameraInfo = Camera.CameraInfo().also { Camera.getCameraInfo(CAMERA_ID, it) }
-
             // Get the rotation of the screen to adjust the preview image accordingly.
             val displayRotation = activity.windowManager.defaultDisplay.rotation
-
-            view?.let {
-                val preview = it.findViewById(R.id.camera_preview) as FrameLayout
-                preview.removeAllViews()
-
-                mPreview?.setCamera(camera, cameraInfo, displayRotation)
-                        ?: run {
-                            // Create the Preview view and set it as the content of this Activity.
-                            mPreview = CameraPreview(activity, camera, cameraInfo, displayRotation)
-                        }
-
-                preview.addView(mPreview)
+            val previewFrameLayout: FrameLayout? = view?.findViewById(R.id.camera_preview)
+            previewFrameLayout?.removeAllViews()
+            preview?.setCamera(camera, cameraInfo, displayRotation) ?: run {
+                // Create the Preview view and set it as the content of this Activity.
+                preview = CameraPreview(activity, camera, cameraInfo, displayRotation)
             }
+            previewFrameLayout?.addView(preview)
         }
-
     }
 
     override fun onResume() {
         super.onResume()
-        mCamera ?: initCamera()
+        camera ?: initCamera()
     }
 
     override fun onPause() {
@@ -79,9 +68,9 @@ class CameraPreviewFragment : Fragment() {
     }
 
     private fun releaseCamera() {
-        mCamera?.release()?.run { mCamera = null }
+        camera?.release()?.run { camera = null }
         // release destroyed preview
-        mPreview = null
+        preview = null
     }
 
     companion object {

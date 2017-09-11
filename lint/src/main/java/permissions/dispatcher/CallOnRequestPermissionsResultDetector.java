@@ -1,5 +1,6 @@
 package permissions.dispatcher;
 
+import com.android.tools.lint.client.api.UElementHandler;
 import com.android.tools.lint.detector.api.Category;
 import com.android.tools.lint.detector.api.Detector;
 import com.android.tools.lint.detector.api.Implementation;
@@ -7,28 +8,25 @@ import com.android.tools.lint.detector.api.Issue;
 import com.android.tools.lint.detector.api.JavaContext;
 import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
-import com.intellij.psi.JavaElementVisitor;
-import com.intellij.psi.JavaRecursiveElementVisitor;
-import com.intellij.psi.PsiAnnotation;
-import com.intellij.psi.PsiCallExpression;
-import com.intellij.psi.PsiClass;
-import com.intellij.psi.PsiCodeBlock;
-import com.intellij.psi.PsiElement;
-import com.intellij.psi.PsiExpression;
-import com.intellij.psi.PsiExpressionStatement;
-import com.intellij.psi.PsiMethod;
-import com.intellij.psi.PsiStatement;
 
-import java.util.Arrays;
+import org.jetbrains.uast.UAnnotation;
+import org.jetbrains.uast.UBlockExpression;
+import org.jetbrains.uast.UClass;
+import org.jetbrains.uast.UElement;
+import org.jetbrains.uast.UExpression;
+import org.jetbrains.uast.UMethod;
+import org.jetbrains.uast.UQualifiedReferenceExpression;
+import org.jetbrains.uast.visitor.AbstractUastVisitor;
+
+import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public class CallOnRequestPermissionsResultDetector extends Detector
-        implements Detector.JavaPsiScanner {
+public final class CallOnRequestPermissionsResultDetector extends Detector implements Detector.UastScanner {
 
-    public static final Issue ISSUE = Issue.create("NeedOnRequestPermissionsResult",
+    static final Issue ISSUE = Issue.create("NeedOnRequestPermissionsResult",
             "Call the \"onRequestPermissionsResult\" method of the generated PermissionsDispatcher class in the respective method of your Activity or Fragment",
             "You are required to inform the generated PermissionsDispatcher class about the results of a permission request. In your class annotated with @RuntimePermissions, override the \"onRequestPermissionsResult\" method and call through to the generated PermissionsDispatcher method with the same name.",
             Category.CORRECTNESS,
@@ -42,110 +40,81 @@ public class CallOnRequestPermissionsResultDetector extends Detector
         add("permissions.dispatcher.RuntimePermissions");
     }};
 
-    public CallOnRequestPermissionsResultDetector() {
-        // No-op
+    @Override
+    public List<Class<? extends UElement>> getApplicableUastTypes() {
+        return Collections.<Class<? extends UElement>>singletonList(UClass.class);
     }
 
     @Override
-    public List<Class<? extends PsiElement>> getApplicablePsiTypes() {
-        return Arrays.asList(PsiAnnotation.class, PsiClass.class);
-    }
-
-    @Override
-    public JavaElementVisitor createPsiVisitor(final JavaContext context) {
-        return new JavaElementVisitor() {
+    public UElementHandler createUastHandler(final JavaContext context) {
+        return new UElementHandler() {
             @Override
-            public void visitClass(PsiClass node) {
+            public void visitClass(UClass node) {
                 node.accept(new OnRequestPermissionsResultChecker(context, node));
             }
         };
     }
 
-    private static class OnRequestPermissionsResultChecker extends JavaRecursiveElementVisitor {
+    private static class OnRequestPermissionsResultChecker extends AbstractUastVisitor {
 
         private final JavaContext context;
 
+        private final Set<String> targetClasses;
+
         private boolean hasRuntimePermissionAnnotation;
 
-        private PsiClass psiClass;
-
-        private OnRequestPermissionsResultChecker(JavaContext context, PsiClass psiClass) {
+        private OnRequestPermissionsResultChecker(JavaContext context, UClass klass) {
             this.context = context;
-            this.psiClass = psiClass;
+            this.targetClasses = new HashSet<String>(2);
+            targetClasses.add("super");
+            targetClasses.add(klass.getName());
         }
 
         @Override
-        public void visitAnnotation(PsiAnnotation annotation) {
-            String type = annotation.getQualifiedName();
+        public boolean visitAnnotation(UAnnotation node) {
+            String type = node.getQualifiedName();
             if (!RUNTIME_PERMISSIONS_NAME.contains(type)) {
-                super.visitAnnotation(annotation);
-                return;
-            }
-
-            hasRuntimePermissionAnnotation = true;
-            super.visitAnnotation(annotation);
-        }
-
-        @Override
-        public void visitMethod(PsiMethod method) {
-            if (!hasRuntimePermissionAnnotation) {
-                super.visitMethod(method);
-                return;
-            }
-
-            if (!"onRequestPermissionsResult".equals(method.getName())) {
-                super.visitMethod(method);
-                return;
-            }
-
-            if (hasRuntimePermissionAnnotation && !checkMethodCall(method, psiClass)) {
-                PsiCodeBlock codeBlock = method.getBody();
-                context.report(ISSUE, context.getLocation(method),
-                        codeBlock.getText()
-                                + "Generated onRequestPermissionsResult method not called");
-            }
-
-            super.visitMethod(method);
-
-        }
-    }
-
-    private static boolean checkMethodCall(PsiMethod method, PsiClass psiClass) {
-        PsiCodeBlock codeBlock = method.getBody();
-        if (codeBlock == null) {
-            return false;
-        }
-
-        PsiStatement[] statements = codeBlock.getStatements();
-        for (PsiStatement statement : statements) {
-            if (!(statement instanceof PsiExpressionStatement)) {
-                continue;
-            }
-            PsiExpression expression = ((PsiExpressionStatement) statement)
-                    .getExpression();
-            if (!(expression instanceof PsiCallExpression)) {
-                continue;
-            }
-
-            PsiCallExpression callExpression = (PsiCallExpression) expression;
-            String targetClassName = psiClass.getName() + "PermissionsDispatcher";
-            PsiMethod resolveMethod = callExpression.resolveMethod();
-            if (resolveMethod == null) {
-                continue;
-            }
-
-            PsiClass containingClass = resolveMethod.getContainingClass();
-            if (containingClass == null) {
-                continue;
-            }
-
-            if (targetClassName.equals(containingClass.getName())
-                    && "onRequestPermissionsResult".equals(resolveMethod
-                            .getName())) {
                 return true;
             }
+            hasRuntimePermissionAnnotation = true;
+            return true;
         }
-        return false;
-    }
 
+        @Override
+        public boolean visitMethod(UMethod node) {
+            if (!hasRuntimePermissionAnnotation) {
+                return true;
+            }
+            if (!"onRequestPermissionsResult".equals(node.getName())) {
+                return true;
+            }
+            if (hasRuntimePermissionAnnotation && !checkMethodCall(node, targetClasses)) {
+                context.report(ISSUE, context.getLocation(node), "Generated onRequestPermissionsResult method not called");
+            }
+            return true;
+        }
+
+        private static boolean checkMethodCall(UMethod method, Set<String> targetClasses) {
+            UExpression methodBody = method.getUastBody();
+            if (methodBody == null) {
+                return false;
+            }
+            if (methodBody instanceof UBlockExpression) {
+                UBlockExpression methodBodyExpression = (UBlockExpression) methodBody;
+                List<UExpression> expressions = methodBodyExpression.getExpressions();
+                for (UExpression expression : expressions) {
+                    if (!(expression instanceof UQualifiedReferenceExpression)) {
+                        continue;
+                    }
+                    UQualifiedReferenceExpression referenceExpression = (UQualifiedReferenceExpression) expression;
+                    String targetMethodName = "onRequestPermissionsResult";
+                    if (targetClasses.contains(referenceExpression.getReceiver().toString())
+                            && referenceExpression.getSelector().toString().startsWith(targetMethodName)) {
+                        return true;
+                    }
+                }
+            }
+            return false;
+        }
+    }
 }

@@ -6,6 +6,7 @@ import android.support.annotation.StringRes
 import android.support.v7.app.AlertDialog
 import android.support.v7.app.AppCompatActivity
 import android.view.View
+import android.widget.Button
 import android.widget.Toast
 import permissions.dispatcher.*
 import permissions.dispatcher.samplekotlin.camera.CameraPreviewFragment
@@ -17,10 +18,12 @@ class MainActivity : AppCompatActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
-        findViewById(R.id.button_camera).setOnClickListener {
+        val buttonCamera: Button = findViewById(R.id.button_camera)
+        buttonCamera.setOnClickListener {
             showCameraWithCheck()
         }
-        findViewById(R.id.button_contacts).setOnClickListener {
+        val buttonContacts: Button = findViewById(R.id.button_contacts)
+        buttonContacts.setOnClickListener {
             showContactsWithCheck()
         }
     }
