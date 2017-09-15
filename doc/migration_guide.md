@@ -1,4 +1,55 @@
-## Migrating to PermissionsDispatcher 2.x
+# Migration guide
+
+- [Migrating to 3.x](#migration-3)
+- [Migrating to 2.x](#migration-2)
+
+## Migrating to PermissionsDispatcher 3.x <a id="migration-3"></a>
+
+### Method name changing
+
+Issue: https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/355
+
+From 1.0 PermissionsDispatcher has been generating `***WithCheck` method, but from 3.0 the suffix of each method becomes `***WithPermissionCheck`.
+
+```diff
+- MainActivityPermissionsDispatcher.showCameraWithCheck(this);
++ MainActivityPermissionsDispatcher.showCameraWithPermissionCheck(this);
+```
+
+The motivation of this change is to make generated code more declarative and easy to figure out what'd be going on under the hood.
+
+Especially the change is beneficial in Kotlin because the receiver of generated method is a class which is annotated with `@RuntimePermissions`, not a helper class named as `XXXPermissionsDispatcher`.
+
+### Kotlin support
+
+Issue: https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/320
+
+Actually it's been possible to use PermissionsDispatcher with Kotlin because of its interoperability with Java. But to give you more concise and comfortable experience we added fully Kotlin support which is described in [here](https://github.com/permissions-dispatcher/PermissionsDispatcher/blob/master/doc/kotlin_support.md).
+
+If you're already using PermissionsDispatcher with Kotlin, be aware of the following 2 changing points.
+
+#### `WithPermissionsCheck`
+
+```diff
+button.setOnClickListener {
+-    MainActivityPermissionsDispatcher.showCameraWithCheck(this)
++    showCameraWithPermissionCheck()
+}
+```
+
+#### `onRequestPermissionsResult`
+
+```diff
+override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+-    MainActivityPermissionsDispatcher.onRequestPermissionsResult(requestCode, grantResults)
++    onRequestPermissionsResult(requestCode, grantResults)
+}
+```
+
+And that's it!
+
+## Migrating to PermissionsDispatcher 2.x <a id="migration-2"></a>
 
 Since the internals of PermissionsDispatcher 2 have undergone a fundamental refactoring, most notably in the switch of languages to Kotlin for our annotation processor, the exposed APIs to users of the library have been tweaked as well. This guide will help you migrate to the latest version in just a few minutes!
 
@@ -36,7 +87,6 @@ While version 1.x of the library had two flavors of the `@NeedsPermission` annot
 ```java
 @NeedsPermissions({ CAMERA, WRITE_EXTERNAL_STORAGE })
 void setupCamera() {
-	// ...
 }
 ```
 
@@ -44,7 +94,6 @@ void setupCamera() {
 ```java
 @NeedsPermission({ CAMERA, WRITE_EXTERNAL_STORAGE })
 void setupCamera() {
-	// ...
 }
 ```
 
@@ -56,8 +105,8 @@ Both `@ShowsRationale` and its plural form `@ShowsRationales` have been removed 
 ```java
 @ShowsRationale({ CAMERA, WRITE_EXTERNAL_STORAGE })
 void showCameraRationale() {
-	// Can't really do much here, since the system dialog is shown immediately afterwards...
-	Toast.makeText(...).show();
+    // Can't really do much here, since the system dialog is shown immediately afterwards...
+    Toast.makeText(...).show();
 }
 ```
 
@@ -65,12 +114,12 @@ void showCameraRationale() {
 ```java
 @OnShowRationale({ CAMERA, WRITE_EXTERNAL_STORAGE })
 void showCameraRationale(final PermissionRequest request) {
-	// E.g. show a dialog explaining why you need the permission.
-	// Call proceed() or cancel() on the incoming request to continue or abort the current permissions process
-	new AlertDialog.Builder(...)
-		.setPositiveButton("OK", (dialog, which) -> request.proceed())
-		.setNegativeButton("Abort", (dialog, which) -> request.cancel())
-		.show();
+    // E.g. show a dialog explaining why you need the permission.
+    // Call proceed() or cancel() on the incoming request to continue or abort the current permissions process
+    new AlertDialog.Builder(...)
+        .setPositiveButton("OK", (dialog, which) -> request.proceed())
+        .setNegativeButton("Abort", (dialog, which) -> request.cancel())
+        .show();
 }
 ```
 
@@ -82,7 +131,6 @@ The old annotations `@DeniedPermission` and `@DeniedPermissions` have been unifi
 ```java
 @DeniedPermission({ CAMERA, WRITE_EXTERNAL_STORAGE })
 void cameraDenied() {
-	// ...
 }
 ```
 
@@ -90,7 +138,6 @@ void cameraDenied() {
 ```java
 @OnPermissionDenied({ CAMERA, WRITE_EXTERNAL_STORAGE })
 void cameraDenied() {
-	// ...
 }
 ```
 
