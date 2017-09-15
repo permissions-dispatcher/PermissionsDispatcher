@@ -1,15 +1,16 @@
 # Migration guide
 
-- [Migrating to 3.x](https://github.com/permissions-dispatcher/PermissionsDispatcher/blob/master/doc/migration_guide.md#migrating-to-permissionsdispatcher-3x)
-- [Migrating to 2.x](https://github.com/permissions-dispatcher/PermissionsDispatcher/blob/master/doc/migration_guide.md#migrating-to-permissionsdispatcher-2x)
+- [Migrating to 3.x](#migrating-to-permissionsdispatcher-3x)
+- [Migrating to 2.x](#migrating-to-permissionsdispatcher-2x)
 
 ## Migrating to PermissionsDispatcher 3.x
 
 ### Method name changing
 
-Issue: https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/355
+Issue: [#355](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/355)
 
-From 1.0 PermissionsDispatcher has been generating `***WithCheck` method, but from 3.0 the suffix of each method becomes `***WithPermissionCheck`.
+PermissionsDispatcher used to generate `***WithCheck` methods.
+Starting with 3.0, the suffix of these methods becomes `***WithPermissionCheck`.
 
 ```diff
 - MainActivityPermissionsDispatcher.showCameraWithCheck(this);
@@ -18,17 +19,17 @@ From 1.0 PermissionsDispatcher has been generating `***WithCheck` method, but fr
 
 The motivation of this change is to make generated code more declarative and easy to figure out what'd be going on under the hood.
 
-Especially the change is beneficial in Kotlin because the receiver of generated method is a class which is annotated with `@RuntimePermissions`, not a helper class named as `XXXPermissionsDispatcher`.
+This change is especially beneficial in Kotlin, because the receiver of the generated method is a class annotated with `@RuntimePermissions`, instead of a helper class named `***PermissionsDispatcher`.
 
 ### Kotlin support
 
-Issue: https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/320
+Issue: [#320](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/320)
 
-Actually it's been possible to use PermissionsDispatcher with Kotlin because of its interoperability with Java. But to give you more concise and comfortable experience we added fully Kotlin support which is described in [here](https://github.com/permissions-dispatcher/PermissionsDispatcher/blob/master/doc/kotlin_support.md).
+Actually it's been possible to use PermissionsDispatcher with Kotlin already, because of its interoperability with Java. But to give you a more concise, comfortable and idiomatic experience, we added full Kotlin support which is described in [here](kotlin_support.md).
 
-If you're already using PermissionsDispatcher with Kotlin, be aware of the following 2 changing points.
+If you're already using PermissionsDispatcher with Kotlin, be aware of the following 2 changes:
 
-#### `WithPermissionsCheck`
+#### `***WithPermissionCheck`
 
 ```diff
 button.setOnClickListener {
@@ -48,6 +49,8 @@ override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<Str
 ```
 
 And that's it!
+
+
 
 ## Migrating to PermissionsDispatcher 2.x
 
