@@ -1,7 +1,11 @@
 # ChangeLog
 
-- 3.0.0 2017/05/01
-  - Add 
+- 3.0.0 2017/09/16
+  - Add fully [Kotlin support](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_support.md)!
+  - Allow for Deterministic, Reproducible Builds with sorted inputs [#342](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/342)
+  - Internal: Migrate Lint Rules to UAST [363](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/363)
+  - Rename withCheck to withPermissionCheck [#365](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/365)
+  - Fix CallNeedsPermissionDetector to work correctly [#368](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/368)
 - 2.4.0 2017/05/01
   - Fix `SupportV13MissingException` with newer Gradle [#279](https://github.com/hotchemi/PermissionsDispatcher/issues/279).
     - Now we bundle support v13 library in the library, you don't have to add v13 dependency by yourself.
