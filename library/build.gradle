@@ -35,13 +35,13 @@ configurations {
 }
 
 dependencies {
-    compile "com.android.support:support-compat:$SUPPORT_LIBRARY_VERSION"
-    compile "com.android.support:support-v13:$SUPPORT_LIBRARY_VERSION"
+    implementation "com.android.support:support-compat:$SUPPORT_LIBRARY_VERSION"
+    implementation "com.android.support:support-v13:$SUPPORT_LIBRARY_VERSION"
 
-    testCompile "junit:junit:$JUNIT_VERSION"
-    testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
-    testCompile "org.powermock:powermock-api-mockito:$POWERMOCK_VERSION"
-    testCompile "org.powermock:powermock-module-junit4:$POWERMOCK_VERSION"
+    testImplementation "junit:junit:$JUNIT_VERSION"
+    testImplementation "org.mockito:mockito-core:$MOCKITO_VERSION"
+    testImplementation "org.powermock:powermock-api-mockito:$POWERMOCK_VERSION"
+    testImplementation "org.powermock:powermock-module-junit4:$POWERMOCK_VERSION"
 
     lintChecks project(path: ':lint', configuration: 'lintChecks')
 }

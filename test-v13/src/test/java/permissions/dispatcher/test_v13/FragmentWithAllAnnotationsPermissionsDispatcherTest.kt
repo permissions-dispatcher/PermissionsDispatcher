@@ -1,6 +1,5 @@
 package permissions.dispatcher.test_v13
 
-
 import android.content.pm.PackageManager
 import android.os.Process
 import android.support.v13.app.FragmentCompat
@@ -21,7 +20,6 @@ import org.powermock.modules.junit4.rule.PowerMockRule
 import org.robolectric.RobolectricTestRunner
 import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.test.*
-
 
 @Suppress("IllegalIdentifier")
 @RunWith(RobolectricTestRunner::class)

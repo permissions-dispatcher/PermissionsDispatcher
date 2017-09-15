@@ -56,7 +56,6 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
     override fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): KotlinFile {
         return KotlinFile.builder(rpe.packageName, rpe.generatedClassName)
                 .addFileComment(FILE_COMMENT)
-                .addFileAnnotation(createFileAnnotation(rpe))
                 .addProperties(createProperties(rpe.needsElements, requestCodeProvider))
                 .addFunctions(createWithPermissionCheckFuns(rpe))
                 .addFunctions(createPermissionHandlingFuns(rpe))
@@ -65,11 +64,6 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
     }
 
     /* Begin private */
-
-    private fun createFileAnnotation(rpe: RuntimePermissionsElement): AnnotationSpec =
-            AnnotationSpec.builder(JvmName::class)
-                    .addMember("name", "\"${rpe.generatedClassName}\"")
-                    .build()
 
     private fun createProperties(needsElements: List<ExecutableElement>, requestCodeProvider: RequestCodeProvider): List<PropertySpec> {
         val properties: ArrayList<PropertySpec> = arrayListOf()
