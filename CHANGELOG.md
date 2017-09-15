@@ -1,5 +1,7 @@
 # ChangeLog
 
+- 3.0.0 2017/05/01
+  - Add 
 - 2.4.0 2017/05/01
   - Fix `SupportV13MissingException` with newer Gradle [#279](https://github.com/hotchemi/PermissionsDispatcher/issues/279).
     - Now we bundle support v13 library in the library, you don't have to add v13 dependency by yourself.
