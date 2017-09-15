@@ -70,7 +70,11 @@ public final class CallNeedsPermissionDetectorTest {
 
         @Language("JAVA") String baz = ""
                 + "package com.example;\n"
+                + "import permissions.dispatcher.NeedsPermission;\n"
                 + "public class Baz {\n"
+                + "@NeedsPermission(\"Test\")\n"
+                + "public void fooBar() {\n"
+                + "}\n"
                 + "public void noFooBar() {\n"
                 + "}\n"
                 + "}";
