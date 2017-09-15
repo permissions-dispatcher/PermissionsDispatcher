@@ -21,7 +21,6 @@ import org.robolectric.RobolectricTestRunner
 import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.test.*
 
-
 @Suppress("IllegalIdentifier")
 @RunWith(RobolectricTestRunner::class)
 @PowerMockIgnore("org.mockito.*", "org.robolectric.*", "android.*")

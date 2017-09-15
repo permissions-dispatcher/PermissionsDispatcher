@@ -1,6 +1,5 @@
 package permissions.dispatcher.test
 
-
 import android.content.pm.PackageManager
 import android.os.Process
 import android.support.v4.app.ActivityCompat
@@ -16,7 +15,6 @@ import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
 import permissions.dispatcher.PermissionRequest
-
 
 @Suppress("IllegalIdentifier")
 @RunWith(PowerMockRunner::class)

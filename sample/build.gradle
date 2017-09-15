@@ -17,8 +17,8 @@ android {
 }
 
 dependencies {
-    compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
-    compile (project(':library')) {
+    implementation "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
+    implementation (project(':library')) {
         exclude module: "support-v13"
     }
     annotationProcessor project(':processor')

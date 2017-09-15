@@ -24,21 +24,21 @@ android {
 }
 
 dependencies {
-    compile fileTree(dir: 'libs', include: ['*.jar'])
+    implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    compile(project(':library')) {
+    implementation(project(':library')) {
         exclude module: "support-v13"
     }
     kapt project(':processor')
 
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
-    compile "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
+    implementation "com.android.support:appcompat-v7:$SUPPORT_LIBRARY_VERSION"
 
-    testCompile "junit:junit:$JUNIT_VERSION"
-    testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
-    testCompile "org.powermock:powermock-api-mockito:$POWERMOCK_VERSION"
-    testCompile "org.powermock:powermock-module-junit4:$POWERMOCK_VERSION"
-    testCompile "org.powermock:powermock-module-junit4-rule:$POWERMOCK_VERSION"
-    testCompile "org.powermock:powermock-classloading-xstream:$POWERMOCK_VERSION"
-    testCompile "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
+    testImplementation "junit:junit:$JUNIT_VERSION"
+    testImplementation "org.mockito:mockito-core:$MOCKITO_VERSION"
+    testImplementation "org.powermock:powermock-api-mockito:$POWERMOCK_VERSION"
+    testImplementation "org.powermock:powermock-module-junit4:$POWERMOCK_VERSION"
+    testImplementation "org.powermock:powermock-module-junit4-rule:$POWERMOCK_VERSION"
+    testImplementation "org.powermock:powermock-classloading-xstream:$POWERMOCK_VERSION"
+    testImplementation "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
 }

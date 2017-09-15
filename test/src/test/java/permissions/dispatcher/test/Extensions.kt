@@ -16,7 +16,6 @@ import org.powermock.api.mockito.PowerMockito
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
 
-
 fun mockShouldShowRequestPermissionRationaleActivity(result: Boolean) {
     PowerMockito.`when`(ActivityCompat.shouldShowRequestPermissionRationale(any(Activity::class.java), anyString())).thenReturn(result)
 }
