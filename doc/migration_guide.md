@@ -1,9 +1,9 @@
 # Migration guide
 
-- [Migrating to 3.x](#migration-3)
-- [Migrating to 2.x](#migration-2)
+- [Migrating to 3.x](#migrating-to-permissionsdispatcher-3x-)
+- [Migrating to 2.x](#migrating-to-permissionsdispatcher-2x-)
 
-## Migrating to PermissionsDispatcher 3.x <a id="migration-3"></a>
+## Migrating to PermissionsDispatcher 3.x
 
 ### Method name changing
 
@@ -49,7 +49,7 @@ override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<Str
 
 And that's it!
 
-## Migrating to PermissionsDispatcher 2.x <a id="migration-2"></a>
+## Migrating to PermissionsDispatcher 2.x
 
 Since the internals of PermissionsDispatcher 2 have undergone a fundamental refactoring, most notably in the switch of languages to Kotlin for our annotation processor, the exposed APIs to users of the library have been tweaked as well. This guide will help you migrate to the latest version in just a few minutes!
 
