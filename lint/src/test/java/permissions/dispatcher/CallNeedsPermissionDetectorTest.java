@@ -3,16 +3,17 @@ package permissions.dispatcher;
 import org.intellij.lang.annotations.Language;
 import org.junit.Test;
 
-import java.util.Collections;
-
 import static com.android.tools.lint.checks.infrastructure.TestFiles.java;
 import static com.android.tools.lint.checks.infrastructure.TestLintTask.lint;
+import static permissions.dispatcher.Utils.SOURCE_PATH;
+import static permissions.dispatcher.Utils.getOnNeedsPermission;
 
 public final class CallNeedsPermissionDetectorTest {
 
     @Test
     public void callNeedsPermissionMethod() throws Exception {
-        CallNeedsPermissionDetector.methods = Collections.singletonList("fooBar");
+
+        @Language("JAVA") String onNeeds = getOnNeedsPermission();
 
         @Language("JAVA") String foo = ""
                 + "package com.example;\n"
@@ -25,7 +26,9 @@ public final class CallNeedsPermissionDetectorTest {
 
         @Language("JAVA") String baz = ""
                 + "package com.example;\n"
+                + "import permissions.dispatcher.NeedsPermission;\n"
                 + "public class Baz {\n"
+                + "@NeedsPermission(\"Test\")\n"
                 + "public void fooBar() {\n"
                 + "}\n"
                 + "}";
@@ -41,6 +44,7 @@ public final class CallNeedsPermissionDetectorTest {
 
         lint()
                 .files(
+                        java(SOURCE_PATH + "NeedsPermission.java", onNeeds),
                         java("src/com/example/Foo.java", foo),
                         java("src/com/example/Baz.java", baz))
                 .issues(CallNeedsPermissionDetector.ISSUE)
@@ -52,7 +56,8 @@ public final class CallNeedsPermissionDetectorTest {
 
     @Test
     public void callNeedsPermissionMethodNoError() throws Exception {
-        CallNeedsPermissionDetector.methods = Collections.singletonList("fooBar");
+
+        @Language("JAVA") String onNeeds = getOnNeedsPermission();
 
         @Language("JAVA") String foo = ""
                 + "package com.example;\n"
@@ -65,13 +70,18 @@ public final class CallNeedsPermissionDetectorTest {
 
         @Language("JAVA") String baz = ""
                 + "package com.example;\n"
+                + "import permissions.dispatcher.NeedsPermission;\n"
                 + "public class Baz {\n"
+                + "@NeedsPermission(\"Test\")\n"
+                + "public void fooBar() {\n"
+                + "}\n"
                 + "public void noFooBar() {\n"
                 + "}\n"
                 + "}";
 
         lint()
                 .files(
+                        java(SOURCE_PATH + "NeedsPermission.java", onNeeds),
                         java("src/com/example/Foo.java", foo),
                         java("src/com/example/Baz.java", baz))
                 .issues(CallNeedsPermissionDetector.ISSUE)
