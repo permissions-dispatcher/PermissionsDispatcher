@@ -8,18 +8,15 @@ import com.android.tools.lint.detector.api.Issue;
 import com.android.tools.lint.detector.api.JavaContext;
 import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
-import com.intellij.psi.PsiMethod;
 
 import org.jetbrains.uast.UAnnotation;
 import org.jetbrains.uast.UCallExpression;
 import org.jetbrains.uast.UClass;
 import org.jetbrains.uast.UElement;
 import org.jetbrains.uast.UFile;
-import org.jetbrains.uast.UQualifiedReferenceExpression;
-import org.jetbrains.uast.USimpleNameReferenceExpression;
+import org.jetbrains.uast.UMethod;
 import org.jetbrains.uast.visitor.AbstractUastVisitor;
 
-import java.util.ArrayList;
 import java.util.Collections;
 import java.util.EnumSet;
 import java.util.HashSet;
@@ -34,12 +31,9 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
             Category.CORRECTNESS,
             7,
             Severity.ERROR,
-            new Implementation(CallNeedsPermissionDetector.class,
-                    EnumSet.of(Scope.ALL_JAVA_FILES)));
+            new Implementation(CallNeedsPermissionDetector.class, EnumSet.of(Scope.ALL_JAVA_FILES)));
 
-    static List<String> generatedClassNames = new ArrayList<String>();
-
-    static List<String> methods = Collections.emptyList();
+    static Set<String> annotatedMethods = new HashSet<String>();
 
     @Override
     public List<Class<? extends UElement>> getApplicableUastTypes() {
@@ -55,61 +49,36 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
         };
     }
 
-    @Override
-    public List<String> getApplicableMethodNames() {
-        return methods;
-    }
-
-    @Override
-    public void visitMethod(JavaContext context, UCallExpression node, PsiMethod method) {
-        if (methods.contains(method.getName())) {
-            context.report(ISSUE, node, context.getLocation(node), "Trying to access permission-protected method directly");
-        }
-    }
-
     private static class AnnotationChecker extends AbstractUastVisitor {
 
         private final JavaContext context;
 
-        private final Set<String> matchingAnnotationTypeNames;
-
         private AnnotationChecker(JavaContext context) {
             this.context = context;
-            matchingAnnotationTypeNames = new HashSet<String>(2);
-            matchingAnnotationTypeNames.add("RuntimePermissions");
-            matchingAnnotationTypeNames.add("permissions.dispatcher.RuntimePermissions");
         }
 
         @Override
-        public boolean visitQualifiedReferenceExpression(UQualifiedReferenceExpression node) {
-            return !isGeneratedFiles(context) && super.visitQualifiedReferenceExpression(node);
-        }
-
-        @Override
-        public boolean visitSimpleNameReferenceExpression(USimpleNameReferenceExpression node) {
-            return !isGeneratedFiles(context) && super.visitSimpleNameReferenceExpression(node);
-        }
-
-        @Override
-        public boolean visitAnnotation(UAnnotation annotation) {
-            if (!context.isEnabled(ISSUE)) {
+        public boolean visitCallExpression(UCallExpression node) {
+            if (isGeneratedFiles(context)) {
                 return true;
             }
-            String type = annotation.getQualifiedName();
-            if (!matchingAnnotationTypeNames.contains(type)) {
-                return true;
-            }
-            UFile file = context.getUastFile();
-            if (file == null) {
-                return true;
-            }
-            List<UClass> classes = file.getClasses();
-            if (!classes.isEmpty() && classes.get(0).getName() != null) {
-                generatedClassNames.add(classes.get(0).getName() + "PermissionsDispatcher");
-                // let's check method call!
-                context.requestRepeat(new CallNeedsPermissionDetector(), EnumSet.of(Scope.ALL_JAVA_FILES));
+            if (annotatedMethods.contains(node.getMethodName())) {
+                context.report(ISSUE, node, context.getLocation(node), "Trying to access permission-protected method directly");
             }
             return true;
+        }
+
+        @Override
+        public boolean visitMethod(UMethod node) {
+            if (isGeneratedFiles(context)) {
+                return super.visitMethod(node);
+            }
+            UAnnotation annotation = node.findAnnotation("permissions.dispatcher.NeedsPermission");
+            if (annotation == null) {
+                return super.visitMethod(node);
+            }
+            annotatedMethods.add(node.getName());
+            return super.visitMethod(node);
         }
 
         private static boolean isGeneratedFiles(JavaContext context) {
@@ -118,7 +87,7 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
                 return false;
             }
             List<UClass> classes = sourceFile.getClasses();
-            if (!classes.isEmpty() && classes.get(0).getName() != null) {
+            if (!classes.isEmpty()) {
                 String qualifiedName = classes.get(0).getName();
                 if (qualifiedName != null && qualifiedName.contains("PermissionsDispatcher")) {
                     return true;
