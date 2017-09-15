@@ -2,18 +2,20 @@
 
 ![image](https://raw.githubusercontent.com/hotchemi/PermissionsDispatcher/master/doc/logo.png)
 
-- **100% reflection-free**
+- [**Fully Kotlin support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_support.md)
 - [**Special Permissions support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/special_permissions.md)
 - **Xiaomi support**
-- [**Fully Kotlin support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_support.md)
+- **100% reflection-free**
 
-PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions in Android Marshmallow.
+PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions.
 
 This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code clean and safe.
 
 ## Usage
 
-Here's a minimum example, in which we register a `MainActivity` which requires `Manifest.permission.CAMERA`.
+- If you're using Kotlin check [**Kotlin ver**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_support.md) first of all.
+
+Here's a minimum example, in which you register a `MainActivity` which requires `Manifest.permission.CAMERA`.
 
 ### 0. Prepare AndroidManifest
 
@@ -100,15 +102,14 @@ Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/ma
 - [Getting Special Permissions](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/special_permissions.md)
 - [maxSdkVersion](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/maxsdkversion.md)
 - Xiaomi
-  - Since Xiaomi manipulates something around runtime permission mechanism Google's recommended way [doesn't work well](https://github.com/hotchemi/PermissionsDispatcher/issues/187).
-But don't worry, PermissionsDispatcher supports it! Check related [PR](https://github.com/hotchemi/PermissionsDispatcher/issues/187) for more detail.
+  - Since Xiaomi manipulates something around runtime permission mechanism Google's recommended way [doesn't work well](https://github.com/hotchemi/PermissionsDispatcher/issues/187). But don't worry, PermissionsDispatcher supports it! Check related [PR](https://github.com/hotchemi/PermissionsDispatcher/issues/187) for more detail.
 - [IntelliJ plugin](https://github.com/shiraji/permissions-dispatcher-plugin)
 - AndroidAnnotations plugin
   - If you use [AndroidAnnotations](http://androidannotations.org/), you need to add [AndroidAnnotationsPermissionsDispatcherPlugin](https://github.com/AleksanderMielczarek/AndroidAnnotationsPermissionsDispatcherPlugin).
 
 ### Known issues
 
-If you're in trouble before filing an issue check known issues [list](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/known_issues.md).
+If you're in trouble check known issues [list](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/known_issues.md) before filing an issue.
 
 ### Users
 
@@ -116,7 +117,7 @@ Thankfully we've got hundreds of [users](https://github.com/hotchemi/Permissions
 
 ## Download
 
-To add it to your project, include the following in your **app module** `build.gradle` file:
+To add PermissionsDispatcher to your project, include the following in your **app module** `build.gradle` file:
 
 `${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg)](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
 
@@ -140,7 +141,11 @@ repositories {
 }
 ```
 
-If you're in trouble and use Jitpack check this [doc](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/jitpack.md).
+### Misc
+
+- If you include [Jitpack.io](https://jitpack.io/) dependencies in your project, it is important to review the order of the repositories available to your app module
+  - Because of the library's artifact ID, Jitpack might be tempted to resolve the dependency on its own, which could lead to an error during Gradle's configuration time
+- If you're going to bump up the major version number we recommend to refer our [migration guide](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_support.md) 
 
 ## Licence
 

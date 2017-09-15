@@ -1,4 +1,4 @@
-### Fully Kotlin support(experimental)
+## Fully Kotlin support(experimental)
 
 From 3.0.0 we started support `.kt` file generation.
 
@@ -18,9 +18,8 @@ Add the following line to `AndroidManifest.xml`:
 @RuntimePermissions
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
-    // now you can use internal!
     @NeedsPermission(Manifest.permission.CAMERA)
-    internal fun showCamera() {
+    fun showCamera() {
         supportFragmentManager.beginTransaction()
                 .replace(R.id.sample_content_fragment, CameraPreviewFragment.newInstance())
                 .addToBackStack("camera")
@@ -28,17 +27,17 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
-    internal fun showRationaleForCamera(request: PermissionRequest) {
+    fun showRationaleForCamera(request: PermissionRequest) {
         showRationaleDialog(R.string.permission_camera_rationale, request)
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA)
-    internal fun onCameraDenied() {
+    fun onCameraDenied() {
         Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show()
     }
 
     @OnNeverAskAgain(Manifest.permission.CAMERA)
-    internal fun onCameraNeverAskAgain() {
+    fun onCameraNeverAskAgain() {
         Toast.makeText(this, R.string.permission_camera_never_askagain, Toast.LENGTH_SHORT).show()
     }
 }
