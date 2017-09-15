@@ -34,10 +34,8 @@ class MainActivity : AppCompatActivity() {
         onRequestPermissionsResult(requestCode, grantResults)
     }
 
-    // NOTE: methods with NeedsPermission annotation must be public
-    // see https://github.com/hotchemi/PermissionsDispatcher/issues/171
     @NeedsPermission(Manifest.permission.CAMERA)
-    internal fun showCamera() {
+    fun showCamera() {
         // NOTE: Perform action that requires the permission. If this is run by PermissionsDispatcher, the permission will have been granted
         supportFragmentManager.beginTransaction()
                 .replace(R.id.sample_content_fragment, CameraPreviewFragment.newInstance())
@@ -45,8 +43,27 @@ class MainActivity : AppCompatActivity() {
                 .commitAllowingStateLoss()
     }
 
+    @OnPermissionDenied(Manifest.permission.CAMERA)
+    fun onCameraDenied() {
+        // NOTE: Deal with a denied permission, e.g. by showing specific UI
+        // or disabling certain functionality
+        Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show()
+    }
+
+    @OnShowRationale(Manifest.permission.CAMERA)
+    fun showRationaleForCamera(request: PermissionRequest) {
+        // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
+        // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
+        showRationaleDialog(R.string.permission_camera_rationale, request)
+    }
+
+    @OnNeverAskAgain(Manifest.permission.CAMERA)
+    fun onCameraNeverAskAgain() {
+        Toast.makeText(this, R.string.permission_camera_never_ask_again, Toast.LENGTH_SHORT).show()
+    }
+
     @NeedsPermission(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
-    internal fun showContacts() {
+    fun showContacts() {
         // NOTE: Perform action that requires the permission.
         // If this is run by PermissionsDispatcher, the permission will have been granted
         supportFragmentManager.beginTransaction()
@@ -55,30 +72,23 @@ class MainActivity : AppCompatActivity() {
                 .commitAllowingStateLoss()
     }
 
-    @OnShowRationale(Manifest.permission.CAMERA)
-    internal fun showRationaleForCamera(request: PermissionRequest) {
-        // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
-        // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
-        showRationaleDialog(R.string.permission_camera_rationale, request)
+    @OnPermissionDenied(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
+    fun onContactsDenied() {
+        // NOTE: Deal with a denied permission, e.g. by showing specific UI
+        // or disabling certain functionality
+        Toast.makeText(this, R.string.permission_contacts_denied, Toast.LENGTH_SHORT).show()
     }
 
     @OnShowRationale(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
-    internal fun showRationaleForContact(request: PermissionRequest) {
+    fun showRationaleForContacts(request: PermissionRequest) {
         // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
         // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
         showRationaleDialog(R.string.permission_contacts_rationale, request)
     }
 
-    @OnPermissionDenied(Manifest.permission.CAMERA)
-    internal fun onCameraDenied() {
-        // NOTE: Deal with a denied permission, e.g. by showing specific UI
-        // or disabling certain functionality
-        Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show()
-    }
-
-    @OnNeverAskAgain(Manifest.permission.CAMERA)
-    internal fun onCameraNeverAskAgain() {
-        Toast.makeText(this, R.string.permission_camera_never_askagain, Toast.LENGTH_SHORT).show()
+    @OnNeverAskAgain(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
+    fun onContactsNeverAskAgain() {
+        Toast.makeText(this, R.string.permission_contacts_never_ask_again, Toast.LENGTH_SHORT).show()
     }
 
     private fun showRationaleDialog(@StringRes messageResId: Int, request: PermissionRequest) {

@@ -14,28 +14,24 @@ import permissions.dispatcher.sample.camera.CameraPreviewFragment;
 import permissions.dispatcher.sample.contacts.ContactsFragment;
 
 @RuntimePermissions
-public class MainActivity extends AppCompatActivity implements View.OnClickListener {
+public class MainActivity extends AppCompatActivity {
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        findViewById(R.id.button_camera).setOnClickListener(this);
-        findViewById(R.id.button_contacts).setOnClickListener(this);
-    }
-
-    @Override
-    public void onClick(@NonNull View v) {
-        switch (v.getId()) {
-            case R.id.button_camera:
-                // NOTE: delegate the permission handling to generated method
-                MainActivityPermissionsDispatcher.showCameraWithPermissionCheck(this);
-                break;
-            case R.id.button_contacts:
-                // NOTE: delegate the permission handling to generated method
-                MainActivityPermissionsDispatcher.showContactsWithPermissionCheck(this);
-                break;
-        }
+        findViewById(R.id.button_camera).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivityPermissionsDispatcher.showCameraWithPermissionCheck(MainActivity.this);
+            }
+        });
+        findViewById(R.id.button_contacts).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                MainActivityPermissionsDispatcher.showContactsWithPermissionCheck(MainActivity.this);
+            }
+        });
     }
 
     @Override
@@ -54,6 +50,25 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .commitAllowingStateLoss();
     }
 
+    @OnPermissionDenied(Manifest.permission.CAMERA)
+    void onCameraDenied() {
+        // NOTE: Deal with a denied permission, e.g. by showing specific UI
+        // or disabling certain functionality
+        Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show();
+    }
+
+    @OnShowRationale(Manifest.permission.CAMERA)
+    void showRationaleForCamera(PermissionRequest request) {
+        // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
+        // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
+        showRationaleDialog(R.string.permission_camera_rationale, request);
+    }
+
+    @OnNeverAskAgain(Manifest.permission.CAMERA)
+    void onCameraNeverAskAgain() {
+        Toast.makeText(this, R.string.permission_camera_never_ask_again, Toast.LENGTH_SHORT).show();
+    }
+
     @NeedsPermission({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})
     void showContacts() {
         // NOTE: Perform action that requires the permission.
@@ -64,11 +79,11 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
                 .commitAllowingStateLoss();
     }
 
-    @OnShowRationale(Manifest.permission.CAMERA)
-    void showRationaleForCamera(PermissionRequest request) {
-        // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
-        // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
-        showRationaleDialog(R.string.permission_camera_rationale, request);
+    @OnPermissionDenied({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})
+    void onContactsDenied() {
+        // NOTE: Deal with a denied permission, e.g. by showing specific UI
+        // or disabling certain functionality
+        Toast.makeText(this, R.string.permission_contacts_denied, Toast.LENGTH_SHORT).show();
     }
 
     @OnShowRationale({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})
@@ -78,16 +93,9 @@ public class MainActivity extends AppCompatActivity implements View.OnClickListe
         showRationaleDialog(R.string.permission_contacts_rationale, request);
     }
 
-    @OnPermissionDenied(Manifest.permission.CAMERA)
-    void onCameraDenied() {
-        // NOTE: Deal with a denied permission, e.g. by showing specific UI
-        // or disabling certain functionality
-        Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show();
-    }
-
-    @OnNeverAskAgain(Manifest.permission.CAMERA)
-    void onCameraNeverAskAgain() {
-        Toast.makeText(this, R.string.permission_camera_never_askagain, Toast.LENGTH_SHORT).show();
+    @OnNeverAskAgain({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})
+    void onContactsNeverAskAgain() {
+        Toast.makeText(this, R.string.permission_contacts_never_ask_again, Toast.LENGTH_SHORT).show();
     }
 
     private void showRationaleDialog(@StringRes int messageResId, final PermissionRequest request) {
