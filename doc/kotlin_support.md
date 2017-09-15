@@ -1,4 +1,4 @@
-## Fully Kotlin support(experimental)
+## Fully Kotlin support
 
 From 3.0.0 we started support `.kt` file generation.
 
