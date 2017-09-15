@@ -1,7 +1,5 @@
 ### Fully Kotlin support(experimental)
 
-> This feature is still experimental so API interface might disappear or change in a future release.
-
 From 3.0.0 we started support `.kt` file generation.
 
 Let's think about the same example as described in `README.md`.
@@ -14,12 +12,10 @@ Add the following line to `AndroidManifest.xml`:
 
 ### 1. Attach annotations
 
-To turn on the feature specify `true` to `kotlin` of `@RuntimePermissions`.
-
 > NOTE: Annotated methods must not be `private`.
 
 ```kotlin
-@RuntimePermissions(kotlin = true)
+@RuntimePermissions
 class MainActivity : AppCompatActivity(), View.OnClickListener {
 
     // now you can use internal!
