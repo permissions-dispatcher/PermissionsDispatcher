@@ -32,16 +32,6 @@ public final class NoCorrespondingNeedsPermissionDetector extends Detector imple
             new Implementation(NoCorrespondingNeedsPermissionDetector.class,
                     EnumSet.of(Scope.JAVA_FILE)));
 
-    static final Set<String> NEEDS_PERMISSION_NAME = new HashSet<String>(2) {{
-        add("NeedsPermission");
-        add("permissions.dispatcher.NeedsPermission");
-    }};
-
-    static final Set<String> ON_SHOW_RATIONALE_NAME = new HashSet<String>(2) {{
-        add("OnShowRationale");
-        add("permissions.dispatcher.OnShowRationale");
-    }};
-
     @Override
     public List<Class<? extends UElement>> getApplicableUastTypes() {
         return Collections.<Class<? extends UElement>>singletonList(UClass.class);
@@ -77,9 +67,9 @@ public final class NoCorrespondingNeedsPermissionDetector extends Detector imple
             }
             // Let's store NeedsPermission and OnShowRationale
             String type = node.getQualifiedName();
-            if (NEEDS_PERMISSION_NAME.contains(type)) {
+            if ("permissions.dispatcher.NeedsPermission".equals(type)) {
                 needsPermissionAnnotations.add(node);
-            } else if (ON_SHOW_RATIONALE_NAME.contains(type)) {
+            } else if ("permissions.dispatcher.OnShowRationale".equals(type)) {
                 onShowRationaleAnnotations.add(node);
             }
             if (onShowRationaleAnnotations.isEmpty()) {
