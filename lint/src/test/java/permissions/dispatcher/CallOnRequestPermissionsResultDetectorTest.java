@@ -26,7 +26,7 @@ public final class CallOnRequestPermissionsResultDetectorTest {
                 + "public class Foo extends android.app.Activity {\n"
                 + "public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {\n"
                 + "super.onRequestPermissionsResult(requestCode, permissions, grantResults);\n"
-                + "FooPermissionsDispatcher.onRequestPermissionsResult(requestCode, permissions, grantResults);\n"
+                + "FooPermissionsDispatcher.onRequestPermissionsResult(requestCode, grantResults);\n"
                 + "}\n"
                 + "@NeedsPermission(\"Camera\")"
                 + "public void showCamera() {"
@@ -39,7 +39,7 @@ public final class CallOnRequestPermissionsResultDetectorTest {
         @Language("JAVA") String generatedClass = ""
                 + "package permissions.dispatcher;\n"
                 + "public class FooPermissionsDispatcher {\n"
-                + "public static void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {\n"
+                + "public static void onRequestPermissionsResult(int requestCode, int[] grantResults) {\n"
                 + "}\n"
                 + "}";
 
@@ -56,7 +56,7 @@ public final class CallOnRequestPermissionsResultDetectorTest {
     }
 
     @Test
-    public void testCallOnRequestPermissionsResultDetector() throws Exception {
+    public void callOnRequestPermissionsResultDetector() throws Exception {
         @Language("JAVA") String runtimePerms = getRuntimePermission();
 
         @Language("JAVA") String onNeeds = getOnNeedsPermission();
@@ -66,8 +66,9 @@ public final class CallOnRequestPermissionsResultDetectorTest {
         @Language("JAVA") String foo = ""
                 + "package permissions.dispatcher;\n"
                 + "@RuntimePermissions\n"
-                + "public class Foo {\n"
+                + "public class Foo extends android.app.Activity {\n"
                 + "public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {\n"
+                + "super.onRequestPermissionsResult(requestCode, permissions, grantResults);\n"
                 + "}\n"
                 + "@NeedsPermission(\"Camera\")"
                 + "public void showCamera() {"
@@ -91,6 +92,7 @@ public final class CallOnRequestPermissionsResultDetectorTest {
                         java(SOURCE_PATH + "Foo.java", foo))
                 .issues(CallOnRequestPermissionsResultDetector.ISSUE)
                 .run()
+                .expect(expectedText)
                 .expectErrorCount(1)
                 .expectWarningCount(0);
     }

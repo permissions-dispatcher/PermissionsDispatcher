@@ -20,9 +20,7 @@ import org.jetbrains.uast.visitor.AbstractUastVisitor;
 
 import java.util.Collections;
 import java.util.EnumSet;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 
 public final class CallOnRequestPermissionsResultDetector extends Detector implements Detector.UastScanner {
 
@@ -34,11 +32,6 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
             Severity.ERROR,
             new Implementation(CallOnRequestPermissionsResultDetector.class,
                     EnumSet.of(Scope.JAVA_FILE)));
-
-    static final Set<String> RUNTIME_PERMISSIONS_NAME = new HashSet<String>() {{
-        add("RuntimePermissions");
-        add("permissions.dispatcher.RuntimePermissions");
-    }};
 
     @Override
     public List<Class<? extends UElement>> getApplicableUastTypes() {
@@ -59,21 +52,18 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
 
         private final JavaContext context;
 
-        private final Set<String> targetClasses;
+        private final String className;
 
         private boolean hasRuntimePermissionAnnotation;
 
         private OnRequestPermissionsResultChecker(JavaContext context, UClass klass) {
             this.context = context;
-            this.targetClasses = new HashSet<String>(2);
-            targetClasses.add("super");
-            targetClasses.add(klass.getName());
+            this.className = klass.getName();
         }
 
         @Override
         public boolean visitAnnotation(UAnnotation node) {
-            String type = node.getQualifiedName();
-            if (!RUNTIME_PERMISSIONS_NAME.contains(type)) {
+            if (!"permissions.dispatcher.RuntimePermissions".equals(node.getQualifiedName())) {
                 return true;
             }
             hasRuntimePermissionAnnotation = true;
@@ -88,13 +78,13 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
             if (!"onRequestPermissionsResult".equals(node.getName())) {
                 return true;
             }
-            if (hasRuntimePermissionAnnotation && !checkMethodCall(node, targetClasses)) {
+            if (hasRuntimePermissionAnnotation && !isGeneratedMethodCalled(node, className)) {
                 context.report(ISSUE, context.getLocation(node), "Generated onRequestPermissionsResult method not called");
             }
             return true;
         }
 
-        private static boolean checkMethodCall(UMethod method, Set<String> targetClasses) {
+        private static boolean isGeneratedMethodCalled(UMethod method, String className) {
             UExpression methodBody = method.getUastBody();
             if (methodBody == null) {
                 return false;
@@ -107,9 +97,13 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
                         continue;
                     }
                     UQualifiedReferenceExpression referenceExpression = (UQualifiedReferenceExpression) expression;
-                    String targetMethodName = "onRequestPermissionsResult";
-                    if (targetClasses.contains(referenceExpression.getReceiver().toString())
-                            && referenceExpression.getSelector().toString().startsWith(targetMethodName)) {
+                    String receiverName = referenceExpression.getReceiver().toString();
+                    if ("super".equals(receiverName)) {
+                        // skip super method call
+                        continue;
+                    }
+                    String targetClassName = className + "PermissionsDispatcher";
+                    if (targetClassName.equals(receiverName) && "onRequestPermissionsResult".equals(referenceExpression.getResolvedName())) {
                         return true;
                     }
                 }
