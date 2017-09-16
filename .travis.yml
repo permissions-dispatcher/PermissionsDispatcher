@@ -33,4 +33,4 @@ deploy:
   script: ./scripts/release.sh
   on:
     tags: true
-    repo: hotchemi/PermissionsDispatcher
+    repo: permissions-dispatcher/PermissionsDispatcher
