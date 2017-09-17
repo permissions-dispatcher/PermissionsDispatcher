@@ -238,10 +238,10 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
             if (ADD_WITH_CHECK_BODY_MAP.containsKey(needsPermissionParameter)) {
                 continue
             }
-
-            builder.addCode("%N ->\n", requestCodeFieldName(needsMethod))
+            builder.beginControlFlow("%N ->\n", requestCodeFieldName(needsMethod))
             // Delegate switch-case generation to implementing classes
             addResultCaseBody(builder, needsMethod, rpe, grantResultsParam)
+            builder.endControlFlow()
         }
 
         // Add the default case
