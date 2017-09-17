@@ -17,36 +17,29 @@ public final class CallNeedsPermissionDetectorTest {
 
         @Language("JAVA") String foo = ""
                 + "package com.example;\n"
-                + "public class Foo {\n"
-                + "public void someMethod() {"
-                + "Baz baz = new Baz();\n"
-                + "baz.fooBar();  "
-                + "}\n"
-                + "}";
-
-        @Language("JAVA") String baz = ""
-                + "package com.example;\n"
                 + "import permissions.dispatcher.NeedsPermission;\n"
-                + "public class Baz {\n"
+                + "public class Foo {\n"
                 + "@NeedsPermission(\"Test\")\n"
                 + "public void fooBar() {\n"
+                + "}\n"
+                + "public void hoge() {\n"
+                + "fooBar();\n"
                 + "}\n"
                 + "}";
 
         String expectedText = ""
-                + "src/com/example/Foo.java:4: Error: Trying to access permission-protected method directly "
+                + "src/com/example/Foo.java:8: Error: Trying to access permission-protected method directly "
                 + "["
                 + CallNeedsPermissionDetector.ISSUE.getId()
                 + "]\n"
-                + "baz.fooBar();  }\n"
-                + "~~~~~~~~~~~~\n"
+                + "fooBar();\n"
+                + "~~~~~~~~\n"
                 + "1 errors, 0 warnings\n";
 
         lint()
                 .files(
                         java(SOURCE_PATH + "NeedsPermission.java", onNeeds),
-                        java("src/com/example/Foo.java", foo),
-                        java("src/com/example/Baz.java", baz))
+                        java("src/com/example/Foo.java", foo))
                 .issues(CallNeedsPermissionDetector.ISSUE)
                 .run()
                 .expect(expectedText)
