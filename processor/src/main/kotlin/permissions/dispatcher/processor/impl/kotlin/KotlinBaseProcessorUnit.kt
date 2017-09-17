@@ -1,17 +1,6 @@
 package permissions.dispatcher.processor.impl.kotlin
 
-import com.squareup.kotlinpoet.ARRAY
-import com.squareup.kotlinpoet.AnnotationSpec
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.CodeBlock
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.INT
-import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.KotlinFile
-import com.squareup.kotlinpoet.ParameterizedTypeName
-import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.asTypeName
+import com.squareup.kotlinpoet.*
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.KtProcessorUnit
 import permissions.dispatcher.processor.RequestCodeProvider
@@ -100,7 +89,8 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
     private fun createPendingRequestProperty(e: ExecutableElement): PropertySpec {
         return PropertySpec
-                .builder(pendingRequestFieldName(e), ClassName.bestGuess("permissions.dispatcher.GrantableRequest"), KModifier.PRIVATE)
+                .varBuilder(pendingRequestFieldName(e), ClassName.bestGuess("permissions.dispatcher.GrantableRequest").asNullable(), KModifier.PRIVATE)
+                .initializer(CodeBlock.of("null"))
                 .build()
     }
 
@@ -178,7 +168,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
             addShouldShowRequestPermissionRationaleCondition(builder, permissionField)
             if (hasParameters) {
                 // For methods with parameters, use the PermissionRequest instantiated above
-                builder.addStatement("%N(%N)", onRationale.simpleString(), pendingRequestFieldName(needsMethod))
+                builder.addStatement("%N?.let { %N(it) }", pendingRequestFieldName(needsMethod), onRationale.simpleString())
             } else {
                 // Otherwise, create a new PermissionRequest on-the-fly
                 builder.addStatement("%N(%N(this))", onRationale.simpleString(), permissionRequestTypeName(rpe, needsMethod))
@@ -248,10 +238,10 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
             if (ADD_WITH_CHECK_BODY_MAP.containsKey(needsPermissionParameter)) {
                 continue
             }
-
-            builder.addCode("%N ->\n", requestCodeFieldName(needsMethod))
+            builder.beginControlFlow("%N ->\n", requestCodeFieldName(needsMethod))
             // Delegate switch-case generation to implementing classes
             addResultCaseBody(builder, needsMethod, rpe, grantResultsParam)
+            builder.endControlFlow()
         }
 
         // Add the default case
@@ -277,9 +267,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         val hasParameters = needsMethod.parameters.isNotEmpty()
         if (hasParameters) {
             val pendingField = pendingRequestFieldName(needsMethod)
-            builder.beginControlFlow("if (%N != null)", pendingField)
-            builder.addStatement("%N.grant()", pendingField)
-            builder.endControlFlow()
+            builder.addStatement("%N?.grant()", pendingField)
         } else {
             builder.addStatement("%N()", needsMethod.simpleString())
         }
@@ -378,14 +366,18 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         builder.addProperty(propertySpec.build())
 
         needsMethod.parameters.forEach {
-            builder.addProperty(it.simpleString(), it.asType().asTypeName(), KModifier.PRIVATE)
+            builder.addProperty(
+                    PropertySpec.builder(it.simpleString(), it.asType().asTypeName(), KModifier.PRIVATE)
+                            .initializer(CodeBlock.of(it.simpleString()))
+                            .build()
+            )
         }
 
         // Add constructor
         val targetParam = "target"
         val constructorSpec = FunSpec.constructorBuilder().addParameter(targetParam, rpe.ktTypeName)
         needsMethod.parameters.forEach {
-            constructorSpec.addParameter(it.simpleString(), it.asType().asTypeName())
+            constructorSpec.addParameter(it.simpleString(), it.asType().asTypeName(), KModifier.PRIVATE)
         }
         builder.primaryConstructor(constructorSpec.build())
 
