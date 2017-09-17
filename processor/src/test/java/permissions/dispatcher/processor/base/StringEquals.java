@@ -4,7 +4,7 @@ import org.hamcrest.core.SubstringMatcher;
 
 final class StringEquals extends SubstringMatcher {
 
-    protected StringEquals(String substring) {
+    StringEquals(String substring) {
         super(substring);
     }
 

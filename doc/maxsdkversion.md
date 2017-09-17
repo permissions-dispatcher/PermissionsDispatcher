@@ -21,7 +21,6 @@ Declare the permission with `maxSdkVersion` attribute
 public class MainActivity extends AppCompatActivity {
     @NeedsPermission(value = Manifest.permission.WRITE_EXTERNAL_STORAGE, maxSdkVersion = 18)
     void getStorage() {
-        // ...
     }
 }
 ```

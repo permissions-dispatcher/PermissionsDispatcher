@@ -31,9 +31,9 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
     abstract fun getActivityName(): String
 
-    override fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): KotlinFile {
-        return KotlinFile.builder(rpe.packageName, rpe.generatedClassName)
-                .addFileComment(FILE_COMMENT)
+    override fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): FileSpec {
+        return FileSpec.builder(rpe.packageName, rpe.generatedClassName)
+                .addComment(FILE_COMMENT)
                 .addProperties(createProperties(rpe.needsElements, requestCodeProvider))
                 .addFunctions(createWithPermissionCheckFuns(rpe))
                 .addFunctions(createPermissionHandlingFuns(rpe))
@@ -377,7 +377,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         val requestCodeField = requestCodeFieldName(needsMethod)
         ADD_WITH_CHECK_BODY_MAP[needsMethod.getAnnotation(NeedsPermission::class.java).value[0]]?.addRequestPermissionsStatement(proceedFun, targetParam, requestCodeField)
                 ?: addRequestPermissionsStatement(proceedFun, targetParam, permissionFieldName(needsMethod), requestCodeField)
-        builder.addFun(proceedFun.build())
+        builder.addFunction(proceedFun.build())
 
         // Add cancel() override method
         val cancelFun = FunSpec.builder("cancel")
@@ -388,7 +388,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
                     .addStatement("val target = %N.get() ?: return", propName)
                     .addStatement("target.%N()", onDenied.simpleString())
         }
-        builder.addFun(cancelFun.build())
+        builder.addFunction(cancelFun.build())
 
         // For classes with additional parameters, add a "grant()" method
         if (hasParameters) {
@@ -406,7 +406,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
                             .addStatement(")")
                             .build()
             )
-            builder.addFun(grantFun.build())
+            builder.addFunction(grantFun.build())
         }
         return builder.build()
     }

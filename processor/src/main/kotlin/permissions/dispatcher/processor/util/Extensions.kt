@@ -80,17 +80,17 @@ fun <A : Annotation> Element.childElementsAnnotatedWith(annotationClass: Class<A
  */
 fun TypeMirror.isSubtypeOf(ofType: TypeMirror): Boolean = TYPE_UTILS.isSubtype(this, ofType)
 
-fun KotlinFile.Builder.addProperties(properties: List<PropertySpec>): KotlinFile.Builder {
+fun FileSpec.Builder.addProperties(properties: List<PropertySpec>): FileSpec.Builder {
     properties.forEach { addProperty(it) }
     return this
 }
 
-fun KotlinFile.Builder.addFunctions(functions: List<FunSpec>): KotlinFile.Builder {
-    functions.forEach { addFun(it) }
+fun FileSpec.Builder.addFunctions(functions: List<FunSpec>): FileSpec.Builder {
+    functions.forEach { addFunction(it) }
     return this
 }
 
-fun KotlinFile.Builder.addTypes(types: List<TypeSpec>): KotlinFile.Builder {
+fun FileSpec.Builder.addTypes(types: List<TypeSpec>): FileSpec.Builder {
     types.forEach { addType(it) }
     return this
 }
