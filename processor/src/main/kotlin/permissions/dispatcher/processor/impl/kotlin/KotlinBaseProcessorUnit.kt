@@ -89,7 +89,8 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
     private fun createPendingRequestProperty(e: ExecutableElement): PropertySpec {
         return PropertySpec
-                .builder(pendingRequestFieldName(e), ClassName.bestGuess("permissions.dispatcher.GrantableRequest"), KModifier.PRIVATE)
+                .varBuilder(pendingRequestFieldName(e), ClassName.bestGuess("permissions.dispatcher.GrantableRequest").asNullable(), KModifier.PRIVATE)
+                .initializer(CodeBlock.of("null"))
                 .build()
     }
 
