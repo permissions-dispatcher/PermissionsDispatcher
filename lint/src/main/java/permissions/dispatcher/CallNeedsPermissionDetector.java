@@ -62,7 +62,7 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
             if (isGeneratedFiles(context)) {
                 return true;
             }
-            if (annotatedMethods.contains(node.getMethodName())) {
+            if (node.getReceiver() == null && annotatedMethods.contains(node.getMethodName())) {
                 context.report(ISSUE, node, context.getLocation(node), "Trying to access permission-protected method directly");
             }
             return true;
