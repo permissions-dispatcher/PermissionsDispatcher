@@ -1,5 +1,8 @@
 # ChangeLog
 
+- 3.0.1 2017/09/17
+  - Fix: NeedsPermission annotated method with parameter doesn't work in Kotlin [#376](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/376)
+  - Fix: CallNeedsPermission check incorrectly flags calls to methods of different class [#377](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/377)
 - 3.0.0 2017/09/16
   - Add fully [Kotlin support](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_support.md)!
   - Allow for Deterministic, Reproducible Builds with sorted inputs [#342](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/342)

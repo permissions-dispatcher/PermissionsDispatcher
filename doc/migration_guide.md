@@ -3,7 +3,7 @@
 - [Migrating to 3.x](#migrating-to-permissionsdispatcher-3x)
 - [Migrating to 2.x](#migrating-to-permissionsdispatcher-2x)
 
-## Migrating to PermissionsDispatcher 3.x
+## Migrating to 3.x
 
 ### Method name changing
 
@@ -25,7 +25,7 @@ This change is especially beneficial in Kotlin, because the receiver of the gene
 
 Issue: [#320](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/320)
 
-Actually it's been possible to use PermissionsDispatcher with Kotlin already, because of its interoperability with Java. But to give you a more concise, comfortable and idiomatic experience, we added full Kotlin support which is described in [here](kotlin_support.md).
+Actually it's been possible to use PermissionsDispatcher with Kotlin already, because of its interoperability with Java. But to give you a more concise and idiomatic experience, we added full Kotlin support which is described in [here](kotlin_support.md).
 
 If you're already using PermissionsDispatcher with Kotlin, be aware of the following 2 changes:
 
@@ -33,8 +33,8 @@ If you're already using PermissionsDispatcher with Kotlin, be aware of the follo
 
 ```diff
 button.setOnClickListener {
--    MainActivityPermissionsDispatcher.showCameraWithCheck(this)
-+    showCameraWithPermissionCheck()
+-   MainActivityPermissionsDispatcher.showCameraWithCheck(this)
++   showCameraWithPermissionCheck()
 }
 ```
 
@@ -43,16 +43,14 @@ button.setOnClickListener {
 ```diff
 override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
     super.onRequestPermissionsResult(requestCode, permissions, grantResults)
--    MainActivityPermissionsDispatcher.onRequestPermissionsResult(requestCode, grantResults)
-+    onRequestPermissionsResult(requestCode, grantResults)
+-   MainActivityPermissionsDispatcher.onRequestPermissionsResult(requestCode, grantResults)
++   onRequestPermissionsResult(requestCode, grantResults)
 }
 ```
 
-And that's it!
+Those methods are defined as extension functions so now you don't have to call `***MainActivityPermissionsDispatcher` class!
 
-
-
-## Migrating to PermissionsDispatcher 2.x
+## Migrating to 2.x
 
 Since the internals of PermissionsDispatcher 2 have undergone a fundamental refactoring, most notably in the switch of languages to Kotlin for our annotation processor, the exposed APIs to users of the library have been tweaked as well. This guide will help you migrate to the latest version in just a few minutes!
 
