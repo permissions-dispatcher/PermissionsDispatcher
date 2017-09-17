@@ -168,7 +168,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
             addShouldShowRequestPermissionRationaleCondition(builder, permissionField)
             if (hasParameters) {
                 // For methods with parameters, use the PermissionRequest instantiated above
-                builder.addStatement("%N(%N)", onRationale.simpleString(), pendingRequestFieldName(needsMethod))
+                builder.addStatement("%N?.let { %N(it) }", pendingRequestFieldName(needsMethod), onRationale.simpleString())
             } else {
                 // Otherwise, create a new PermissionRequest on-the-fly
                 builder.addStatement("%N(%N(this))", onRationale.simpleString(), permissionRequestTypeName(rpe, needsMethod))
@@ -267,9 +267,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         val hasParameters = needsMethod.parameters.isNotEmpty()
         if (hasParameters) {
             val pendingField = pendingRequestFieldName(needsMethod)
-            builder.beginControlFlow("if (%N != null)", pendingField)
-            builder.addStatement("%N.grant()", pendingField)
-            builder.endControlFlow()
+            builder.addStatement("%N?.grant()", pendingField)
         } else {
             builder.addStatement("%N()", needsMethod.simpleString())
         }
