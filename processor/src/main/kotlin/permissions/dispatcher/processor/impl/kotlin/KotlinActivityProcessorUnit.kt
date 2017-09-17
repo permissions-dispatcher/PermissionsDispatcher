@@ -10,7 +10,7 @@ import javax.lang.model.type.TypeMirror
  */
 class KotlinActivityProcessorUnit : KotlinBaseProcessorUnit() {
 
-    private val ACTIVITY_COMPAT = ClassName.bestGuess("android.support.v4.app.ActivityCompat")
+    private val ACTIVITY_COMPAT = ClassName("android.support.v4.app", "ActivityCompat")
 
     override fun getTargetType(): TypeMirror = typeMirrorOf("android.app.Activity")
 
