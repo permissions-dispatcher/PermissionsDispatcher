@@ -366,14 +366,18 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         builder.addProperty(propertySpec.build())
 
         needsMethod.parameters.forEach {
-            builder.addProperty(it.simpleString(), it.asType().asTypeName(), KModifier.PRIVATE)
+            builder.addProperty(
+                    PropertySpec.builder(it.simpleString(), it.asType().asTypeName(), KModifier.PRIVATE)
+                            .initializer(CodeBlock.of(it.simpleString()))
+                            .build()
+            )
         }
 
         // Add constructor
         val targetParam = "target"
         val constructorSpec = FunSpec.constructorBuilder().addParameter(targetParam, rpe.ktTypeName)
         needsMethod.parameters.forEach {
-            constructorSpec.addParameter(it.simpleString(), it.asType().asTypeName())
+            constructorSpec.addParameter(it.simpleString(), it.asType().asTypeName(), KModifier.PRIVATE)
         }
         builder.primaryConstructor(constructorSpec.build())
 
