@@ -1,17 +1,6 @@
 package permissions.dispatcher.processor.impl.kotlin
 
-import com.squareup.kotlinpoet.ARRAY
-import com.squareup.kotlinpoet.AnnotationSpec
-import com.squareup.kotlinpoet.ClassName
-import com.squareup.kotlinpoet.CodeBlock
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.INT
-import com.squareup.kotlinpoet.KModifier
-import com.squareup.kotlinpoet.KotlinFile
-import com.squareup.kotlinpoet.ParameterizedTypeName
-import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.TypeSpec
-import com.squareup.kotlinpoet.asTypeName
+import com.squareup.kotlinpoet.*
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.KtProcessorUnit
 import permissions.dispatcher.processor.RequestCodeProvider
@@ -53,9 +42,9 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
     abstract fun getActivityName(): String
 
-    override fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): KotlinFile {
-        return KotlinFile.builder(rpe.packageName, rpe.generatedClassName)
-                .addFileComment(FILE_COMMENT)
+    override fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): FileSpec {
+        return FileSpec.builder(rpe.packageName, rpe.generatedClassName)
+                .addComment(FILE_COMMENT)
                 .addProperties(createProperties(rpe.needsElements, requestCodeProvider))
                 .addFunctions(createWithPermissionCheckFuns(rpe))
                 .addFunctions(createPermissionHandlingFuns(rpe))
@@ -100,7 +89,8 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
     private fun createPendingRequestProperty(e: ExecutableElement): PropertySpec {
         return PropertySpec
-                .builder(pendingRequestFieldName(e), ClassName.bestGuess("permissions.dispatcher.GrantableRequest"), KModifier.PRIVATE)
+                .varBuilder(pendingRequestFieldName(e), ClassName("permissions.dispatcher", "GrantableRequest").asNullable(), KModifier.PRIVATE)
+                .initializer("%L", "null")
                 .build()
     }
 
@@ -178,7 +168,9 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
             addShouldShowRequestPermissionRationaleCondition(builder, permissionField)
             if (hasParameters) {
                 // For methods with parameters, use the PermissionRequest instantiated above
-                builder.addStatement("%N(%N)", onRationale.simpleString(), pendingRequestFieldName(needsMethod))
+                val pendingRequest = "pendingRequest"
+                builder.addStatement("val %L = %L as %T", pendingRequest, pendingRequestFieldName(needsMethod), ClassName("permissions.dispatcher", "PermissionRequest"))
+                builder.addStatement("%N(%N)", onRationale.simpleString(), "pendingRequest")
             } else {
                 // Otherwise, create a new PermissionRequest on-the-fly
                 builder.addStatement("%N(%N(this))", onRationale.simpleString(), permissionRequestTypeName(rpe, needsMethod))
@@ -222,12 +214,10 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
             if (!ADD_WITH_CHECK_BODY_MAP.containsKey(needsPermissionParameter)) {
                 continue
             }
-
-            builder.addCode("%N ->\n", requestCodeFieldName(needsMethod))
-
+            builder.addCode("%N -> {\n", requestCodeFieldName(needsMethod))
             addResultCaseBody(builder, needsMethod, rpe, grantResultsParam)
+            builder.addCode("}\n")
         }
-
         builder.endControlFlow()
         return builder.build()
     }
@@ -249,11 +239,11 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
                 continue
             }
 
-            builder.addCode("%N ->\n", requestCodeFieldName(needsMethod))
+            builder.addCode("%N -> {\n", requestCodeFieldName(needsMethod))
             // Delegate switch-case generation to implementing classes
             addResultCaseBody(builder, needsMethod, rpe, grantResultsParam)
+            builder.addCode("}\n")
         }
-
         // Add the default case
         builder.endControlFlow()
         return builder.build()
@@ -277,9 +267,8 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         val hasParameters = needsMethod.parameters.isNotEmpty()
         if (hasParameters) {
             val pendingField = pendingRequestFieldName(needsMethod)
-            builder.beginControlFlow("if (%N != null)", pendingField)
-            builder.addStatement("%N.grant()", pendingField)
-            builder.endControlFlow()
+            builder.addStatement("val pendingField = %L", pendingField)
+            builder.addStatement("pendingField?.grant()")
         } else {
             builder.addStatement("%N()", needsMethod.simpleString())
         }
@@ -373,12 +362,12 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         // Add required fields to the target
         val propName = "weakTarget"
         val parameterType = ParameterizedTypeName.get(ClassName("java.lang.ref", "WeakReference"), rpe.ktTypeName)
-        val propertySpec = PropertySpec.builder(propName, parameterType, KModifier.PRIVATE)
-        propertySpec.initializer("%N", "WeakReference(target)")
+        val propertySpec = PropertySpec.builder(propName, parameterType, KModifier.PRIVATE).initializer("%N", "WeakReference(target)")
         builder.addProperty(propertySpec.build())
 
         needsMethod.parameters.forEach {
-            builder.addProperty(it.simpleString(), it.asType().asTypeName(), KModifier.PRIVATE)
+            builder.addProperty(
+                    PropertySpec.builder(it.simpleString(), it.asType().asTypeName(), KModifier.PRIVATE).initializer("%L", it.simpleString()).build())
         }
 
         // Add constructor
@@ -396,7 +385,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         val requestCodeField = requestCodeFieldName(needsMethod)
         ADD_WITH_CHECK_BODY_MAP[needsMethod.getAnnotation(NeedsPermission::class.java).value[0]]?.addRequestPermissionsStatement(proceedFun, targetParam, requestCodeField)
                 ?: addRequestPermissionsStatement(proceedFun, targetParam, permissionFieldName(needsMethod), requestCodeField)
-        builder.addFun(proceedFun.build())
+        builder.addFunction(proceedFun.build())
 
         // Add cancel() override method
         val cancelFun = FunSpec.builder("cancel")
@@ -407,7 +396,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
                     .addStatement("val target = %N.get() ?: return", propName)
                     .addStatement("target.%N()", onDenied.simpleString())
         }
-        builder.addFun(cancelFun.build())
+        builder.addFunction(cancelFun.build())
 
         // For classes with additional parameters, add a "grant()" method
         if (hasParameters) {
@@ -425,7 +414,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
                             .addStatement(")")
                             .build()
             )
-            builder.addFun(grantFun.build())
+            builder.addFunction(grantFun.build())
         }
         return builder.build()
     }
