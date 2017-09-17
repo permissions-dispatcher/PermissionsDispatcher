@@ -16,8 +16,8 @@ import javax.lang.model.element.ExecutableElement
  */
 abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
-    protected val PERMISSION_UTILS = ClassName.bestGuess("permissions.dispatcher.PermissionUtils")
-    private val BUILD = ClassName.bestGuess("android.os.Build")
+    protected val PERMISSION_UTILS = ClassName("permissions.dispatcher", "PermissionUtils")
+    private val BUILD = ClassName("android.os", "Build")
     private val MANIFEST_WRITE_SETTING = "android.permission.WRITE_SETTINGS"
     private val MANIFEST_SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
     private val INT_ARRAY = ClassName("kotlin", "IntArray")
@@ -78,7 +78,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
     private fun createPendingRequestProperty(e: ExecutableElement): PropertySpec {
         return PropertySpec
-                .varBuilder(pendingRequestFieldName(e), ClassName.bestGuess("permissions.dispatcher.GrantableRequest").asNullable(), KModifier.PRIVATE)
+                .varBuilder(pendingRequestFieldName(e), ClassName("permissions.dispatcher", "GrantableRequest").asNullable(), KModifier.PRIVATE)
                 .initializer(CodeBlock.of("null"))
                 .build()
     }
@@ -201,10 +201,9 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
             if (!ADD_WITH_CHECK_BODY_MAP.containsKey(needsPermissionParameter)) {
                 continue
             }
-
-            builder.addCode("%N ->\n", requestCodeFieldName(needsMethod))
-
+            builder.beginControlFlow("%N ->", requestCodeFieldName(needsMethod))
             addResultCaseBody(builder, needsMethod, rpe, grantResultsParam)
+            builder.endControlFlow()
         }
 
         builder.endControlFlow()
@@ -344,7 +343,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
         val builder = TypeSpec.classBuilder(permissionRequestTypeName(rpe, needsMethod))
                 .addTypeVariables(rpe.ktTypeVariables)
-                .addSuperinterface(ClassName.bestGuess("permissions.dispatcher.$superInterfaceName"))
+                .addSuperinterface(ClassName("permissions.dispatcher", superInterfaceName))
                 .addModifiers(KModifier.PRIVATE)
 
         // Add required fields to the target
