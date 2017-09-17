@@ -1,7 +1,7 @@
 package permissions.dispatcher.processor
 
 import com.squareup.javapoet.JavaFile
-import com.squareup.kotlinpoet.KotlinFile
+import com.squareup.kotlinpoet.FileSpec
 import javax.lang.model.type.TypeMirror
 
 interface ProcessorUnit<out K> {
@@ -10,4 +10,4 @@ interface ProcessorUnit<out K> {
 }
 
 interface JavaProcessorUnit : ProcessorUnit<JavaFile>
-interface KtProcessorUnit : ProcessorUnit<KotlinFile>
+interface KtProcessorUnit : ProcessorUnit<FileSpec>

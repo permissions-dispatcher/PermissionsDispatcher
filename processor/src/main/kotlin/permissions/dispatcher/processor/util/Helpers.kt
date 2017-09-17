@@ -27,7 +27,7 @@ fun typeMirrorOf(className: String): TypeMirror = ELEMENT_UTILS.getTypeElement(c
 
 fun typeNameOf(it: Element): TypeName = TypeName.get(it.asType())
 
-fun requestCodeFieldName(e: ExecutableElement) = "$GEN_REQUESTCODE_PREFIX${e.simpleString().trimDollarIfNeeded().toUpperCase()}"
+fun requestCodeFieldName(e: ExecutableElement) = "$GEN_REQUEST_CODE_PREFIX${e.simpleString().trimDollarIfNeeded().toUpperCase()}"
 
 fun permissionFieldName(e: ExecutableElement) = "$GEN_PERMISSION_PREFIX${e.simpleString().trimDollarIfNeeded().toUpperCase()}"
 
@@ -36,7 +36,7 @@ fun pendingRequestFieldName(e: ExecutableElement) = "$GEN_PENDING_PREFIX${e.simp
 fun WithPermissionCheckMethodName(e: ExecutableElement) = "${e.simpleString().trimDollarIfNeeded()}$GEN_WITH_PERMISSION_CHECK_SUFFIX"
 
 fun permissionRequestTypeName(rpe: RuntimePermissionsElement, e: ExecutableElement) =
-        "${rpe.inputClassName}${e.simpleString().trimDollarIfNeeded().capitalize()}$GEN_PERMISSIONREQUEST_SUFFIX"
+        "${rpe.inputClassName}${e.simpleString().trimDollarIfNeeded().capitalize()}$GEN_PERMISSION_REQUEST_SUFFIX"
 
 fun <A : Annotation> findMatchingMethodForNeeds(needsElement: ExecutableElement, otherElements: List<ExecutableElement>, annotationType: Class<A>): ExecutableElement? {
     val value: List<String> = needsElement.getAnnotation(NeedsPermission::class.java).permissionValue()
