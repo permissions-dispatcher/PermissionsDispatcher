@@ -1,9 +1,6 @@
 package permissions.dispatcher.processor.util
 
-import com.squareup.kotlinpoet.FunSpec
-import com.squareup.kotlinpoet.KotlinFile
-import com.squareup.kotlinpoet.PropertySpec
-import com.squareup.kotlinpoet.TypeSpec
+import com.squareup.kotlinpoet.*
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
@@ -97,3 +94,10 @@ fun KotlinFile.Builder.addTypes(types: List<TypeSpec>): KotlinFile.Builder {
     types.forEach { addType(it) }
     return this
 }
+
+/**
+ * To avoid KotlinPoet bug that returns java.lang.String when type name is kotlin.String.
+ * This method should be removed after addressing on KotlinPoet side.
+ */
+fun TypeName.checkStringType() =
+        if (this.toString() == "java.lang.String") ClassName("kotlin", "String") else this

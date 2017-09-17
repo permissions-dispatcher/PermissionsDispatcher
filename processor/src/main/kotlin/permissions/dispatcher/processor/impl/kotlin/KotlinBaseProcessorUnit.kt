@@ -5,18 +5,7 @@ import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.KtProcessorUnit
 import permissions.dispatcher.processor.RequestCodeProvider
 import permissions.dispatcher.processor.RuntimePermissionsElement
-import permissions.dispatcher.processor.util.FILE_COMMENT
-import permissions.dispatcher.processor.util.addFunctions
-import permissions.dispatcher.processor.util.addProperties
-import permissions.dispatcher.processor.util.addTypes
-import permissions.dispatcher.processor.util.pendingRequestFieldName
-import permissions.dispatcher.processor.util.permissionFieldName
-import permissions.dispatcher.processor.util.permissionRequestTypeName
-import permissions.dispatcher.processor.util.permissionValue
-import permissions.dispatcher.processor.util.requestCodeFieldName
-import permissions.dispatcher.processor.util.simpleString
-import permissions.dispatcher.processor.util.varargsKtParametersCodeBlock
-import permissions.dispatcher.processor.util.WithPermissionCheckMethodName
+import permissions.dispatcher.processor.util.*
 import java.util.*
 import javax.lang.model.element.ExecutableElement
 
@@ -110,7 +99,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
         // If the method has parameters, add those as well
         method.parameters.forEach {
-            builder.addParameter(it.simpleString(), it.asType().asTypeName())
+            builder.addParameter(it.simpleString(), it.asType().asTypeName().checkStringType())
         }
 
         // Delegate method body generation to implementing classes
@@ -367,7 +356,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
         needsMethod.parameters.forEach {
             builder.addProperty(
-                    PropertySpec.builder(it.simpleString(), it.asType().asTypeName(), KModifier.PRIVATE)
+                    PropertySpec.builder(it.simpleString(), it.asType().asTypeName().checkStringType(), KModifier.PRIVATE)
                             .initializer(CodeBlock.of(it.simpleString()))
                             .build()
             )
@@ -377,7 +366,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         val targetParam = "target"
         val constructorSpec = FunSpec.constructorBuilder().addParameter(targetParam, rpe.ktTypeName)
         needsMethod.parameters.forEach {
-            constructorSpec.addParameter(it.simpleString(), it.asType().asTypeName(), KModifier.PRIVATE)
+            constructorSpec.addParameter(it.simpleString(), it.asType().asTypeName().checkStringType(), KModifier.PRIVATE)
         }
         builder.primaryConstructor(constructorSpec.build())
 
