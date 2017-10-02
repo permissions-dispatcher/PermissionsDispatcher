@@ -17,6 +17,8 @@ allprojects {
     repositories {
         jcenter()
         google()
+        // TODO Until #389 is resolved by a proper update to kotlinpoet: https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/389
+        maven { url "https://oss.sonatype.org/content/repositories/snapshots" }
     }
 
     tasks.whenTaskAdded {
