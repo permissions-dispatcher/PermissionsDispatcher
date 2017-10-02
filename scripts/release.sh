@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-./gradlew clean build generatePomFiles bintrayUpload -PbintrayUser=$bintrayUser -PbintrayKey=$bintrayKey -PdryRun=false
+./gradlew bintrayUpload -PbintrayUser=$bintrayUser -PbintrayKey=$bintrayKey -PdryRun=false
