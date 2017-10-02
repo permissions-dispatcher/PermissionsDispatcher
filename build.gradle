@@ -11,9 +11,17 @@ buildscript {
     }
 }
 
+def generatePomFilesTask = tasks.create("generatePomFiles")
+
 allprojects {
     repositories {
         jcenter()
         google()
+    }
+
+    tasks.whenTaskAdded {
+        if (it.name.matches("generatePomFileFor([A-Z][a-zA-Z]*)Publication")) {
+            generatePomFilesTask.dependsOn it
+        }
     }
 }
