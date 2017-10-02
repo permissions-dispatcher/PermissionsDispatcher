@@ -88,4 +88,6 @@ project.afterEvaluate {
     compileLintTask.dependsOn(copyLintJar)
 }
 
+// Android Library project: Artifactory Plugin adds 1 publication per Build Type
+project.ext.publicationName = "release"
 apply from: rootProject.file('gradle/gradle-artifactory-upload.gradle')

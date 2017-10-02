@@ -1,3 +1,7 @@
+if (!project.hasProperty('publicationName')) {
+    throw new ProjectConfigurationException("Project '$project.name' needs to specify 'proejct.ext.publicationName' if Artifactory support should be added!", null)
+}
+
 apply plugin: 'com.jfrog.artifactory'
 
 artifactory {
@@ -12,12 +16,7 @@ artifactory {
         }
         defaults {
             publishArtifacts = true
-            publications(
-                    // "library" is an Android library & is assigned 1 publication per Build Type
-                    'release',
-                    // "processor" is a plain Kotlin library & is assigned only 1 publication
-                    'maven',
-            )
+            publications(project.ext.publicationName)
         }
     }
 }
