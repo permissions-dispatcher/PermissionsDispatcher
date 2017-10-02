@@ -12,7 +12,12 @@ artifactory {
         }
         defaults {
             publishArtifacts = true
-            publications('maven')
+            publications(
+                    // "library" is an Android library & is assigned 1 publication per Build Type
+                    'release',
+                    // "processor" is a plain Kotlin library & is assigned only 1 publication
+                    'maven',
+            )
         }
     }
 }
