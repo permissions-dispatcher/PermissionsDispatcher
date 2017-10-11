@@ -31,7 +31,7 @@ test {
     // "This test requires an Android SDK" errors at runtime)
     if (System.getenv("ANDROID_HOME") == null) {
         Properties localProps = new Properties()
-        file("$rootDir/local.properties").withReader { localProps.load(it) }
+        rootProject.file("local.properties").withReader { localProps.load(it) }
         environment "ANDROID_HOME", localProps.getProperty("sdk.dir")
     }
 }

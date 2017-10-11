@@ -5,8 +5,8 @@ import org.junit.Test;
 
 import static com.android.tools.lint.checks.infrastructure.TestFiles.java;
 import static com.android.tools.lint.checks.infrastructure.TestLintTask.lint;
-import static permissions.dispatcher.Utils.SOURCE_PATH;
-import static permissions.dispatcher.Utils.getOnNeedsPermission;
+import static permissions.dispatcher.detectors.Utils.SOURCE_PATH;
+import static permissions.dispatcher.detectors.Utils.getOnNeedsPermission;
 
 public final class UastCallNeedsPermissionDetectorTest {
 

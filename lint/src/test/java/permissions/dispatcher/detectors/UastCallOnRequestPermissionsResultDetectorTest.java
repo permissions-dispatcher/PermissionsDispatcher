@@ -5,10 +5,10 @@ import org.junit.Test;
 
 import static com.android.tools.lint.checks.infrastructure.TestFiles.java;
 import static com.android.tools.lint.checks.infrastructure.TestLintTask.lint;
-import static permissions.dispatcher.Utils.SOURCE_PATH;
-import static permissions.dispatcher.Utils.getOnNeedsPermission;
-import static permissions.dispatcher.Utils.getOnRationaleAnnotation;
-import static permissions.dispatcher.Utils.getRuntimePermission;
+import static permissions.dispatcher.detectors.Utils.SOURCE_PATH;
+import static permissions.dispatcher.detectors.Utils.getOnNeedsPermission;
+import static permissions.dispatcher.detectors.Utils.getOnRationaleAnnotation;
+import static permissions.dispatcher.detectors.Utils.getRuntimePermission;
 
 public final class UastCallOnRequestPermissionsResultDetectorTest {
 

@@ -9,10 +9,10 @@ import org.intellij.lang.annotations.Language;
 
 import java.util.List;
 
-import static permissions.dispatcher.Utils.SOURCE_PATH;
-import static permissions.dispatcher.Utils.getOnNeedsPermission;
-import static permissions.dispatcher.Utils.getOnRationaleAnnotation;
-import static permissions.dispatcher.Utils.getRuntimePermission;
+import static permissions.dispatcher.detectors.Utils.SOURCE_PATH;
+import static permissions.dispatcher.detectors.Utils.getOnNeedsPermission;
+import static permissions.dispatcher.detectors.Utils.getOnRationaleAnnotation;
+import static permissions.dispatcher.detectors.Utils.getRuntimePermission;
 
 /**
  * @author Henry Addo
