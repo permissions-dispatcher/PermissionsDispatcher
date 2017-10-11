@@ -1,8 +1,7 @@
-package permissions.dispatcher;
+package permissions.dispatcher.detectors;
 
 import org.intellij.lang.annotations.Language;
 import org.junit.Test;
-import permissions.dispatcher.uast.UastNoCorrespondingNeedsPermissionDetector;
 
 import static com.android.tools.lint.checks.infrastructure.TestFiles.java;
 import static com.android.tools.lint.checks.infrastructure.TestLintTask.lint;

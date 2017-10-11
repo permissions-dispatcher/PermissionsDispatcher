@@ -2,15 +2,16 @@ package permissions.dispatcher;
 
 import org.intellij.lang.annotations.Language;
 
-final class Utils {
+public final class Utils {
 
-    private Utils() {}
+    private Utils() {
+    }
 
-    static final String PACKAGE = "package permissions.dispatcher;\n";
+    public static final String PACKAGE = "package permissions.dispatcher;\n";
 
-    static final String SOURCE_PATH = "src/permissions/dispatcher/";
+    public static final String SOURCE_PATH = "src/permissions/dispatcher/";
 
-    static String getRuntimePermission() {
+    public static String getRuntimePermission() {
         @Language("JAVA") String runPermissions = ""
                 + "package permissions.dispatcher;\n"
                 + "import java.lang.annotation.ElementType;\n"
@@ -24,7 +25,7 @@ final class Utils {
         return runPermissions;
     }
 
-    static String getOnNeedsPermission() {
+    public static String getOnNeedsPermission() {
         @Language("JAVA") String onNeedsPermission = ""
                 + PACKAGE
                 + "import java.lang.annotation.ElementType;\n"
@@ -40,7 +41,7 @@ final class Utils {
         return onNeedsPermission;
     }
 
-    static String getOnRationaleAnnotation() {
+    public static String getOnRationaleAnnotation() {
         @Language("JAVA") String onShow = ""
                 + PACKAGE
                 + "import java.lang.annotation.ElementType;\n"

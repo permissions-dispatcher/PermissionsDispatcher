@@ -1,13 +1,9 @@
-package permissions.dispatcher.uast;
+package permissions.dispatcher.detectors;
 
 import com.android.tools.lint.client.api.UElementHandler;
-import com.android.tools.lint.detector.api.Category;
 import com.android.tools.lint.detector.api.Detector;
-import com.android.tools.lint.detector.api.Implementation;
 import com.android.tools.lint.detector.api.Issue;
 import com.android.tools.lint.detector.api.JavaContext;
-import com.android.tools.lint.detector.api.Scope;
-import com.android.tools.lint.detector.api.Severity;
 
 import org.jetbrains.uast.UAnnotation;
 import org.jetbrains.uast.UCallExpression;
@@ -18,20 +14,15 @@ import org.jetbrains.uast.UMethod;
 import org.jetbrains.uast.visitor.AbstractUastVisitor;
 
 import java.util.Collections;
-import java.util.EnumSet;
 import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
 public final class UastCallNeedsPermissionDetector extends Detector implements Detector.UastScanner {
 
-    public static final Issue ISSUE = Issue.create("CallNeedsPermission",
-            "Call the corresponding \"WithPermissionCheck\" method of the generated PermissionsDispatcher class instead",
-            "Directly invoking a method annotated with @NeedsPermission may lead to misleading behaviour on devices running Marshmallow and up. Therefore, it is advised to use the generated PermissionsDispatcher class instead, which provides a \"WithPermissionCheck\" method that safely handles runtime permissions.",
-            Category.CORRECTNESS,
-            7,
-            Severity.ERROR,
-            new Implementation(UastCallNeedsPermissionDetector.class, EnumSet.of(Scope.ALL_JAVA_FILES)));
+    public static final Issue ISSUE =
+            IssueFactory.createCallNeedsPermissionIssue(
+                    UastCallNeedsPermissionDetector.class);
 
     static Set<String> annotatedMethods = new HashSet<String>();
 
@@ -43,7 +34,8 @@ public final class UastCallNeedsPermissionDetector extends Detector implements D
     @Override
     public UElementHandler createUastHandler(final JavaContext context) {
         return new UElementHandler() {
-            @Override public void visitClass(UClass node) {
+            @Override
+            public void visitClass(UClass node) {
                 node.accept(new AnnotationChecker(context));
             }
         };
