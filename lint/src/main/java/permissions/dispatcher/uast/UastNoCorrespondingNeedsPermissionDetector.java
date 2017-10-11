@@ -1,4 +1,4 @@
-package permissions.dispatcher;
+package permissions.dispatcher.uast;
 
 import com.android.tools.lint.client.api.UElementHandler;
 import com.android.tools.lint.detector.api.Category;
@@ -21,15 +21,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public final class NoCorrespondingNeedsPermissionDetector extends Detector implements Detector.UastScanner {
+public final class UastNoCorrespondingNeedsPermissionDetector extends Detector implements Detector.UastScanner {
 
-    static final Issue ISSUE = Issue.create("NoCorrespondingNeedsPermission",
+    public static final Issue ISSUE = Issue.create("NoCorrespondingNeedsPermission",
             "The method annotated with @OnShowRationale has no corresponding @NeedsPermission method, and will therefore be ignored by PermissionsDispatcher",
             "The @OnShowRationale method with a certain signature is internally connected to another method annotated with @NeedsPermission and the same annotation value. Please ensure that there is a @NeedsPermission method with matching annotation values for this method.",
             Category.CORRECTNESS,
             4,
             Severity.ERROR,
-            new Implementation(NoCorrespondingNeedsPermissionDetector.class,
+            new Implementation(UastNoCorrespondingNeedsPermissionDetector.class,
                     EnumSet.of(Scope.JAVA_FILE)));
 
     @Override

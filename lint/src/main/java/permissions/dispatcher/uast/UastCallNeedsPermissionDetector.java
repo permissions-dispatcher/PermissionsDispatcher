@@ -1,4 +1,4 @@
-package permissions.dispatcher;
+package permissions.dispatcher.uast;
 
 import com.android.tools.lint.client.api.UElementHandler;
 import com.android.tools.lint.detector.api.Category;
@@ -23,15 +23,15 @@ import java.util.HashSet;
 import java.util.List;
 import java.util.Set;
 
-public final class CallNeedsPermissionDetector extends Detector implements Detector.UastScanner {
+public final class UastCallNeedsPermissionDetector extends Detector implements Detector.UastScanner {
 
-    static final Issue ISSUE = Issue.create("CallNeedsPermission",
+    public static final Issue ISSUE = Issue.create("CallNeedsPermission",
             "Call the corresponding \"WithPermissionCheck\" method of the generated PermissionsDispatcher class instead",
             "Directly invoking a method annotated with @NeedsPermission may lead to misleading behaviour on devices running Marshmallow and up. Therefore, it is advised to use the generated PermissionsDispatcher class instead, which provides a \"WithPermissionCheck\" method that safely handles runtime permissions.",
             Category.CORRECTNESS,
             7,
             Severity.ERROR,
-            new Implementation(CallNeedsPermissionDetector.class, EnumSet.of(Scope.ALL_JAVA_FILES)));
+            new Implementation(UastCallNeedsPermissionDetector.class, EnumSet.of(Scope.ALL_JAVA_FILES)));
 
     static Set<String> annotatedMethods = new HashSet<String>();
 

@@ -2,6 +2,7 @@ package permissions.dispatcher;
 
 import org.intellij.lang.annotations.Language;
 import org.junit.Test;
+import permissions.dispatcher.uast.UastCallOnRequestPermissionsResultDetector;
 
 import static com.android.tools.lint.checks.infrastructure.TestFiles.java;
 import static com.android.tools.lint.checks.infrastructure.TestLintTask.lint;
@@ -10,7 +11,7 @@ import static permissions.dispatcher.Utils.getOnNeedsPermission;
 import static permissions.dispatcher.Utils.getOnRationaleAnnotation;
 import static permissions.dispatcher.Utils.getRuntimePermission;
 
-public final class CallOnRequestPermissionsResultDetectorTest {
+public final class UastCallOnRequestPermissionsResultDetectorTest {
 
     @Test
     public void callOnRequestPermissionsResultDetectorNoError() throws Exception {
@@ -50,7 +51,7 @@ public final class CallOnRequestPermissionsResultDetectorTest {
                         java("src/permissions/dispatcher/OnShowRationale.java", onShow),
                         java("src/permissions/dispatcher/FooPermissionsDispatcher.java", generatedClass),
                         java("src/permissions/dispatcher/Foo.java", foo))
-                .issues(CallOnRequestPermissionsResultDetector.ISSUE)
+                .issues(UastCallOnRequestPermissionsResultDetector.ISSUE)
                 .run()
                 .expectClean();
     }
@@ -90,7 +91,7 @@ public final class CallOnRequestPermissionsResultDetectorTest {
                         java(SOURCE_PATH + "NeedsPermission.java", onNeeds),
                         java(SOURCE_PATH + "OnShowRationale.java", onShow),
                         java(SOURCE_PATH + "Foo.java", foo))
-                .issues(CallOnRequestPermissionsResultDetector.ISSUE)
+                .issues(UastCallOnRequestPermissionsResultDetector.ISSUE)
                 .run()
                 .expect(expectedText)
                 .expectErrorCount(1)

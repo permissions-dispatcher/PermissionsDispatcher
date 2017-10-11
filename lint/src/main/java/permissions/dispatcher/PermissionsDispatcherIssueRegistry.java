@@ -5,14 +5,17 @@ import com.android.tools.lint.detector.api.Issue;
 
 import java.util.Arrays;
 import java.util.List;
+import permissions.dispatcher.uast.UastCallNeedsPermissionDetector;
+import permissions.dispatcher.uast.UastCallOnRequestPermissionsResultDetector;
+import permissions.dispatcher.uast.UastNoCorrespondingNeedsPermissionDetector;
 
 @SuppressWarnings("unused")
 public final class PermissionsDispatcherIssueRegistry extends IssueRegistry {
     @Override
     public List<Issue> getIssues() {
         return Arrays.asList(
-                CallNeedsPermissionDetector.ISSUE,
-                CallOnRequestPermissionsResultDetector.ISSUE,
-                NoCorrespondingNeedsPermissionDetector.ISSUE);
+                UastCallNeedsPermissionDetector.ISSUE,
+                UastCallOnRequestPermissionsResultDetector.ISSUE,
+                UastNoCorrespondingNeedsPermissionDetector.ISSUE);
     }
 }

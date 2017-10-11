@@ -2,13 +2,14 @@ package permissions.dispatcher;
 
 import org.intellij.lang.annotations.Language;
 import org.junit.Test;
+import permissions.dispatcher.uast.UastCallNeedsPermissionDetector;
 
 import static com.android.tools.lint.checks.infrastructure.TestFiles.java;
 import static com.android.tools.lint.checks.infrastructure.TestLintTask.lint;
 import static permissions.dispatcher.Utils.SOURCE_PATH;
 import static permissions.dispatcher.Utils.getOnNeedsPermission;
 
-public final class CallNeedsPermissionDetectorTest {
+public final class UastCallNeedsPermissionDetectorTest {
 
     @Test
     public void callNeedsPermissionMethod() throws Exception {
@@ -30,7 +31,7 @@ public final class CallNeedsPermissionDetectorTest {
         String expectedText = ""
                 + "src/com/example/Foo.java:8: Error: Trying to access permission-protected method directly "
                 + "["
-                + CallNeedsPermissionDetector.ISSUE.getId()
+                + UastCallNeedsPermissionDetector.ISSUE.getId()
                 + "]\n"
                 + "fooBar();\n"
                 + "~~~~~~~~\n"
@@ -40,7 +41,7 @@ public final class CallNeedsPermissionDetectorTest {
                 .files(
                         java(SOURCE_PATH + "NeedsPermission.java", onNeeds),
                         java("src/com/example/Foo.java", foo))
-                .issues(CallNeedsPermissionDetector.ISSUE)
+                .issues(UastCallNeedsPermissionDetector.ISSUE)
                 .run()
                 .expect(expectedText)
                 .expectErrorCount(1)
@@ -77,7 +78,7 @@ public final class CallNeedsPermissionDetectorTest {
                         java(SOURCE_PATH + "NeedsPermission.java", onNeeds),
                         java("src/com/example/Foo.java", foo),
                         java("src/com/example/Baz.java", baz))
-                .issues(CallNeedsPermissionDetector.ISSUE)
+                .issues(UastCallNeedsPermissionDetector.ISSUE)
                 .run()
                 .expectClean();
     }

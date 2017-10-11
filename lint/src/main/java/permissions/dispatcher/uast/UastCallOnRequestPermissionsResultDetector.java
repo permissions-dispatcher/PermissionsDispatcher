@@ -1,4 +1,4 @@
-package permissions.dispatcher;
+package permissions.dispatcher.uast;
 
 import com.android.tools.lint.client.api.UElementHandler;
 import com.android.tools.lint.detector.api.Category;
@@ -22,15 +22,15 @@ import java.util.Collections;
 import java.util.EnumSet;
 import java.util.List;
 
-public final class CallOnRequestPermissionsResultDetector extends Detector implements Detector.UastScanner {
+public final class UastCallOnRequestPermissionsResultDetector extends Detector implements Detector.UastScanner {
 
-    static final Issue ISSUE = Issue.create("NeedOnRequestPermissionsResult",
+    public static final Issue ISSUE = Issue.create("NeedOnRequestPermissionsResult",
             "Call the \"onRequestPermissionsResult\" method of the generated PermissionsDispatcher class in the respective method of your Activity or Fragment",
             "You are required to inform the generated PermissionsDispatcher class about the results of a permission request. In your class annotated with @RuntimePermissions, override the \"onRequestPermissionsResult\" method and call through to the generated PermissionsDispatcher method with the same name.",
             Category.CORRECTNESS,
             5,
             Severity.ERROR,
-            new Implementation(CallOnRequestPermissionsResultDetector.class,
+            new Implementation(UastCallOnRequestPermissionsResultDetector.class,
                     EnumSet.of(Scope.JAVA_FILE)));
 
     @Override
