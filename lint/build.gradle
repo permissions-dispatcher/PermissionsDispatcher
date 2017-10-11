@@ -24,3 +24,14 @@ jar {
         attributes("Lint-Registry": "permissions.dispatcher.PermissionsDispatcherIssueRegistry")
     }
 }
+
+test {
+    // Ensure that ANDROID_HOME is set when launching Lint tests
+    // (non-standard shells won't fill the reference, leading to
+    // "This test requires an Android SDK" errors at runtime)
+    if (System.getenv("ANDROID_HOME") == null) {
+        Properties localProps = new Properties()
+        file("$rootDir/local.properties").withReader { localProps.load(it) }
+        environment "ANDROID_HOME", localProps.getProperty("sdk.dir")
+    }
+}
