@@ -1,7 +1,14 @@
 package permissions.dispatcher.detectors;
 
+import com.android.tools.lint.detector.api.Issue;
+
 import org.intellij.lang.annotations.Language;
 import org.junit.Test;
+import org.junit.runner.RunWith;
+import org.junit.runners.Parameterized;
+
+import java.util.Arrays;
+import java.util.Collection;
 
 import static com.android.tools.lint.checks.infrastructure.TestFiles.java;
 import static com.android.tools.lint.checks.infrastructure.TestLintTask.lint;
@@ -10,7 +17,25 @@ import static permissions.dispatcher.detectors.Utils.getOnNeedsPermission;
 import static permissions.dispatcher.detectors.Utils.getOnRationaleAnnotation;
 import static permissions.dispatcher.detectors.Utils.getRuntimePermission;
 
-public final class UastCallOnRequestPermissionsResultDetectorTest {
+@RunWith(Parameterized.class)
+public final class CallOnRequestPermissionsResultDetectorTest {
+
+    @Parameterized.Parameters(name = "{0}")
+    public static Collection<Object[]> issues() {
+        return Arrays.asList(new Object[][]{
+                {"Uast", UastCallOnRequestPermissionsResultDetector.ISSUE},
+                {"Psi", PsiCallOnRequestPermissionsResultDetector.ISSUE}
+        });
+    }
+
+    @SuppressWarnings({"unused", "FieldCanBeLocal"})
+    private final String implName;
+    private final Issue issue;
+
+    public CallOnRequestPermissionsResultDetectorTest(String implName, Issue issue) {
+        this.implName = implName;
+        this.issue = issue;
+    }
 
     @Test
     public void callOnRequestPermissionsResultDetectorNoError() throws Exception {
@@ -50,7 +75,7 @@ public final class UastCallOnRequestPermissionsResultDetectorTest {
                         java("src/permissions/dispatcher/OnShowRationale.java", onShow),
                         java("src/permissions/dispatcher/FooPermissionsDispatcher.java", generatedClass),
                         java("src/permissions/dispatcher/Foo.java", foo))
-                .issues(UastCallOnRequestPermissionsResultDetector.ISSUE)
+                .issues(issue)
                 .run()
                 .expectClean();
     }
@@ -90,7 +115,7 @@ public final class UastCallOnRequestPermissionsResultDetectorTest {
                         java(SOURCE_PATH + "NeedsPermission.java", onNeeds),
                         java(SOURCE_PATH + "OnShowRationale.java", onShow),
                         java(SOURCE_PATH + "Foo.java", foo))
-                .issues(UastCallOnRequestPermissionsResultDetector.ISSUE)
+                .issues(issue)
                 .run()
                 .expect(expectedText)
                 .expectErrorCount(1)
