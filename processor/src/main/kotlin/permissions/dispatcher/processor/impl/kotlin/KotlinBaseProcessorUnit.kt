@@ -7,6 +7,7 @@ import permissions.dispatcher.processor.RequestCodeProvider
 import permissions.dispatcher.processor.RuntimePermissionsElement
 import permissions.dispatcher.processor.util.*
 import java.util.*
+import javax.annotation.processing.Messager
 import javax.lang.model.element.ExecutableElement
 
 /**
@@ -14,7 +15,7 @@ import javax.lang.model.element.ExecutableElement
  * <p>
  * This generates the parts of code independent from specific permission method signatures for different target objects.
  */
-abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
+abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit {
 
     protected val PERMISSION_UTILS = ClassName("permissions.dispatcher", "PermissionUtils")
     private val BUILD = ClassName("android.os", "Build")

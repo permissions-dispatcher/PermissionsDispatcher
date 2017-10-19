@@ -2,9 +2,10 @@ package permissions.dispatcher.processor.impl.kotlin
 
 import com.squareup.kotlinpoet.FunSpec
 import permissions.dispatcher.processor.util.*
+import javax.annotation.processing.Messager
 import javax.lang.model.type.TypeMirror
 
-class KotlinNativeFragmentProcessorUnit : KotlinBaseProcessorUnit() {
+class KotlinNativeFragmentProcessorUnit(messager: Messager) : KotlinBaseProcessorUnit(messager) {
 
     override fun getTargetType(): TypeMirror = typeMirrorOf("android.app.Fragment")
 

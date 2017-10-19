@@ -6,13 +6,14 @@ import permissions.dispatcher.processor.impl.java.JavaSupportFragmentProcessorUn
 import permissions.dispatcher.processor.impl.kotlin.KotlinActivityProcessorUnit
 import permissions.dispatcher.processor.impl.kotlin.KotlinNativeFragmentProcessorUnit
 import permissions.dispatcher.processor.impl.kotlin.KotlinSupportFragmentProcessorUnit
+import javax.annotation.processing.Messager
 
-fun javaProcessorUnits() = listOf(
-        JavaActivityProcessorUnit(),
-        JavaSupportFragmentProcessorUnit(),
-        JavaNativeFragmentProcessorUnit())
+fun javaProcessorUnits(messager: Messager) = listOf(
+        JavaActivityProcessorUnit(messager),
+        JavaSupportFragmentProcessorUnit(messager),
+        JavaNativeFragmentProcessorUnit(messager))
 
-fun kotlinProcessorUnits() = listOf(
-        KotlinActivityProcessorUnit(),
-        KotlinSupportFragmentProcessorUnit(),
-        KotlinNativeFragmentProcessorUnit())
+fun kotlinProcessorUnits(messager: Messager) = listOf(
+        KotlinActivityProcessorUnit(messager),
+        KotlinSupportFragmentProcessorUnit(messager),
+        KotlinNativeFragmentProcessorUnit(messager))
