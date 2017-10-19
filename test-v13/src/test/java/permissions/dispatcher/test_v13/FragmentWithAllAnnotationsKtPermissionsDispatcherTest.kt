@@ -12,6 +12,7 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 import org.mockito.Matchers.any
+import org.mockito.Matchers.anyString
 import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PowerMockIgnore
@@ -91,6 +92,16 @@ class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
         fragment.showCameraWithPermissionCheck()
 
         Mockito.verify(fragment, Mockito.times(0)).showRationaleForCamera(any(PermissionRequest::class.java))
+    }
+
+    @Test
+    fun `a method with nullable parameters is properly generated`() {
+        mockCheckSelfPermission(true)
+
+        fragment.accessLocationWithPermissionCheck("something")
+        fragment.accessLocationWithPermissionCheck(null)
+
+        Mockito.verify(fragment, Mockito.times(2)).accessLocation(anyString())
     }
 
     @Test
