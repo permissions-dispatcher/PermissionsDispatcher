@@ -99,8 +99,8 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
                 .receiver(rpe.ktTypeName)
 
         // If the method has parameters, add those as well
-        method.parameters.forEach {
-            builder.addParameter(it.simpleString(), it.asType().asTypeName().checkStringType())
+        method.parameters.forEach { param ->
+            builder.addParameter(param.simpleString(), param.asPreparedType())
         }
 
         // Delegate method body generation to implementing classes
@@ -356,7 +356,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
 
         needsMethod.parameters.forEach {
             builder.addProperty(
-                    PropertySpec.builder(it.simpleString(), it.asType().asTypeName().checkStringType(), KModifier.PRIVATE)
+                    PropertySpec.builder(it.simpleString(), it.asPreparedType(), KModifier.PRIVATE)
                             .initializer(CodeBlock.of(it.simpleString()))
                             .build()
             )
@@ -366,7 +366,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
         val targetParam = "target"
         val constructorSpec = FunSpec.constructorBuilder().addParameter(targetParam, rpe.ktTypeName)
         needsMethod.parameters.forEach {
-            constructorSpec.addParameter(it.simpleString(), it.asType().asTypeName().checkStringType(), KModifier.PRIVATE)
+            constructorSpec.addParameter(it.simpleString(), it.asPreparedType(), KModifier.PRIVATE)
         }
         builder.primaryConstructor(constructorSpec.build())
 
