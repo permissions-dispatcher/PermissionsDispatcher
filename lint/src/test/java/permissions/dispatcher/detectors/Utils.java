@@ -1,10 +1,11 @@
-package permissions.dispatcher;
+package permissions.dispatcher.detectors;
 
 import org.intellij.lang.annotations.Language;
 
 final class Utils {
 
-    private Utils() {}
+    private Utils() {
+    }
 
     static final String PACKAGE = "package permissions.dispatcher;\n";
 
