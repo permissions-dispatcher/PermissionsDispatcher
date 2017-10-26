@@ -19,6 +19,9 @@ android:
 jdk:
   - oraclejdk8
 
+before_install:
+- echo "sdk.dir=$ANDROID_HOME" > local.properties
+
 branches:
   except:
     - gh-pages
