@@ -1,7 +1,9 @@
 import org.gradle.internal.jvm.Jvm
+import permissions.dispatcher.AndroidJarDependencyPlugin
 
 apply plugin: 'kotlin'
 apply plugin: 'com.novoda.bintray-release'
+apply plugin: AndroidJarDependencyPlugin
 
 sourceCompatibility = JavaVersion.VERSION_1_6
 targetCompatibility = JavaVersion.VERSION_1_6
@@ -31,7 +33,7 @@ dependencies {
 
     testCompile "junit:junit:$JUNIT_VERSION"
     testCompile "com.google.testing.compile:compile-testing:$COMPILE_TESTING_VERSION"
-    testCompile "com.google.android:android:$GOOGLE_ANDROID_VERSION"
+    testCompile androidJar()
     testCompile fileTree(dir: './src/test/libs', includes: ['*.jar'])
     testCompile files(Jvm.current().getToolsJar())
 }

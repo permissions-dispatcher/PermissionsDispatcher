@@ -93,10 +93,7 @@ public final class PermissionUtils {
      * @see #hasSelfPermissions(Context, String...)
      */
     private static boolean hasSelfPermission(Context context, String permission) {
-        // Do not replace with Build.VERSION_CODES.M!
-        // The Android version bundled with the annotation processor's unit tests
-        // is ancient, doesn't know that constant, and a more recent dependency doesn't exist.
-        if (Build.VERSION.SDK_INT >= 23 /* Build.VERSION_CODES.M */ && "Xiaomi".equalsIgnoreCase(Build.MANUFACTURER)) {
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M && "Xiaomi".equalsIgnoreCase(Build.MANUFACTURER)) {
             return hasSelfPermissionForXiaomi(context, permission);
         }
         try {
