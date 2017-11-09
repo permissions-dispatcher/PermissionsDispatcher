@@ -1,15 +1,15 @@
 import org.gradle.internal.jvm.Jvm
 import permissions.dispatcher.AndroidJarDependencyPlugin
+import permissions.dispatcher.AarToJarConversionPlugin
 
 apply plugin: 'kotlin'
 apply plugin: 'com.novoda.bintray-release'
 apply plugin: AndroidJarDependencyPlugin
+apply plugin: AarToJarConversionPlugin
 
-sourceCompatibility = JavaVersion.VERSION_1_6
-targetCompatibility = JavaVersion.VERSION_1_6
-
+// Connect sources & tests to library project
 sourceSets.main.java.srcDir project(":library").file("src/main/java")
-sourceSets.test.java.srcDir project(":library").file("src/main/android")
+convertAarsToJar.dependsOn ":library:assembleRelease"
 
 task sourcesJar(type: Jar) {
     from sourceSets.main.java.srcDirs
@@ -33,9 +33,12 @@ dependencies {
 
     testCompile "junit:junit:$JUNIT_VERSION"
     testCompile "com.google.testing.compile:compile-testing:$COMPILE_TESTING_VERSION"
+    testCompile "commons-io:commons-io:$COMMONS_IO_VERSION"
     testCompile androidJar()
-    testCompile fileTree(dir: './src/test/libs', includes: ['*.jar'])
     testCompile files(Jvm.current().getToolsJar())
+    testCompileAar "com.android.support:support-v4:$SUPPORT_LIBRARY_VERSION"
+    testCompileAar "com.android.support:support-v13:$SUPPORT_LIBRARY_VERSION"
+    testCompileAar project(path: ":library", configuration: "default")
 }
 
 publish {
