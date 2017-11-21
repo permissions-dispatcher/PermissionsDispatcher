@@ -65,7 +65,7 @@ fun VariableElement.isNullable(): Boolean =
 fun VariableElement.asPreparedType(): TypeName =
         this.asType()
                 .asTypeName()
-                .mapPrimitivesToKotlinTypes()
+                .checkStringType()
                 .mapToNullableTypeIf(this.isNullable())
 
 /**
@@ -115,16 +115,8 @@ fun FileSpec.Builder.addTypes(types: List<TypeSpec>): FileSpec.Builder {
  * To avoid KotlinPoet bug that returns java.lang.String when type name is kotlin.String.
  * This method should be removed after addressing on KotlinPoet side.
  */
-fun TypeName.mapPrimitivesToKotlinTypes() =
-        when (this.toString()) {
-            "java.lang.String" -> ClassName("kotlin", "String")
-            "java.lang.Integer" -> ClassName("kotlin", "Int")
-            "java.lang.Float" -> ClassName("kotlin", "Float")
-            "java.lang.Double" -> ClassName("kotlin", "Double")
-            "java.lang.Char" -> ClassName("kotlin", "Char")
-            "java.lang.Boolean" -> ClassName("kotlin", "Boolean")
-            else -> this
-        }
+fun TypeName.checkStringType() =
+        if (this.toString() == "java.lang.String") ClassName("kotlin", "String") else this
 
 /**
  * Returns this TypeName as nullable or non-nullable based on the given condition.
