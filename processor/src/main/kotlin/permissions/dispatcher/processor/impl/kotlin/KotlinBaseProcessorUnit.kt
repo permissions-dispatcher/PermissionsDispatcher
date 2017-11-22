@@ -7,6 +7,7 @@ import permissions.dispatcher.processor.RequestCodeProvider
 import permissions.dispatcher.processor.RuntimePermissionsElement
 import permissions.dispatcher.processor.util.*
 import java.util.*
+import javax.annotation.processing.Messager
 import javax.lang.model.element.ExecutableElement
 
 /**
@@ -14,7 +15,7 @@ import javax.lang.model.element.ExecutableElement
  * <p>
  * This generates the parts of code independent from specific permission method signatures for different target objects.
  */
-abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
+abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit {
 
     protected val PERMISSION_UTILS = ClassName("permissions.dispatcher", "PermissionUtils")
     private val BUILD = ClassName("android.os", "Build")
@@ -98,8 +99,8 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
                 .receiver(rpe.ktTypeName)
 
         // If the method has parameters, add those as well
-        method.parameters.forEach {
-            builder.addParameter(it.simpleString(), it.asType().asTypeName().checkStringType())
+        method.parameters.forEach { param ->
+            builder.addParameter(param.simpleString(), param.asPreparedType())
         }
 
         // Delegate method body generation to implementing classes
@@ -355,7 +356,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
         needsMethod.parameters.forEach {
             builder.addProperty(
-                    PropertySpec.builder(it.simpleString(), it.asType().asTypeName().checkStringType(), KModifier.PRIVATE)
+                    PropertySpec.builder(it.simpleString(), it.asPreparedType(), KModifier.PRIVATE)
                             .initializer(CodeBlock.of(it.simpleString()))
                             .build()
             )
@@ -365,7 +366,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         val targetParam = "target"
         val constructorSpec = FunSpec.constructorBuilder().addParameter(targetParam, rpe.ktTypeName)
         needsMethod.parameters.forEach {
-            constructorSpec.addParameter(it.simpleString(), it.asType().asTypeName().checkStringType(), KModifier.PRIVATE)
+            constructorSpec.addParameter(it.simpleString(), it.asPreparedType(), KModifier.PRIVATE)
         }
         builder.primaryConstructor(constructorSpec.build())
 

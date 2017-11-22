@@ -6,10 +6,7 @@ import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.OnShowRationale
 import permissions.dispatcher.processor.TYPE_UTILS
-import javax.lang.model.element.Element
-import javax.lang.model.element.ExecutableElement
-import javax.lang.model.element.PackageElement
-import javax.lang.model.element.TypeElement
+import javax.lang.model.element.*
 import javax.lang.model.type.TypeMirror
 
 /**
@@ -51,6 +48,25 @@ fun TypeMirror.simpleString(): String {
  */
 fun <A : Annotation> Element.hasAnnotation(annotationType: Class<A>): Boolean =
         this.getAnnotation(annotationType) != null
+
+/**
+ * Returns whether a variable is nullable by inspecting its annotations.
+ */
+fun VariableElement.isNullable(): Boolean =
+        this.annotationMirrors
+                .map { it.annotationType.simpleString() }
+                .toList()
+                .contains("Nullable")
+
+/**
+ * Maps a variable to its TypeName, applying necessary transformations
+ * for Java primitive types & mirroring the variable's nullability settings.
+ */
+fun VariableElement.asPreparedType(): TypeName =
+        this.asType()
+                .asTypeName()
+                .checkStringType()
+                .mapToNullableTypeIf(this.isNullable())
 
 /**
  * Returns the inherent value() of a permission Annotation.
@@ -101,3 +117,9 @@ fun FileSpec.Builder.addTypes(types: List<TypeSpec>): FileSpec.Builder {
  */
 fun TypeName.checkStringType() =
         if (this.toString() == "java.lang.String") ClassName("kotlin", "String") else this
+
+/**
+ * Returns this TypeName as nullable or non-nullable based on the given condition.
+ */
+fun TypeName.mapToNullableTypeIf(nullable: Boolean) =
+        if (nullable) asNullable() else asNonNullable()

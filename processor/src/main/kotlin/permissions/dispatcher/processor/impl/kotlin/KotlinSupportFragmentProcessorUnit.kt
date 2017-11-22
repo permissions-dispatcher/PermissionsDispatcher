@@ -2,12 +2,13 @@ package permissions.dispatcher.processor.impl.kotlin
 
 import com.squareup.kotlinpoet.FunSpec
 import permissions.dispatcher.processor.util.*
+import javax.annotation.processing.Messager
 import javax.lang.model.type.TypeMirror
 
 /**
  * [permissions.dispatcher.processor.KtProcessorUnit] implementation for Fragments defined in the support-v4 library.
  */
-class KotlinSupportFragmentProcessorUnit : KotlinBaseProcessorUnit() {
+class KotlinSupportFragmentProcessorUnit(messager: Messager) : KotlinBaseProcessorUnit(messager) {
 
     override fun getTargetType(): TypeMirror = typeMirrorOf("android.support.v4.app.Fragment")
 

@@ -17,6 +17,10 @@ open class FragmentWithAllAnnotationsKt : Fragment() {
     fun showCamera() {
     }
 
+    @NeedsPermission(Manifest.permission.ACCESS_FINE_LOCATION)
+    fun accessLocation(location: String?) {
+    }
+
     @OnShowRationale(Manifest.permission.CAMERA)
     fun showRationaleForCamera(request: PermissionRequest?) {
     }

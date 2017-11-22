@@ -2,9 +2,10 @@ package permissions.dispatcher.processor.impl.java
 
 import com.squareup.javapoet.MethodSpec
 import permissions.dispatcher.processor.util.*
+import javax.annotation.processing.Messager
 import javax.lang.model.type.TypeMirror
 
-class JavaNativeFragmentProcessorUnit : JavaBaseProcessorUnit() {
+class JavaNativeFragmentProcessorUnit(messager: Messager) : JavaBaseProcessorUnit(messager) {
 
     override fun getTargetType(): TypeMirror {
         return typeMirrorOf("android.app.Fragment")
