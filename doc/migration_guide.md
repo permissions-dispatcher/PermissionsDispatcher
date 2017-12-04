@@ -1,7 +1,7 @@
 # Migration guide
 
-- [Migrating to 3.x](#migrating-to-permissionsdispatcher-3x)
-- [Migrating to 2.x](#migrating-to-permissionsdispatcher-2x)
+- [Migrating to 3.x](#migrating-to-3x)
+- [Migrating to 2.x](#migrating-to-2x)
 
 ## Migrating to 3.x
 
