@@ -1,5 +1,8 @@
 # ChangeLog
 
+- 3.1.0 2017/12/18
+  - Fix: nullable params with Kotlin [#397](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/397)
+  - Fix: PD does not generate kt version of SYSTEM_ALERT_WINDOW [#406](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/406)
 - 3.0.1 2017/09/17
   - Fix: NeedsPermission annotated method with parameter doesn't work in Kotlin [#376](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/376)
   - Fix: CallNeedsPermission check incorrectly flags calls to methods of different class [#377](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/377)
