@@ -1,3 +1,3 @@
 #!/usr/bin/env bash
 
-./gradlew bintrayUpload -PbintrayUser=$bintrayUser -PbintrayKey=$bintrayKey -PdryRun=false
+./gradlew clean bintrayUpload -PbintrayUser=$bintrayUser -PbintrayKey=$bintrayKey -PdryRun=false

@@ -26,7 +26,7 @@ branches:
   except:
     - gh-pages
 
-script: ./gradlew clean build generatePomFiles --stacktrace
+script: ./gradlew clean check --stacktrace
 
 after_success:
   - "./scripts/deploy_snapshot.sh"
