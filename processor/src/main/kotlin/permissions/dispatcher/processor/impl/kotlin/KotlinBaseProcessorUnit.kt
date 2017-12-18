@@ -194,6 +194,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
         val grantResultsParam = "grantResults"
         val builder = FunSpec.builder("onActivityResult")
                 .addTypeVariables(rpe.ktTypeVariables)
+                .receiver(rpe.ktTypeName)
                 .addParameter(requestCodeParam, INT)
 
         builder.beginControlFlow("when (%N)", requestCodeParam)
