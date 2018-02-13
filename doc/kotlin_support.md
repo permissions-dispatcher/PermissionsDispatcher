@@ -4,11 +4,27 @@ From 3.0.0 we started support `.kt` file generation.
 
 Let's think about the same example as described in `README.md`.
 
-### 0. Prepare AndroidManifest
+### 0. Preparation
 
 Add the following line to `AndroidManifest.xml`:
  
 `<uses-permission android:name="android.permission.CAMERA" />`
+
+Include the following in your **app module** `build.gradle` file:
+
+`${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg)](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
+
+```groovy
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+  compile("com.github.hotchemi:permissionsdispatcher:${latest.version}") {
+      // if you don't use android.app.Fragment you can exclude support for them
+      exclude module: "support-v13"
+  }
+  kapt "com.github.hotchemi:permissionsdispatcher-processor:${latest.version}"
+}
+```
 
 ### 1. Attach annotations
 
