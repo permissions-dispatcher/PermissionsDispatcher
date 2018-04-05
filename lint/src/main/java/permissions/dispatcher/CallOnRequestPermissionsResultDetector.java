@@ -16,6 +16,7 @@ import org.jetbrains.uast.UElement;
 import org.jetbrains.uast.UExpression;
 import org.jetbrains.uast.UMethod;
 import org.jetbrains.uast.UQualifiedReferenceExpression;
+import org.jetbrains.uast.kotlin.KotlinUQualifiedReferenceExpression;
 import org.jetbrains.uast.visitor.AbstractUastVisitor;
 
 import java.util.Collections;
@@ -102,9 +103,16 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
                         // skip super method call
                         continue;
                     }
-                    String targetClassName = className + "PermissionsDispatcher";
-                    if (targetClassName.equals(receiverName) && "onRequestPermissionsResult".equals(referenceExpression.getResolvedName())) {
-                        return true;
+
+                    if (referenceExpression instanceof KotlinUQualifiedReferenceExpression) {
+                        if ("onRequestPermissionsResult".equals(referenceExpression.getResolvedName())) {
+                            return true;
+                        }
+                    } else {
+                        String targetClassName = className + "PermissionsDispatcher";
+                        if (targetClassName.equals(receiverName) && "onRequestPermissionsResult".equals(referenceExpression.getResolvedName())) {
+                            return true;
+                        }
                     }
                 }
             }

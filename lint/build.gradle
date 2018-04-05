@@ -21,6 +21,6 @@ dependencies {
 
 jar {
     manifest {
-        attributes("Lint-Registry": "permissions.dispatcher.PermissionsDispatcherIssueRegistry")
+        attributes("Lint-Registry-v2": "permissions.dispatcher.PermissionsDispatcherIssueRegistry")
     }
 }

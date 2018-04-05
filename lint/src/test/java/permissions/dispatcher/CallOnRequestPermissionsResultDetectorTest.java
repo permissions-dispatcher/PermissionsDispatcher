@@ -4,6 +4,7 @@ import org.intellij.lang.annotations.Language;
 import org.junit.Test;
 
 import static com.android.tools.lint.checks.infrastructure.TestFiles.java;
+import static com.android.tools.lint.checks.infrastructure.TestFiles.kt;
 import static com.android.tools.lint.checks.infrastructure.TestLintTask.lint;
 import static permissions.dispatcher.Utils.SOURCE_PATH;
 import static permissions.dispatcher.Utils.getOnNeedsPermission;
@@ -95,5 +96,46 @@ public final class CallOnRequestPermissionsResultDetectorTest {
                 .expect(expectedText)
                 .expectErrorCount(1)
                 .expectWarningCount(0);
+    }
+
+    @Test
+    public void callOnRequestPermissionsResultDetectorNoErrorForKotlin() throws Exception {
+        @Language("JAVA") String runtimePerms = getRuntimePermission();
+
+        @Language("JAVA") String onNeeds = getOnNeedsPermission();
+
+        @Language("JAVA") String onShow = getOnRationaleAnnotation();
+
+        @Language("kotlin") String foo = ""
+                + "package permissions.dispatcher\n"
+                + "@RuntimePermissions\n"
+                + "class Foo : android.app.Activity {\n"
+                + "fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {\n"
+                + "super.onRequestPermissionsResult(requestCode, permissions, grantResults)\n"
+                + "onRequestPermissionsResult(requestCode, grantResults)\n"
+                + "}\n"
+                + "@NeedsPermission(\"Camera\")"
+                + "fun showCamera() {"
+                + "}\n"
+                + "@OnShowRationale(\"Camera\")"
+                + "fun someMethod() {"
+                + "}\n"
+                + "}";
+
+        @Language("kotlin") String generatedClass = ""
+                + "package permissions.dispatcher\n"
+                + "fun Foo.onRequestPermissionsResult(requestCode: Int, grantResults: IntArray) {"
+                + "}";
+
+        lint()
+                .files(
+                        java("src/permissions/dispatcher/RuntimePermissions.java", runtimePerms),
+                        java("src/permissions/dispatcher/NeedsPermission.java", onNeeds),
+                        java("src/permissions/dispatcher/OnShowRationale.java", onShow),
+                        kt("src/permissions/dispatcher/FooPermissionsDispatcher.kt", generatedClass),
+                        kt("src/permissions/dispatcher/Foo.kt", foo))
+                .issues(CallOnRequestPermissionsResultDetector.ISSUE)
+                .run()
+                .expectClean();
     }
 }
