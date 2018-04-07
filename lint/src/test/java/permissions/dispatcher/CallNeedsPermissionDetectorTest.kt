@@ -16,26 +16,27 @@ class CallNeedsPermissionDetectorTest {
 
         @Language("JAVA") val onNeeds = onNeedsPermission
 
-        @Language("JAVA") val foo = (""
-                + "package com.example;\n"
-                + "import permissions.dispatcher.NeedsPermission;\n"
-                + "public class Foo {\n"
-                + "@NeedsPermission(\"Test\")\n"
-                + "public void fooBar() {\n"
-                + "}\n"
-                + "public void hoge() {\n"
-                + "fooBar();\n"
-                + "}\n"
-                + "}")
+        @Language("JAVA") val foo = """
+                package com.example;
 
-        val expectedText = (""
-                + "src/com/example/Foo.java:8: Error: Trying to access permission-protected method directly "
-                + "["
-                + CallNeedsPermissionDetector.ISSUE.id
-                + "]\n"
-                + "fooBar();\n"
-                + "~~~~~~~~\n"
-                + "1 errors, 0 warnings\n")
+                import permissions.dispatcher.NeedsPermission;
+                public class Foo {
+                    @NeedsPermission("Test")
+                    public void fooBar() {
+                    }
+
+                    public void hoge() {
+                        fooBar();
+                    }
+                }
+                """.trimMargin()
+
+        val expectedText = """
+            |src/com/example/Foo.java:10: Error: Trying to access permission-protected method directly [CallNeedsPermission]
+            |                        fooBar();
+            |                        ~~~~~~~~
+            |1 errors, 0 warnings
+            """.trimMargin()
 
         lint()
                 .files(
@@ -54,25 +55,31 @@ class CallNeedsPermissionDetectorTest {
 
         @Language("JAVA") val onNeeds = onNeedsPermission
 
-        @Language("JAVA") val foo = (""
-                + "package com.example;\n"
-                + "public class Foo {\n"
-                + "public void someMethod() {"
-                + "Baz baz = new Baz();\n"
-                + "baz.noFooBar();\n"
-                + "}\n"
-                + "}")
+        @Language("JAVA") val foo = """
+                package com.example;
 
-        @Language("JAVA") val baz = (""
-                + "package com.example;\n"
-                + "import permissions.dispatcher.NeedsPermission;\n"
-                + "public class Baz {\n"
-                + "@NeedsPermission(\"Test\")\n"
-                + "public void fooBar() {\n"
-                + "}\n"
-                + "public void noFooBar() {\n"
-                + "}\n"
-                + "}")
+                public class Foo {
+                    public void someMethod() {
+                        Baz baz = new Baz();
+                        baz.noFooBar();
+                    }
+                }
+                """.trimMargin()
+
+        @Language("JAVA") val baz = """
+                package com.example;
+
+                import permissions.dispatcher.NeedsPermission;
+
+                public class Baz {
+                    @NeedsPermission("Test")
+                    public void fooBar() {
+                    }
+
+                    public void noFooBar() {
+                    }
+                }
+                """.trimMargin()
 
         lint()
                 .files(

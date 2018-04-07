@@ -22,28 +22,34 @@ class CallOnRequestPermissionsResultDetectorTest {
 
         @Language("JAVA") val onShow = onRationaleAnnotation
 
-        @Language("JAVA") val foo = (""
-                + "package permissions.dispatcher;\n"
-                + "@RuntimePermissions\n"
-                + "public class Foo extends android.app.Activity {\n"
-                + "public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {\n"
-                + "super.onRequestPermissionsResult(requestCode, permissions, grantResults);\n"
-                + "FooPermissionsDispatcher.onRequestPermissionsResult(requestCode, grantResults);\n"
-                + "}\n"
-                + "@NeedsPermission(\"Camera\")"
-                + "public void showCamera() {"
-                + "}\n"
-                + "@OnShowRationale(\"Camera\")"
-                + "public void someMethod() {"
-                + "}\n"
-                + "}")
+        @Language("JAVA") val foo = """
+                package permissions.dispatcher;
 
-        @Language("JAVA") val generatedClass = (""
-                + "package permissions.dispatcher;\n"
-                + "public class FooPermissionsDispatcher {\n"
-                + "public static void onRequestPermissionsResult(int requestCode, int[] grantResults) {\n"
-                + "}\n"
-                + "}")
+                @RuntimePermissions
+                public class Foo extends android.app.Activity {
+                    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+                        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                        FooPermissionsDispatcher.onRequestPermissionsResult(requestCode, grantResults);
+                    }
+
+                    @NeedsPermission("Camera")
+                    public void showCamera() {
+                    }
+
+                    @OnShowRationale("Camera")
+                    public void someMethod() {
+                    }
+                }
+                """.trimMargin()
+
+        @Language("JAVA") val generatedClass = """
+                package permissions.dispatcher;
+
+                public class FooPermissionsDispatcher {
+                    public static void onRequestPermissionsResult(int requestCode, int[] grantResults) {
+                    }
+                }
+                """.trimMargin()
 
         lint()
                 .files(
@@ -66,26 +72,31 @@ class CallOnRequestPermissionsResultDetectorTest {
 
         @Language("JAVA") val onShow = onRationaleAnnotation
 
-        @Language("JAVA") val foo = (""
-                + "package permissions.dispatcher;\n"
-                + "@RuntimePermissions\n"
-                + "public class Foo extends android.app.Activity {\n"
-                + "public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {\n"
-                + "super.onRequestPermissionsResult(requestCode, permissions, grantResults);\n"
-                + "}\n"
-                + "@NeedsPermission(\"Camera\")"
-                + "public void showCamera() {"
-                + "}\n"
-                + "@OnShowRationale(\"Camera\")"
-                + "public void someMethod() {"
-                + "}\n"
-                + "}")
+        @Language("JAVA") val foo = """
+                package permissions.dispatcher;
 
-        val expectedText = (""
-                + SOURCE_PATH + "Foo.java:4: Error: Generated onRequestPermissionsResult method not called [NeedOnRequestPermissionsResult]\n"
-                + "public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {\n"
-                + "^\n"
-                + "1 errors, 0 warnings\n")
+                @RuntimePermissions
+                public class Foo extends android.app.Activity {
+                    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+                        super.onRequestPermissionsResult(requestCode, permissions, grantResults);
+                    }
+
+                    @NeedsPermission("Camera")
+                    public void showCamera() {
+                    }
+
+                    @OnShowRationale("Camera")
+                    public void someMethod() {
+                    }
+                }
+                """.trimMargin()
+
+        val expectedText = """
+                |${SOURCE_PATH}Foo.java:5: Error: Generated onRequestPermissionsResult method not called [NeedOnRequestPermissionsResult]
+                |                    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
+                |                    ^
+                |1 errors, 0 warnings
+                """.trimMargin()
 
         lint()
                 .files(
@@ -109,26 +120,32 @@ class CallOnRequestPermissionsResultDetectorTest {
 
         @Language("JAVA") val onShow = onRationaleAnnotation
 
-        @Language("kotlin") val foo = (""
-                + "package permissions.dispatcher\n"
-                + "@RuntimePermissions\n"
-                + "class Foo : android.app.Activity {\n"
-                + "fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {\n"
-                + "super.onRequestPermissionsResult(requestCode, permissions, grantResults)\n"
-                + "onRequestPermissionsResult(requestCode, grantResults)\n"
-                + "}\n"
-                + "@NeedsPermission(\"Camera\")"
-                + "fun showCamera() {"
-                + "}\n"
-                + "@OnShowRationale(\"Camera\")"
-                + "fun someMethod() {"
-                + "}\n"
-                + "}")
+        @Language("kotlin") val foo = """
+                package permissions.dispatcher
 
-        @Language("kotlin") val generatedClass = (""
-                + "package permissions.dispatcher\n"
-                + "fun Foo.onRequestPermissionsResult(requestCode: Int, grantResults: IntArray) {"
-                + "}")
+                @RuntimePermissions
+                class Foo : android.app.Activity {
+                    fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+                        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+                        onRequestPermissionsResult(requestCode, grantResults)
+                    }
+
+                    @NeedsPermission("Camera")
+                    fun showCamera() {
+                    }
+
+                    @OnShowRationale("Camera")
+                    fun someMethod() {
+                    }
+                }
+                """.trimMargin()
+
+        @Language("kotlin") val generatedClass = """
+                package permissions.dispatcher
+
+                fun Foo.onRequestPermissionsResult(requestCode: Int, grantResults: IntArray) {
+                }
+                """.trimMargin()
 
         lint()
                 .files(

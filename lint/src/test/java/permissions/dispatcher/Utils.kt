@@ -1,50 +1,53 @@
 package permissions.dispatcher
 
-import org.intellij.lang.annotations.Language
-import permissions.dispatcher.Utils.PACKAGE
-
 internal object Utils {
 
-    val PACKAGE = "package permissions.dispatcher;\n"
+    val PACKAGE = "package permissions.dispatcher;"
 
     val SOURCE_PATH = "src/permissions/dispatcher/"
 
-    val runtimePermission: String
-        get() = (""
-                + "package permissions.dispatcher;\n"
-                + "import java.lang.annotation.ElementType;\n"
-                + "import java.lang.annotation.Retention;\n"
-                + "import java.lang.annotation.RetentionPolicy;\n"
-                + "import java.lang.annotation.Target;\n"
-                + "@Target(ElementType.TYPE)\n"
-                + "@Retention(RetentionPolicy.CLASS)\n"
-                + "public @interface RuntimePermissions {\n"
-                + "}")
+    val runtimePermission = """
+                 |package permissions.dispatcher;
+                 |
+                 |import java.lang.annotation.ElementType;
+                 |import java.lang.annotation.Retention;
+                 |import java.lang.annotation.RetentionPolicy;
+                 |import java.lang.annotation.Target;
+                 |
+                 |@Target(ElementType.TYPE)
+                 |@Retention(RetentionPolicy.CLASS)
+                 |public @interface RuntimePermissions {
+                 |}
+                """.trimMargin()
 
-    val onNeedsPermission: String
-        get() = (""
-                + PACKAGE
-                + "import java.lang.annotation.ElementType;\n"
-                + "import java.lang.annotation.Retention;\n"
-                + "import java.lang.annotation.RetentionPolicy;\n"
-                + "import java.lang.annotation.Target;\n"
-                + "@Target(ElementType.METHOD)\n"
-                + "@Retention(RetentionPolicy.CLASS)\n"
-                + "public @interface NeedsPermission {\n"
-                + "String[] value();\n"
-                + "int maxSdkVersion() default 0;\n"
-                + "}")
+    val onNeedsPermission = """
+                |package permissions.dispatcher;
+                |
+                |import java.lang.annotation.ElementType;
+                |import java.lang.annotation.Retention;
+                |import java.lang.annotation.RetentionPolicy;
+                |import java.lang.annotation.Target;
+                |
+                |@Target(ElementType.METHOD)
+                |@Retention(RetentionPolicy.CLASS)
+                |public @interface NeedsPermission {
+                |  String[] value();
+                |  int maxSdkVersion() default 0;
+                |}
+                """.trimMargin()
 
-    val onRationaleAnnotation: String
-        get() = (""
-                + PACKAGE
-                + "import java.lang.annotation.ElementType;\n"
-                + "import java.lang.annotation.Retention;\n"
-                + "import java.lang.annotation.RetentionPolicy;\n"
-                + "import java.lang.annotation.Target;\n"
-                + "@Target(ElementType.METHOD)\n"
-                + "@Retention(RetentionPolicy.CLASS)\n"
-                + "public @interface OnShowRationale {\n"
-                + "String[] value();\n"
-                + "}")
+    val onRationaleAnnotation = """
+                |package permissions.dispatcher;
+                |
+                |import java.lang.annotation.ElementType;
+                |import java.lang.annotation.Retention;
+                |import java.lang.annotation.RetentionPolicy;
+                |import java.lang.annotation.Target;
+                |
+                |@Target(ElementType.METHOD)
+                |@Retention(RetentionPolicy.CLASS)
+                |public @interface OnShowRationale {
+                |  String[] value();
+                |}
+                """.trimMargin()
 }
