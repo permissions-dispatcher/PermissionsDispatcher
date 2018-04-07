@@ -35,9 +35,9 @@ class NoCorrespondingNeedsPermissionDetectorTest {
 
         lint()
                 .files(
-                        java(SOURCE_PATH + "NeedsPermission.java", onNeeds),
-                        java(SOURCE_PATH + "OnShowRationale.java", onShow),
-                        java(SOURCE_PATH + "Foo.java", foo))
+                        java(onNeeds),
+                        java(onShow),
+                        java(foo))
                 .issues(NoCorrespondingNeedsPermissionDetector.ISSUE)
                 .run()
                 .expectClean()
@@ -68,8 +68,8 @@ class NoCorrespondingNeedsPermissionDetectorTest {
 
         lint()
                 .files(
-                        java(SOURCE_PATH + "OnShowRationale.java", onShow),
-                        java(SOURCE_PATH + "Foo.java", foo))
+                        java(onShow),
+                        java(foo))
                 .issues(NoCorrespondingNeedsPermissionDetector.ISSUE)
                 .run()
                 .expect(expectedText)
