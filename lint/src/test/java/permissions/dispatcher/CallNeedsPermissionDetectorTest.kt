@@ -40,8 +40,8 @@ class CallNeedsPermissionDetectorTest {
 
         lint()
                 .files(
-                        java(SOURCE_PATH + "NeedsPermission.java", onNeeds),
-                        java("src/com/example/Foo.java", foo))
+                        java(onNeeds),
+                        java(foo))
                 .issues(CallNeedsPermissionDetector.ISSUE)
                 .run()
                 .expect(expectedText)
@@ -83,9 +83,9 @@ class CallNeedsPermissionDetectorTest {
 
         lint()
                 .files(
-                        java(SOURCE_PATH + "NeedsPermission.java", onNeeds),
-                        java("src/com/example/Foo.java", foo),
-                        java("src/com/example/Baz.java", baz))
+                        java(onNeeds),
+                        java(foo),
+                        java(baz))
                 .issues(CallNeedsPermissionDetector.ISSUE)
                 .run()
                 .expectClean()

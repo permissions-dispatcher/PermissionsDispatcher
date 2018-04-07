@@ -53,11 +53,11 @@ class CallOnRequestPermissionsResultDetectorTest {
 
         lint()
                 .files(
-                        java("src/permissions/dispatcher/RuntimePermissions.java", runtimePerms),
-                        java("src/permissions/dispatcher/NeedsPermission.java", onNeeds),
-                        java("src/permissions/dispatcher/OnShowRationale.java", onShow),
-                        java("src/permissions/dispatcher/FooPermissionsDispatcher.java", generatedClass),
-                        java("src/permissions/dispatcher/Foo.java", foo))
+                        java(runtimePerms),
+                        java(onNeeds),
+                        java(onShow),
+                        java(generatedClass),
+                        java(foo))
                 .issues(CallOnRequestPermissionsResultDetector.ISSUE)
                 .run()
                 .expectClean()
@@ -100,10 +100,10 @@ class CallOnRequestPermissionsResultDetectorTest {
 
         lint()
                 .files(
-                        java(SOURCE_PATH + "RuntimePermissions.java", runtimePerms),
-                        java(SOURCE_PATH + "NeedsPermission.java", onNeeds),
-                        java(SOURCE_PATH + "OnShowRationale.java", onShow),
-                        java(SOURCE_PATH + "Foo.java", foo))
+                        java(runtimePerms),
+                        java(onNeeds),
+                        java(onShow),
+                        java(foo))
                 .issues(CallOnRequestPermissionsResultDetector.ISSUE)
                 .run()
                 .expect(expectedText)
@@ -149,11 +149,11 @@ class CallOnRequestPermissionsResultDetectorTest {
 
         lint()
                 .files(
-                        java("src/permissions/dispatcher/RuntimePermissions.java", runtimePerms),
-                        java("src/permissions/dispatcher/NeedsPermission.java", onNeeds),
-                        java("src/permissions/dispatcher/OnShowRationale.java", onShow),
-                        kt("src/permissions/dispatcher/FooPermissionsDispatcher.kt", generatedClass),
-                        kt("src/permissions/dispatcher/Foo.kt", foo))
+                        java(runtimePerms),
+                        java(onNeeds),
+                        java(onShow),
+                        kt(generatedClass),
+                        kt(foo))
                 .issues(CallOnRequestPermissionsResultDetector.ISSUE)
                 .run()
                 .expectClean()
