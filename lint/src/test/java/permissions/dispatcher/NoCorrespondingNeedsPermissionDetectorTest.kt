@@ -19,16 +19,19 @@ class NoCorrespondingNeedsPermissionDetectorTest {
 
         @Language("JAVA") val onShow = onRationaleAnnotation
 
-        @Language("JAVA") val foo = (""
-                + PACKAGE
-                + "public class Foo {\n"
-                + "@NeedsPermission(\"Camera\")\n"
-                + "public void showCamera() {\n"
-                + "}\n"
-                + "@OnShowRationale(\"Camera\")\n"
-                + "public void someMethod() {\n"
-                + "}\n"
-                + "}")
+        @Language("JAVA") val foo = """
+                package permissions.dispatcher;
+
+                public class Foo {
+                    @NeedsPermission("Camera")
+                    public void showCamera() {
+                    }
+
+                    @OnShowRationale("Camera")
+                    public void someMethod() {
+                    }
+                }
+                """.trimMargin()
 
         lint()
                 .files(
@@ -46,22 +49,22 @@ class NoCorrespondingNeedsPermissionDetectorTest {
 
         @Language("JAVA") val onShow = onRationaleAnnotation
 
-        @Language("JAVA") val foo = (""
-                + PACKAGE
-                + "public class Foo {\n"
-                + "@OnShowRationale(\"Camera\")\n"
-                + "public void someMethod() {\n"
-                + "}\n"
-                + "}")
+        @Language("JAVA") val foo = """
+                package permissions.dispatcher;
 
-        val expectedText = (""
-                + SOURCE_PATH + "Foo.java:3: Error: Useless @OnShowRationale declaration "
-                + "["
-                + NoCorrespondingNeedsPermissionDetector.ISSUE.id
-                + "]\n"
-                + "@OnShowRationale(\"Camera\")\n"
-                + "~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
-                + "1 errors, 0 warnings\n")
+                public class Foo {
+                    @OnShowRationale("Camera")
+                    public void someMethod() {
+                    }
+                }
+                """.trimMargin()
+
+        val expectedText = """
+                |src/permissions/dispatcher/Foo.java:4: Error: Useless @OnShowRationale declaration [NoCorrespondingNeedsPermission]
+                |                    @OnShowRationale("Camera")
+                |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~
+                |1 errors, 0 warnings
+                """.trimMargin()
 
         lint()
                 .files(
