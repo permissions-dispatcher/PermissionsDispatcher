@@ -1,21 +1,22 @@
-package permissions.dispatcher;
+package permissions.dispatcher
 
-import org.intellij.lang.annotations.Language;
-import org.junit.Test;
+import org.intellij.lang.annotations.Language
+import org.junit.Test
 
-import static com.android.tools.lint.checks.infrastructure.TestFiles.java;
-import static com.android.tools.lint.checks.infrastructure.TestLintTask.lint;
-import static permissions.dispatcher.Utils.SOURCE_PATH;
-import static permissions.dispatcher.Utils.getOnNeedsPermission;
+import com.android.tools.lint.checks.infrastructure.TestFiles.java
+import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
+import permissions.dispatcher.Utils.SOURCE_PATH
+import permissions.dispatcher.Utils.onNeedsPermission
 
-public final class CallNeedsPermissionDetectorTest {
+class CallNeedsPermissionDetectorTest {
 
     @Test
-    public void callNeedsPermissionMethod() throws Exception {
+    @Throws(Exception::class)
+    fun callNeedsPermissionMethod() {
 
-        @Language("JAVA") String onNeeds = getOnNeedsPermission();
+        @Language("JAVA") val onNeeds = onNeedsPermission
 
-        @Language("JAVA") String foo = ""
+        @Language("JAVA") val foo = (""
                 + "package com.example;\n"
                 + "import permissions.dispatcher.NeedsPermission;\n"
                 + "public class Foo {\n"
@@ -25,16 +26,16 @@ public final class CallNeedsPermissionDetectorTest {
                 + "public void hoge() {\n"
                 + "fooBar();\n"
                 + "}\n"
-                + "}";
+                + "}")
 
-        String expectedText = ""
+        val expectedText = (""
                 + "src/com/example/Foo.java:8: Error: Trying to access permission-protected method directly "
                 + "["
-                + CallNeedsPermissionDetector.ISSUE.getId()
+                + CallNeedsPermissionDetector.ISSUE.id
                 + "]\n"
                 + "fooBar();\n"
                 + "~~~~~~~~\n"
-                + "1 errors, 0 warnings\n";
+                + "1 errors, 0 warnings\n")
 
         lint()
                 .files(
@@ -44,24 +45,25 @@ public final class CallNeedsPermissionDetectorTest {
                 .run()
                 .expect(expectedText)
                 .expectErrorCount(1)
-                .expectWarningCount(0);
+                .expectWarningCount(0)
     }
 
     @Test
-    public void callNeedsPermissionMethodNoError() throws Exception {
+    @Throws(Exception::class)
+    fun callNeedsPermissionMethodNoError() {
 
-        @Language("JAVA") String onNeeds = getOnNeedsPermission();
+        @Language("JAVA") val onNeeds = onNeedsPermission
 
-        @Language("JAVA") String foo = ""
+        @Language("JAVA") val foo = (""
                 + "package com.example;\n"
                 + "public class Foo {\n"
                 + "public void someMethod() {"
                 + "Baz baz = new Baz();\n"
                 + "baz.noFooBar();\n"
                 + "}\n"
-                + "}";
+                + "}")
 
-        @Language("JAVA") String baz = ""
+        @Language("JAVA") val baz = (""
                 + "package com.example;\n"
                 + "import permissions.dispatcher.NeedsPermission;\n"
                 + "public class Baz {\n"
@@ -70,7 +72,7 @@ public final class CallNeedsPermissionDetectorTest {
                 + "}\n"
                 + "public void noFooBar() {\n"
                 + "}\n"
-                + "}";
+                + "}")
 
         lint()
                 .files(
@@ -79,6 +81,6 @@ public final class CallNeedsPermissionDetectorTest {
                         java("src/com/example/Baz.java", baz))
                 .issues(CallNeedsPermissionDetector.ISSUE)
                 .run()
-                .expectClean();
+                .expectClean()
     }
 }
