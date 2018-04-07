@@ -5,7 +5,6 @@ import org.junit.Test
 
 import com.android.tools.lint.checks.infrastructure.TestFiles.java
 import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
-import permissions.dispatcher.Utils.SOURCE_PATH
 import permissions.dispatcher.Utils.onNeedsPermission
 import permissions.dispatcher.Utils.onRationaleAnnotation
 

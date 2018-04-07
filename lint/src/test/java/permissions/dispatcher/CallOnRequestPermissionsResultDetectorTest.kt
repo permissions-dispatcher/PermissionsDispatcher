@@ -6,7 +6,6 @@ import org.junit.Test
 import com.android.tools.lint.checks.infrastructure.TestFiles.java
 import com.android.tools.lint.checks.infrastructure.TestFiles.kt
 import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
-import permissions.dispatcher.Utils.SOURCE_PATH
 import permissions.dispatcher.Utils.onNeedsPermission
 import permissions.dispatcher.Utils.onRationaleAnnotation
 import permissions.dispatcher.Utils.runtimePermission
@@ -80,7 +79,7 @@ class CallOnRequestPermissionsResultDetectorTest {
                 """.trimMargin()
 
         val expectedText = """
-                |${SOURCE_PATH}Foo.java:5: Error: Generated onRequestPermissionsResult method not called [NeedOnRequestPermissionsResult]
+                |src/permissions/dispatcher/Foo.java:5: Error: Generated onRequestPermissionsResult method not called [NeedOnRequestPermissionsResult]
                 |                    public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {
                 |                    ^
                 |1 errors, 0 warnings

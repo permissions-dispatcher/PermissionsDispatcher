@@ -2,8 +2,6 @@ package permissions.dispatcher
 
 internal object Utils {
 
-    val SOURCE_PATH = "src/permissions/dispatcher/"
-
     val runtimePermission = """
                  |package permissions.dispatcher;
                  |
