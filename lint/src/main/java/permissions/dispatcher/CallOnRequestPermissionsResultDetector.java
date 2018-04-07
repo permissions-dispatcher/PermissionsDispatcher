@@ -104,7 +104,15 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
                         continue;
                     }
 
-                    if (referenceExpression instanceof KotlinUQualifiedReferenceExpression) {
+                    boolean isKotlin = false;
+
+                    try {
+                        if (referenceExpression instanceof KotlinUQualifiedReferenceExpression) {
+                            isKotlin = true;
+                        }
+                    } catch (NoClassDefFoundError ignored) {}
+
+                    if (isKotlin) {
                         if ("onRequestPermissionsResult".equals(referenceExpression.getResolvedName())) {
                             return true;
                         }
