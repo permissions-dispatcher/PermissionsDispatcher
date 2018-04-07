@@ -1,17 +1,16 @@
-package permissions.dispatcher;
+package permissions.dispatcher
 
-import org.intellij.lang.annotations.Language;
+import org.intellij.lang.annotations.Language
+import permissions.dispatcher.Utils.PACKAGE
 
-final class Utils {
+internal object Utils {
 
-    private Utils() {}
+    val PACKAGE = "package permissions.dispatcher;\n"
 
-    static final String PACKAGE = "package permissions.dispatcher;\n";
+    val SOURCE_PATH = "src/permissions/dispatcher/"
 
-    static final String SOURCE_PATH = "src/permissions/dispatcher/";
-
-    static String getRuntimePermission() {
-        @Language("JAVA") String runPermissions = ""
+    val runtimePermission: String
+        get() = (""
                 + "package permissions.dispatcher;\n"
                 + "import java.lang.annotation.ElementType;\n"
                 + "import java.lang.annotation.Retention;\n"
@@ -20,12 +19,10 @@ final class Utils {
                 + "@Target(ElementType.TYPE)\n"
                 + "@Retention(RetentionPolicy.CLASS)\n"
                 + "public @interface RuntimePermissions {\n"
-                + "}";
-        return runPermissions;
-    }
+                + "}")
 
-    static String getOnNeedsPermission() {
-        @Language("JAVA") String onNeedsPermission = ""
+    val onNeedsPermission: String
+        get() = (""
                 + PACKAGE
                 + "import java.lang.annotation.ElementType;\n"
                 + "import java.lang.annotation.Retention;\n"
@@ -36,12 +33,10 @@ final class Utils {
                 + "public @interface NeedsPermission {\n"
                 + "String[] value();\n"
                 + "int maxSdkVersion() default 0;\n"
-                + "}";
-        return onNeedsPermission;
-    }
+                + "}")
 
-    static String getOnRationaleAnnotation() {
-        @Language("JAVA") String onShow = ""
+    val onRationaleAnnotation: String
+        get() = (""
                 + PACKAGE
                 + "import java.lang.annotation.ElementType;\n"
                 + "import java.lang.annotation.Retention;\n"
@@ -51,7 +46,5 @@ final class Utils {
                 + "@Retention(RetentionPolicy.CLASS)\n"
                 + "public @interface OnShowRationale {\n"
                 + "String[] value();\n"
-                + "}";
-        return onShow;
-    }
+                + "}")
 }

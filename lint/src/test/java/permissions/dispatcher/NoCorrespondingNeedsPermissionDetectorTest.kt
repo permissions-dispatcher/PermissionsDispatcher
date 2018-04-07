@@ -1,24 +1,25 @@
-package permissions.dispatcher;
+package permissions.dispatcher
 
-import org.intellij.lang.annotations.Language;
-import org.junit.Test;
+import org.intellij.lang.annotations.Language
+import org.junit.Test
 
-import static com.android.tools.lint.checks.infrastructure.TestFiles.java;
-import static com.android.tools.lint.checks.infrastructure.TestLintTask.lint;
-import static permissions.dispatcher.Utils.PACKAGE;
-import static permissions.dispatcher.Utils.SOURCE_PATH;
-import static permissions.dispatcher.Utils.getOnNeedsPermission;
-import static permissions.dispatcher.Utils.getOnRationaleAnnotation;
+import com.android.tools.lint.checks.infrastructure.TestFiles.java
+import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
+import permissions.dispatcher.Utils.PACKAGE
+import permissions.dispatcher.Utils.SOURCE_PATH
+import permissions.dispatcher.Utils.onNeedsPermission
+import permissions.dispatcher.Utils.onRationaleAnnotation
 
-public final class NoCorrespondingNeedsPermissionDetectorTest {
+class NoCorrespondingNeedsPermissionDetectorTest {
 
     @Test
-    public void noNeedsPermissionAnnotationNoErrors() throws Exception {
-        @Language("JAVA") String onNeeds = getOnNeedsPermission();
+    @Throws(Exception::class)
+    fun noNeedsPermissionAnnotationNoErrors() {
+        @Language("JAVA") val onNeeds = onNeedsPermission
 
-        @Language("JAVA") String onShow = getOnRationaleAnnotation();
+        @Language("JAVA") val onShow = onRationaleAnnotation
 
-        @Language("JAVA") String foo = ""
+        @Language("JAVA") val foo = (""
                 + PACKAGE
                 + "public class Foo {\n"
                 + "@NeedsPermission(\"Camera\")\n"
@@ -27,7 +28,7 @@ public final class NoCorrespondingNeedsPermissionDetectorTest {
                 + "@OnShowRationale(\"Camera\")\n"
                 + "public void someMethod() {\n"
                 + "}\n"
-                + "}";
+                + "}")
 
         lint()
                 .files(
@@ -36,30 +37,31 @@ public final class NoCorrespondingNeedsPermissionDetectorTest {
                         java(SOURCE_PATH + "Foo.java", foo))
                 .issues(NoCorrespondingNeedsPermissionDetector.ISSUE)
                 .run()
-                .expectClean();
+                .expectClean()
     }
 
     @Test
-    public void noNeedsPermissionAnnotation() throws Exception {
+    @Throws(Exception::class)
+    fun noNeedsPermissionAnnotation() {
 
-        @Language("JAVA") String onShow = getOnRationaleAnnotation();
+        @Language("JAVA") val onShow = onRationaleAnnotation
 
-        @Language("JAVA") String foo = ""
+        @Language("JAVA") val foo = (""
                 + PACKAGE
                 + "public class Foo {\n"
                 + "@OnShowRationale(\"Camera\")\n"
                 + "public void someMethod() {\n"
                 + "}\n"
-                + "}";
+                + "}")
 
-        String expectedText = ""
+        val expectedText = (""
                 + SOURCE_PATH + "Foo.java:3: Error: Useless @OnShowRationale declaration "
                 + "["
-                + NoCorrespondingNeedsPermissionDetector.ISSUE.getId()
+                + NoCorrespondingNeedsPermissionDetector.ISSUE.id
                 + "]\n"
                 + "@OnShowRationale(\"Camera\")\n"
                 + "~~~~~~~~~~~~~~~~~~~~~~~~~~\n"
-                + "1 errors, 0 warnings\n";
+                + "1 errors, 0 warnings\n")
 
         lint()
                 .files(
@@ -69,6 +71,6 @@ public final class NoCorrespondingNeedsPermissionDetectorTest {
                 .run()
                 .expect(expectedText)
                 .expectErrorCount(1)
-                .expectWarningCount(0);
+                .expectWarningCount(0)
     }
 }

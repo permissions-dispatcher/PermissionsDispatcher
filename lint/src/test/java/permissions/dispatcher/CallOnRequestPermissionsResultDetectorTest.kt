@@ -1,27 +1,28 @@
-package permissions.dispatcher;
+package permissions.dispatcher
 
-import org.intellij.lang.annotations.Language;
-import org.junit.Test;
+import org.intellij.lang.annotations.Language
+import org.junit.Test
 
-import static com.android.tools.lint.checks.infrastructure.TestFiles.java;
-import static com.android.tools.lint.checks.infrastructure.TestFiles.kt;
-import static com.android.tools.lint.checks.infrastructure.TestLintTask.lint;
-import static permissions.dispatcher.Utils.SOURCE_PATH;
-import static permissions.dispatcher.Utils.getOnNeedsPermission;
-import static permissions.dispatcher.Utils.getOnRationaleAnnotation;
-import static permissions.dispatcher.Utils.getRuntimePermission;
+import com.android.tools.lint.checks.infrastructure.TestFiles.java
+import com.android.tools.lint.checks.infrastructure.TestFiles.kt
+import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
+import permissions.dispatcher.Utils.SOURCE_PATH
+import permissions.dispatcher.Utils.onNeedsPermission
+import permissions.dispatcher.Utils.onRationaleAnnotation
+import permissions.dispatcher.Utils.runtimePermission
 
-public final class CallOnRequestPermissionsResultDetectorTest {
+class CallOnRequestPermissionsResultDetectorTest {
 
     @Test
-    public void callOnRequestPermissionsResultDetectorNoError() throws Exception {
-        @Language("JAVA") String runtimePerms = getRuntimePermission();
+    @Throws(Exception::class)
+    fun callOnRequestPermissionsResultDetectorNoError() {
+        @Language("JAVA") val runtimePerms = runtimePermission
 
-        @Language("JAVA") String onNeeds = getOnNeedsPermission();
+        @Language("JAVA") val onNeeds = onNeedsPermission
 
-        @Language("JAVA") String onShow = getOnRationaleAnnotation();
+        @Language("JAVA") val onShow = onRationaleAnnotation
 
-        @Language("JAVA") String foo = ""
+        @Language("JAVA") val foo = (""
                 + "package permissions.dispatcher;\n"
                 + "@RuntimePermissions\n"
                 + "public class Foo extends android.app.Activity {\n"
@@ -35,14 +36,14 @@ public final class CallOnRequestPermissionsResultDetectorTest {
                 + "@OnShowRationale(\"Camera\")"
                 + "public void someMethod() {"
                 + "}\n"
-                + "}";
+                + "}")
 
-        @Language("JAVA") String generatedClass = ""
+        @Language("JAVA") val generatedClass = (""
                 + "package permissions.dispatcher;\n"
                 + "public class FooPermissionsDispatcher {\n"
                 + "public static void onRequestPermissionsResult(int requestCode, int[] grantResults) {\n"
                 + "}\n"
-                + "}";
+                + "}")
 
         lint()
                 .files(
@@ -53,18 +54,19 @@ public final class CallOnRequestPermissionsResultDetectorTest {
                         java("src/permissions/dispatcher/Foo.java", foo))
                 .issues(CallOnRequestPermissionsResultDetector.ISSUE)
                 .run()
-                .expectClean();
+                .expectClean()
     }
 
     @Test
-    public void callOnRequestPermissionsResultDetector() throws Exception {
-        @Language("JAVA") String runtimePerms = getRuntimePermission();
+    @Throws(Exception::class)
+    fun callOnRequestPermissionsResultDetector() {
+        @Language("JAVA") val runtimePerms = runtimePermission
 
-        @Language("JAVA") String onNeeds = getOnNeedsPermission();
+        @Language("JAVA") val onNeeds = onNeedsPermission
 
-        @Language("JAVA") String onShow = getOnRationaleAnnotation();
+        @Language("JAVA") val onShow = onRationaleAnnotation
 
-        @Language("JAVA") String foo = ""
+        @Language("JAVA") val foo = (""
                 + "package permissions.dispatcher;\n"
                 + "@RuntimePermissions\n"
                 + "public class Foo extends android.app.Activity {\n"
@@ -77,13 +79,13 @@ public final class CallOnRequestPermissionsResultDetectorTest {
                 + "@OnShowRationale(\"Camera\")"
                 + "public void someMethod() {"
                 + "}\n"
-                + "}";
+                + "}")
 
-        String expectedText = ""
+        val expectedText = (""
                 + SOURCE_PATH + "Foo.java:4: Error: Generated onRequestPermissionsResult method not called [NeedOnRequestPermissionsResult]\n"
                 + "public void onRequestPermissionsResult(int requestCode, String[] permissions, int[] grantResults) {\n"
                 + "^\n"
-                + "1 errors, 0 warnings\n";
+                + "1 errors, 0 warnings\n")
 
         lint()
                 .files(
@@ -95,18 +97,19 @@ public final class CallOnRequestPermissionsResultDetectorTest {
                 .run()
                 .expect(expectedText)
                 .expectErrorCount(1)
-                .expectWarningCount(0);
+                .expectWarningCount(0)
     }
 
     @Test
-    public void callOnRequestPermissionsResultDetectorNoErrorForKotlin() throws Exception {
-        @Language("JAVA") String runtimePerms = getRuntimePermission();
+    @Throws(Exception::class)
+    fun callOnRequestPermissionsResultDetectorNoErrorForKotlin() {
+        @Language("JAVA") val runtimePerms = runtimePermission
 
-        @Language("JAVA") String onNeeds = getOnNeedsPermission();
+        @Language("JAVA") val onNeeds = onNeedsPermission
 
-        @Language("JAVA") String onShow = getOnRationaleAnnotation();
+        @Language("JAVA") val onShow = onRationaleAnnotation
 
-        @Language("kotlin") String foo = ""
+        @Language("kotlin") val foo = (""
                 + "package permissions.dispatcher\n"
                 + "@RuntimePermissions\n"
                 + "class Foo : android.app.Activity {\n"
@@ -120,12 +123,12 @@ public final class CallOnRequestPermissionsResultDetectorTest {
                 + "@OnShowRationale(\"Camera\")"
                 + "fun someMethod() {"
                 + "}\n"
-                + "}";
+                + "}")
 
-        @Language("kotlin") String generatedClass = ""
+        @Language("kotlin") val generatedClass = (""
                 + "package permissions.dispatcher\n"
                 + "fun Foo.onRequestPermissionsResult(requestCode: Int, grantResults: IntArray) {"
-                + "}";
+                + "}")
 
         lint()
                 .files(
@@ -136,6 +139,6 @@ public final class CallOnRequestPermissionsResultDetectorTest {
                         kt("src/permissions/dispatcher/Foo.kt", foo))
                 .issues(CallOnRequestPermissionsResultDetector.ISSUE)
                 .run()
-                .expectClean();
+                .expectClean()
     }
 }
