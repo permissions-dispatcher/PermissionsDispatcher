@@ -16,12 +16,6 @@ class CallOnRequestPermissionsResultDetectorTest {
     @Test
     @Throws(Exception::class)
     fun callOnRequestPermissionsResultDetectorNoError() {
-        @Language("JAVA") val runtimePerms = runtimePermission
-
-        @Language("JAVA") val onNeeds = onNeedsPermission
-
-        @Language("JAVA") val onShow = onRationaleAnnotation
-
         @Language("JAVA") val foo = """
                 package permissions.dispatcher;
 
@@ -53,9 +47,9 @@ class CallOnRequestPermissionsResultDetectorTest {
 
         lint()
                 .files(
-                        java(runtimePerms),
-                        java(onNeeds),
-                        java(onShow),
+                        java(runtimePermission),
+                        java(onNeedsPermission),
+                        java(onRationaleAnnotation),
                         java(generatedClass),
                         java(foo))
                 .issues(CallOnRequestPermissionsResultDetector.ISSUE)
@@ -66,12 +60,6 @@ class CallOnRequestPermissionsResultDetectorTest {
     @Test
     @Throws(Exception::class)
     fun callOnRequestPermissionsResultDetector() {
-        @Language("JAVA") val runtimePerms = runtimePermission
-
-        @Language("JAVA") val onNeeds = onNeedsPermission
-
-        @Language("JAVA") val onShow = onRationaleAnnotation
-
         @Language("JAVA") val foo = """
                 package permissions.dispatcher;
 
@@ -100,9 +88,9 @@ class CallOnRequestPermissionsResultDetectorTest {
 
         lint()
                 .files(
-                        java(runtimePerms),
-                        java(onNeeds),
-                        java(onShow),
+                        java(runtimePermission),
+                        java(onNeedsPermission),
+                        java(onRationaleAnnotation),
                         java(foo))
                 .issues(CallOnRequestPermissionsResultDetector.ISSUE)
                 .run()
@@ -114,12 +102,6 @@ class CallOnRequestPermissionsResultDetectorTest {
     @Test
     @Throws(Exception::class)
     fun callOnRequestPermissionsResultDetectorNoErrorForKotlin() {
-        @Language("JAVA") val runtimePerms = runtimePermission
-
-        @Language("JAVA") val onNeeds = onNeedsPermission
-
-        @Language("JAVA") val onShow = onRationaleAnnotation
-
         @Language("kotlin") val foo = """
                 package permissions.dispatcher
 
@@ -149,9 +131,9 @@ class CallOnRequestPermissionsResultDetectorTest {
 
         lint()
                 .files(
-                        java(runtimePerms),
-                        java(onNeeds),
-                        java(onShow),
+                        java(runtimePermission),
+                        java(onNeedsPermission),
+                        java(onRationaleAnnotation),
                         kt(generatedClass),
                         kt(foo))
                 .issues(CallOnRequestPermissionsResultDetector.ISSUE)

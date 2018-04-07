@@ -15,10 +15,6 @@ class NoCorrespondingNeedsPermissionDetectorTest {
     @Test
     @Throws(Exception::class)
     fun noNeedsPermissionAnnotationNoErrors() {
-        @Language("JAVA") val onNeeds = onNeedsPermission
-
-        @Language("JAVA") val onShow = onRationaleAnnotation
-
         @Language("JAVA") val foo = """
                 package permissions.dispatcher;
 
@@ -35,8 +31,8 @@ class NoCorrespondingNeedsPermissionDetectorTest {
 
         lint()
                 .files(
-                        java(onNeeds),
-                        java(onShow),
+                        java(onNeedsPermission),
+                        java(onRationaleAnnotation),
                         java(foo))
                 .issues(NoCorrespondingNeedsPermissionDetector.ISSUE)
                 .run()
@@ -46,9 +42,6 @@ class NoCorrespondingNeedsPermissionDetectorTest {
     @Test
     @Throws(Exception::class)
     fun noNeedsPermissionAnnotation() {
-
-        @Language("JAVA") val onShow = onRationaleAnnotation
-
         @Language("JAVA") val foo = """
                 package permissions.dispatcher;
 
@@ -68,7 +61,7 @@ class NoCorrespondingNeedsPermissionDetectorTest {
 
         lint()
                 .files(
-                        java(onShow),
+                        java(onRationaleAnnotation),
                         java(foo))
                 .issues(NoCorrespondingNeedsPermissionDetector.ISSUE)
                 .run()
