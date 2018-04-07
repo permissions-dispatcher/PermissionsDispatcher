@@ -13,9 +13,6 @@ class CallNeedsPermissionDetectorTest {
     @Test
     @Throws(Exception::class)
     fun callNeedsPermissionMethod() {
-
-        @Language("JAVA") val onNeeds = onNeedsPermission
-
         @Language("JAVA") val foo = """
                 package com.example;
 
@@ -40,7 +37,7 @@ class CallNeedsPermissionDetectorTest {
 
         lint()
                 .files(
-                        java(onNeeds),
+                        java(onNeedsPermission),
                         java(foo))
                 .issues(CallNeedsPermissionDetector.ISSUE)
                 .run()
@@ -52,9 +49,6 @@ class CallNeedsPermissionDetectorTest {
     @Test
     @Throws(Exception::class)
     fun callNeedsPermissionMethodNoError() {
-
-        @Language("JAVA") val onNeeds = onNeedsPermission
-
         @Language("JAVA") val foo = """
                 package com.example;
 
@@ -83,7 +77,7 @@ class CallNeedsPermissionDetectorTest {
 
         lint()
                 .files(
-                        java(onNeeds),
+                        java(onNeedsPermission),
                         java(foo),
                         java(baz))
                 .issues(CallNeedsPermissionDetector.ISSUE)
