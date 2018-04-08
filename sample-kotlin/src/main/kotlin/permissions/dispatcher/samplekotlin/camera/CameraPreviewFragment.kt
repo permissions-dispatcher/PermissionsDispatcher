@@ -41,7 +41,7 @@ class CameraPreviewFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val button: Button? = view.findViewById(R.id.back)
         button?.setOnClickListener {
-            fragmentManager.popBackStack()
+            fragmentManager?.popBackStack()
         }
         initCamera()
     }
@@ -50,12 +50,17 @@ class CameraPreviewFragment : Fragment() {
         camera = getCameraInstance(CAMERA_ID)?.also { camera ->
             val cameraInfo = Camera.CameraInfo().also { Camera.getCameraInfo(CAMERA_ID, it) }
             // Get the rotation of the screen to adjust the preview image accordingly.
-            val displayRotation = activity.windowManager.defaultDisplay.rotation
+            val displayRotation = activity?.windowManager?.defaultDisplay?.rotation
             val previewFrameLayout: FrameLayout? = view?.findViewById(R.id.camera_preview)
             previewFrameLayout?.removeAllViews()
+            if (displayRotation == null) {
+                return
+            }
             preview?.setCamera(camera, cameraInfo, displayRotation) ?: run {
                 // Create the Preview view and set it as the content of this Activity.
-                preview = CameraPreview(activity, camera, cameraInfo, displayRotation)
+                context?.let {
+                    preview = CameraPreview(it, camera, cameraInfo, displayRotation)
+                }
             }
             previewFrameLayout?.addView(preview)
         }
@@ -79,12 +84,12 @@ class CameraPreviewFragment : Fragment() {
     }
 
     companion object {
-        private val TAG = "CameraPreview"
+        private const val TAG = "CameraPreview"
 
         /**
          * Id of the camera to access. 0 is the first camera.
          */
-        private val CAMERA_ID = 0
+        private const val CAMERA_ID = 0
 
         fun newInstance(): CameraPreviewFragment = CameraPreviewFragment()
 

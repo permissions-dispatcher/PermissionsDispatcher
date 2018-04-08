@@ -11,7 +11,6 @@ import android.view.SurfaceView
 import java.io.IOException
 import kotlin.properties.Delegates
 
-
 /**
  * Camera preview that displays a [Camera].
 
