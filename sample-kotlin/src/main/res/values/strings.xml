@@ -3,9 +3,8 @@
     <string name="back">Back</string>
     <string name="button_allow">Allow</string>
     <string name="button_deny">Deny</string>
-    <string name="main_introduction">Click the buttons below to show a camera preview or access the contacts database.\nNote that the contacts option is only available on Android M to illustrate the use of optional, M-only permissions that are not requested on lower SDK platforms.</string>
 
-    <string name="contacts_string">Total number of contacts: %1$,d\nFirst contact:<b>%2$s</b></string>
+    <string name="contacts_string">Total number of contacts: %1$d\nFirst contact:<b>%2$s</b></string>
     <string name="contacts_empty">Contacts not loaded.</string>
     <string name="add_contact">Add a contact</string>
     <string name="show_contact">Show first contact</string>

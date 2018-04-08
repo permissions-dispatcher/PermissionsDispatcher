@@ -35,7 +35,7 @@ import kotlin.properties.Delegates
  */
 class ContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
-    private var messageText: TextView by Delegates.notNull<TextView>()
+    private var messageText: TextView by Delegates.notNull()
 
     override fun onCreateView(inflater: LayoutInflater,
                               container: ViewGroup?,
@@ -47,7 +47,7 @@ class ContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
         val button: Button? = view.findViewById(R.id.back)
         button?.setOnClickListener {
-            fragmentManager.popBackStack()
+            fragmentManager?.popBackStack()
         }
 
         val addButton: Button = view.findViewById(R.id.contact_add)
@@ -68,22 +68,22 @@ class ContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
     /**
      * Initialises a new [CursorLoader] that queries the [ContactsContract].
      */
-    override fun onCreateLoader(i: Int, bundle: Bundle?): Loader<Cursor> = CursorLoader(activity, ContactsContract.Contacts.CONTENT_URI, PROJECTION, null, null, ORDER)
+    override fun onCreateLoader(i: Int, bundle: Bundle?): Loader<Cursor> = CursorLoader(activity!!.applicationContext, ContactsContract.Contacts.CONTENT_URI, PROJECTION, null, null, ORDER)
 
     /**
      * Dislays either the name of the first contact or a message.
      */
     override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor?) {
         cursor?.let {
-            val totalCount = it.count
+            val totalCount: Int = it.count
             if (totalCount > 0) {
                 it.moveToFirst()
                 val name = it.getString(it.getColumnIndex(ContactsContract.Contacts.DISPLAY_NAME))
                 messageText.text = resources.getString(R.string.contacts_string, totalCount, name)
 
-                Log.d(TAG, "First contact loaded: " + name)
-                Log.d(TAG, "Total number of contacts: " + totalCount)
-                Log.d(TAG, "Total number of contacts: " + totalCount)
+                Log.d(TAG, "First contact loaded: $name")
+                Log.d(TAG, "Total number of contacts: $totalCount")
+                Log.d(TAG, "Total number of contacts: $totalCount")
             } else {
                 Log.d(TAG, "List of contacts is empty.")
                 messageText.setText(R.string.contacts_empty)
@@ -121,7 +121,7 @@ class ContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
         // Apply the operations.
         try {
-            activity.contentResolver.applyBatch(ContactsContract.AUTHORITY, operations)
+            activity?.contentResolver?.applyBatch(ContactsContract.AUTHORITY, operations)
         } catch (e: RemoteException) {
             Log.d(TAG, "Could not add a new contact: " + e.message)
         } catch (e: OperationApplicationException) {
@@ -130,9 +130,9 @@ class ContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
     }
 
     companion object {
-        private val TAG = "Contacts"
+        private const val TAG = "Contacts"
 
-        private val DUMMY_CONTACT_NAME = "__DUMMY CONTACT from runtime permissions sample"
+        private const val DUMMY_CONTACT_NAME = "__DUMMY CONTACT from runtime permissions sample"
 
         /**
          * Projection for the content provider query includes the id and primary name of a contact.
@@ -141,7 +141,7 @@ class ContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
         /**
          * Sort order for the query. Sorted by primary name in ascending order.
          */
-        private val ORDER = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " ASC"
+        private const val ORDER = ContactsContract.Contacts.DISPLAY_NAME_PRIMARY + " ASC"
 
         /**
          * Creates a new instance of a ContactsFragment.
