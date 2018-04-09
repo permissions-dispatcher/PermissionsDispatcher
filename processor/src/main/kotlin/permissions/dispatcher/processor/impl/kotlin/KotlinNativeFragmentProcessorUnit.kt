@@ -7,6 +7,8 @@ import javax.lang.model.type.TypeMirror
 
 class KotlinNativeFragmentProcessorUnit(messager: Messager) : KotlinBaseProcessorUnit(messager) {
 
+    override fun isDeprecated(): Boolean = true
+
     override fun getTargetType(): TypeMirror = typeMirrorOf("android.app.Fragment")
 
     override fun getActivityName(): String = "activity"
