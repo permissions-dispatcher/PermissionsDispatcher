@@ -152,6 +152,7 @@ public final class PermissionUtils {
      * @param permissions permission list
      * @return returns true if one of the permission is needed to show rationale.
      */
+    @Deprecated
     public static boolean shouldShowRequestPermissionRationale(Fragment fragment, String... permissions) {
         for (String permission : permissions) {
             if (FragmentCompat.shouldShowRequestPermissionRationale(fragment, permission)) {
@@ -168,6 +169,7 @@ public final class PermissionUtils {
      * @param permissions permissions list
      * @param requestCode Request code connected to the permission request
      */
+    @Deprecated
     public static void requestPermissions(Fragment fragment, String[] permissions, int requestCode) {
         FragmentCompat.requestPermissions(fragment, permissions, requestCode);
     }

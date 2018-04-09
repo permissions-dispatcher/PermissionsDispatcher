@@ -43,17 +43,26 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
 
     abstract fun getActivityName(targetParam: String): String
 
+    abstract fun isDeprecated(): Boolean
+
     /* Begin private */
 
     private fun createTypeSpec(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): TypeSpec {
-        return TypeSpec.classBuilder(rpe.generatedClassName)
+        val typeSpecBuilder = TypeSpec.classBuilder(rpe.generatedClassName)
                 .addModifiers(Modifier.FINAL)
                 .addFields(createFields(rpe.needsElements, requestCodeProvider))
                 .addMethod(createConstructor())
                 .addMethods(createWithPermissionCheckMethods(rpe))
                 .addMethods(createPermissionHandlingMethods(rpe))
                 .addTypes(createPermissionRequestClasses(rpe))
-                .build()
+            if (isDeprecated()) {
+                typeSpecBuilder.addAnnotation(createDeprecatedAnnotation())
+            }
+            return typeSpecBuilder.build()
+    }
+
+    private fun createDeprecatedAnnotation(): AnnotationSpec {
+        return AnnotationSpec.builder(java.lang.Deprecated::class.java).build()
     }
 
     private fun createFields(needsElements: List<ExecutableElement>, requestCodeProvider: RequestCodeProvider): List<FieldSpec> {
