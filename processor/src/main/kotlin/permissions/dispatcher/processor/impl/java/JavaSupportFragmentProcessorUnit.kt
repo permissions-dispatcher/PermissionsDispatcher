@@ -10,12 +10,14 @@ import javax.lang.model.type.TypeMirror
  */
 class JavaSupportFragmentProcessorUnit(messager: Messager) : JavaBaseProcessorUnit(messager) {
 
+    override fun isDeprecated(): Boolean = false
+
     override fun getTargetType(): TypeMirror {
         return typeMirrorOf("android.support.v4.app.Fragment")
     }
 
     override fun getActivityName(targetParam: String): String {
-        return targetParam + ".getActivity()"
+        return "$targetParam.getActivity()"
     }
 
     override fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String, isPositiveCondition: Boolean) {
@@ -25,5 +27,4 @@ class JavaSupportFragmentProcessorUnit(messager: Messager) : JavaBaseProcessorUn
     override fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {
         builder.addStatement("\$N.requestPermissions(\$N, \$N)", targetParam, permissionField, requestCodeField)
     }
-
 }
