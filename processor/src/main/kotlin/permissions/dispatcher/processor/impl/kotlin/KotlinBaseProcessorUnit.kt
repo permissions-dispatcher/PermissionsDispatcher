@@ -32,6 +32,8 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
 
     abstract fun getActivityName(): String
 
+    abstract fun isDeprecated(): Boolean
+
     override fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): FileSpec {
         return FileSpec.builder(rpe.packageName, rpe.generatedClassName)
                 .addComment(FILE_COMMENT)
@@ -43,6 +45,12 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
     }
 
     /* Begin private */
+    private fun createDeprecatedAnnotation(): AnnotationSpec {
+        return AnnotationSpec
+                .builder(Deprecated::class.java)
+                .addMember("%L = %S", "message", DEPRECATED_MESSAGE)
+                .build()
+    }
 
     private fun createProperties(needsElements: List<ExecutableElement>, requestCodeProvider: RequestCodeProvider): List<PropertySpec> {
         val properties: ArrayList<PropertySpec> = arrayListOf()
@@ -105,10 +113,13 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
 
         // Delegate method body generation to implementing classes
         addWithPermissionCheckBody(builder, method, rpe)
+        if (isDeprecated()) {
+            builder.addAnnotation(createDeprecatedAnnotation())
+        }
         return builder.build()
     }
 
-    fun addWithPermissionCheckBody(builder: FunSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement) {
+    private fun addWithPermissionCheckBody(builder: FunSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement) {
         // Create field names for the constants to use
         val requestCodeField = requestCodeFieldName(needsMethod)
         val permissionField = permissionFieldName(needsMethod)

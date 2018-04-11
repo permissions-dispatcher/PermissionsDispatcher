@@ -13,6 +13,8 @@ class KotlinActivityProcessorUnit(messager: Messager) : KotlinBaseProcessorUnit(
 
     private val ACTIVITY_COMPAT = ClassName("android.support.v4.app", "ActivityCompat")
 
+    override fun isDeprecated(): Boolean = false
+
     override fun getTargetType(): TypeMirror = typeMirrorOf("android.app.Activity")
 
     override fun getActivityName(): String = "this"
