@@ -70,7 +70,7 @@ class SupportFragmentWithAllAnnotationsPermissionsDispatcherTest {
 
         SupportFragmentWithAllAnnotationsPermissionsDispatcher.showCameraWithPermissionCheck(fragment)
 
-        Mockito.verify(fragment, Mockito.times(1)).showRationaleForCamera(any(PermissionRequest::class.java))
+        Mockito.verify(fragment, Mockito.times(1)).showRationaleForCamera(any())
     }
 
     @Test

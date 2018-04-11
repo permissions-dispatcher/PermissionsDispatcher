@@ -18,6 +18,7 @@ android:
 
 jdk:
   - oraclejdk8
+  - openjdk8
 
 before_install:
 - echo "sdk.dir=$ANDROID_HOME" > local.properties

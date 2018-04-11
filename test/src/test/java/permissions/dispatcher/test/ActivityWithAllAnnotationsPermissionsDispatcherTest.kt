@@ -68,7 +68,7 @@ class ActivityWithAllAnnotationsPermissionsDispatcherTest {
 
         ActivityWithAllAnnotationsPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
-        Mockito.verify(activity, Mockito.times(1)).showRationaleForCamera(any(PermissionRequest::class.java))
+        Mockito.verify(activity, Mockito.times(1)).showRationaleForCamera(any())
     }
 
     @Test
