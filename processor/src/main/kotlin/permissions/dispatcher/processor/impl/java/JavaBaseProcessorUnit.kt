@@ -48,17 +48,19 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
     /* Begin private */
 
     private fun createTypeSpec(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): TypeSpec {
-        val typeSpecBuilder = TypeSpec.classBuilder(rpe.generatedClassName)
+        return TypeSpec.classBuilder(rpe.generatedClassName)
                 .addModifiers(Modifier.FINAL)
                 .addFields(createFields(rpe.needsElements, requestCodeProvider))
                 .addMethod(createConstructor())
                 .addMethods(createWithPermissionCheckMethods(rpe))
                 .addMethods(createPermissionHandlingMethods(rpe))
                 .addTypes(createPermissionRequestClasses(rpe))
-            if (isDeprecated()) {
-                typeSpecBuilder.addAnnotation(createDeprecatedAnnotation())
-            }
-            return typeSpecBuilder.build()
+                .apply {
+                    if (isDeprecated()) {
+                        addAnnotation(createDeprecatedAnnotation())
+                    }
+                }
+                .build()
     }
 
     private fun createDeprecatedAnnotation(): AnnotationSpec {
@@ -163,7 +165,8 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
         // Add the conditional for when permission has already been granted
         val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
         val activityVar = getActivityName(targetParam)
-        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, activityVar, permissionField) ?: builder.beginControlFlow("if (\$T.hasSelfPermissions(\$N, \$N))", PERMISSION_UTILS, activityVar, permissionField)
+        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, activityVar, permissionField)
+                ?: builder.beginControlFlow("if (\$T.hasSelfPermissions(\$N, \$N))", PERMISSION_UTILS, activityVar, permissionField)
         builder.addCode(CodeBlock.builder()
                 .add("\$N.\$N(", targetParam, needsMethod.simpleString())
                 .add(varargsParametersCodeBlock(needsMethod))
@@ -201,7 +204,8 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
         }
 
         // Add the branch for "request permission"
-        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addRequestPermissionsStatement(builder, targetParam, activityVar, requestCodeField) ?: addRequestPermissionsStatement(builder, targetParam, permissionField, requestCodeField)
+        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addRequestPermissionsStatement(builder, targetParam, activityVar, requestCodeField)
+                ?: addRequestPermissionsStatement(builder, targetParam, permissionField, requestCodeField)
         if (onRationale != null) {
             builder.endControlFlow()
         }
@@ -297,7 +301,8 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
         val permissionField = permissionFieldName(needsMethod)
 
         // Add the conditional for "permission verified"
-        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, getActivityName(targetParam), permissionField) ?: builder.beginControlFlow("if (\$T.verifyPermissions(\$N))", PERMISSION_UTILS, grantResultsParam)
+        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, getActivityName(targetParam), permissionField)
+                ?: builder.beginControlFlow("if (\$T.verifyPermissions(\$N))", PERMISSION_UTILS, grantResultsParam)
 
         // Based on whether or not the method has parameters, delegate to the "pending request" object or invoke the method directly
         val hasParameters = needsMethod.parameters.isNotEmpty()
@@ -429,7 +434,8 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
                 .addStatement("\$T target = \$N.get()", targetType, weakFieldName)
                 .addStatement("if (target == null) return")
         val requestCodeField = requestCodeFieldName(needsMethod)
-        ADD_WITH_CHECK_BODY_MAP[needsMethod.getAnnotation(NeedsPermission::class.java).value[0]]?.addRequestPermissionsStatement(proceedMethod, targetParam, getActivityName(targetParam), requestCodeField) ?: addRequestPermissionsStatement(proceedMethod, targetParam, permissionFieldName(needsMethod), requestCodeField)
+        ADD_WITH_CHECK_BODY_MAP[needsMethod.getAnnotation(NeedsPermission::class.java).value[0]]?.addRequestPermissionsStatement(proceedMethod, targetParam, getActivityName(targetParam), requestCodeField)
+                ?: addRequestPermissionsStatement(proceedMethod, targetParam, permissionFieldName(needsMethod), requestCodeField)
         builder.addMethod(proceedMethod.build())
 
         // Add cancel() override method
