@@ -71,7 +71,7 @@ class SupportFragmentWithAllAnnotationsKtPermissionsDispatcherTest {
 
         fragment.showCameraWithPermissionCheck()
 
-        Mockito.verify(fragment, Mockito.times(1)).showRationaleForCamera(any(PermissionRequest::class.java))
+        Mockito.verify(fragment, Mockito.times(1)).showRationaleForCamera(any())
     }
 
     @Test
