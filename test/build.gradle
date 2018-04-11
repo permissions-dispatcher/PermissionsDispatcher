@@ -42,3 +42,10 @@ dependencies {
     testImplementation "org.powermock:powermock-classloading-xstream:$POWERMOCK_VERSION"
     testImplementation "org.robolectric:robolectric:$ROBOLECTRIC_VERSION"
 }
+
+tasks.withType(Test) {
+    testLogging {
+        events "failed"
+        exceptionFormat = "full"
+    }
+}
