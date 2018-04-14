@@ -21,11 +21,9 @@ import permissions.dispatcher.PermissionRequest
 @PrepareForTest(ActivityCompat::class, PermissionChecker::class, AppOpsManagerCompat::class, Process::class)
 class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
-    private lateinit var activity: ActivityWithAllAnnotationsKt
-
     companion object {
         private var requestCode = 0
-        lateinit private var requestPermissions: Array<String>
+        private lateinit var requestPermissions: Array<String>
 
         @BeforeClass
         @JvmStatic
@@ -38,7 +36,6 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Before
     fun setUp() {
-        activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         PowerMockito.mockStatic(ActivityCompat::class.java)
         PowerMockito.mockStatic(PermissionChecker::class.java)
         PowerMockito.mockStatic(Process::class.java)
@@ -47,6 +44,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `already granted call the method`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         mockCheckSelfPermission(true)
 
         activity.showCameraWithPermissionCheck()
@@ -56,6 +54,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `not granted does not call the method`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         mockCheckSelfPermission(false)
         mockShouldShowRequestPermissionRationaleActivity(true)
 
@@ -66,6 +65,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `not granted permission and show rationale is true then call the rationale method`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         mockCheckSelfPermission(false)
         mockShouldShowRequestPermissionRationaleActivity(true)
 
@@ -76,6 +76,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `not granted permission and show rationale is false then does not call the rationale method`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         mockCheckSelfPermission(false)
         mockShouldShowRequestPermissionRationaleActivity(false)
 
@@ -86,6 +87,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `the method is called if verifyPermission is true`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         activity.onRequestPermissionsResult(requestCode, intArrayOf(PackageManager.PERMISSION_GRANTED))
 
         Mockito.verify(activity, Mockito.times(1)).showCamera()
@@ -93,6 +95,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `the method is not called if verifyPermission is false`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         activity.onRequestPermissionsResult(requestCode, intArrayOf(PackageManager.PERMISSION_DENIED))
 
         Mockito.verify(activity, Mockito.times(0)).showCamera()
@@ -100,6 +103,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `show never ask method is call if verifyPermission is false and shouldShowRequestPermissionRationale is false`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         mockShouldShowRequestPermissionRationaleActivity(false)
 
         activity.onRequestPermissionsResult(requestCode, intArrayOf(PackageManager.PERMISSION_DENIED))
@@ -109,6 +113,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `show deny method is call if verifyPermission is false and shouldShowRequestPermissionRationale is true`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         mockShouldShowRequestPermissionRationaleActivity(true)
 
         activity.onRequestPermissionsResult(requestCode, intArrayOf(PackageManager.PERMISSION_DENIED))
@@ -118,6 +123,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `no the method call if request code is not related to the library`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         activity.onRequestPermissionsResult(requestCode + 1000, intArrayOf())
 
         Mockito.verify(activity, Mockito.times(0)).showCamera()
@@ -125,6 +131,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `no denied method call if request code is not related to the library`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         activity.onRequestPermissionsResult(requestCode + 1000, intArrayOf())
 
         Mockito.verify(activity, Mockito.times(0)).showDeniedForCamera()
@@ -132,6 +139,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `no never ask method call if request code is not related to the library`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         activity.onRequestPermissionsResult(requestCode + 1000, intArrayOf())
 
         Mockito.verify(activity, Mockito.times(0)).showNeverAskForCamera()
@@ -139,6 +147,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `xiaomi device permissionToOp returns null grant permission`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         testForXiaomi()
         mockPermissionToOp(null)
 
@@ -149,6 +158,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `xiaomi device grant permission`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         testForXiaomi()
         mockPermissionToOp("")
         mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
@@ -161,6 +171,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `xiaomi noteOp returns not allowed value should not call the method`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         testForXiaomi()
         mockPermissionToOp("")
         mockNoteOp(AppOpsManagerCompat.MODE_IGNORED)
@@ -173,6 +184,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `xiaomi noteOp returns allowed but checkSelfPermission not allowed value should not call the method`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         testForXiaomi()
         mockPermissionToOp("")
         mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
@@ -185,6 +197,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `blow M follows checkSelfPermissions result false`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         overwriteCustomSdkInt(22)
         mockCheckSelfPermission(false)
 
@@ -195,6 +208,7 @@ class ActivityWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @Test
     fun `blow M follows checkSelfPermissions result true`() {
+        val activity = Mockito.mock(ActivityWithAllAnnotationsKt::class.java)
         overwriteCustomSdkInt(22)
         mockCheckSelfPermission(true)
 
