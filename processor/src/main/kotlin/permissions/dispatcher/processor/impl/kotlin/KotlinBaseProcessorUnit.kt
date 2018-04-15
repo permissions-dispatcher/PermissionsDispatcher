@@ -37,6 +37,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
     override fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): FileSpec {
         return FileSpec.builder(rpe.packageName, rpe.generatedClassName)
                 .addComment(FILE_COMMENT)
+                .addAnnotation(createJvmNameAnnotation(rpe.generatedClassName))
                 .addProperties(createProperties(rpe.needsElements, requestCodeProvider))
                 .addFunctions(createWithPermissionCheckFuns(rpe))
                 .addFunctions(createPermissionHandlingFuns(rpe))
@@ -45,6 +46,12 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
     }
 
     /* Begin private */
+    private fun createJvmNameAnnotation(generatedClassName: String) : AnnotationSpec {
+        return AnnotationSpec.builder(ClassName("", "JvmName"))
+                .addMember("%S", generatedClassName)
+                .build()
+    }
+
     private fun createDeprecatedAnnotation(): AnnotationSpec {
         return AnnotationSpec
                 .builder(Deprecated::class.java)
