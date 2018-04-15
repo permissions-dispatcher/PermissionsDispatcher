@@ -1,26 +1,48 @@
 language: android
+jdk: oraclejdk8
+
+dist: trusty
+sudo: false
 
 env:
   global:
+    - ANDROID_HOME=$HOME/android-sdk
     - secure: "KY2ZIqFr6RCbZvFpCGo1CXtnmvbGq+uEw/haDOeva7V86A5K+2IzzoCdBTyIcGWo4MfAlfwvtr2z/5JTLQQ9XE2h0N1oVTqJCBPTmorXDFv7CNHxortje9Ra0jrQZY69pXCJePlI9XQ4QOS2pHMujucYt7RFTV/TmU3yI+xBd6PVVTt54mRCSrIAbl5YWGK9lHUWygBn+rLspmAxamSOccqjJlmotzqFp60gedgbrcGOPhLRcuESDn8w45fP0I1owXEhvnIOlMlTavoDc+qeMLckR9xyCYFqxt0jTPaQViR0+JPm7P9Qwho4r9dBcoK+ojqg56fyqQ89sckZ22jXqjmWrKViQdCEB5Oul/n2R2fgH+OfZ1eUffaNTKRAz8a7JgwmPC+X7BiQKxY+GGeZ7tlMxlSyGQGr5EDsAypr9R7r+6WuHtlM7wfSdWNWgMY+CnViJH0f1pl5nftqBzE2PJArU4w1r5tPdkVnGzUHgDrksTGU9WRQ4q/HP+8xZkQjsY1hRuXJlXm+SvMPNyJRn1yxyu2zeetdOmnEUHVN1TgGol3k/sHCUtqF6N4cskpCTFTdXNSZPd3uZs0JLhQR4ygJ6Es+yfPM6pae8jKmUNsUJpl9ctOpwvyZYIsc3rqtLjBWN47v6S/wtOmdJhh1uxz79K7vcPh1Z3pcfGgoVUs="
     - secure: "ucfbFyzFVzzmGivT3MrH7CbW1Wjs2B2gFIc/iqsJ/jF+1vh0ki2wwmE8pFFGo/4iKF59yCnj0NtxnInX3YVRtLOKD1bqS0yAPOskLlx3XhH5gg4owJ6vo9vuKoizcRabT/ss8SjlFkv7PDHmFWVyUtZmgjkwZbuQbTnMBQv1qzDo+AfS8cuDQAXvWzfMF1R9wEpc1/hmRCYMTpUS3c0qms2wxPatLLnXHGT3qVfHsAFm46mBiwA2K7G8UwRHLQCqC0RE9/4PDvmrTSt4xdq9PsY6CGqBHJmDW8ylWW6JONzFw4g3l/9GH0uBu4iryZmZORjTCRsIWbqzFcLCF+AN+mLxIsmRnRqabxOv4QRgIRq0S5ODfOkLbrAMTRH7P4JitwSnMUrG6Rfmb5XRTg6Di0L3Wd2n4wP9n7R/2037Z7C9/nwfv5UewCn75H5DynLGA00szLLe4ws4oY0OEJQQoCkjXkNoXvPuCv6XaVTg61JgSJGMJsjxNGGrAjXJvpXgGPdqMqert/quc5kdyabU0O7H9EfLBPQ0jFMrDXZkfjGRvyshp4bhIthIw1oerQy2DDtkPsQkhRajPg2AyHo5ttGnsr7fyZ1eAol8SgvP180zqsHJj8rPwET7WN+QgPA/xBuj9CFUpoRF3QFVoxMFouimgUhwKV1nZ8uCJ4vaSSA="
 
-android:
-  components:
-    - tools
-    - platform-tools
-    - build-tools-27.0.3
-    - android-26
-    - extra-google-google_play_services
-    - extra-android-m2repository
-    - extra-android-support
-    - extra-google-m2repository
-
-jdk:
-  - oraclejdk8
-
 before_install:
 - echo "sdk.dir=$ANDROID_HOME" > local.properties
+
+before_cache:
+  # Do not cache a few Gradle files/directories (see https://docs.travis-ci.com/user/languages/java/#Caching)
+  - rm -f  $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -fr $HOME/.gradle/caches/*/plugin-resolution/
+
+cache:
+  directories:
+    # Android SDK
+    - $HOME/android-sdk-dl
+    - $HOME/android-sdk
+
+    # Gradle dependencies
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+
+    # Android build cache (see http://tools.android.com/tech-docs/build-cache)
+    - $HOME/.android/build-cache
+
+install:
+  # Download and unzip the Android SDK tools (if not already there thanks to the cache mechanism)
+  # Latest version available here: https://developer.android.com/studio/index.html#downloads
+  - if test ! -e $HOME/android-sdk-dl/sdk-tools.zip ; then curl https://dl.google.com/android/repository/sdk-tools-linux-3859397.zip > $HOME/android-sdk-dl/sdk-tools.zip ; fi
+  - unzip -qq -n $HOME/android-sdk-dl/sdk-tools.zip -d $HOME/android-sdk
+
+  # Install or update Android SDK components (will not do anything if already up to date thanks to the cache mechanism)
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'tools' > /dev/null
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'platform-tools' > /dev/null
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'build-tools;27.0.3' > /dev/null
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'platforms;android-26' > /dev/null
+  - echo y | $HOME/android-sdk/tools/bin/sdkmanager 'extras;google;m2repository' > /dev/null
 
 branches:
   except:
