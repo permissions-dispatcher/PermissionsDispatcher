@@ -4,25 +4,26 @@ import org.intellij.lang.annotations.Language
 import org.junit.Test
 
 import com.android.tools.lint.checks.infrastructure.TestFiles.java
+import com.android.tools.lint.checks.infrastructure.TestFiles.kt
 import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
 import permissions.dispatcher.Utils.onNeedsPermission
 import permissions.dispatcher.Utils.onRationaleAnnotation
 
-class NoCorrespondingNeedsPermissionDetectorTest {
+class NoCorrespondingNeedsPermissionDetectorKtTest {
 
     @Test
     @Throws(Exception::class)
     fun noNeedsPermissionAnnotationNoErrors() {
-        @Language("JAVA") val foo = """
-                package permissions.dispatcher;
+        @Language("kotlin") val foo = """
+                package permissions.dispatcher
 
-                public class Foo {
+                class Foo {
                     @NeedsPermission("Camera")
-                    void showCamera() {
+                    fun showCamera() {
                     }
 
                     @OnShowRationale("Camera")
-                    void someMethod() {
+                    fun someMethod() {
                     }
                 }
                 """.trimMargin()
@@ -31,7 +32,7 @@ class NoCorrespondingNeedsPermissionDetectorTest {
                 .files(
                         java(onNeedsPermission),
                         java(onRationaleAnnotation),
-                        java(foo))
+                        kt(foo))
                 .issues(NoCorrespondingNeedsPermissionDetector.ISSUE)
                 .run()
                 .expectClean()
@@ -40,18 +41,18 @@ class NoCorrespondingNeedsPermissionDetectorTest {
     @Test
     @Throws(Exception::class)
     fun noNeedsPermissionAnnotation() {
-        @Language("JAVA") val foo = """
-                package permissions.dispatcher;
+        @Language("kotlin") val foo = """
+                package permissions.dispatcher
 
-                public class Foo {
+                class Foo {
                     @OnShowRationale("Camera")
-                    void someMethod() {
+                    fun someMethod() {
                     }
                 }
                 """.trimMargin()
 
         val expectedText = """
-                |src/permissions/dispatcher/Foo.java:4: Error: Useless @OnShowRationale declaration [NoCorrespondingNeedsPermission]
+                |src/permissions/dispatcher/Foo.kt:4: Error: Useless @OnShowRationale declaration [NoCorrespondingNeedsPermission]
                 |                    @OnShowRationale("Camera")
                 |                    ~~~~~~~~~~~~~~~~~~~~~~~~~~
                 |1 errors, 0 warnings
@@ -60,7 +61,7 @@ class NoCorrespondingNeedsPermissionDetectorTest {
         lint()
                 .files(
                         java(onRationaleAnnotation),
-                        java(foo))
+                        kt(foo))
                 .issues(NoCorrespondingNeedsPermissionDetector.ISSUE)
                 .run()
                 .expect(expectedText)
