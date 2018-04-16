@@ -1,5 +1,10 @@
 # ChangeLog
 
+- 3.2.0 2018/04/17
+  - Update: Address lint for Kotlin project [#460](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/460)
+  - Add: Add JvmName annotation to generated file [#458](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/458)
+  - Update: Deprecate android.app.Fragment [#454](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/454)
+  - Fix: Kotlin file problem with CallOnRequestPermissionsResultDetector [#449](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/449)
 - 3.1.0 2017/12/18
   - Fix: nullable params with Kotlin [#397](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/397)
   - Fix: PD does not generate kt version of SYSTEM_ALERT_WINDOW [#406](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/406)
