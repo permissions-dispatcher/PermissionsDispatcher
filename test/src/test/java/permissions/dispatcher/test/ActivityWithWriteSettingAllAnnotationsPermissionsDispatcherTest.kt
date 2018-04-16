@@ -24,7 +24,6 @@ import permissions.dispatcher.test.ActivityWithWriteSettingAllAnnotationsPermiss
 @PrepareForTest(ActivityCompat::class, PermissionChecker::class,
         AppOpsManagerCompat::class, Process::class, Settings::class, Build.VERSION::class, Uri::class)
 class ActivityWithWriteSettingAllAnnotationsPermissionsDispatcherTest {
-    private lateinit var activity: ActivityWithWriteSettingAllAnnotations
 
     companion object {
         private var requestCode = 0
@@ -38,7 +37,6 @@ class ActivityWithWriteSettingAllAnnotationsPermissionsDispatcherTest {
 
     @Before
     fun setUp() {
-        activity = Mockito.mock(ActivityWithWriteSettingAllAnnotations::class.java)
         PowerMockito.mockStatic(ActivityCompat::class.java)
         PowerMockito.mockStatic(PermissionChecker::class.java)
         PowerMockito.mockStatic(Process::class.java)
@@ -52,6 +50,7 @@ class ActivityWithWriteSettingAllAnnotationsPermissionsDispatcherTest {
 
     @Test
     fun `already granted call the method`() {
+        val activity = Mockito.mock(ActivityWithWriteSettingAllAnnotations::class.java)
         mockCheckSelfPermission(true)
 
         writeSettingWithPermissionCheck(activity)
@@ -61,6 +60,7 @@ class ActivityWithWriteSettingAllAnnotationsPermissionsDispatcherTest {
 
     @Test
     fun `checkSelfPermission returns false but canWrite returns true means granted`() {
+        val activity = Mockito.mock(ActivityWithWriteSettingAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(true)
 
@@ -71,6 +71,7 @@ class ActivityWithWriteSettingAllAnnotationsPermissionsDispatcherTest {
 
     @Test
     fun `if permission not granted, then start new activity for overlay`() {
+        val activity = Mockito.mock(ActivityWithWriteSettingAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(false)
         mockUriParse()
@@ -82,6 +83,7 @@ class ActivityWithWriteSettingAllAnnotationsPermissionsDispatcherTest {
 
     @Test
     fun `do nothing if requestCode is wrong one`() {
+        val activity = Mockito.mock(ActivityWithWriteSettingAllAnnotations::class.java)
         onActivityResult(activity,-1)
 
         Mockito.verify(activity, Mockito.times(0)).writeSetting()
@@ -89,6 +91,7 @@ class ActivityWithWriteSettingAllAnnotationsPermissionsDispatcherTest {
 
     @Test
     fun `call the method if permission granted`() {
+        val activity = Mockito.mock(ActivityWithWriteSettingAllAnnotations::class.java)
         mockCheckSelfPermission(true)
 
         onActivityResult(activity, requestCode)
@@ -98,6 +101,7 @@ class ActivityWithWriteSettingAllAnnotationsPermissionsDispatcherTest {
 
     @Test
     fun `call the method if canWrite returns true`() {
+        val activity = Mockito.mock(ActivityWithWriteSettingAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(true)
 
@@ -108,6 +112,7 @@ class ActivityWithWriteSettingAllAnnotationsPermissionsDispatcherTest {
 
     @Test
     fun `No call the method if permission not granted`() {
+        val activity = Mockito.mock(ActivityWithWriteSettingAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(false)
 
@@ -118,6 +123,7 @@ class ActivityWithWriteSettingAllAnnotationsPermissionsDispatcherTest {
 
     @Test
     fun `call showNeverAsk method if permission not granted and shouldShowRequestPermissionRationale false`() {
+        val activity = Mockito.mock(ActivityWithWriteSettingAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(false)
         mockShouldShowRequestPermissionRationaleActivity(false)
@@ -129,6 +135,7 @@ class ActivityWithWriteSettingAllAnnotationsPermissionsDispatcherTest {
 
     @Test
     fun `call showDenied method if permission not granted and shouldShowRequestPermissionRationale true`() {
+        val activity = Mockito.mock(ActivityWithWriteSettingAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(false)
         mockShouldShowRequestPermissionRationaleActivity(true)
