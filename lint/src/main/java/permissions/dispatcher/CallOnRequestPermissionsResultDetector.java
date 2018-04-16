@@ -8,6 +8,7 @@ import com.android.tools.lint.detector.api.Issue;
 import com.android.tools.lint.detector.api.JavaContext;
 import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
+import com.intellij.psi.PsiElement;
 
 import org.jetbrains.uast.UAnnotation;
 import org.jetbrains.uast.UBlockExpression;
@@ -16,6 +17,7 @@ import org.jetbrains.uast.UElement;
 import org.jetbrains.uast.UExpression;
 import org.jetbrains.uast.UMethod;
 import org.jetbrains.uast.UQualifiedReferenceExpression;
+import org.jetbrains.uast.kotlin.KotlinUFunctionCallExpression;
 import org.jetbrains.uast.kotlin.KotlinUQualifiedReferenceExpression;
 import org.jetbrains.uast.visitor.AbstractUastVisitor;
 
@@ -55,11 +57,15 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
 
         private final String className;
 
+        private final boolean isKotlin;
+
         private boolean hasRuntimePermissionAnnotation;
+
 
         private OnRequestPermissionsResultChecker(JavaContext context, UClass klass) {
             this.context = context;
             this.className = klass.getName();
+            isKotlin = context.getPsiFile() != null && "kotlin".equals(context.getPsiFile().getLanguage().getID());
         }
 
         @Override
@@ -79,13 +85,13 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
             if (!"onRequestPermissionsResult".equals(node.getName())) {
                 return true;
             }
-            if (hasRuntimePermissionAnnotation && !isGeneratedMethodCalled(node, className)) {
+            if (hasRuntimePermissionAnnotation && !isGeneratedMethodCalled(node, className, isKotlin)) {
                 context.report(ISSUE, context.getLocation(node), "Generated onRequestPermissionsResult method not called");
             }
             return true;
         }
 
-        private static boolean isGeneratedMethodCalled(UMethod method, String className) {
+        private static boolean isGeneratedMethodCalled(UMethod method, String className, boolean isKotlin) {
             UExpression methodBody = method.getUastBody();
             if (methodBody == null) {
                 return false;
@@ -94,25 +100,30 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
                 UBlockExpression methodBodyExpression = (UBlockExpression) methodBody;
                 List<UExpression> expressions = methodBodyExpression.getExpressions();
                 for (UExpression expression : expressions) {
+                    if (isKotlin && expression instanceof KotlinUFunctionCallExpression) {
+                        KotlinUFunctionCallExpression functionalExpression = (KotlinUFunctionCallExpression) expression;
+                        if ("onRequestPermissionsResult".equals(functionalExpression.getMethodName())) {
+                            return true;
+                        }
+                    }
+
                     if (!(expression instanceof UQualifiedReferenceExpression)) {
                         continue;
                     }
+
                     UQualifiedReferenceExpression referenceExpression = (UQualifiedReferenceExpression) expression;
-                    String receiverName = referenceExpression.getReceiver().toString();
+                    UExpression receiverExpression = referenceExpression.getReceiver();
+                    PsiElement receiverPsi = receiverExpression.getPsi();
+                    if (receiverPsi == null) {
+                        continue; // can this case be happened?
+                    }
+                    String receiverName = receiverPsi.getText();
                     if ("super".equals(receiverName)) {
                         // skip super method call
                         continue;
                     }
 
-                    boolean isKotlin = false;
-
-                    try {
-                        if (referenceExpression instanceof KotlinUQualifiedReferenceExpression) {
-                            isKotlin = true;
-                        }
-                    } catch (NoClassDefFoundError ignored) {}
-
-                    if (isKotlin) {
+                    if (isKotlin && referenceExpression instanceof KotlinUQualifiedReferenceExpression) {
                         if ("onRequestPermissionsResult".equals(referenceExpression.getResolvedName())) {
                             return true;
                         }
