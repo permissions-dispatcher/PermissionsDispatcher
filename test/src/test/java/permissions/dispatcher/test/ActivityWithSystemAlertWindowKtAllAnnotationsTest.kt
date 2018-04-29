@@ -25,6 +25,8 @@ import permissions.dispatcher.PermissionRequest
         AppOpsManagerCompat::class, Process::class, Settings::class, Build.VERSION::class, Uri::class)
 class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
     
+    private lateinit var activity: ActivityWithSystemAlertWindowKtAllAnnotations
+
     companion object {
         private var requestCode = 0
 
@@ -38,6 +40,7 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
 
     @Before
     fun setUp() {
+        activity = Mockito.mock(ActivityWithSystemAlertWindowKtAllAnnotations::class.java)
         PowerMockito.mockStatic(ActivityCompat::class.java)
         PowerMockito.mockStatic(PermissionChecker::class.java)
         PowerMockito.mockStatic(Process::class.java)
@@ -51,7 +54,6 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
 
     @Test
     fun `already granted call the method`() {
-        val activity = Mockito.mock(ActivityWithSystemAlertWindowKtAllAnnotations::class.java)
         mockCheckSelfPermission(true)
 
         activity.systemAlertWindowWithPermissionCheck()
@@ -61,7 +63,6 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
 
     @Test
     fun `checkSelfPermission returns false but canDrawOverlays returns true means granted`() {
-        val activity = Mockito.mock(ActivityWithSystemAlertWindowKtAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanDrawOverlays(true)
 
@@ -72,7 +73,6 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
 
     @Test
     fun `if permission not granted and no rationale activity, then call startActivityForResult`() {
-        val activity = Mockito.mock(ActivityWithSystemAlertWindowKtAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanDrawOverlays(false)
         mockUriParse()
@@ -85,7 +85,6 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
 
     @Test
     fun `if permission not granted and requires rationale activity, then call method for show rationale`() {
-        val activity = Mockito.mock(ActivityWithSystemAlertWindowKtAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanDrawOverlays(false)
         mockUriParse()
@@ -98,7 +97,6 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
 
     @Test
     fun `do nothing if requestCode is wrong one`() {
-        val activity = Mockito.mock(ActivityWithSystemAlertWindowKtAllAnnotations::class.java)
         activity.onActivityResult(-1)
 
         Mockito.verify(activity, Mockito.times(0)).systemAlertWindow()
@@ -106,7 +104,6 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
 
     @Test
     fun `call the method if permission granted`() {
-        val activity = Mockito.mock(ActivityWithSystemAlertWindowKtAllAnnotations::class.java)
         mockCheckSelfPermission(true)
 
         activity.onActivityResult(requestCode)
@@ -116,7 +113,6 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
 
     @Test
     fun `call the method if canDrawOverlays returns true`() {
-        val activity = Mockito.mock(ActivityWithSystemAlertWindowKtAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanDrawOverlays(true)
 
@@ -127,7 +123,6 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
 
     @Test
     fun `No call the method if permission not granted`() {
-        val activity = Mockito.mock(ActivityWithSystemAlertWindowKtAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanDrawOverlays(false)
 
@@ -138,7 +133,6 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
 
     @Test
     fun `call showNeverAsk method if permission not granted and shouldShowRequestPermissionRationale false`() {
-        val activity = Mockito.mock(ActivityWithSystemAlertWindowKtAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanDrawOverlays(false)
         mockShouldShowRequestPermissionRationaleActivity(false)
@@ -150,7 +144,6 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
 
     @Test
     fun `call showDenied method if permission not granted and shouldShowRequestPermissionRationale true`() {
-        val activity = Mockito.mock(ActivityWithSystemAlertWindowKtAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanDrawOverlays(false)
         mockShouldShowRequestPermissionRationaleActivity(true)

@@ -23,6 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner
 @PrepareForTest(ActivityCompat::class, PermissionChecker::class,
         AppOpsManagerCompat::class, Process::class, Settings::class, Build.VERSION::class, Uri::class)
 class ActivityWithWriteSettingPermissionsDispatcherTest {
+    private lateinit var activity: ActivityWithWriteSetting
 
     companion object {
         private var requestCode = 0
@@ -36,6 +37,7 @@ class ActivityWithWriteSettingPermissionsDispatcherTest {
 
     @Before
     fun setUp() {
+        activity = Mockito.mock(ActivityWithWriteSetting::class.java)
         PowerMockito.mockStatic(ActivityCompat::class.java)
         PowerMockito.mockStatic(PermissionChecker::class.java)
         PowerMockito.mockStatic(Process::class.java)
@@ -49,7 +51,6 @@ class ActivityWithWriteSettingPermissionsDispatcherTest {
 
     @Test
     fun `already granted call the method`() {
-        val activity = Mockito.mock(ActivityWithWriteSetting::class.java)
         mockCheckSelfPermission(true)
 
         ActivityWithWriteSettingPermissionsDispatcher.writeSettingWithPermissionCheck(activity)
@@ -59,7 +60,6 @@ class ActivityWithWriteSettingPermissionsDispatcherTest {
 
     @Test
     fun `checkSelfPermission returns false but canWrite returns true means granted`() {
-        val activity = Mockito.mock(ActivityWithWriteSetting::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(true)
 
@@ -70,7 +70,6 @@ class ActivityWithWriteSettingPermissionsDispatcherTest {
 
     @Test
     fun `if permission not granted, then start new activity for overlay`() {
-        val activity = Mockito.mock(ActivityWithWriteSetting::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(false)
         mockUriParse()
@@ -82,7 +81,6 @@ class ActivityWithWriteSettingPermissionsDispatcherTest {
 
     @Test
     fun `do nothing if requestCode is wrong one`() {
-        val activity = Mockito.mock(ActivityWithWriteSetting::class.java)
         ActivityWithWriteSettingPermissionsDispatcher.onActivityResult(activity, -1)
 
         Mockito.verify(activity, Mockito.times(0)).writeSetting()
@@ -90,7 +88,6 @@ class ActivityWithWriteSettingPermissionsDispatcherTest {
 
     @Test
     fun `call the method if permission granted`() {
-        val activity = Mockito.mock(ActivityWithWriteSetting::class.java)
         mockCheckSelfPermission(true)
 
         ActivityWithWriteSettingPermissionsDispatcher.onActivityResult(activity, requestCode)
@@ -100,7 +97,6 @@ class ActivityWithWriteSettingPermissionsDispatcherTest {
 
     @Test
     fun `call the method if canWrite returns true`() {
-        val activity = Mockito.mock(ActivityWithWriteSetting::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(true)
 
@@ -111,7 +107,6 @@ class ActivityWithWriteSettingPermissionsDispatcherTest {
 
     @Test
     fun `No call the method if permission not granted`() {
-        val activity = Mockito.mock(ActivityWithWriteSetting::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(false)
 

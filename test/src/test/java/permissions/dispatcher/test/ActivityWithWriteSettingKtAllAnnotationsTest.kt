@@ -25,6 +25,8 @@ import permissions.dispatcher.PermissionRequest
         AppOpsManagerCompat::class, Process::class, Settings.System::class, Build.VERSION::class, Uri::class)
 class ActivityWithWriteSettingKtAllAnnotationsTest {
     
+    private lateinit var activity: ActivityWithWriteSettingKtAllAnnotations
+
     companion object {
         private var requestCode = 0
 
@@ -38,6 +40,7 @@ class ActivityWithWriteSettingKtAllAnnotationsTest {
 
     @Before
     fun setUp() {
+        activity = Mockito.mock(ActivityWithWriteSettingKtAllAnnotations::class.java)
         PowerMockito.mockStatic(ActivityCompat::class.java)
         PowerMockito.mockStatic(PermissionChecker::class.java)
         PowerMockito.mockStatic(Process::class.java)
@@ -51,7 +54,6 @@ class ActivityWithWriteSettingKtAllAnnotationsTest {
 
     @Test
     fun `already granted call the method`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKtAllAnnotations::class.java)
         mockCheckSelfPermission(true)
 
         activity.writeSettingWithPermissionCheck()
@@ -61,7 +63,6 @@ class ActivityWithWriteSettingKtAllAnnotationsTest {
 
     @Test
     fun `checkSelfPermission returns false but canWrite returns true means granted`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKtAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(true)
 
@@ -72,7 +73,6 @@ class ActivityWithWriteSettingKtAllAnnotationsTest {
 
     @Test
     fun `if permission not granted and no rationale activity, then call startActivityForResult`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKtAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(false)
         mockUriParse()
@@ -85,7 +85,6 @@ class ActivityWithWriteSettingKtAllAnnotationsTest {
 
     @Test
     fun `if permission not granted and requires rationale activity, then call method for show rationale`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKtAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(false)
         mockUriParse()
@@ -98,7 +97,6 @@ class ActivityWithWriteSettingKtAllAnnotationsTest {
 
     @Test
     fun `do nothing if requestCode is wrong one`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKtAllAnnotations::class.java)
         activity.onActivityResult(-1)
 
         Mockito.verify(activity, Mockito.times(0)).writeSetting()
@@ -106,7 +104,6 @@ class ActivityWithWriteSettingKtAllAnnotationsTest {
 
     @Test
     fun `call the method if permission granted`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKtAllAnnotations::class.java)
         mockCheckSelfPermission(true)
 
         activity.onActivityResult(requestCode)
@@ -116,7 +113,6 @@ class ActivityWithWriteSettingKtAllAnnotationsTest {
 
     @Test
     fun `call the method if writeSetting returns true`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKtAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(true)
 
@@ -127,7 +123,6 @@ class ActivityWithWriteSettingKtAllAnnotationsTest {
 
     @Test
     fun `No call the method if permission not granted`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKtAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(false)
 
@@ -138,7 +133,6 @@ class ActivityWithWriteSettingKtAllAnnotationsTest {
 
     @Test
     fun `call showNeverAsk method if permission not granted and shouldShowRequestPermissionRationale false`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKtAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(false)
         mockShouldShowRequestPermissionRationaleActivity(false)
@@ -150,7 +144,6 @@ class ActivityWithWriteSettingKtAllAnnotationsTest {
 
     @Test
     fun `call showDenied method if permission not granted and shouldShowRequestPermissionRationale true`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKtAllAnnotations::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(false)
         mockShouldShowRequestPermissionRationaleActivity(true)
@@ -159,4 +152,5 @@ class ActivityWithWriteSettingKtAllAnnotationsTest {
 
         Mockito.verify(activity, Mockito.times(1)).showDeniedForWriteSettings()
     }
+
 }

@@ -23,6 +23,7 @@ import org.powermock.modules.junit4.PowerMockRunner
 @PrepareForTest(ActivityCompat::class, PermissionChecker::class,
         AppOpsManagerCompat::class, Process::class, Settings.System::class, Build.VERSION::class, Uri::class)
 class ActivityWithWriteSettingKtTest {
+    private lateinit var activity: ActivityWithWriteSettingKt
 
     companion object {
         private var requestCode = 0
@@ -37,6 +38,7 @@ class ActivityWithWriteSettingKtTest {
 
     @Before
     fun setUp() {
+        activity = Mockito.mock(ActivityWithWriteSettingKt::class.java)
         PowerMockito.mockStatic(ActivityCompat::class.java)
         PowerMockito.mockStatic(PermissionChecker::class.java)
         PowerMockito.mockStatic(Process::class.java)
@@ -50,7 +52,6 @@ class ActivityWithWriteSettingKtTest {
 
     @Test
     fun `already granted call the method`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKt::class.java)
         mockCheckSelfPermission(true)
 
         activity.writeSettingWithPermissionCheck()
@@ -60,7 +61,6 @@ class ActivityWithWriteSettingKtTest {
 
     @Test
     fun `checkSelfPermission returns false but canDrawOverlays returns true means granted`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKt::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(true)
 
@@ -71,7 +71,6 @@ class ActivityWithWriteSettingKtTest {
 
     @Test
     fun `if permission not granted, then start new activity for overlay`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKt::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(false)
         mockUriParse()
@@ -83,7 +82,6 @@ class ActivityWithWriteSettingKtTest {
 
     @Test
     fun `do nothing if requestCode is wrong one`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKt::class.java)
         activity.onActivityResult(-1)
 
         Mockito.verify(activity, Mockito.times(0)).writeSetting()
@@ -91,7 +89,6 @@ class ActivityWithWriteSettingKtTest {
 
     @Test
     fun `call the method if permission granted`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKt::class.java)
         mockCheckSelfPermission(true)
 
         activity.onActivityResult(requestCode)
@@ -101,7 +98,6 @@ class ActivityWithWriteSettingKtTest {
 
     @Test
     fun `call the method if writeSetting returns true`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKt::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(true)
 
@@ -112,7 +108,6 @@ class ActivityWithWriteSettingKtTest {
 
     @Test
     fun `No call the method if permission not granted`() {
-        val activity = Mockito.mock(ActivityWithWriteSettingKt::class.java)
         mockCheckSelfPermission(false)
         mockCanWrite(false)
 
