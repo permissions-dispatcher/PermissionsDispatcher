@@ -17,16 +17,6 @@ android {
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
-
-    sourceSets {
-        main {
-            java {
-                srcDirs = [
-                        'src/main/android'
-                ]
-            }
-        }
-    }
 }
 
 configurations {
