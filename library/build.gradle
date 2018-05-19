@@ -22,7 +22,6 @@ android {
         main {
             java {
                 srcDirs = [
-                        'src/main/java',
                         'src/main/android'
                 ]
             }
@@ -43,6 +42,7 @@ dependencies {
     testImplementation "org.powermock:powermock-api-mockito:$POWERMOCK_VERSION"
     testImplementation "org.powermock:powermock-module-junit4:$POWERMOCK_VERSION"
 
+    api project(path: ':annotation')
     lintChecks project(path: ':lint', configuration: 'lintChecks')
 }
 

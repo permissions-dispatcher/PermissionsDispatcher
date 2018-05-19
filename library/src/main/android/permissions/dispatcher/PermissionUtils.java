@@ -9,9 +9,8 @@ import android.os.Process;
 import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.AppOpsManagerCompat;
+import android.support.v4.content.PermissionChecker;
 import android.support.v4.util.SimpleArrayMap;
-
-import static android.support.v4.content.PermissionChecker.checkSelfPermission;
 
 public final class PermissionUtils {
     // Map of dangerous permissions introduced in later framework versions.
@@ -97,7 +96,7 @@ public final class PermissionUtils {
             return hasSelfPermissionForXiaomi(context, permission);
         }
         try {
-            return checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+            return PermissionChecker.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
         } catch (RuntimeException t) {
             return false;
         }
@@ -110,7 +109,7 @@ public final class PermissionUtils {
             return true;
         }
         int noteOp = AppOpsManagerCompat.noteOp(context, permissionToOp, Process.myUid(), context.getPackageName());
-        return noteOp == AppOpsManagerCompat.MODE_ALLOWED && checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+        return noteOp == AppOpsManagerCompat.MODE_ALLOWED && PermissionChecker.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
     }
 
     /**

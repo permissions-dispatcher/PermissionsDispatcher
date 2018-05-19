@@ -30,6 +30,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
     compile "com.squareup:javapoet:$JAVAPOET_VERSION"
     compile "com.squareup:kotlinpoet:$KOTLINPOET_VERSION"
+    compile project(path: ':annotation')
 
     testCompile "junit:junit:$JUNIT_VERSION"
     testCompile "com.google.testing.compile:compile-testing:$COMPILE_TESTING_VERSION"
