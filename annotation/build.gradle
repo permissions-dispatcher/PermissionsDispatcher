@@ -1,0 +1,4 @@
+apply plugin: 'java-library'
+
+targetCompatibility = JavaVersion.VERSION_1_6
+sourceCompatibility = JavaVersion.VERSION_1_6

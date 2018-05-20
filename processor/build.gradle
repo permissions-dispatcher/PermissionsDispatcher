@@ -8,7 +8,6 @@ apply plugin: AndroidJarDependencyPlugin
 apply plugin: AarToJarConversionPlugin
 
 // Connect sources & tests to library project
-sourceSets.main.java.srcDir project(":library").file("src/main/java")
 convertAarsToJar.dependsOn ":library:assembleRelease"
 
 task sourcesJar(type: Jar) {
@@ -30,6 +29,7 @@ dependencies {
     compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
     compile "com.squareup:javapoet:$JAVAPOET_VERSION"
     compile "com.squareup:kotlinpoet:$KOTLINPOET_VERSION"
+    compile project(path: ':annotation')
 
     testCompile "junit:junit:$JUNIT_VERSION"
     testCompile "com.google.testing.compile:compile-testing:$COMPILE_TESTING_VERSION"
