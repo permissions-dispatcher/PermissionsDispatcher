@@ -14,8 +14,8 @@ class WriteSettingsHelper : SensitivePermissionInterface {
         builder.beginControlFlow("if (%T.hasSelfPermissions(%N, *%N) || %T.System.canWrite(%N))", PERMISSION_UTILS, activity, permissionField, SETTINGS, activity)
     }
 
-    override fun addRequestPermissionsStatement(builder: FunSpec.Builder, activity: String, requestCodeField: String) {
-        builder.addStatement("val intent = %T(%T.ACTION_MANAGE_WRITE_SETTINGS, %T.parse(\"package:\" + %N.getPackageName()))", INTENT, SETTINGS, URI, activity)
-        builder.addStatement("%N.startActivityForResult(intent, %N)", activity, requestCodeField)
+    override fun addRequestPermissionsStatement(builder: FunSpec.Builder, targetParam: String, activityVar: String, requestCodeField: String) {
+        builder.addStatement("val intent = %T(%T.ACTION_MANAGE_WRITE_SETTINGS, %T.parse(\"package:\" + %N!!.getPackageName()))", INTENT, SETTINGS, URI, activityVar)
+        builder.addStatement("%N.startActivityForResult(intent, %N)", targetParam, requestCodeField)
     }
 }
