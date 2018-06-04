@@ -21,6 +21,17 @@ android {
     sourceSets {
         main.java.srcDirs += "src/main/kotlin"
     }
+
+    testOptions {
+        unitTests.all {
+            testLogging {
+                events "passed", "failed", "standardOut", "standardError"
+                outputs.upToDateWhen {false}
+                showStandardStreams = true
+                exceptionFormat "full"
+            }
+        }
+    }
 }
 
 dependencies {

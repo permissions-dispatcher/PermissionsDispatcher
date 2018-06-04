@@ -80,6 +80,10 @@ fun overwriteCustomManufacture(manufactureText: String = "Xiaomi") {
     manufacture.set(null, manufactureText)
 }
 
+fun clearCustomManufacture() {
+    overwriteCustomManufacture("")
+}
+
 fun overwriteCustomSdkInt(sdkInt: Int = 23) {
     val modifiersField = Field::class.java.getDeclaredField("modifiers")
     modifiersField.isAccessible = true
@@ -88,6 +92,10 @@ fun overwriteCustomSdkInt(sdkInt: Int = 23) {
     field.isAccessible = true
     modifiersField.setInt(field, field.modifiers and Modifier.FINAL.inv())
     field.set(null, sdkInt)
+}
+
+fun clearCustomSdkInt() {
+    overwriteCustomSdkInt()
 }
 
 fun testForXiaomi() {
