@@ -6,10 +6,7 @@ import android.support.v13.app.FragmentCompat
 import android.support.v4.app.AppOpsManagerCompat
 import android.support.v4.content.PermissionChecker
 import android.support.v7.app.AppCompatActivity
-import org.junit.Before
-import org.junit.BeforeClass
-import org.junit.Rule
-import org.junit.Test
+import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.Matchers.any
 import org.mockito.Mockito
@@ -51,6 +48,12 @@ class FragmentWithAllAnnotationsPermissionsDispatcherTest {
         PowerMockito.mockStatic(FragmentCompat::class.java)
         PowerMockito.mockStatic(Process::class.java)
         PowerMockito.mockStatic(AppOpsManagerCompat::class.java)
+    }
+
+    @After
+    fun tearDown() {
+        clearCustomManufacture()
+        clearCustomSdkInt()
     }
 
     @Test

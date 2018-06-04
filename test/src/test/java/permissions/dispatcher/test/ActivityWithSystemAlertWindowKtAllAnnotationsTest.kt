@@ -8,6 +8,7 @@ import android.provider.Settings
 import android.support.v4.app.ActivityCompat
 import android.support.v4.app.AppOpsManagerCompat
 import android.support.v4.content.PermissionChecker
+import org.junit.After
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
@@ -50,6 +51,12 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
 
         PowerMockito.mockStatic(Build.VERSION::class.java)
         PowerMockito.field(Build.VERSION::class.java, "SDK_INT").setInt(null, 25)
+    }
+
+    @After
+    fun tearDown() {
+        clearCustomManufacture()
+        clearCustomSdkInt()
     }
 
     @Test

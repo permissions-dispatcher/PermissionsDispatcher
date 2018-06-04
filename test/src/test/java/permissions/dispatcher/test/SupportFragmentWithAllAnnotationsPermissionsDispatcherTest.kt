@@ -5,6 +5,7 @@ import android.os.Process
 import android.support.v4.app.AppOpsManagerCompat
 import android.support.v4.content.PermissionChecker
 import android.support.v7.app.AppCompatActivity
+import org.junit.After
 import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
@@ -42,6 +43,12 @@ class SupportFragmentWithAllAnnotationsPermissionsDispatcherTest {
         PowerMockito.mockStatic(PermissionChecker::class.java)
         PowerMockito.mockStatic(Process::class.java)
         PowerMockito.mockStatic(AppOpsManagerCompat::class.java)
+    }
+
+    @After
+    fun tearDown() {
+        clearCustomManufacture()
+        clearCustomSdkInt()
     }
 
     @Test
