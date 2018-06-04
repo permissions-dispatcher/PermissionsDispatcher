@@ -39,6 +39,33 @@ class NoCorrespondingNeedsPermissionDetectorTest {
 
     @Test
     @Throws(Exception::class)
+    fun noNeedsPermissionAnnotationNoErrorsOrderNoTMatter() {
+        @Language("JAVA") val foo = """
+                package permissions.dispatcher;
+
+                public class Foo {
+                    @OnShowRationale("Camera")
+                    void someMethod() {
+                    }
+
+                    @NeedsPermission("Camera")
+                    void showCamera() {
+                    }
+                }
+                """.trimMargin()
+
+        lint()
+                .files(
+                        java(onNeedsPermission),
+                        java(onRationaleAnnotation),
+                        java(foo))
+                .issues(NoCorrespondingNeedsPermissionDetector.ISSUE)
+                .run()
+                .expectClean()
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun noNeedsPermissionAnnotation() {
         @Language("JAVA") val foo = """
                 package permissions.dispatcher;

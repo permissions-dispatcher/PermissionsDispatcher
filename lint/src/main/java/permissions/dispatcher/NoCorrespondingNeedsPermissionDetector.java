@@ -75,6 +75,11 @@ public final class NoCorrespondingNeedsPermissionDetector extends Detector imple
             if (onShowRationaleAnnotations.isEmpty()) {
                 return true;
             }
+            return true;
+        }
+
+        @Override
+        public void afterVisitClass(UClass node) {
             // If there is OnShowRationale, find corresponding NeedsPermission
             for (UAnnotation onShowRationaleAnnotation : onShowRationaleAnnotations) {
                 boolean found = false;
@@ -87,7 +92,6 @@ public final class NoCorrespondingNeedsPermissionDetector extends Detector imple
                     context.report(ISSUE, context.getLocation(onShowRationaleAnnotation), "Useless @OnShowRationale declaration");
                 }
             }
-            return true;
         }
 
         private static boolean hasSameNodes(List<UNamedExpression> first, List<UNamedExpression> second) {
