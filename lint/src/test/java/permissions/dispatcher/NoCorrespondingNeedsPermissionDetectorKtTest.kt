@@ -40,6 +40,33 @@ class NoCorrespondingNeedsPermissionDetectorKtTest {
 
     @Test
     @Throws(Exception::class)
+    fun noNeedsPermissionAnnotationNoErrorsOrderNotMatter() {
+        @Language("kotlin") val foo = """
+                package permissions.dispatcher
+
+                class Foo {
+                    @OnShowRationale("Camera")
+                    fun someMethod() {
+                    }
+
+                    @NeedsPermission("Camera")
+                    fun showCamera() {
+                    }
+                }
+                """.trimMargin()
+
+        lint()
+                .files(
+                        java(onNeedsPermission),
+                        java(onRationaleAnnotation),
+                        kt(foo))
+                .issues(NoCorrespondingNeedsPermissionDetector.ISSUE)
+                .run()
+                .expectClean()
+    }
+
+    @Test
+    @Throws(Exception::class)
     fun noNeedsPermissionAnnotation() {
         @Language("kotlin") val foo = """
                 package permissions.dispatcher
