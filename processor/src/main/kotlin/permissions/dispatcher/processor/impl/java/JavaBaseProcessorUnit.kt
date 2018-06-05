@@ -20,6 +20,7 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
 
     protected val PERMISSION_UTILS: ClassName = ClassName.get("permissions.dispatcher", "PermissionUtils")
     private val BUILD = ClassName.get("android.os", "Build")
+    private val ACTIVITY = ClassName.get("android.app", "Activity")
     private val MANIFEST_WRITE_SETTING = "android.permission.WRITE_SETTINGS"
     private val MANIFEST_SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
     private val ADD_WITH_CHECK_BODY_MAP = hashMapOf(MANIFEST_SYSTEM_ALERT_WINDOW to SystemAlertWindowHelper(), MANIFEST_WRITE_SETTING to WriteSettingsHelper())
@@ -164,9 +165,14 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
 
         // Add the conditional for when permission has already been granted
         val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
-        val activityVar = getActivityName(targetParam)
-        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, activityVar, permissionField)
-                ?: builder.beginControlFlow("if (\$T.hasSelfPermissions(\$N, \$N))", PERMISSION_UTILS, activityVar, permissionField)
+        val needNullCheck = !rpe.isSubtypeOf("${ACTIVITY.packageName()}.${ACTIVITY.simpleName()}")
+        if (needNullCheck) {
+            builder.addStatement("\$T activity = \$N", ACTIVITY, getActivityName(targetParam))
+                    .addStatement("if (activity == null) return")
+        }
+        val activityParam = if (needNullCheck) "activity" else getActivityName(targetParam)
+        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, activityParam, permissionField)
+                ?: builder.beginControlFlow("if (\$T.hasSelfPermissions(\$N, \$N))", PERMISSION_UTILS, activityParam, permissionField)
         builder.addCode(CodeBlock.builder()
                 .add("\$N.\$N(", targetParam, needsMethod.simpleString())
                 .add(varargsParametersCodeBlock(needsMethod))
@@ -204,7 +210,7 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
         }
 
         // Add the branch for "request permission"
-        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addRequestPermissionsStatement(builder, targetParam, activityVar, requestCodeField)
+        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addRequestPermissionsStatement(builder, targetParam, activityParam, requestCodeField)
                 ?: addRequestPermissionsStatement(builder, targetParam, permissionField, requestCodeField)
         if (onRationale != null) {
             builder.endControlFlow()
@@ -434,7 +440,15 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
                 .addStatement("\$T target = \$N.get()", targetType, weakFieldName)
                 .addStatement("if (target == null) return")
         val requestCodeField = requestCodeFieldName(needsMethod)
-        ADD_WITH_CHECK_BODY_MAP[needsMethod.getAnnotation(NeedsPermission::class.java).value[0]]?.addRequestPermissionsStatement(proceedMethod, targetParam, getActivityName(targetParam), requestCodeField)
+        val needNullCheck = !rpe.isSubtypeOf("${ACTIVITY.packageName()}.${ACTIVITY.simpleName()}") &&
+                ADD_WITH_CHECK_BODY_MAP[needsMethod.getAnnotation(NeedsPermission::class.java).value[0]] != null
+        if (needNullCheck) {
+            proceedMethod
+                    .addStatement("\$T activity = \$N", ACTIVITY, getActivityName(targetParam))
+                    .addStatement("if (activity == null) return")
+        }
+        val activityParam = if (needNullCheck) "activity" else getActivityName(targetParam)
+        ADD_WITH_CHECK_BODY_MAP[needsMethod.getAnnotation(NeedsPermission::class.java).value[0]]?.addRequestPermissionsStatement(proceedMethod, targetParam, activityParam, requestCodeField)
                 ?: addRequestPermissionsStatement(proceedMethod, targetParam, permissionFieldName(needsMethod), requestCodeField)
         builder.addMethod(proceedMethod.build())
 

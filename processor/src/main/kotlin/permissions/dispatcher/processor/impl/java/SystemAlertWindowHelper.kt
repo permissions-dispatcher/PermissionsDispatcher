@@ -10,12 +10,12 @@ class SystemAlertWindowHelper : SensitivePermissionInterface {
     private val INTENT = ClassName.get("android.content", "Intent")
     private val URI = ClassName.get("android.net", "Uri")
 
-    override fun addHasSelfPermissionsCondition(builder: MethodSpec.Builder, activityVar: String, permissionField: String) {
-        builder.beginControlFlow("if (\$T.hasSelfPermissions(\$N, \$N) || \$T.canDrawOverlays(\$N))", PERMISSION_UTILS, activityVar, permissionField, SETTINGS, activityVar)
+    override fun addHasSelfPermissionsCondition(builder: MethodSpec.Builder, activityParam: String, permissionField: String) {
+        builder.beginControlFlow("if (\$T.hasSelfPermissions(\$N, \$N) || \$T.canDrawOverlays(\$N))", PERMISSION_UTILS, activityParam, permissionField, SETTINGS, activityParam)
     }
 
-    override fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, activityVar: String, requestCodeField: String) {
-        builder.addStatement("\$T intent = new \$T(\$T.ACTION_MANAGE_OVERLAY_PERMISSION, \$T.parse(\"package:\" + \$N.getPackageName()))", INTENT, INTENT, SETTINGS, URI, activityVar)
+    override fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, activityParam: String, requestCodeField: String) {
+        builder.addStatement("\$T intent = new \$T(\$T.ACTION_MANAGE_OVERLAY_PERMISSION, \$T.parse(\"package:\" + \$N.getPackageName()))", INTENT, INTENT, SETTINGS, URI, activityParam)
         builder.addStatement("\$N.startActivityForResult(intent, \$N)", targetParam, requestCodeField)
     }
 
