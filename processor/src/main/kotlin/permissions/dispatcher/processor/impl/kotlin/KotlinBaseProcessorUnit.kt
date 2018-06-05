@@ -30,7 +30,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
 
     abstract fun addShouldShowRequestPermissionRationaleCondition(builder: FunSpec.Builder, permissionField: String, isPositiveCondition: Boolean = true)
 
-    abstract fun getActivityName(): String
+    abstract fun getActivityName(targetParam: String = "this"): String
 
     abstract fun isDeprecated(): Boolean
 
@@ -46,7 +46,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
     }
 
     /* Begin private */
-    private fun createJvmNameAnnotation(generatedClassName: String) : AnnotationSpec {
+    private fun createJvmNameAnnotation(generatedClassName: String): AnnotationSpec {
         return AnnotationSpec.builder(ClassName("", "JvmName"))
                 .addMember("%S", generatedClassName)
                 .build()
@@ -185,7 +185,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
         }
 
         // Add the branch for "request permission"
-        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addRequestPermissionsStatement(builder, activity, requestCodeField)
+        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addRequestPermissionsStatement(builder = builder, activityVar = getActivityName(), requestCodeField = requestCodeField)
                 ?: addRequestPermissionsStatement(builder = builder, permissionField = permissionField, requestCodeField = requestCodeField)
         if (onRationale != null) {
             builder.endControlFlow()
@@ -394,7 +394,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
                 .addModifiers(KModifier.OVERRIDE)
                 .addStatement("val target = %N.get() ?: return", propName)
         val requestCodeField = requestCodeFieldName(needsMethod)
-        ADD_WITH_CHECK_BODY_MAP[needsMethod.getAnnotation(NeedsPermission::class.java).value[0]]?.addRequestPermissionsStatement(proceedFun, targetParam, requestCodeField)
+        ADD_WITH_CHECK_BODY_MAP[needsMethod.getAnnotation(NeedsPermission::class.java).value[0]]?.addRequestPermissionsStatement(proceedFun, targetParam, getActivityName(targetParam), requestCodeField)
                 ?: addRequestPermissionsStatement(proceedFun, targetParam, permissionFieldName(needsMethod), requestCodeField)
         builder.addFunction(proceedFun.build())
 

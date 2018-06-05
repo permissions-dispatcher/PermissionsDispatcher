@@ -1,7 +1,7 @@
 package permissions.dispatcher.processor.impl.kotlin
 
 import com.squareup.kotlinpoet.FunSpec
-import permissions.dispatcher.processor.util.*
+import permissions.dispatcher.processor.util.typeMirrorOf
 import javax.annotation.processing.Messager
 import javax.lang.model.type.TypeMirror
 
@@ -11,7 +11,7 @@ class KotlinNativeFragmentProcessorUnit(messager: Messager) : KotlinBaseProcesso
 
     override fun getTargetType(): TypeMirror = typeMirrorOf("android.app.Fragment")
 
-    override fun getActivityName(): String = "activity"
+    override fun getActivityName(targetParam: String): String = "$targetParam.activity"
 
     override fun addShouldShowRequestPermissionRationaleCondition(builder: FunSpec.Builder, permissionField: String, isPositiveCondition: Boolean) {
         val condition = if (isPositiveCondition) "" else "!"
