@@ -1,5 +1,6 @@
 buildscript {
     repositories {
+        mavenCentral()
         google()
         jcenter()
     }
@@ -15,6 +16,7 @@ def generatePomFilesTask = tasks.create("generatePomFiles")
 
 allprojects {
     repositories {
+        mavenCentral()
         google()
         jcenter()
     }
