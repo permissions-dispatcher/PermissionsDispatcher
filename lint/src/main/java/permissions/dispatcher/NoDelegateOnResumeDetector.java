@@ -25,8 +25,8 @@ import java.util.List;
 
 public class NoDelegateOnResumeDetector extends Detector implements Detector.UastScanner {
     static final Issue ISSUE = Issue.create("NoDelegateOnResumeDetector",
-            "Asking permissions at onResume will cause an infinite loop.",
-            "Asking permissions at onResume will cause an infinite loop when user selects \"never ask again\" and denies the permission. This is because onResume method is called after returning from a permission request check. This problem can be solved by moving the method call to onStart.",
+            "Asking permissions at `onResume()` will cause an infinite loop.",
+            "Asking permissions in `onResume()` will cause an infinite loop when user selects \"Never ask again\" and denies the permission, since `onResume()` is called again after returning from a permission request check. This problem can be solved by moving this method call to `onStart()`.",
             Category.CORRECTNESS,
             4,
             Severity.ERROR,
