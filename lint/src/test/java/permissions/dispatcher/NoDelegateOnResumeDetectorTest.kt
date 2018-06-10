@@ -115,7 +115,7 @@ class NoDelegateOnResumeDetectorTest {
 
     @Test
     @Throws(Exception::class)
-    fun `WithPermissionCheck call inside onResume but there is no argment`() {
+    fun `WithPermissionCheck call inside onResume but there is no argument`() {
         @Language("JAVA") val foo = """
                 package permissions.dispatcher;
 

@@ -115,7 +115,7 @@ class NoDelegateOnResumeDetectorKtTest {
 
     @Test
     @Throws(Exception::class)
-    fun `WithPermissionCheck call inside onResume but there is argment`() {
+    fun `WithPermissionCheck call inside onResume but there is argument`() {
         @Language("kotlin") val foo = """
                 package permissions.dispatcher
 
