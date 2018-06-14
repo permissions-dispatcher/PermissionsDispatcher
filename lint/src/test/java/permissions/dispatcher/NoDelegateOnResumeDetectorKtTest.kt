@@ -174,4 +174,33 @@ class NoDelegateOnResumeDetectorKtTest {
                 .expectClean()
     }
 
+    @Test
+    @Throws(Exception::class)
+    fun `WithPermissionCheck call inside onResume but its visibility is private`() {
+        @Language("kotlin") val foo = """
+                package permissions.dispatcher
+
+                @RuntimePermissions
+                class Foo : android.app.Activity {
+                    @NeedsPermission("Camera")
+                    fun showCamera() {
+                    }
+
+                    private fun onResume() {
+                        super.onResume()
+                        showCameraWithPermissionCheck()
+                    }
+                }
+                """.trimMargin()
+
+        TestLintTask.lint()
+                .files(
+                        TestFiles.java(runtimePermission),
+                        TestFiles.java(Utils.onNeedsPermission),
+                        TestFiles.kt(foo))
+                .issues(NoDelegateOnResumeDetector.ISSUE)
+                .run()
+                .expectClean()
+    }
+
 }

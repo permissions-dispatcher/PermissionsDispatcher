@@ -17,6 +17,7 @@ import org.jetbrains.uast.UElement;
 import org.jetbrains.uast.UExpression;
 import org.jetbrains.uast.UIdentifier;
 import org.jetbrains.uast.UMethod;
+import org.jetbrains.uast.UastVisibility;
 import org.jetbrains.uast.visitor.AbstractUastVisitor;
 
 import java.util.Collections;
@@ -89,10 +90,21 @@ public class NoDelegateOnResumeDetector extends Detector implements Detector.Uas
             isKotlin = context.getPsiFile() != null && "kotlin".equals(context.getPsiFile().getLanguage().getID());
         }
 
+        /**
+         * @return return true if visiting end (if lint does not visit inside the method), false otherwise
+         */
         @Override
         public boolean visitMethod(UMethod node) {
             super.visitMethod(node);
-            return !"onResume".equalsIgnoreCase(node.getName());
+            return !"onResume".equalsIgnoreCase(node.getName())
+                    || node.getReturnType() != PsiType.VOID
+                    || node.getUastParameters().size() != 0
+                    || !isPublicOrProtected(node);
+        }
+
+        private boolean isPublicOrProtected(UMethod node) {
+            UastVisibility visibility = node.getVisibility();
+            return visibility == UastVisibility.PUBLIC || visibility == UastVisibility.PROTECTED;
         }
 
         @Override

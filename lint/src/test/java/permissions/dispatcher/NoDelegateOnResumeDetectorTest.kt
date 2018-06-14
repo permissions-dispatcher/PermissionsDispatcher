@@ -20,7 +20,7 @@ class NoDelegateOnResumeDetectorTest {
                     void showCamera() {
                     }
 
-                    void onResume() {
+                    protected void onResume() {
                         super.onResume();
                         FooPermissionsDispatcher.showCameraWithPermissionCheck(this);
                     }
@@ -54,7 +54,7 @@ class NoDelegateOnResumeDetectorTest {
 
                 @RuntimePermissions
                 public class Foo {
-                    void onResume() {
+                    protected void onResume() {
                         super.onResume();
                         FooPermissionsDispatcher.showCameraWithPermissionCheck(this);
                     }
@@ -92,7 +92,7 @@ class NoDelegateOnResumeDetectorTest {
 
                 @RuntimePermissions
                 public class Foo {
-                    void onStart() {
+                    public void onStart() {
                         super.onStart();
                         FooPermissionsDispatcher.showCameraWithPermissionCheck(this);
                     }
@@ -121,7 +121,7 @@ class NoDelegateOnResumeDetectorTest {
 
                 @RuntimePermissions
                 public class Foo {
-                    void onResume() {
+                    protected void onResume() {
                         super.onResume();
                         // this should not be generated...
                         FooPermissionsDispatcher.showCameraWithPermissionCheck();
@@ -151,7 +151,7 @@ class NoDelegateOnResumeDetectorTest {
 
                 @RuntimePermissions
                 public class Foo {
-                    void onResume() {
+                    protected void onResume() {
                         super.onResume();
                         showCameraWithPermissionCheck(this);
                     }
@@ -162,6 +162,35 @@ class NoDelegateOnResumeDetectorTest {
 
                     void showCameraWithPermissionCheck(Foo foo) {
 
+                    }
+                }
+                """.trimMargin()
+
+        TestLintTask.lint()
+                .files(
+                        TestFiles.java(runtimePermission),
+                        TestFiles.java(Utils.onNeedsPermission),
+                        TestFiles.java(foo))
+                .issues(NoDelegateOnResumeDetector.ISSUE)
+                .run()
+                .expectClean()
+    }
+
+    @Test
+    @Throws(Exception::class)
+    fun `WithPermissionCheck call inside onResume but its visibility is package private`() {
+        @Language("JAVA") val foo = """
+                package permissions.dispatcher;
+
+                @RuntimePermissions
+                public class Foo {
+                    void onResume() {
+                        super.onResume();
+                        showCameraWithPermissionCheck();
+                    }
+
+                    @NeedsPermission("Camera")
+                    void showCamera() {
                     }
                 }
                 """.trimMargin()
