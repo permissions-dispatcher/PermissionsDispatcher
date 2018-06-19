@@ -6,11 +6,12 @@ import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Process;
-import android.support.v13.app.FragmentCompat;
-import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.AppOpsManagerCompat;
-import android.support.v4.content.PermissionChecker;
-import android.support.v4.util.SimpleArrayMap;
+
+import androidx.collection.SimpleArrayMap;
+import androidx.core.app.ActivityCompat;
+import androidx.core.app.AppOpsManagerCompat;
+import androidx.core.content.PermissionChecker;
+import androidx.legacy.app.FragmentCompat;
 
 public final class PermissionUtils {
     // Map of dangerous permissions introduced in later framework versions.
@@ -135,7 +136,7 @@ public final class PermissionUtils {
      * @param permissions permission list
      * @return returns true if one of the permission is needed to show rationale.
      */
-    public static boolean shouldShowRequestPermissionRationale(android.support.v4.app.Fragment fragment, String... permissions) {
+    public static boolean shouldShowRequestPermissionRationale(androidx.fragment.app.Fragment fragment, String... permissions) {
         for (String permission : permissions) {
             if (fragment.shouldShowRequestPermissionRationale(permission)) {
                 return true;

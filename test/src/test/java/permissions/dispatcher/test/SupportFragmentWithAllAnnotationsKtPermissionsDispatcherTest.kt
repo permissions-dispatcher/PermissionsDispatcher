@@ -2,9 +2,9 @@ package permissions.dispatcher.test
 
 import android.content.pm.PackageManager
 import android.os.Process
-import android.support.v4.app.AppOpsManagerCompat
-import android.support.v4.content.PermissionChecker
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.AppOpsManagerCompat
+import androidx.core.content.PermissionChecker
 import org.junit.After
 import org.junit.Before
 import org.junit.BeforeClass

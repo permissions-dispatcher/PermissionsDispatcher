@@ -2,8 +2,8 @@ package permissions.dispatcher.test_v13;
 
 import android.Manifest;
 import android.app.Fragment;
-import android.support.annotation.NonNull;
 
+import androidx.annotation.NonNull;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;

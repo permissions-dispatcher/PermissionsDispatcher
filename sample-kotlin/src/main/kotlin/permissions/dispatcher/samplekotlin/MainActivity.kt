@@ -2,12 +2,11 @@ package permissions.dispatcher.samplekotlin
 
 import android.Manifest
 import android.os.Bundle
-import android.support.annotation.StringRes
-import android.support.v7.app.AlertDialog
-import android.support.v7.app.AppCompatActivity
-import android.view.View
 import android.widget.Button
 import android.widget.Toast
+import androidx.annotation.StringRes
+import androidx.appcompat.app.AlertDialog
+import androidx.appcompat.app.AppCompatActivity
 import permissions.dispatcher.*
 import permissions.dispatcher.samplekotlin.camera.CameraPreviewFragment
 import permissions.dispatcher.samplekotlin.contacts.ContactsFragment

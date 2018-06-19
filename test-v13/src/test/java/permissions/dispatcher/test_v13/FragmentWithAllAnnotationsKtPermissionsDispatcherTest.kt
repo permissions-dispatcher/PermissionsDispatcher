@@ -2,10 +2,9 @@ package permissions.dispatcher.test_v13
 
 import android.content.pm.PackageManager
 import android.os.Process
-import android.support.v13.app.FragmentCompat
-import android.support.v4.app.AppOpsManagerCompat
-import android.support.v4.content.PermissionChecker
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.AppOpsManagerCompat
+import androidx.core.content.PermissionChecker
 import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.Matchers.any
@@ -22,7 +21,7 @@ import permissions.dispatcher.test.*
 @Suppress("IllegalIdentifier")
 @RunWith(RobolectricTestRunner::class)
 @PowerMockIgnore("org.mockito.*", "org.robolectric.*", "android.*")
-@PrepareForTest(PermissionChecker::class, FragmentCompat::class, AppOpsManagerCompat::class, Process::class)
+@PrepareForTest(PermissionChecker::class, androidx.legacy.app.FragmentCompat::class, AppOpsManagerCompat::class, Process::class)
 class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
 
     private lateinit var fragment: FragmentWithAllAnnotationsKt
@@ -47,7 +46,7 @@ class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
         fragment = Mockito.spy(FragmentWithAllAnnotationsKt())
 
         PowerMockito.mockStatic(PermissionChecker::class.java)
-        PowerMockito.mockStatic(FragmentCompat::class.java)
+        PowerMockito.mockStatic(androidx.legacy.app.FragmentCompat::class.java)
         PowerMockito.mockStatic(Process::class.java)
         PowerMockito.mockStatic(AppOpsManagerCompat::class.java)
     }

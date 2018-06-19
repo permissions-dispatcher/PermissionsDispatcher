@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Context;
 import android.os.Build;
-import android.support.v4.content.PermissionChecker;
 
 import org.junit.Before;
 import org.junit.Test;
@@ -17,6 +16,8 @@ import org.powermock.modules.junit4.PowerMockRunner;
 
 import java.lang.reflect.Field;
 import java.lang.reflect.Modifier;
+
+import androidx.core.content.PermissionChecker;
 
 import static android.os.Build.VERSION_CODES.GINGERBREAD;
 import static android.os.Build.VERSION_CODES.ICE_CREAM_SANDWICH;

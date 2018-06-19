@@ -12,7 +12,7 @@ class KotlinSupportFragmentProcessorUnit(messager: Messager) : KotlinBaseProcess
 
     override fun isDeprecated(): Boolean = false
 
-    override fun getTargetType(): TypeMirror = typeMirrorOf("android.support.v4.app.Fragment")
+    override fun getTargetType(): TypeMirror = typeMirrorOf("androidx.fragment.app.Fragment")
 
     override fun getActivityName(targetParam: String): String = "$targetParam.activity"
 
