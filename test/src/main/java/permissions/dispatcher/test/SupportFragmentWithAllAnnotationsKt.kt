@@ -1,17 +1,10 @@
 package permissions.dispatcher.test
 
 import android.Manifest
-import android.support.v4.app.Fragment
-
-import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.OnNeverAskAgain
-import permissions.dispatcher.OnPermissionDenied
-import permissions.dispatcher.OnShowRationale
-import permissions.dispatcher.PermissionRequest
-import permissions.dispatcher.RuntimePermissions
+import permissions.dispatcher.*
 
 @RuntimePermissions
-open class SupportFragmentWithAllAnnotationsKt : Fragment() {
+open class SupportFragmentWithAllAnnotationsKt : androidx.fragment.app.Fragment() {
 
     @NeedsPermission(Manifest.permission.CAMERA)
     fun showCamera() {

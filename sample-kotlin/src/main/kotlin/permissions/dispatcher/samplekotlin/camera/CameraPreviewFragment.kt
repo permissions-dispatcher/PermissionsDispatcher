@@ -3,14 +3,12 @@ package permissions.dispatcher.samplekotlin.camera
 import android.annotation.SuppressLint
 import android.hardware.Camera
 import android.os.Bundle
-import android.support.v4.app.Fragment
 import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
-
 import permissions.dispatcher.samplekotlin.R
 
 /**
@@ -26,7 +24,7 @@ import permissions.dispatcher.samplekotlin.R
  * Implementation is based directly on the documentation at
  * http://developer.android.com/guide/topics/media/camera.html
  */
-class CameraPreviewFragment : Fragment() {
+class CameraPreviewFragment : androidx.fragment.app.Fragment() {
 
     private var preview: CameraPreview? = null
     private var camera: Camera? = null

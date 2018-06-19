@@ -5,9 +5,9 @@ import android.net.Uri
 import android.os.Build
 import android.os.Process
 import android.provider.Settings
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.AppOpsManagerCompat
-import android.support.v4.content.PermissionChecker
+import androidx.core.app.ActivityCompat
+import androidx.core.app.AppOpsManagerCompat
+import androidx.core.content.PermissionChecker
 import org.junit.After
 import org.junit.Before
 import org.junit.BeforeClass
@@ -18,7 +18,8 @@ import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
-import permissions.dispatcher.test.ActivityWithWriteSettingAllAnnotationsPermissionsDispatcher.*
+import permissions.dispatcher.test.ActivityWithWriteSettingAllAnnotationsPermissionsDispatcher.onActivityResult
+import permissions.dispatcher.test.ActivityWithWriteSettingAllAnnotationsPermissionsDispatcher.writeSettingWithPermissionCheck
 
 @Suppress("IllegalIdentifier")
 @RunWith(PowerMockRunner::class)
