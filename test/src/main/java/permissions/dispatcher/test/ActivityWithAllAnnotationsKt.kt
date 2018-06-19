@@ -1,14 +1,8 @@
 package permissions.dispatcher.test
 
 import android.Manifest
-import android.support.v7.app.AppCompatActivity
-
-import permissions.dispatcher.NeedsPermission
-import permissions.dispatcher.OnNeverAskAgain
-import permissions.dispatcher.OnPermissionDenied
-import permissions.dispatcher.OnShowRationale
-import permissions.dispatcher.PermissionRequest
-import permissions.dispatcher.RuntimePermissions
+import androidx.appcompat.app.AppCompatActivity
+import permissions.dispatcher.*
 
 @RuntimePermissions
 open class ActivityWithAllAnnotationsKt : AppCompatActivity() {

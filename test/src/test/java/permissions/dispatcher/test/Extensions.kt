@@ -8,11 +8,10 @@ import android.net.Uri
 import android.os.Build
 import android.os.Process
 import android.provider.Settings
-import android.support.v4.app.ActivityCompat
-import android.support.v4.app.AppOpsManagerCompat
-import android.support.v4.app.Fragment
-import android.support.v4.content.PermissionChecker
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.ActivityCompat
+import androidx.core.app.AppOpsManagerCompat
+import androidx.core.content.PermissionChecker
 import org.mockito.Matchers.*
 import org.powermock.api.mockito.PowerMockito
 import java.lang.reflect.Field
@@ -23,7 +22,7 @@ fun mockShouldShowRequestPermissionRationaleActivity(result: Boolean) {
 }
 
 @SuppressLint("NewApi")
-fun mockShouldShowRequestPermissionRationaleFragment(fragment: Fragment, result: Boolean) {
+fun mockShouldShowRequestPermissionRationaleFragment(fragment: androidx.fragment.app.Fragment, result: Boolean) {
     PowerMockito.`when`(fragment.shouldShowRequestPermissionRationale(anyString())).thenReturn(result)
 }
 
@@ -36,7 +35,7 @@ fun mockCheckSelfPermission(result: Boolean) {
     PowerMockito.`when`(PermissionChecker.checkSelfPermission(any(Context::class.java), anyString())).thenReturn(value)
 }
 
-fun mockGetActivity(fragment: Fragment, result: AppCompatActivity) {
+fun mockGetActivity(fragment: androidx.fragment.app.Fragment, result: AppCompatActivity) {
     PowerMockito.`when`(fragment.activity).thenReturn(result)
 }
 

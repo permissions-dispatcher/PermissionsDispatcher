@@ -1,9 +1,9 @@
 package permissions.dispatcher.test;
 
 import android.Manifest;
-import android.support.annotation.NonNull;
-import android.support.v7.app.AppCompatActivity;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.AppCompatActivity;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.RuntimePermissions;
