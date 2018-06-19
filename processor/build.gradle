@@ -53,4 +53,4 @@ publish {
 
 // Non-Android project: Artifactory Plugin adds only 1 publication
 project.ext.publicationName = "maven"
-apply from: rootProject.file('gradle/gradle-artifactory-upload.gradle')
+//apply from: rootProject.file('gradle/gradle-artifactory-upload.gradle')
