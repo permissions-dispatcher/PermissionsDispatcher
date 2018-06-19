@@ -1,5 +1,5 @@
 apply plugin: 'com.android.library'
-apply plugin: 'com.novoda.bintray-release'
+//apply plugin: 'com.novoda.bintray-release'
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION
@@ -36,15 +36,15 @@ dependencies {
     lintChecks project(path: ':lint', configuration: 'lintChecks')
 }
 
-publish {
-    userOrg = USER
-    groupId = GROUP_ID
-    artifactId = ARTIFACT_ID_LIBRARY
-    version = VERSION
-    desc = DESCRIPTION
-    website = WEBSITE
-    licences = LICENCES
-}
+//publish {
+//    userOrg = USER
+//    groupId = GROUP_ID
+//    artifactId = ARTIFACT_ID_LIBRARY
+//    version = VERSION
+//    desc = DESCRIPTION
+//    website = WEBSITE
+//    licences = LICENCES
+//}
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs
@@ -80,4 +80,4 @@ project.afterEvaluate {
 
 // Android Library project: Artifactory Plugin adds 1 publication per Build Type
 project.ext.publicationName = "release"
-apply from: rootProject.file('gradle/gradle-artifactory-upload.gradle')
+//apply from: rootProject.file('gradle/gradle-artifactory-upload.gradle')
