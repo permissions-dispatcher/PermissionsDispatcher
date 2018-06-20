@@ -115,24 +115,29 @@ class NoDelegateOnResumeDetectorKtTest {
 
     @Test
     @Throws(Exception::class)
-    fun `WithPermissionCheck call inside onResume but there is argument`() {
+    fun `WithPermissionCheck call inside onResume with argument`() {
         @Language("kotlin") val foo = """
                 package permissions.dispatcher
 
                 @RuntimePermissions
                 class Foo : android.app.Activity {
                     @NeedsPermission("Camera")
-                    fun showCamera() {
+                    fun showCamera(value: Int) {
                     }
 
                     fun onResume() {
                         super.onResume()
-                        showCameraWithPermissionCheck(this)
+                        showCameraWithPermissionCheck(1)
                     }
 
-                    fun showCameraWithPermissionCheck(activity: Activity) {
-                    }
                 }
+                """.trimMargin()
+
+        val expectedText = """
+                |src/permissions/dispatcher/Foo.kt:11: Error: Asking permission inside onResume() [NoDelegateOnResumeDetector]
+                |                        showCameraWithPermissionCheck(1)
+                |                        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~
+                |1 errors, 0 warnings
                 """.trimMargin()
 
         TestLintTask.lint()
@@ -142,7 +147,9 @@ class NoDelegateOnResumeDetectorKtTest {
                         TestFiles.kt(foo))
                 .issues(NoDelegateOnResumeDetector.ISSUE)
                 .run()
-                .expectClean()
+                .expect(expectedText)
+                .expectErrorCount(1)
+                .expectWarningCount(0)
     }
 
     @Test

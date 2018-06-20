@@ -124,10 +124,10 @@ public class NoDelegateOnResumeDetector extends Detector implements Detector.Uas
 
             UExpression receiver = node.getReceiver();
             if (isKotlin) {
-                return receiver == null && node.getValueArgumentCount() == 0;
+                return receiver == null;
             } else {
                 String qualifiedName = uClass.getQualifiedName();
-                if (node.getValueArgumentCount() != 1) return false;
+                if (node.getValueArgumentCount() < 1) return false;
                 PsiType expressionType = node.getValueArguments().get(0).getExpressionType();
                 return receiver != null
                         && qualifiedName != null

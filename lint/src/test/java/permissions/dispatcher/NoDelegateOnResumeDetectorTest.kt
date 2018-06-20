@@ -186,7 +186,7 @@ class NoDelegateOnResumeDetectorTest {
                 public class Foo {
                     void onResume() {
                         super.onResume();
-                        showCameraWithPermissionCheck();
+                        FooPermissionsDispatcher.showCameraWithPermissionCheck(this);
                     }
 
                     @NeedsPermission("Camera")
