@@ -24,7 +24,7 @@ import permissions.dispatcher.samplekotlin.R
  * Implementation is based directly on the documentation at
  * http://developer.android.com/guide/topics/media/camera.html
  */
-class CameraPreviewFragment : androidx.fragment.app.Fragment() {
+class CameraPreviewFragment : Fragment() {
 
     private var preview: CameraPreview? = null
     private var camera: Camera? = null
