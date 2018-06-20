@@ -30,7 +30,7 @@ import kotlin.properties.Delegates
  * implementation is based on the training guide available here:
  * https://developer.android.com/training/contacts-provider/retrieve-names.html
  */
-class ContactsFragment : androidx.fragment.app.Fragment(), androidx.loader.app.LoaderManager.LoaderCallbacks<Cursor> {
+class ContactsFragment : Fragment(), LoaderManager.LoaderCallbacks<Cursor> {
 
     private var messageText: TextView by Delegates.notNull()
 
@@ -65,12 +65,12 @@ class ContactsFragment : androidx.fragment.app.Fragment(), androidx.loader.app.L
     /**
      * Initialises a new [CursorLoader] that queries the [ContactsContract].
      */
-    override fun onCreateLoader(i: Int, bundle: Bundle?): androidx.loader.content.Loader<Cursor> = androidx.loader.content.CursorLoader(activity!!.applicationContext, ContactsContract.Contacts.CONTENT_URI, PROJECTION, null, null, ORDER)
+    override fun onCreateLoader(i: Int, bundle: Bundle?): Loader<Cursor> = CursorLoader(activity!!.applicationContext, ContactsContract.Contacts.CONTENT_URI, PROJECTION, null, null, ORDER)
 
     /**
      * Dislays either the name of the first contact or a message.
      */
-    override fun onLoadFinished(loader: androidx.loader.content.Loader<Cursor>, cursor: Cursor?) {
+    override fun onLoadFinished(loader: Loader<Cursor>, cursor: Cursor?) {
         cursor?.let {
             val totalCount: Int = it.count
             if (totalCount > 0) {
@@ -88,7 +88,7 @@ class ContactsFragment : androidx.fragment.app.Fragment(), androidx.loader.app.L
         }
     }
 
-    override fun onLoaderReset(loader: androidx.loader.content.Loader<Cursor>) = messageText.setText(R.string.contacts_empty)
+    override fun onLoaderReset(loader: Loader<Cursor>) = messageText.setText(R.string.contacts_empty)
 
     /**
      * Accesses the Contacts content provider directly to insert a new contact.

@@ -4,7 +4,7 @@ import android.Manifest
 import permissions.dispatcher.*
 
 @RuntimePermissions
-open class SupportFragmentWithAllAnnotationsKt : androidx.fragment.app.Fragment() {
+open class SupportFragmentWithAllAnnotationsKt : Fragment() {
 
     @NeedsPermission(Manifest.permission.CAMERA)
     fun showCamera() {

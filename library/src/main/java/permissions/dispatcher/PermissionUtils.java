@@ -136,7 +136,7 @@ public final class PermissionUtils {
      * @param permissions permission list
      * @return returns true if one of the permission is needed to show rationale.
      */
-    public static boolean shouldShowRequestPermissionRationale(androidx.fragment.app.Fragment fragment, String... permissions) {
+    public static boolean shouldShowRequestPermissionRationale(Fragment fragment, String... permissions) {
         for (String permission : permissions) {
             if (fragment.shouldShowRequestPermissionRationale(permission)) {
                 return true;
