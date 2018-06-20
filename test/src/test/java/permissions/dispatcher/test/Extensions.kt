@@ -22,7 +22,7 @@ fun mockShouldShowRequestPermissionRationaleActivity(result: Boolean) {
 }
 
 @SuppressLint("NewApi")
-fun mockShouldShowRequestPermissionRationaleFragment(fragment: androidx.fragment.app.Fragment, result: Boolean) {
+fun mockShouldShowRequestPermissionRationaleFragment(fragment: Fragment, result: Boolean) {
     PowerMockito.`when`(fragment.shouldShowRequestPermissionRationale(anyString())).thenReturn(result)
 }
 
@@ -35,7 +35,7 @@ fun mockCheckSelfPermission(result: Boolean) {
     PowerMockito.`when`(PermissionChecker.checkSelfPermission(any(Context::class.java), anyString())).thenReturn(value)
 }
 
-fun mockGetActivity(fragment: androidx.fragment.app.Fragment, result: AppCompatActivity) {
+fun mockGetActivity(fragment: Fragment, result: AppCompatActivity) {
     PowerMockito.`when`(fragment.activity).thenReturn(result)
 }
 
