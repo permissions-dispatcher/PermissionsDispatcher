@@ -43,7 +43,7 @@ dependencies {
     kapt project(':processor')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
-    implementation 'androidx.appcompat:appcompat:1.0.0-alpha3'
+    implementation "androidx.appcompat:appcompat:$ANDROIDX_LIBRARY_VERSION"
 
     testImplementation "junit:junit:$JUNIT_VERSION"
     testImplementation "org.mockito:mockito-core:$MOCKITO_VERSION"
