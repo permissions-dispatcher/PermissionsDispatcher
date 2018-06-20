@@ -20,7 +20,9 @@ jdk:
   - oraclejdk8
 
 before_install:
-- echo "sdk.dir=$ANDROID_HOME" > local.properties
+  - echo "sdk.dir=$ANDROID_HOME" > local.properties
+  - mkdir "$ANDROID_HOME/licenses" || true
+  - cp ./android-sdk-licenses/* "$ANDROID_HOME/licenses/"
 
 branches:
   except:
