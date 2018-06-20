@@ -17,7 +17,7 @@ android {
 }
 
 dependencies {
-    implementation 'androidx.appcompat:appcompat:1.0.0-alpha3'
+    implementation "androidx.appcompat:appcompat:$ANDROIDX_LIBRARY_VERSION"
     implementation (project(':library')) {
         exclude module: "support-v13"
     }

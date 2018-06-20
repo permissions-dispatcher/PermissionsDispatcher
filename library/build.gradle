@@ -24,8 +24,8 @@ configurations {
 }
 
 dependencies {
-    implementation 'androidx.core:core:1.0.0-alpha3'
-    implementation 'androidx.legacy:legacy-support-v13:1.0.0-alpha3'
+    implementation "androidx.core:core:$ANDROIDX_LIBRARY_VERSION"
+    implementation "androidx.legacy:legacy-support-v13:$ANDROIDX_LIBRARY_VERSION"
 
     testImplementation "junit:junit:$JUNIT_VERSION"
     testImplementation "org.mockito:mockito-core:$MOCKITO_VERSION"
