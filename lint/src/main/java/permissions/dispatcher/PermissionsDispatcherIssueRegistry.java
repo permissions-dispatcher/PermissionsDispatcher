@@ -13,7 +13,8 @@ public final class PermissionsDispatcherIssueRegistry extends IssueRegistry {
         return Arrays.asList(
                 CallNeedsPermissionDetector.ISSUE,
                 CallOnRequestPermissionsResultDetector.ISSUE,
-                NoCorrespondingNeedsPermissionDetector.ISSUE);
+                NoCorrespondingNeedsPermissionDetector.ISSUE,
+                NoDelegateOnResumeDetector.ISSUE);
     }
 
     @Override
