@@ -1,6 +1,7 @@
 package permissions.dispatcher.test
 
 import android.Manifest
+import androidx.fragment.app.Fragment
 import permissions.dispatcher.*
 
 @RuntimePermissions

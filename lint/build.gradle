@@ -13,6 +13,9 @@ dependencies {
     compile "com.android.tools.lint:lint-checks:$LINT_VERSION"
     compile "com.android.tools.lint:lint:$LINT_VERSION"
 
+    implementation "androidx.core:core:$ANDROIDX_LIBRARY_VERSION"
+    implementation "androidx.fragment:fragment:$ANDROIDX_LIBRARY_VERSION"
+
     testCompile "junit:junit:$JUNIT_VERSION"
     testCompile "com.android.tools.lint:lint-tests:$LINT_VERSION"
     testCompile "com.android.tools:testutils:$LINT_VERSION"

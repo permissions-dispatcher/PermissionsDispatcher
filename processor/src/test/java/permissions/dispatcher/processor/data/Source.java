@@ -70,7 +70,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "@RuntimePermissions",
                     "public class MyFragment extends Fragment {",
@@ -808,7 +808,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -850,7 +850,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "@RuntimePermissions",
@@ -982,7 +982,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -1076,7 +1076,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[] {
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -1174,7 +1174,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -1277,7 +1277,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -1379,7 +1379,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -1450,7 +1450,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -1547,7 +1547,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -1644,7 +1644,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -1718,7 +1718,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -1801,7 +1801,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -1873,7 +1873,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -1915,7 +1915,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "@RuntimePermissions",
@@ -2008,7 +2008,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -2088,7 +2088,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -2208,7 +2208,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -2296,7 +2296,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -2424,7 +2424,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -2488,7 +2488,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnShowRationale;",
@@ -2572,7 +2572,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnShowRationale;",
@@ -2664,7 +2664,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnShowRationale;",
@@ -2765,7 +2765,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnNeverAskAgain;",
@@ -2830,7 +2830,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnNeverAskAgain;",
@@ -2901,7 +2901,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.PermissionRequest;",
@@ -2992,7 +2992,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnShowRationale;",
@@ -3091,7 +3091,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnPermissionDenied;",
@@ -3190,7 +3190,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnShowRationale;",
@@ -3298,7 +3298,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.PermissionRequest;",
@@ -3373,7 +3373,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnShowRationale;",
@@ -3493,7 +3493,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnPermissionDenied;",
@@ -3575,7 +3575,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnShowRationale;",
@@ -3733,7 +3733,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -3811,7 +3811,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnShowRationale;",
@@ -3939,7 +3939,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -4036,7 +4036,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnShowRationale;",
@@ -4180,7 +4180,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -4222,7 +4222,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnShowRationale;",
@@ -4304,7 +4304,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -4348,7 +4348,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnPermissionDenied;",
@@ -4431,7 +4431,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -4473,7 +4473,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnPermissionDenied;",
@@ -4559,7 +4559,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.Override;",
                     "import java.lang.String;",
                     "import java.lang.ref.WeakReference;",
@@ -4628,7 +4628,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnShowRationale;",
@@ -4754,7 +4754,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -4847,7 +4847,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.os.Build;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -4923,7 +4923,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -5007,7 +5007,7 @@ public final class Source {
             return new String[]{
                     "package test;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnNeverAskAgain;",
                     "import permissions.dispatcher.OnPermissionDenied;",
@@ -5221,7 +5221,7 @@ public final class Source {
             return new String[]{
                     "package test;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnNeverAskAgain;",
                     "import permissions.dispatcher.OnPermissionDenied;",
@@ -5539,7 +5539,7 @@ public final class Source {
             return new String[]{
                     "package test;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnNeverAskAgain;",
                     "import permissions.dispatcher.OnPermissionDenied;",
@@ -5868,7 +5868,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -5928,7 +5928,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -5988,7 +5988,7 @@ public final class Source {
         @Override
         protected String[] getExpectSource() {
             return new String[]{
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",
@@ -6030,7 +6030,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "public class Foo {",
@@ -6089,7 +6089,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "public class Foo {",
@@ -6181,7 +6181,7 @@ public final class Source {
             return new String[]{
                     "package tests;",
                     "import android.Manifest;",
-                    "import android.support.v4.app.Fragment;",
+                    "import androidx.fragment.app.Fragment;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "@RuntimePermissions",
@@ -6232,7 +6232,7 @@ public final class Source {
         protected String[] getExpectSource() {
             return new String[]{
                     "package tests;",
-                    "import android.support.v4.app.ActivityCompat;",
+                    "import androidx.core.app.ActivityCompat;",
                     "import java.lang.String;",
                     "import permissions.dispatcher.PermissionUtils;",
                     "final class MyActivityPermissionsDispatcher {",

@@ -25,6 +25,8 @@ configurations {
 
 dependencies {
     implementation "androidx.core:core:$ANDROIDX_LIBRARY_VERSION"
+    implementation "androidx.fragment:fragment:$ANDROIDX_LIBRARY_VERSION"
+    implementation "androidx.collection:collection:$ANDROIDX_LIBRARY_VERSION"
     implementation "androidx.legacy:legacy-support-v13:$ANDROIDX_LIBRARY_VERSION"
 
     testImplementation "junit:junit:$JUNIT_VERSION"
