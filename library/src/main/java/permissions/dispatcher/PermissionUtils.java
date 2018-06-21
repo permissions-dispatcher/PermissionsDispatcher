@@ -1,7 +1,6 @@
 package permissions.dispatcher;
 
 import android.app.Activity;
-import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
@@ -11,6 +10,7 @@ import androidx.collection.SimpleArrayMap;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.AppOpsManagerCompat;
 import androidx.core.content.PermissionChecker;
+import androidx.fragment.app.Fragment;
 import androidx.legacy.app.FragmentCompat;
 
 public final class PermissionUtils {
@@ -153,7 +153,7 @@ public final class PermissionUtils {
      * @return returns true if one of the permission is needed to show rationale.
      */
     @Deprecated
-    public static boolean shouldShowRequestPermissionRationale(Fragment fragment, String... permissions) {
+    public static boolean shouldShowRequestPermissionRationale(android.app.Fragment fragment, String... permissions) {
         for (String permission : permissions) {
             if (FragmentCompat.shouldShowRequestPermissionRationale(fragment, permission)) {
                 return true;
@@ -170,7 +170,7 @@ public final class PermissionUtils {
      * @param requestCode Request code connected to the permission request
      */
     @Deprecated
-    public static void requestPermissions(Fragment fragment, String[] permissions, int requestCode) {
+    public static void requestPermissions(android.app.Fragment fragment, String[] permissions, int requestCode) {
         FragmentCompat.requestPermissions(fragment, permissions, requestCode);
     }
 }
