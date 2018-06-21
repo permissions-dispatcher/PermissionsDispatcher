@@ -12,6 +12,7 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.AppOpsManagerCompat
 import androidx.core.content.PermissionChecker
+import androidx.fragment.app.Fragment
 import org.mockito.Matchers.*
 import org.powermock.api.mockito.PowerMockito
 import java.lang.reflect.Field

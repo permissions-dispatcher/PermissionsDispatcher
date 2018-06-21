@@ -5,6 +5,7 @@ import android.os.Process
 import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.AppOpsManagerCompat
 import androidx.core.content.PermissionChecker
+import androidx.legacy.app.FragmentCompat
 import org.junit.*
 import org.junit.runner.RunWith
 import org.mockito.Matchers.any
@@ -21,6 +22,7 @@ import permissions.dispatcher.test.*
 @RunWith(RobolectricTestRunner::class)
 @PowerMockIgnore("org.mockito.*", "org.robolectric.*", "android.*")
 @PrepareForTest(PermissionChecker::class, FragmentCompat::class, AppOpsManagerCompat::class, Process::class)
+@Ignore
 class FragmentWithAllAnnotationsPermissionsDispatcherTest {
 
     private lateinit var fragment: FragmentWithAllAnnotations
