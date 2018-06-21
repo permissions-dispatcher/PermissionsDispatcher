@@ -1,15 +1,15 @@
 package permissions.dispatcher.test
 
 import android.annotation.SuppressLint
-import android.app.Fragment
 import android.content.Context
 import android.content.pm.PackageManager
 import android.os.Build
 import android.os.Process
-import android.support.v13.app.FragmentCompat
-import android.support.v4.app.AppOpsManagerCompat
-import android.support.v4.content.PermissionChecker
-import android.support.v7.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatActivity
+import androidx.core.app.AppOpsManagerCompat
+import androidx.core.content.PermissionChecker
+import androidx.fragment.app.Fragment
+import androidx.legacy.app.FragmentCompat
 import org.mockito.Matchers
 import org.mockito.Matchers.any
 import org.mockito.Matchers.anyString
@@ -24,7 +24,7 @@ fun mockCheckSelfPermission(result: Boolean) {
 
 @SuppressLint("NewApi")
 fun mockShouldShowRequestPermissionRationaleFragment(result: Boolean) {
-    PowerMockito.`when`(FragmentCompat.shouldShowRequestPermissionRationale(any(Fragment::class.java), anyString())).thenReturn(result)
+    PowerMockito.`when`(FragmentCompat.shouldShowRequestPermissionRationale(any(android.app.Fragment::class.java), anyString())).thenReturn(result)
 }
 
 fun mockGetActivity(fragment: Fragment, result: AppCompatActivity) {

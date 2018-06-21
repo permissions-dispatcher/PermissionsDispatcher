@@ -11,7 +11,7 @@ import javax.lang.model.type.TypeMirror
  */
 class KotlinActivityProcessorUnit(messager: Messager) : KotlinBaseProcessorUnit(messager) {
 
-    private val ACTIVITY_COMPAT = ClassName("android.support.v4.app", "ActivityCompat")
+    private val ACTIVITY_COMPAT = ClassName("androidx.core.app", "ActivityCompat")
 
     override fun isDeprecated(): Boolean = false
 

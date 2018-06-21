@@ -2,7 +2,7 @@ package permissions.dispatcher.processor.impl.java
 
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.MethodSpec
-import permissions.dispatcher.processor.util.*
+import permissions.dispatcher.processor.util.typeMirrorOf
 import javax.annotation.processing.Messager
 import javax.lang.model.type.TypeMirror
 
@@ -11,7 +11,7 @@ import javax.lang.model.type.TypeMirror
  */
 class JavaActivityProcessorUnit(messager: Messager) : JavaBaseProcessorUnit(messager) {
 
-    private val ACTIVITY_COMPAT = ClassName.get("android.support.v4.app", "ActivityCompat")
+    private val ACTIVITY_COMPAT = ClassName.get("androidx.core.app", "ActivityCompat")
 
     override fun isDeprecated(): Boolean = false
 

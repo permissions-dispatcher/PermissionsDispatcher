@@ -1,7 +1,7 @@
 package permissions.dispatcher.processor.impl.java
 
 import com.squareup.javapoet.MethodSpec
-import permissions.dispatcher.processor.util.*
+import permissions.dispatcher.processor.util.typeMirrorOf
 import javax.annotation.processing.Messager
 import javax.lang.model.type.TypeMirror
 
@@ -13,7 +13,7 @@ class JavaSupportFragmentProcessorUnit(messager: Messager) : JavaBaseProcessorUn
     override fun isDeprecated(): Boolean = false
 
     override fun getTargetType(): TypeMirror {
-        return typeMirrorOf("android.support.v4.app.Fragment")
+        return typeMirrorOf("androidx.fragment.app.Fragment")
     }
 
     override fun getActivityName(targetParam: String): String {
