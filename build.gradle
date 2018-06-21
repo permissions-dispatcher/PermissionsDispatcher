@@ -1,7 +1,8 @@
 buildscript {
     repositories {
-        jcenter()
+        mavenCentral()
         google()
+        jcenter()
     }
     dependencies {
         classpath "com.android.tools.build:gradle:$GRADLE_PLUGIN_VERSION"
@@ -15,8 +16,9 @@ def generatePomFilesTask = tasks.create("generatePomFiles")
 
 allprojects {
     repositories {
-        jcenter()
+        mavenCentral()
         google()
+        jcenter()
     }
 
     tasks.whenTaskAdded {
