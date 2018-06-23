@@ -32,7 +32,7 @@ class PermissionsProcessor : AbstractProcessor() {
     }
 
     /* Processing Environment helpers */
-    var filer: Filer by Delegates.notNull()
+    private var filer: Filer by Delegates.notNull()
     var messager: Messager by Delegates.notNull()
 
     override fun init(processingEnv: ProcessingEnvironment) {

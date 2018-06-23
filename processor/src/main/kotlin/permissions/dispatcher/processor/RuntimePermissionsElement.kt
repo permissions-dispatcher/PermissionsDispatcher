@@ -33,9 +33,9 @@ class RuntimePermissionsElement(e: TypeElement) {
     val inputClassName = e.simpleString()
     val generatedClassName = inputClassName + GEN_CLASS_SUFFIX
     val needsElements = e.childElementsAnnotatedWith(NeedsPermission::class.java)
-    val onRationaleElements = e.childElementsAnnotatedWith(OnShowRationale::class.java)
-    val onDeniedElements = e.childElementsAnnotatedWith(OnPermissionDenied::class.java)
-    val onNeverAskElements = e.childElementsAnnotatedWith(OnNeverAskAgain::class.java)
+    private val onRationaleElements = e.childElementsAnnotatedWith(OnShowRationale::class.java)
+    private val onDeniedElements = e.childElementsAnnotatedWith(OnPermissionDenied::class.java)
+    private val onNeverAskElements = e.childElementsAnnotatedWith(OnNeverAskAgain::class.java)
 
     init {
         validateNeedsMethods()

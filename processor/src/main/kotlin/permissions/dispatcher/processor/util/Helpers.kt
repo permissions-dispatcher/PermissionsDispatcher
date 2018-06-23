@@ -33,7 +33,7 @@ fun permissionFieldName(e: ExecutableElement) = "$GEN_PERMISSION_PREFIX${e.simpl
 
 fun pendingRequestFieldName(e: ExecutableElement) = "$GEN_PENDING_PREFIX${e.simpleString().trimDollarIfNeeded().toUpperCase()}"
 
-fun WithPermissionCheckMethodName(e: ExecutableElement) = "${e.simpleString().trimDollarIfNeeded()}$GEN_WITH_PERMISSION_CHECK_SUFFIX"
+fun withPermissionCheckMethodName(e: ExecutableElement) = "${e.simpleString().trimDollarIfNeeded()}$GEN_WITH_PERMISSION_CHECK_SUFFIX"
 
 fun permissionRequestTypeName(rpe: RuntimePermissionsElement, e: ExecutableElement) =
         "${rpe.inputClassName}${e.simpleString().trimDollarIfNeeded().capitalize()}$GEN_PERMISSION_REQUEST_SUFFIX"
