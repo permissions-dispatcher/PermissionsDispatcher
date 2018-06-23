@@ -109,7 +109,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
     }
 
     private fun createWithPermissionCheckFun(rpe: RuntimePermissionsElement, method: ExecutableElement): FunSpec {
-        val builder = FunSpec.builder(WithPermissionCheckMethodName(method))
+        val builder = FunSpec.builder(withPermissionCheckMethodName(method))
                 .addTypeVariables(rpe.ktTypeVariables)
                 .receiver(rpe.ktTypeName)
 

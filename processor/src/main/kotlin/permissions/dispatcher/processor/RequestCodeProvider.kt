@@ -8,7 +8,7 @@ import java.util.concurrent.atomic.AtomicInteger
  */
 class RequestCodeProvider {
 
-    val currentCode = AtomicInteger(0)
+    private val currentCode = AtomicInteger(0)
 
     /**
      * Obtains the next unique request code.

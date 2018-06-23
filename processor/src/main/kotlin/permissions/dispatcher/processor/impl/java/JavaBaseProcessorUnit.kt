@@ -128,7 +128,7 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
 
     private fun createWithPermissionCheckMethod(rpe: RuntimePermissionsElement, method: ExecutableElement): MethodSpec {
         val targetParam = "target"
-        val builder = MethodSpec.methodBuilder(WithPermissionCheckMethodName(method))
+        val builder = MethodSpec.methodBuilder(withPermissionCheckMethodName(method))
                 .addTypeVariables(rpe.typeVariables)
                 .addModifiers(Modifier.STATIC)
                 .returns(TypeName.VOID)

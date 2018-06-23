@@ -20,8 +20,8 @@ import javax.lang.model.element.Modifier
 import javax.lang.model.type.TypeKind
 import javax.lang.model.type.TypeMirror
 
-private val WRITE_SETTINGS = "android.permission.WRITE_SETTINGS"
-private val SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
+private const val WRITE_SETTINGS = "android.permission.WRITE_SETTINGS"
+private const val SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
 
 /**
  * Obtains the [ProcessorUnit] implementation for the provided element.
@@ -44,8 +44,7 @@ fun <K> findAndValidateProcessorUnit(units: List<ProcessorUnit<K>>, element: Ele
 fun <A : Annotation> checkDuplicatedValue(items: List<ExecutableElement>, annotationClass: Class<A>) {
     val allItems: ArrayList<List<String>> = arrayListOf()
     items.forEach {
-        val permissionValue = it.getAnnotation(annotationClass).permissionValue()
-        Collections.sort(permissionValue)
+        val permissionValue = it.getAnnotation(annotationClass).permissionValue().sorted()
         allItems.forEach { oldItem ->
             if (oldItem == permissionValue) {
                 throw DuplicatedValueException(permissionValue, it, annotationClass)
