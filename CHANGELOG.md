@@ -1,5 +1,10 @@
 # ChangeLog
 
+- 3.3.0 2018/04/17
+  - Internal: Update using Kotlin ver to 1.2.50 [#489](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/489)
+  - Add: Add a lint rule for not call WithPermissionCheck inside onResume [#486](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/486)
+  - Fix: Fix compile error when request SYSTEM_ALERT_WINDOW on SupportFragment [#482](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/482)
+  - Fix: Fix the problem with order matter "Useless @OnShowRationale declaration [#479](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/479)
 - 3.2.0 2018/04/17
   - Update: Address lint for Kotlin project [#460](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/460)
   - Add: Add JvmName annotation to generated file [#458](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/458)
