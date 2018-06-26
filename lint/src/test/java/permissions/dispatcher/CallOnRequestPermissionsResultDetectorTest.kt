@@ -9,7 +9,6 @@ import permissions.dispatcher.Utils.onNeedsPermission
 import permissions.dispatcher.Utils.onRationaleAnnotation
 import permissions.dispatcher.Utils.runtimePermission
 
-
 class CallOnRequestPermissionsResultDetectorTest {
 
     @Test
