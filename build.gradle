@@ -7,7 +7,7 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:$GRADLE_PLUGIN_VERSION"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
-        classpath "com.novoda:bintray-release:$BINTRAY_PLUGIN_VERSION"
+//        classpath "com.novoda:bintray-release:$BINTRAY_PLUGIN_VERSION"
         classpath "org.jfrog.buildinfo:build-info-extractor-gradle:$JFROG_PLUGIN_VERSION"
     }
 }

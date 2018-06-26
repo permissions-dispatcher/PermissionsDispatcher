@@ -3,7 +3,7 @@ import permissions.dispatcher.AndroidJarDependencyPlugin
 import permissions.dispatcher.AarToJarConversionPlugin
 
 apply plugin: 'kotlin'
-apply plugin: 'com.novoda.bintray-release'
+//apply plugin: 'com.novoda.bintray-release'
 apply plugin: AndroidJarDependencyPlugin
 apply plugin: AarToJarConversionPlugin
 
@@ -41,15 +41,15 @@ dependencies {
     testCompileAar project(path: ":library", configuration: "default")
 }
 
-publish {
-    userOrg = USER
-    groupId = GROUP_ID
-    artifactId = ARTIFACT_ID_PROCESSOR
-    version = VERSION
-    desc = DESCRIPTION
-    website = WEBSITE
-    licences = LICENCES
-}
+//publish {
+//    userOrg = USER
+//    groupId = GROUP_ID
+//    artifactId = ARTIFACT_ID_PROCESSOR
+//    version = VERSION
+//    desc = DESCRIPTION
+//    website = WEBSITE
+//    licences = LICENCES
+//}
 
 // Non-Android project: Artifactory Plugin adds only 1 publication
 project.ext.publicationName = "maven"
