@@ -24,7 +24,7 @@ open class ActivityWithSystemAlertWindowKtAllAnnotations : AppCompatActivity() {
     internal fun showNeverAskForSystemAlertWindow() {
     }
 
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent) {
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         onActivityResult(requestCode)
     }
