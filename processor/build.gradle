@@ -4,6 +4,7 @@ import permissions.dispatcher.AarToJarConversionPlugin
 
 apply plugin: 'kotlin'
 //apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'com.jfrog.bintray'
 apply plugin: AndroidJarDependencyPlugin
 apply plugin: AarToJarConversionPlugin
 
@@ -50,6 +51,20 @@ dependencies {
 //    website = WEBSITE
 //    licences = LICENCES
 //}
+
+bintray {
+    pkg {
+        repo = 'maven'
+        userOrg = USER
+        name = GROUP_ID
+        artifactId = ARTIFACT_ID_PROCESSOR
+        publishVersion = VERSION
+        desc = DESCRIPTION
+        website = WEBSITE
+        vcsUrl = "${WEBSITE}.git"
+        licences = LICENCES
+    }
+}
 
 // Non-Android project: Artifactory Plugin adds only 1 publication
 project.ext.publicationName = "maven"
