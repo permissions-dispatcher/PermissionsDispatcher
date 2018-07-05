@@ -16,7 +16,7 @@ artifactory {
         }
         defaults {
             publishArtifacts = true
-            publications(project.ext.publicationName)
+            publications([project.ext.publicationName])
         }
     }
 }
