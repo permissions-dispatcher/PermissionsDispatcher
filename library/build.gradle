@@ -1,5 +1,7 @@
 apply plugin: 'com.android.library'
 //apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'com.jfrog.bintray'
+apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION
@@ -47,6 +49,49 @@ dependencies {
 //    website = WEBSITE
 //    licences = LICENCES
 //}
+
+bintray {
+    configurations = ['archives']
+
+    pkg {
+        repo = 'maven'
+        userOrg = USER
+        name = "${GROUP_ID}.${ARTIFACT_ID_PROCESSOR}"
+        vcsUrl = "${WEBSITE}.git"
+        licenses = ['Apache-2.0']
+        websiteUrl = WEBSITE
+        vcsUrl = "${WEBSITE}.git"
+        version {
+            name = VERSION
+            desc = DESCRIPTION
+        }
+    }
+}
+
+install {
+    repositories.mavenInstaller {
+        pom.project {
+            name ARTIFACT_ID_PROCESSOR
+            url WEBSITE
+
+            packaging 'aar'
+            groupId GROUP_ID
+            artifactId ARTIFACT_ID_LIBRARY
+            version VERSION
+
+            licenses {
+                license {
+                    name 'The Apache Software License, Version 2.0'
+                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
+                }
+            }
+            scm {
+                connection "${WEBSITE}.git"
+                url WEBSITE
+            }
+        }
+    }
+}
 
 task sourcesJar(type: Jar) {
     from android.sourceSets.main.java.srcDirs

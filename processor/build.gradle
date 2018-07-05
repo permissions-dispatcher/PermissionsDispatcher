@@ -4,6 +4,7 @@ import permissions.dispatcher.AarToJarConversionPlugin
 
 apply plugin: 'kotlin'
 //apply plugin: 'com.novoda.bintray-release'
+apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: AndroidJarDependencyPlugin
 apply plugin: AarToJarConversionPlugin
@@ -52,17 +53,43 @@ dependencies {
 //    licences = LICENCES
 //}
 
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            from components.java
+            groupId GROUP_ID
+            artifactId ARTIFACT_ID_PROCESSOR
+            version VERSION
+
+            pom.withXml {
+                // Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
+                configurations.implementation.allDependencies.each {
+                    // Ensure dependencies such as fileTree are not included.
+                    if (it.name != 'unspecified') {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        dependencyNode.appendNode('artifactId', it.name)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+}
+
 bintray {
+    publications = ['MyPublication']
+
     pkg {
         repo = 'maven'
         userOrg = USER
-        name = GROUP_ID
-        artifactId = ARTIFACT_ID_PROCESSOR
-        publishVersion = VERSION
-        desc = DESCRIPTION
-        website = WEBSITE
+        name = ARTIFACT_ID_PROCESSOR
         vcsUrl = "${WEBSITE}.git"
-        licences = LICENCES
+        licenses = ['Apache-2.0']
+        version {
+            name = VERSION
+            desc = DESCRIPTION
+        }
     }
 }
 
