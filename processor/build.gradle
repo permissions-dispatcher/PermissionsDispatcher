@@ -3,7 +3,6 @@ import permissions.dispatcher.AndroidJarDependencyPlugin
 import permissions.dispatcher.AarToJarConversionPlugin
 
 apply plugin: 'kotlin'
-//apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: AndroidJarDependencyPlugin
@@ -43,16 +42,6 @@ dependencies {
     testCompileAar project(path: ":library", configuration: "default")
 }
 
-//publish {
-//    userOrg = USER
-//    groupId = GROUP_ID
-//    artifactId = ARTIFACT_ID_PROCESSOR
-//    version = VERSION
-//    desc = DESCRIPTION
-//    website = WEBSITE
-//    licences = LICENCES
-//}
-
 publishing {
     publications {
         MyPublication(MavenPublication) {
@@ -60,32 +49,22 @@ publishing {
             groupId GROUP_ID
             artifactId ARTIFACT_ID_PROCESSOR
             version VERSION
-
-            pom.withXml {
-                // Iterate over the implementation dependencies (we don't want the test ones), adding a <dependency> node for each
-                configurations.implementation.allDependencies.each {
-                    // Ensure dependencies such as fileTree are not included.
-                    if (it.name != 'unspecified') {
-                        def dependencyNode = dependenciesNode.appendNode('dependency')
-                        dependencyNode.appendNode('groupId', it.group)
-                        dependencyNode.appendNode('artifactId', it.name)
-                        dependencyNode.appendNode('version', it.version)
-                    }
-                }
-            }
         }
     }
 }
 
 bintray {
     publications = ['MyPublication']
+    user = bintrayUser
+    key = bintrayKey
+    dryRun = dryRun
 
     pkg {
-        repo = 'maven'
+        repo = REPO
         userOrg = USER
         name = ARTIFACT_ID_PROCESSOR
-        vcsUrl = "${WEBSITE}.git"
-        licenses = ['Apache-2.0']
+        vcsUrl = VCS_URL
+        licenses = LICENCES
         version {
             name = VERSION
             desc = DESCRIPTION
