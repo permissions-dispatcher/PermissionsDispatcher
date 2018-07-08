@@ -1,5 +1,7 @@
+group = GROUP_ID
+version = VERSION
+
 apply plugin: 'com.android.library'
-//apply plugin: 'com.novoda.bintray-release'
 apply plugin: 'com.jfrog.bintray'
 apply plugin: 'com.github.dcendents.android-maven'
 
@@ -40,27 +42,19 @@ dependencies {
     lintChecks project(path: ':lint', configuration: 'lintChecks')
 }
 
-//publish {
-//    userOrg = USER
-//    groupId = GROUP_ID
-//    artifactId = ARTIFACT_ID_LIBRARY
-//    version = VERSION
-//    desc = DESCRIPTION
-//    website = WEBSITE
-//    licences = LICENCES
-//}
-
 bintray {
     configurations = ['archives']
+    user = bintrayUser
+    key = bintrayKey
+    dryRun = dryRun
 
     pkg {
-        repo = 'maven'
+        repo = REPO
         userOrg = USER
-        name = "${GROUP_ID}.${ARTIFACT_ID_PROCESSOR}"
-        vcsUrl = "${WEBSITE}.git"
-        licenses = ['Apache-2.0']
+        name = ARTIFACT_ID_LIBRARY
+        vcsUrl = VCS_URL
+        licenses = LICENCES
         websiteUrl = WEBSITE
-        vcsUrl = "${WEBSITE}.git"
         version {
             name = VERSION
             desc = DESCRIPTION
@@ -71,13 +65,9 @@ bintray {
 install {
     repositories.mavenInstaller {
         pom.project {
-            name ARTIFACT_ID_PROCESSOR
-            url WEBSITE
-
             packaging 'aar'
-            groupId GROUP_ID
-            artifactId ARTIFACT_ID_LIBRARY
-            version VERSION
+            name ARTIFACT_ID_LIBRARY
+            url WEBSITE
 
             licenses {
                 license {
