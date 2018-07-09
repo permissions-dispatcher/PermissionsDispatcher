@@ -8,7 +8,7 @@ import javax.lang.model.type.TypeMirror
 /**
  * ProcessorUnit implementation for Fragments defined in the support-v4 library.
  */
-class JavaSupportFragmentProcessorUnit(messager: Messager) : JavaBaseProcessorUnit(messager) {
+class JavaFragmentProcessorUnit(messager: Messager) : JavaBaseProcessorUnit(messager) {
 
     override fun isDeprecated(): Boolean = false
 

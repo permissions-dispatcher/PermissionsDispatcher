@@ -8,7 +8,7 @@ import javax.lang.model.type.TypeMirror
 /**
  * [permissions.dispatcher.processor.KtProcessorUnit] implementation for Fragments defined in the support-v4 library.
  */
-class KotlinSupportFragmentProcessorUnit(messager: Messager) : KotlinBaseProcessorUnit(messager) {
+class KotlinFragmentProcessorUnit(messager: Messager) : KotlinBaseProcessorUnit(messager) {
 
     override fun isDeprecated(): Boolean = false
 

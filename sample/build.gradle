@@ -18,8 +18,6 @@ android {
 
 dependencies {
     implementation "androidx.appcompat:appcompat:$ANDROIDX_LIBRARY_VERSION"
-    implementation (project(':library')) {
-        exclude module: "support-v13"
-    }
+    implementation project(':library')
     annotationProcessor project(':processor')
 }

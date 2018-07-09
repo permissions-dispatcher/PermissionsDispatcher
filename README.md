@@ -121,10 +121,7 @@ To add PermissionsDispatcher to your project, include the following in your **ap
 
 ```groovy
 dependencies {
-  compile("com.github.hotchemi:permissionsdispatcher:${latest.version}") {
-      // if you don't use android.app.Fragment you can exclude support for them
-      exclude module: "support-v13"
-  }
+  implementation "com.github.hotchemi:permissionsdispatcher:${latest.version}"
   annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:${latest.version}"
 }
 ```

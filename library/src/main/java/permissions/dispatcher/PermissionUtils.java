@@ -11,7 +11,6 @@ import androidx.core.app.ActivityCompat;
 import androidx.core.app.AppOpsManagerCompat;
 import androidx.core.content.PermissionChecker;
 import androidx.fragment.app.Fragment;
-import androidx.legacy.app.FragmentCompat;
 
 public final class PermissionUtils {
     // Map of dangerous permissions introduced in later framework versions.
@@ -143,34 +142,5 @@ public final class PermissionUtils {
             }
         }
         return false;
-    }
-
-    /**
-     * Checks given permissions are needed to show rationale.
-     *
-     * @param fragment    fragment
-     * @param permissions permission list
-     * @return returns true if one of the permission is needed to show rationale.
-     */
-    @Deprecated
-    public static boolean shouldShowRequestPermissionRationale(android.app.Fragment fragment, String... permissions) {
-        for (String permission : permissions) {
-            if (FragmentCompat.shouldShowRequestPermissionRationale(fragment, permission)) {
-                return true;
-            }
-        }
-        return false;
-    }
-
-    /**
-     * Requests the provided permissions for a Fragment instance.
-     *
-     * @param fragment    fragment
-     * @param permissions permissions list
-     * @param requestCode Request code connected to the permission request
-     */
-    @Deprecated
-    public static void requestPermissions(android.app.Fragment fragment, String[] permissions, int requestCode) {
-        FragmentCompat.requestPermissions(fragment, permissions, requestCode);
     }
 }

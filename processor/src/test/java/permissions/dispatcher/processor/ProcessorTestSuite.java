@@ -11,16 +11,6 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.NoPermissionActivity);
     }
 
-    @Test public void noPermissionSupportFragment() {
-        expectRuntimeException("Annotated class 'MyFragment' doesn't have any method annotated with '@NeedsPermission'");
-        assertJavaSource(Source.NoPermissionSupportFragment);
-    }
-
-    @Test public void noPermissionNativeFragment() {
-        expectRuntimeException("Annotated class 'MyFragment' doesn't have any method annotated with '@NeedsPermission'");
-        assertJavaSource(Source.NoPermissionNativeFragment);
-    }
-
     @Test public void permissionWithNonVoidReturnType() {
         expectRuntimeException("Method 'showCamera()' must specify return type 'void', not 'int'");
         assertJavaSource(Source.PermissionWithNonVoidReturnType);
@@ -151,10 +141,6 @@ public class ProcessorTestSuite extends TestSuite {
 
     @Test public void onePermissionSupportFragment() {
         assertJavaSource(Source.OnePermissionSupportFragment);
-    }
-
-    @Test public void onePermissionNativeFragment() {
-        assertJavaSource(Source.OnePermissionNativeFragment);
     }
 
     @Test public void onePermissionWithParametersActivity() {
@@ -340,10 +326,6 @@ public class ProcessorTestSuite extends TestSuite {
 
     @Test public void writeSettingsSupportFragment() {
         assertJavaSource(Source.WriteSettingsSupportFragment);
-    }
-
-    @Test public void writeSettingsNativeFragment() {
-        assertJavaSource(Source.WriteSettingsNativeFragment);
     }
 
     @Test public void writeSettingsActivity() {
