@@ -38,7 +38,6 @@ dependencies {
     testCompile androidJar()
     testCompile files(Jvm.current().getToolsJar())
     testCompileAar "androidx.legacy:legacy-support-v4:$ANDROIDX_LIBRARY_VERSION"
-    testCompileAar "androidx.legacy:legacy-support-v13:$ANDROIDX_LIBRARY_VERSION"
     testCompileAar project(path: ":library", configuration: "default")
 }
 

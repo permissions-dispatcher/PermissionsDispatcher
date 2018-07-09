@@ -37,9 +37,7 @@ android {
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
 
-    implementation(project(':library')) {
-        exclude module: "support-v13"
-    }
+    implementation project(':library')
     kapt project(':processor')
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
