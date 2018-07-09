@@ -6,7 +6,7 @@ import javax.annotation.processing.Messager
 import javax.lang.model.type.TypeMirror
 
 /**
- * ProcessorUnit implementation for Fragments defined in the support-v4 library.
+ * ProcessorUnit implementation for Fragments.
  */
 class JavaFragmentProcessorUnit(messager: Messager) : JavaBaseProcessorUnit(messager) {
 
