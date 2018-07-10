@@ -24,7 +24,7 @@ bintray {
     pkg {
         repo = REPO
         userOrg = USER
-        name = ARTIFACT_ID_PROCESSOR
+        name = ARTIFACT_ID_ANNOTATION
         vcsUrl = VCS_URL
         licenses = LICENCES
         version {
