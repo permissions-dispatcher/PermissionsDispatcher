@@ -45,6 +45,8 @@ publishing {
     publications {
         MyPublication(MavenPublication) {
             from components.java
+            artifact sourcesJar
+            artifact javadocJar
             groupId GROUP_ID
             artifactId ARTIFACT_ID_PROCESSOR
             version VERSION

@@ -66,18 +66,10 @@ install {
         pom.project {
             packaging 'aar'
             name ARTIFACT_ID_LIBRARY
+            groupId GROUP_ID
+            artifactId ARTIFACT_ID_LIBRARY
+            version VERSION
             url WEBSITE
-
-            licenses {
-                license {
-                    name 'The Apache Software License, Version 2.0'
-                    url 'http://www.apache.org/licenses/LICENSE-2.0.txt'
-                }
-            }
-            scm {
-                connection "${WEBSITE}.git"
-                url WEBSITE
-            }
         }
     }
 }
