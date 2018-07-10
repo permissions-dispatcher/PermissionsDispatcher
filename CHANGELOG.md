@@ -1,5 +1,10 @@
 # ChangeLog
 
+- 4.0.0-alpha1 2018/04/17
+  - Remove: Remove native Fragment support[#498](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/498)
+  - Add: Jetpack support [#494](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/494)
+  - Fix: Fix compile error when request SYSTEM_ALERT_WINDOW on SupportFragment [#482](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/482)
+  - Fix: Fix the problem with order matter "Useless @OnShowRationale declaration [#479](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/479)
 - 3.3.1 2018/04/17
   - Internal: Update using Kotlin ver to 1.2.50 [#489](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/489)
   - Add: Add a lint rule for not call WithPermissionCheck inside onResume [#486](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/486)
