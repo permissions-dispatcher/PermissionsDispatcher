@@ -2,8 +2,8 @@ group = GROUP_ID
 version = VERSION
 
 apply plugin: 'com.android.library'
+apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
-apply plugin: 'com.github.dcendents.android-maven'
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION
@@ -42,10 +42,11 @@ dependencies {
 }
 
 bintray {
-    configurations = ['archives']
+    publications = ['MyPublication']
     user = bintrayUser
     key = bintrayKey
     dryRun = dryRun
+    publish = true
 
     pkg {
         repo = REPO
@@ -61,15 +62,31 @@ bintray {
     }
 }
 
-install {
-    repositories.mavenInstaller {
-        pom.project {
-            packaging 'aar'
-            name ARTIFACT_ID_LIBRARY
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            artifact sourcesJar
+            artifact javadocJar
+            artifact "$buildDir/outputs/aar/library-release.aar"
             groupId GROUP_ID
             artifactId ARTIFACT_ID_LIBRARY
             version VERSION
-            url WEBSITE
+
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+                // Iterate over the compile dependencies, adding a <dependency> node for each
+                configurations.implementation.allDependencies.each {
+                    if (it.group != null && it.name != null && it.version != null) {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        // to change annotation module artifactId explicitly
+                        // ref: https://github.com/dcendents/android-maven-gradle-plugin/issues/9#issuecomment-73550293
+                        def artifactId = (it.group == GROUP_ID && it.name == "annotation") ? ARTIFACT_ID_ANNOTATION : it.name
+                        dependencyNode.appendNode('artifactId', artifactId)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
         }
     }
 }

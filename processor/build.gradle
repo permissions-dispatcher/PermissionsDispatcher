@@ -59,6 +59,7 @@ bintray {
     user = bintrayUser
     key = bintrayKey
     dryRun = dryRun
+    publish = true
 
     pkg {
         repo = REPO

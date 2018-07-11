@@ -2,6 +2,9 @@ apply plugin: 'java-library'
 apply plugin: 'maven-publish'
 apply plugin: 'com.jfrog.bintray'
 
+group = GROUP_ID
+version = VERSION
+
 targetCompatibility = JavaVersion.VERSION_1_6
 sourceCompatibility = JavaVersion.VERSION_1_6
 
@@ -33,6 +36,8 @@ bintray {
     user = bintrayUser
     key = bintrayKey
     dryRun = dryRun
+    publish = true
+
     pkg {
         repo = REPO
         userOrg = USER
