@@ -1,6 +1,7 @@
 package permissions.dispatcher.processor.impl.kotlin
 
 import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.plusParameter
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.KtProcessorUnit
 import permissions.dispatcher.processor.RequestCodeProvider
@@ -17,12 +18,12 @@ import javax.lang.model.element.ExecutableElement
  */
 abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit {
 
-    protected val PERMISSION_UTILS = ClassName("permissions.dispatcher", "PermissionUtils")
-    private val BUILD = ClassName("android.os", "Build")
-    private val MANIFEST_WRITE_SETTING = "android.permission.WRITE_SETTINGS"
-    private val MANIFEST_SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
-    private val INT_ARRAY = ClassName("kotlin", "IntArray")
-    private val ADD_WITH_CHECK_BODY_MAP = hashMapOf(MANIFEST_SYSTEM_ALERT_WINDOW to SystemAlertWindowHelper(), MANIFEST_WRITE_SETTING to WriteSettingsHelper())
+    protected val permissionUtilsClassName = ClassName("permissions.dispatcher", "PermissionUtils")
+    private val buildClassName = ClassName("android.os", "Build")
+    private val intArrayClassName = ClassName("kotlin", "IntArray")
+    private val writeSettings = "android.permission.WRITE_SETTINGS"
+    private val systemAlertWindow = "android.permission.SYSTEM_ALERT_WINDOW"
+    private val specialPermissions = hashMapOf(systemAlertWindow to SystemAlertWindowHelper(), writeSettings to WriteSettingsHelper())
 
     /* Begin abstract */
 
@@ -86,7 +87,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
                 separator = ", ",
                 transform = { "\"$it\"" }
         )
-        val parameterType = ParameterizedTypeName.get(ARRAY, ClassName("kotlin", "String"))
+        val parameterType = ClassName("kotlin", "String").plusParameter(ARRAY)
         return PropertySpec.builder(permissionFieldName(e), parameterType, KModifier.PRIVATE)
                 .initializer("%N", "arrayOf($formattedValue)")
                 .build()
@@ -134,7 +135,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
         // if maxSdkVersion is lower than os level does nothing
         val maxSdkVersion = needsMethod.getAnnotation(NeedsPermission::class.java).maxSdkVersion
         if (maxSdkVersion > 0) {
-            builder.beginControlFlow("if (%T.VERSION.SDK_INT > %L)", BUILD, maxSdkVersion)
+            builder.beginControlFlow("if (%T.VERSION.SDK_INT > %L)", buildClassName, maxSdkVersion)
                     .addCode(CodeBlock.builder()
                             .add("%N(", needsMethod.simpleString())
                             .add(varargsKtParametersCodeBlock(needsMethod))
@@ -147,8 +148,8 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
         // Add the conditional for when permission has already been granted
         val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
         val activity = getActivityName()
-        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, activity, permissionField)
-                ?: builder.beginControlFlow("if (%T.hasSelfPermissions(%N, *%N))", PERMISSION_UTILS, activity, permissionField)
+        specialPermissions[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, activity, permissionField)
+                ?: builder.beginControlFlow("if (%T.hasSelfPermissions(%N, *%N))", permissionUtilsClassName, activity, permissionField)
         builder.addCode(CodeBlock.builder()
                 .add("%N(", needsMethod.simpleString())
                 .add(varargsKtParametersCodeBlock(needsMethod))
@@ -185,7 +186,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
         }
 
         // Add the branch for "request permission"
-        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addRequestPermissionsStatement(builder = builder, activityVar = getActivityName(), requestCodeField = requestCodeField)
+        specialPermissions[needsPermissionParameter]?.addRequestPermissionsStatement(builder = builder, activityVar = getActivityName(), requestCodeField = requestCodeField)
                 ?: addRequestPermissionsStatement(builder = builder, permissionField = permissionField, requestCodeField = requestCodeField)
         if (onRationale != null) {
             builder.endControlFlow()
@@ -218,7 +219,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
         builder.beginControlFlow("when (%N)", requestCodeParam)
         for (needsMethod in rpe.needsElements) {
             val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
-            if (!ADD_WITH_CHECK_BODY_MAP.containsKey(needsPermissionParameter)) {
+            if (!specialPermissions.containsKey(needsPermissionParameter)) {
                 continue
             }
             builder.beginControlFlow("%N ->", requestCodeFieldName(needsMethod))
@@ -237,13 +238,13 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
                 .addTypeVariables(rpe.ktTypeVariables)
                 .receiver(rpe.ktTypeName)
                 .addParameter(requestCodeParam, INT)
-                .addParameter(grantResultsParam, INT_ARRAY)
+                .addParameter(grantResultsParam, intArrayClassName)
 
         // For each @NeedsPermission method, add a switch case
         builder.beginControlFlow("when (%N)", requestCodeParam)
         for (needsMethod in rpe.needsElements) {
             val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
-            if (ADD_WITH_CHECK_BODY_MAP.containsKey(needsPermissionParameter)) {
+            if (specialPermissions.containsKey(needsPermissionParameter)) {
                 continue
             }
             builder.beginControlFlow("%N ->\n", requestCodeFieldName(needsMethod))
@@ -268,8 +269,8 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
 
         // Add the conditional for "permission verified"
         val activity = getActivityName()
-        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, activity, permissionField)
-                ?: builder.beginControlFlow("if (%T.verifyPermissions(*%N))", PERMISSION_UTILS, grantResultsParam)
+        specialPermissions[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, activity, permissionField)
+                ?: builder.beginControlFlow("if (%T.verifyPermissions(*%N))", permissionUtilsClassName, grantResultsParam)
 
         // Based on whether or not the method has parameters, delegate to the "pending request" object or invoke the method directly
         val hasParameters = needsMethod.parameters.isNotEmpty()
@@ -319,7 +320,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
     private fun hasNormalPermission(rpe: RuntimePermissionsElement): Boolean {
         rpe.needsElements.forEach {
             val permissionValue: List<String> = it.getAnnotation(NeedsPermission::class.java).permissionValue()
-            if (!permissionValue.contains(MANIFEST_SYSTEM_ALERT_WINDOW) && !permissionValue.contains(MANIFEST_WRITE_SETTING)) {
+            if (!permissionValue.contains(systemAlertWindow) && !permissionValue.contains(writeSettings)) {
                 return true
             }
         }
@@ -327,11 +328,11 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
     }
 
     private fun hasSystemAlertWindowPermission(rpe: RuntimePermissionsElement): Boolean {
-        return isDefinePermission(rpe, MANIFEST_SYSTEM_ALERT_WINDOW)
+        return isDefinePermission(rpe, systemAlertWindow)
     }
 
     private fun hasWriteSettingPermission(rpe: RuntimePermissionsElement): Boolean {
-        return isDefinePermission(rpe, MANIFEST_WRITE_SETTING)
+        return isDefinePermission(rpe, writeSettings)
     }
 
     private fun isDefinePermission(rpe: RuntimePermissionsElement, permissionName: String): Boolean {
@@ -368,7 +369,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
 
         // Add required fields to the target
         val propName = "weakTarget"
-        val parameterType = ParameterizedTypeName.get(ClassName("java.lang.ref", "WeakReference"), rpe.ktTypeName)
+        val parameterType = ClassName("java.lang.ref", "WeakReference").plusParameter(rpe.ktTypeName)
         val propertySpec = PropertySpec.builder(propName, parameterType, KModifier.PRIVATE)
         propertySpec.initializer("%N", "WeakReference(target)")
         builder.addProperty(propertySpec.build())
@@ -394,7 +395,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
                 .addModifiers(KModifier.OVERRIDE)
                 .addStatement("val target = %N.get() ?: return", propName)
         val requestCodeField = requestCodeFieldName(needsMethod)
-        ADD_WITH_CHECK_BODY_MAP[needsMethod.getAnnotation(NeedsPermission::class.java).value[0]]?.addRequestPermissionsStatement(proceedFun, targetParam, getActivityName(targetParam), requestCodeField)
+        specialPermissions[needsMethod.getAnnotation(NeedsPermission::class.java).value[0]]?.addRequestPermissionsStatement(proceedFun, targetParam, getActivityName(targetParam), requestCodeField)
                 ?: addRequestPermissionsStatement(proceedFun, targetParam, permissionFieldName(needsMethod), requestCodeField)
         builder.addFunction(proceedFun.build())
 
