@@ -11,11 +11,11 @@ class SystemAlertWindowHelper : SensitivePermissionInterface {
     private val URI = ClassName("android.net", "Uri")
 
     override fun addHasSelfPermissionsCondition(builder: FunSpec.Builder, activity: String, permissionField: String) {
-        builder.beginControlFlow("if (%T.hasSelfPermissions(%N, *%N) || %T.canDrawOverlays(%N))", PERMISSION_UTILS, activity, permissionField, SETTINGS, activity)
+        builder.beginControlFlow("if (%T.hasSelfPermissions(%L, *%N) || %T.canDrawOverlays(%L))", PERMISSION_UTILS, activity, permissionField, SETTINGS, activity)
     }
 
     override fun addRequestPermissionsStatement(builder: FunSpec.Builder, targetParam: String, activityVar: String, requestCodeField: String) {
-        builder.addStatement("val intent = %T(%T.ACTION_MANAGE_OVERLAY_PERMISSION, %T.parse(\"package:\" + %N!!.getPackageName()))", INTENT, SETTINGS, URI, activityVar)
-        builder.addStatement("%N.startActivityForResult(intent, %N)", targetParam, requestCodeField)
+        builder.addStatement("val intent = %T(%T.ACTION_MANAGE_OVERLAY_PERMISSION, %T.parse(\"package:\" + %L!!.getPackageName()))", INTENT, SETTINGS, URI, activityVar)
+        builder.addStatement("%L.startActivityForResult(intent, %N)", targetParam, requestCodeField)
     }
 }

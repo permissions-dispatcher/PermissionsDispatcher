@@ -21,10 +21,10 @@ class KotlinActivityProcessorUnit(messager: Messager) : KotlinBaseProcessorUnit(
 
     override fun addShouldShowRequestPermissionRationaleCondition(builder: FunSpec.Builder, permissionField: String, isPositiveCondition: Boolean) {
         val condition = if (isPositiveCondition) "" else "!"
-        builder.beginControlFlow("if (%N%T.shouldShowRequestPermissionRationale(%N, *%N))", condition, permissionUtilsClassName, "this", permissionField)
+        builder.beginControlFlow("if (%N%T.shouldShowRequestPermissionRationale(%L, *%N))", condition, permissionUtilsClassName, "this", permissionField)
     }
 
     override fun addRequestPermissionsStatement(builder: FunSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {
-        builder.addStatement("%T.requestPermissions(%N, %N, %N)", ACTIVITY_COMPAT, targetParam, permissionField, requestCodeField)
+        builder.addStatement("%T.requestPermissions(%L, %N, %N)", ACTIVITY_COMPAT, targetParam, permissionField, requestCodeField)
     }
 }
