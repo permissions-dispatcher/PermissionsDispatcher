@@ -1,6 +1,7 @@
 package permissions.dispatcher.processor.impl.kotlin
 
 import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.plusParameter
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.KtProcessorUnit
 import permissions.dispatcher.processor.RequestCodeProvider
@@ -19,9 +20,9 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
 
     protected val PERMISSION_UTILS = ClassName("permissions.dispatcher", "PermissionUtils")
     private val BUILD = ClassName("android.os", "Build")
+    private val INT_ARRAY = ClassName("kotlin", "IntArray")
     private val MANIFEST_WRITE_SETTING = "android.permission.WRITE_SETTINGS"
     private val MANIFEST_SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
-    private val INT_ARRAY = ClassName("kotlin", "IntArray")
     private val ADD_WITH_CHECK_BODY_MAP = hashMapOf(MANIFEST_SYSTEM_ALERT_WINDOW to SystemAlertWindowHelper(), MANIFEST_WRITE_SETTING to WriteSettingsHelper())
 
     /* Begin abstract */
@@ -86,7 +87,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
                 separator = ", ",
                 transform = { "\"$it\"" }
         )
-        val parameterType = ParameterizedTypeName.get(ARRAY, ClassName("kotlin", "String"))
+        val parameterType = ARRAY.plusParameter(ClassName("kotlin", "String"))
         return PropertySpec.builder(permissionFieldName(e), parameterType, KModifier.PRIVATE)
                 .initializer("%N", "arrayOf($formattedValue)")
                 .build()
@@ -148,7 +149,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
         val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
         val activity = getActivityName()
         ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, activity, permissionField)
-                ?: builder.beginControlFlow("if (%T.hasSelfPermissions(%N, *%N))", PERMISSION_UTILS, activity, permissionField)
+                ?: builder.beginControlFlow("if (%T.hasSelfPermissions(%L, *%N))", PERMISSION_UTILS, activity, permissionField)
         builder.addCode(CodeBlock.builder()
                 .add("%N(", needsMethod.simpleString())
                 .add(varargsKtParametersCodeBlock(needsMethod))
@@ -368,7 +369,7 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
 
         // Add required fields to the target
         val propName = "weakTarget"
-        val parameterType = ParameterizedTypeName.get(ClassName("java.lang.ref", "WeakReference"), rpe.ktTypeName)
+        val parameterType = ClassName("java.lang.ref", "WeakReference").plusParameter(rpe.ktTypeName)
         val propertySpec = PropertySpec.builder(propName, parameterType, KModifier.PRIVATE)
         propertySpec.initializer("%N", "WeakReference(target)")
         builder.addProperty(propertySpec.build())
