@@ -1,6 +1,7 @@
 package permissions.dispatcher.processor.util
 
 import com.squareup.kotlinpoet.*
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
@@ -66,6 +67,7 @@ fun VariableElement.asPreparedType(): TypeName =
         this.asType()
                 .asTypeName()
                 .checkStringType()
+                .checkParameterStringType()
                 .mapToNullableTypeIf(this.isNullable())
 
 /**
@@ -117,6 +119,18 @@ fun FileSpec.Builder.addTypes(types: List<TypeSpec>): FileSpec.Builder {
  */
 fun TypeName.checkStringType() =
         if (this.toString() == "java.lang.String") ClassName("kotlin", "String") else this
+
+/**
+ * Convert [java.lang.String] to [kotlin.String] in a parameter.
+ * ref: https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/427
+ */
+fun TypeName.checkParameterStringType(): TypeName {
+    if (this is ParameterizedTypeName) {
+        val typeArguments = this.typeArguments.map { it.checkStringType() }
+        return this.rawType.parameterizedBy(*typeArguments.toTypedArray())
+    }
+    return this
+}
 
 /**
  * Returns this TypeName as nullable or non-nullable based on the given condition.
