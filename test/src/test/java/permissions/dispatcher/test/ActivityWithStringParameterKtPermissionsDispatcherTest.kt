@@ -22,7 +22,7 @@ import permissions.dispatcher.PermissionRequest
 @PrepareForTest(ActivityCompat::class, PermissionChecker::class, AppOpsManagerCompat::class, Process::class)
 class ActivityWithStringParameterKtPermissionsDispatcherTest {
 
-    private val activity = Mockito.mock(ActivityWithStringParameterKt::class.java)
+    private lateinit var activity: ActivityWithStringParameterKt
 
     companion object {
         private var requestCode = 0
@@ -39,6 +39,7 @@ class ActivityWithStringParameterKtPermissionsDispatcherTest {
 
     @Before
     fun setUp() {
+        activity = Mockito.mock(ActivityWithStringParameterKt::class.java)
         PowerMockito.mockStatic(ActivityCompat::class.java)
         PowerMockito.mockStatic(PermissionChecker::class.java)
         PowerMockito.mockStatic(Process::class.java)

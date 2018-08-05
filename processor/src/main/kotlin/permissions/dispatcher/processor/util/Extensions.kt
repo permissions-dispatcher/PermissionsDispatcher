@@ -126,8 +126,8 @@ fun TypeName.checkStringType() =
  */
 fun TypeName.checkParameterStringType(): TypeName {
     if (this is ParameterizedTypeName) {
-        val typeArguments = this.typeArguments.map { it.checkStringType() }
-        return this.rawType.parameterizedBy(*typeArguments.toTypedArray())
+        val typeArguments = this.typeArguments.map { it.checkStringType() }.toTypedArray()
+        return this.rawType.parameterizedBy(*typeArguments)
     }
     return this
 }
