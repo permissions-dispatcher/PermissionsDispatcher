@@ -148,11 +148,11 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
 
         // Add the conditional for when permission has already been granted
         val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
-        val needNullCheck = !rpe.isSubtypeOf("${ACTIVITY.packageName}.${ACTIVITY.simpleName}")
-        if (needNullCheck) {
+        val targetIsActivity = rpe.isSubtypeOf("${ACTIVITY.packageName}.${ACTIVITY.simpleName}")
+        if (!targetIsActivity) {
             builder.addStatement("val activity = %L ?: return", getActivityName())
         }
-        val activityParam = if (needNullCheck) "activity" else getActivityName()
+        val activityParam = if (!targetIsActivity) "activity" else getActivityName()
         ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, activityParam, permissionField)
                 ?: builder.beginControlFlow("if (%T.hasSelfPermissions(%L, *%N))", PERMISSION_UTILS, activityParam, permissionField)
         builder.addCode(CodeBlock.builder()
@@ -273,8 +273,12 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
         val permissionField = permissionFieldName(needsMethod)
 
         // Add the conditional for "permission verified"
-        val activity = getActivityName()
-        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, activity, permissionField)
+        val targetIsActivity = rpe.isSubtypeOf("${ACTIVITY.packageName}.${ACTIVITY.simpleName}")
+        if (!targetIsActivity && ADD_WITH_CHECK_BODY_MAP.containsKey(needsPermissionParameter)) {
+            builder.addStatement("val activity = %L ?: return", getActivityName())
+        }
+        val activityParam = if (!targetIsActivity) "activity" else getActivityName()
+        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addHasSelfPermissionsCondition(builder, activityParam, permissionField)
                 ?: builder.beginControlFlow("if (%T.verifyPermissions(*%N))", PERMISSION_UTILS, grantResultsParam)
 
         // Based on whether or not the method has parameters, delegate to the "pending request" object or invoke the method directly
@@ -400,13 +404,12 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
                 .addModifiers(KModifier.OVERRIDE)
                 .addStatement("val target = %N.get() ?: return", propName)
         val requestCodeField = requestCodeFieldName(needsMethod)
-        val needNullCheck = !rpe.isSubtypeOf("${ACTIVITY.packageName}.${ACTIVITY.simpleName}") &&
-                ADD_WITH_CHECK_BODY_MAP[needsMethod.getAnnotation(NeedsPermission::class.java).value[0]] != null
-        if (needNullCheck) {
+        val targetIsActivity = rpe.isSubtypeOf("${ACTIVITY.packageName}.${ACTIVITY.simpleName}")
+        if (!targetIsActivity && ADD_WITH_CHECK_BODY_MAP[needsMethod.getAnnotation(NeedsPermission::class.java).value[0]] != null) {
             proceedFun
                     .addStatement("val activity = %L ?: return", getActivityName(targetParam))
         }
-        val activityParam = if (needNullCheck) "activity" else getActivityName(targetParam)
+        val activityParam = if (!targetIsActivity) "activity" else getActivityName(targetParam)
         ADD_WITH_CHECK_BODY_MAP[needsMethod.getAnnotation(NeedsPermission::class.java).value[0]]?.addRequestPermissionsStatement(proceedFun, targetParam, activityParam, requestCodeField)
                 ?: addRequestPermissionsStatement(proceedFun, targetParam, permissionFieldName(needsMethod), requestCodeField)
         builder.addFunction(proceedFun.build())

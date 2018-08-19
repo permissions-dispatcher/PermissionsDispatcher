@@ -91,6 +91,6 @@ class RuntimePermissionsElement(private val e: TypeElement) {
     }
 
     fun isSubtypeOf(className: String): Boolean {
-        return e.asType().isSubtypeOf(typeMirrorOf(className))
+        return e.isSubtypeOf(className)
     }
 }
