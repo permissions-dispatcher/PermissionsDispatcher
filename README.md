@@ -2,7 +2,7 @@
 
 - [**Fully Kotlin support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_support.md)
 - [**Special Permissions support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/special_permissions.md)
-- **Xiaomi support**
+- **Xiaomi([API level >= 23](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/386#issuecomment-418680789)) support**
 - **100% reflection-free**
 
 PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions.
