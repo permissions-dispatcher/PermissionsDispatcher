@@ -39,6 +39,7 @@ class SupportFragmentWithAllAnnotationsPermissionsDispatcherTest {
     @Before
     fun setUp() {
         fragment = PowerMockito.mock(SupportFragmentWithAllAnnotations::class.java)
+        mockGetActivity(fragment, Mockito.mock(AppCompatActivity::class.java))
 
         PowerMockito.mockStatic(PermissionChecker::class.java)
         PowerMockito.mockStatic(Process::class.java)
@@ -159,7 +160,6 @@ class SupportFragmentWithAllAnnotationsPermissionsDispatcherTest {
         mockPermissionToOp("")
         mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
         mockCheckSelfPermission(true)
-        mockGetActivity(fragment, Mockito.mock(AppCompatActivity::class.java))
 
         SupportFragmentWithAllAnnotationsPermissionsDispatcher.showCameraWithPermissionCheck(fragment)
 
@@ -172,7 +172,6 @@ class SupportFragmentWithAllAnnotationsPermissionsDispatcherTest {
         mockPermissionToOp("")
         mockNoteOp(AppOpsManagerCompat.MODE_IGNORED)
         mockCheckSelfPermission(true)
-        mockGetActivity(fragment, Mockito.mock(AppCompatActivity::class.java))
 
         SupportFragmentWithAllAnnotationsPermissionsDispatcher.showCameraWithPermissionCheck(fragment)
 
@@ -185,7 +184,6 @@ class SupportFragmentWithAllAnnotationsPermissionsDispatcherTest {
         mockPermissionToOp("")
         mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
         mockCheckSelfPermission(false)
-        mockGetActivity(fragment, Mockito.mock(AppCompatActivity::class.java))
 
         SupportFragmentWithAllAnnotationsPermissionsDispatcher.showCameraWithPermissionCheck(fragment)
 

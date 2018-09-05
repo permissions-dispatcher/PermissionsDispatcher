@@ -14,6 +14,10 @@ import javax.lang.model.type.TypeMirror
  */
 fun TypeElement.packageName() = enclosingElement.packageName()
 
+fun TypeElement.isSubtypeOf(className: String): Boolean {
+    return asType().isSubtypeOf(typeMirrorOf(className))
+}
+
 private fun Element?.packageName(): String {
     return when (this) {
         is TypeElement -> packageName()

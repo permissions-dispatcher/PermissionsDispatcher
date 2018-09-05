@@ -18,13 +18,14 @@ import permissions.dispatcher.processor.util.checkNotEmpty
 import permissions.dispatcher.processor.util.checkPrivateMethods
 import permissions.dispatcher.processor.util.childElementsAnnotatedWith
 import permissions.dispatcher.processor.util.findMatchingMethodForNeeds
+import permissions.dispatcher.processor.util.isSubtypeOf
 import permissions.dispatcher.processor.util.packageName
 import permissions.dispatcher.processor.util.simpleString
 import permissions.dispatcher.processor.util.typeMirrorOf
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 
-class RuntimePermissionsElement(e: TypeElement) {
+class RuntimePermissionsElement(private val e: TypeElement) {
     val typeName: TypeName = TypeName.get(e.asType())
     val ktTypeName = e.asType().asTypeName()
     val typeVariables = e.typeParameters.map { TypeVariableName.get(it) }
@@ -87,5 +88,9 @@ class RuntimePermissionsElement(e: TypeElement) {
 
     fun findOnNeverAskForNeeds(needsElement: ExecutableElement): ExecutableElement? {
         return findMatchingMethodForNeeds(needsElement, onNeverAskElements, OnNeverAskAgain::class.java)
+    }
+
+    fun isSubtypeOf(className: String): Boolean {
+        return e.isSubtypeOf(className)
     }
 }
