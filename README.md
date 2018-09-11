@@ -115,6 +115,8 @@ Thankfully we've got hundreds of [users](https://github.com/hotchemi/Permissions
 
 ## Download
 
+NOTE: 4.x is still alpha and it only supports [Jetpack](https://developer.android.com/jetpack/). If you use appcompat 3.x which is almost stable is the way to go.
+
 To add PermissionsDispatcher to your project, include the following in your **app module** `build.gradle` file:
 
 `${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg)](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
