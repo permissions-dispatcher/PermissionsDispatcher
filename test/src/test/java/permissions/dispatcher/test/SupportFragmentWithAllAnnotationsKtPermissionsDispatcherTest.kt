@@ -32,7 +32,7 @@ class SupportFragmentWithAllAnnotationsKtPermissionsDispatcherTest {
         @JvmStatic
         fun setUpForClass() {
             // TODO Reflection on Kotlin top-level properties?
-            requestCode = 15
+            requestCode = 16
             requestPermissions = arrayOf("android.permission.CAMERA")
         }
     }
