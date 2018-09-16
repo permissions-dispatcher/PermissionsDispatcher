@@ -26,7 +26,7 @@ class SupportFragmentWithAllAnnotationsKtPermissionsDispatcherTest {
 
     companion object {
         private var requestCode = 0
-        lateinit private var requestPermissions: Array<String>
+        private lateinit var requestPermissions: Array<String>
 
         @BeforeClass
         @JvmStatic
