@@ -36,7 +36,7 @@ class ActivityWithSystemAlertWindowAllAnnotationsPermissionsDispatcherTest {
         @JvmStatic
         fun setUpForClass() {
             // TODO Reflection on Kotlin top-level properties?
-            requestCode = 7
+            requestCode = 8
         }
     }
 
