@@ -17,7 +17,7 @@ class JavaFragmentProcessorUnit(messager: Messager) : JavaBaseProcessorUnit(mess
     }
 
     override fun getActivityName(targetParam: String): String {
-        return "$targetParam.getActivity()"
+        return "$targetParam.requireActivity()"
     }
 
     override fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String, isPositiveCondition: Boolean) {
