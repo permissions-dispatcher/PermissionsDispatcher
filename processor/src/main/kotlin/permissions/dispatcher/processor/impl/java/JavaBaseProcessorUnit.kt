@@ -1,12 +1,32 @@
 package permissions.dispatcher.processor.impl.java
 
-import com.squareup.javapoet.*
+import androidx.annotation.NonNull
+import com.squareup.javapoet.AnnotationSpec
+import com.squareup.javapoet.ArrayTypeName
+import com.squareup.javapoet.ClassName
+import com.squareup.javapoet.CodeBlock
+import com.squareup.javapoet.FieldSpec
+import com.squareup.javapoet.JavaFile
+import com.squareup.javapoet.MethodSpec
+import com.squareup.javapoet.ParameterSpec
+import com.squareup.javapoet.ParameterizedTypeName
+import com.squareup.javapoet.TypeName
+import com.squareup.javapoet.TypeSpec
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.JavaProcessorUnit
 import permissions.dispatcher.processor.RequestCodeProvider
 import permissions.dispatcher.processor.RuntimePermissionsElement
-import permissions.dispatcher.processor.util.*
-import java.util.*
+import permissions.dispatcher.processor.util.FILE_COMMENT
+import permissions.dispatcher.processor.util.pendingRequestFieldName
+import permissions.dispatcher.processor.util.permissionFieldName
+import permissions.dispatcher.processor.util.permissionRequestTypeName
+import permissions.dispatcher.processor.util.permissionValue
+import permissions.dispatcher.processor.util.requestCodeFieldName
+import permissions.dispatcher.processor.util.simpleString
+import permissions.dispatcher.processor.util.typeNameOf
+import permissions.dispatcher.processor.util.varargsParametersCodeBlock
+import permissions.dispatcher.processor.util.withPermissionCheckMethodName
+import java.util.ArrayList
 import javax.annotation.processing.Messager
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
@@ -132,7 +152,7 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
                 .addTypeVariables(rpe.typeVariables)
                 .addModifiers(Modifier.STATIC)
                 .returns(TypeName.VOID)
-                .addParameter(rpe.typeName, targetParam)
+                .addParameter(ParameterSpec.builder(rpe.typeName, targetParam).addAnnotation(NonNull::class.java).build())
 
         // If the method has parameters, add those as well
         method.parameters.forEach {
@@ -234,7 +254,7 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
                 .addTypeVariables(rpe.typeVariables)
                 .addModifiers(Modifier.STATIC)
                 .returns(TypeName.VOID)
-                .addParameter(rpe.typeName, targetParam)
+                .addParameter(ParameterSpec.builder(rpe.typeName, targetParam).addAnnotation(NonNull::class.java).build())
                 .addParameter(TypeName.INT, requestCodeParam)
 
         builder.beginControlFlow("switch (\$N)", requestCodeParam)
@@ -265,7 +285,7 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
                 .addTypeVariables(rpe.typeVariables)
                 .addModifiers(Modifier.STATIC)
                 .returns(TypeName.VOID)
-                .addParameter(rpe.typeName, targetParam)
+                .addParameter(ParameterSpec.builder(rpe.typeName, targetParam).addAnnotation(NonNull::class.java).build())
                 .addParameter(TypeName.INT, requestCodeParam)
                 .addParameter(ArrayTypeName.of(TypeName.INT), grantResultsParam)
 
@@ -416,7 +436,7 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
         val targetParam = "target"
         val constructorBuilder = MethodSpec.constructorBuilder()
                 .addModifiers(Modifier.PRIVATE)
-                .addParameter(targetType, targetParam)
+                .addParameter(ParameterSpec.builder(targetType, targetParam).addAnnotation(NonNull::class.java).build())
                 .addStatement("this.\$L = new WeakReference<\$T>(\$N)", weakFieldName, targetType, targetParam)
         needsMethod.parameters.forEach {
             val fieldName = it.simpleString()

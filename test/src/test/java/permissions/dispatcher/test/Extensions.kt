@@ -8,12 +8,14 @@ import android.net.Uri
 import android.os.Build
 import android.os.Process
 import android.provider.Settings
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.ActivityCompat
 import androidx.core.app.AppOpsManagerCompat
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
-import org.mockito.Matchers.*
+import androidx.fragment.app.FragmentActivity
+import org.mockito.Matchers.any
+import org.mockito.Matchers.anyInt
+import org.mockito.Matchers.anyString
 import org.powermock.api.mockito.PowerMockito
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
@@ -36,8 +38,8 @@ fun mockCheckSelfPermission(result: Boolean) {
     PowerMockito.`when`(PermissionChecker.checkSelfPermission(any(Context::class.java), anyString())).thenReturn(value)
 }
 
-fun mockGetActivity(fragment: Fragment, result: AppCompatActivity) {
-    PowerMockito.`when`(fragment.activity).thenReturn(result)
+fun mockRequireActivity(fragment: Fragment, result: FragmentActivity) {
+    PowerMockito.`when`(fragment.requireActivity()).thenReturn(result)
 }
 
 fun mockCanDrawOverlays(result: Boolean) {

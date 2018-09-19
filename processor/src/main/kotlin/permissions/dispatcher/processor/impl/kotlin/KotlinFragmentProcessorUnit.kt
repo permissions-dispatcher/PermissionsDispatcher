@@ -14,7 +14,7 @@ class KotlinFragmentProcessorUnit(messager: Messager) : KotlinBaseProcessorUnit(
 
     override fun getTargetType(): TypeMirror = typeMirrorOf("androidx.fragment.app.Fragment")
 
-    override fun getActivityName(targetParam: String): String = "$targetParam.activity"
+    override fun getActivityName(targetParam: String): String = "$targetParam.requireActivity()"
 
     override fun addShouldShowRequestPermissionRationaleCondition(builder: FunSpec.Builder, permissionField: String, isPositiveCondition: Boolean) {
         val condition = if (isPositiveCondition) "" else "!"

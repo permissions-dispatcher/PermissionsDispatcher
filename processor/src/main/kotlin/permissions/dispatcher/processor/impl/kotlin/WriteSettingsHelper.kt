@@ -15,7 +15,7 @@ class WriteSettingsHelper : SensitivePermissionInterface {
     }
 
     override fun addRequestPermissionsStatement(builder: FunSpec.Builder, targetParam: String, activityVar: String, requestCodeField: String) {
-        builder.addStatement("val intent = %T(%T.ACTION_MANAGE_WRITE_SETTINGS, %T.parse(\"package:\" + %L!!.getPackageName()))", INTENT, SETTINGS, URI, activityVar)
+        builder.addStatement("val intent = %T(%T.ACTION_MANAGE_WRITE_SETTINGS, %T.parse(\"package:\" + %L.getPackageName()))", INTENT, SETTINGS, URI, activityVar)
         builder.addStatement("%L.startActivityForResult(intent, %N)", targetParam, requestCodeField)
     }
 }
