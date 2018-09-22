@@ -6,7 +6,7 @@ import java.util.concurrent.atomic.AtomicInteger
  * Helper class providing app-level unique request codes
  * for a round trip of the annotation processor.
  */
-class RequestCodeProvider {
+object RequestCodeProvider {
 
     private val currentCode = AtomicInteger(0)
 
