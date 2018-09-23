@@ -52,9 +52,7 @@ class PermissionsProcessor : AbstractProcessor() {
     }
 
     override fun process(annotations: Set<TypeElement>, roundEnv: RoundEnvironment): Boolean {
-        // Create a RequestCodeProvider which guarantees unique request codes for each permission request
-        val requestCodeProvider = RequestCodeProvider()
-
+        val requestCodeProvider = RequestCodeProvider
         // The Set of annotated elements needs to be ordered
         // in order to achieve Deterministic, Reproducible Builds
         roundEnv.getElementsAnnotatedWith(RuntimePermissions::class.java)
