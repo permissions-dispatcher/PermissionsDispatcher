@@ -1,9 +1,13 @@
 # ChangeLog
 
-- 4.0.0-alpha1 2018/04/17
+- 4.0.0 2018/10/20
+  - Update: [Update androidx ver to 1.0.0](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/530)
+  - Fix: [Add NonNull annotation and use requireActivity](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/526)
+  - Fix: [workaround to convert java String to kotlin String in argument parameter](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/509)
+- 4.0.0-alpha1 2018/07/12
   - Remove: Remove native Fragment support[#498](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/498)
   - Add: Jetpack support [#494](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/494)
-- 3.3.1 2018/04/17
+- 3.3.1 2018/06/25
   - Internal: Update using Kotlin ver to 1.2.50 [#489](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/489)
   - Add: Add a lint rule for not call WithPermissionCheck inside onResume [#486](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/486)
   - Fix: Fix compile error when request SYSTEM_ALERT_WINDOW on SupportFragment [#482](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/482)
