@@ -84,4 +84,46 @@ class CallNeedsPermissionDetectorTest {
                 .run()
                 .expectClean()
     }
+
+    @Test
+    @Throws(Exception::class)
+    fun callNeedsPermissionMethodForIssues502() {
+        @Language("JAVA") val foo = """
+            package com.example;
+
+            import permissions.dispatcher.NeedsPermission;
+
+            public class Foo extends AppCompatActivity  {
+                @NeedsPermission({Manifest.permission.READ_SMS, Manifest.permission.RECEIVE_SMS})
+                void requestOTP() {
+                    new PhoneVerificationInputFragment().requestOTP();
+                }
+            }
+
+            class FooFragment extends Fragment {
+                public void resendOTP() {
+                    requestOTP();
+                }
+                private void requestOTP() {
+                }
+            }
+        """.trimMargin()
+
+        val expectedText = """
+            |src/com/example/Foo.java:14: Error: Trying to access permission-protected method directly [CallNeedsPermission]
+            |                    requestOTP();
+            |                    ~~~~~~~~~~~~
+            |1 errors, 0 warnings
+            """.trimMargin()
+
+        lint()
+                .files(
+                        java(onNeedsPermission),
+                        java(foo))
+                .issues(CallNeedsPermissionDetector.ISSUE)
+                .run()
+                .expect(expectedText)
+                .expectErrorCount(1)
+                .expectWarningCount(0)
+    }
 }
