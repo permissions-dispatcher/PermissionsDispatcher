@@ -9,6 +9,7 @@ import com.android.tools.lint.detector.api.JavaContext;
 import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
 
+import org.jetbrains.annotations.NotNull;
 import org.jetbrains.uast.UAnnotation;
 import org.jetbrains.uast.UCallExpression;
 import org.jetbrains.uast.UClass;
@@ -33,7 +34,7 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
             Severity.ERROR,
             new Implementation(CallNeedsPermissionDetector.class, EnumSet.of(Scope.ALL_JAVA_FILES)));
 
-    static Set<String> annotatedMethods = new HashSet<String>();
+    private static Set<String> annotatedMethods = new HashSet<String>();
 
     @Override
     public List<Class<? extends UElement>> getApplicableUastTypes() {
@@ -41,9 +42,10 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
     }
 
     @Override
-    public UElementHandler createUastHandler(final JavaContext context) {
+    public UElementHandler createUastHandler(@NotNull final JavaContext context) {
         return new UElementHandler() {
-            @Override public void visitClass(UClass node) {
+            @Override
+            public void visitClass(@NotNull UClass node) {
                 node.accept(new AnnotationChecker(context));
             }
         };
@@ -53,13 +55,24 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
 
         private final JavaContext context;
 
+        private boolean hasRuntimePermissionAnnotation;
+
         private AnnotationChecker(JavaContext context) {
             this.context = context;
         }
 
         @Override
-        public boolean visitCallExpression(UCallExpression node) {
-            if (isGeneratedFiles(context)) {
+        public boolean visitAnnotation(@NotNull UAnnotation node) {
+            if (!"permissions.dispatcher.RuntimePermissions".equals(node.getQualifiedName())) {
+                return true;
+            }
+            hasRuntimePermissionAnnotation = true;
+            return true;
+        }
+
+        @Override
+        public boolean visitCallExpression(@NotNull UCallExpression node) {
+            if (isGeneratedFiles(context) || !hasRuntimePermissionAnnotation) {
                 return true;
             }
             if (node.getReceiver() == null && annotatedMethods.contains(node.getMethodName())) {
@@ -69,7 +82,7 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
         }
 
         @Override
-        public boolean visitMethod(UMethod node) {
+        public boolean visitMethod(@NotNull UMethod node) {
             if (isGeneratedFiles(context)) {
                 return super.visitMethod(node);
             }
@@ -87,13 +100,11 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
                 return false;
             }
             List<UClass> classes = sourceFile.getClasses();
-            if (!classes.isEmpty()) {
-                String qualifiedName = classes.get(0).getName();
-                if (qualifiedName != null && qualifiedName.contains("PermissionsDispatcher")) {
-                    return true;
-                }
+            if (classes.isEmpty()) {
+                return false;
             }
-            return false;
+            String qualifiedName = classes.get(0).getName();
+            return qualifiedName != null && qualifiedName.contains("PermissionsDispatcher");
         }
     }
 }
