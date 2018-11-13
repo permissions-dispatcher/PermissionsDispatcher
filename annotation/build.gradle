@@ -43,7 +43,7 @@ bintray {
         userOrg = USER
         name = ARTIFACT_ID_ANNOTATION
         vcsUrl = VCS_URL
-        licenses = LICENCES
+        licenses = LICENSES
         version {
             name = VERSION
             desc = DESCRIPTION

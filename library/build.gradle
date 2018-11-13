@@ -53,7 +53,7 @@ bintray {
         userOrg = USER
         name = ARTIFACT_ID_LIBRARY
         vcsUrl = VCS_URL
-        licenses = LICENCES
+        licenses = LICENSES
         websiteUrl = WEBSITE
         version {
             name = VERSION
