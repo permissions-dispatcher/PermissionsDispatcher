@@ -68,7 +68,7 @@ bintray {
         userOrg = USER
         name = ARTIFACT_ID_PROCESSOR
         vcsUrl = VCS_URL
-        licenses = LICENCES
+        licenses = LICENSES
         version {
             name = VERSION
             desc = DESCRIPTION
