@@ -20,4 +20,6 @@ dependencies {
     implementation "androidx.appcompat:appcompat:$ANDROIDX_LIBRARY_VERSION"
     implementation project(':library')
     annotationProcessor project(':processor')
+
+    implementation "com.bluelinelabs:conductor:$CONDUCTOR_VERSION"
 }

@@ -13,9 +13,8 @@ import androidx.core.app.AppOpsManagerCompat
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
-import org.mockito.Matchers.any
-import org.mockito.Matchers.anyInt
-import org.mockito.Matchers.anyString
+import com.bluelinelabs.conductor.Controller
+import org.mockito.Matchers.*
 import org.powermock.api.mockito.PowerMockito
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
@@ -29,6 +28,11 @@ fun mockShouldShowRequestPermissionRationaleFragment(fragment: Fragment, result:
     PowerMockito.`when`(fragment.shouldShowRequestPermissionRationale(anyString())).thenReturn(result)
 }
 
+@SuppressLint("NewApi")
+fun mockShouldShowRequestPermissionRationaleConductorController(controller: Controller, result: Boolean) {
+    PowerMockito.`when`(controller.shouldShowRequestPermissionRationale(anyString())).thenReturn(result)
+}
+
 fun mockActivityCompatShouldShowRequestPermissionRationale(result: Boolean) {
     PowerMockito.`when`(ActivityCompat.shouldShowRequestPermissionRationale(any(Activity::class.java), anyString())).thenReturn(result)
 }
@@ -40,6 +44,10 @@ fun mockCheckSelfPermission(result: Boolean) {
 
 fun mockRequireActivity(fragment: Fragment, result: FragmentActivity) {
     PowerMockito.`when`(fragment.requireActivity()).thenReturn(result)
+}
+
+fun mockGetActivity(controller: Controller, result: FragmentActivity) {
+    PowerMockito.`when`(controller.activity).thenReturn(result)
 }
 
 fun mockCanDrawOverlays(result: Boolean) {

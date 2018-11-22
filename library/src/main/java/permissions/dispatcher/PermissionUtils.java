@@ -6,6 +6,8 @@ import android.content.pm.PackageManager;
 import android.os.Build;
 import android.os.Process;
 
+import com.bluelinelabs.conductor.Controller;
+
 import androidx.collection.SimpleArrayMap;
 import androidx.core.app.ActivityCompat;
 import androidx.core.app.AppOpsManagerCompat;
@@ -138,6 +140,22 @@ public final class PermissionUtils {
     public static boolean shouldShowRequestPermissionRationale(Fragment fragment, String... permissions) {
         for (String permission : permissions) {
             if (fragment.shouldShowRequestPermissionRationale(permission)) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    /**
+     * Checks given permissions are needed to show rationale.
+     *
+     * @param controller    controller
+     * @param permissions permission list
+     * @return returns true if one of the permission is needed to show rationale.
+     */
+    public static boolean shouldShowRequestPermissionRationale(Controller controller, String... permissions) {
+        for (String permission : permissions) {
+            if (controller.shouldShowRequestPermissionRationale(permission)) {
                 return true;
             }
         }

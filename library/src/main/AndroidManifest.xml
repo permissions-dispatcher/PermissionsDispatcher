@@ -1,1 +1,5 @@
-<manifest package="permissions.dispatcher"/>
+<manifest package="permissions.dispatcher"
+    xmlns:tools="http://schemas.android.com/tools">
+
+    <uses-sdk tools:overrideLibrary="com.bluelinelabs.conductor"/>
+</manifest>

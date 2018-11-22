@@ -43,6 +43,9 @@ dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
     implementation "androidx.appcompat:appcompat:$ANDROIDX_LIBRARY_VERSION"
 
+    implementation "com.bluelinelabs:conductor:$CONDUCTOR_VERSION"
+    testImplementation "com.bluelinelabs:conductor:$CONDUCTOR_VERSION"
+
     testImplementation "junit:junit:$JUNIT_VERSION"
     testImplementation "org.mockito:mockito-core:$MOCKITO_VERSION"
     testImplementation "org.powermock:powermock-api-mockito:$POWERMOCK_VERSION"
