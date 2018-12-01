@@ -1,0 +1,19 @@
+apply plugin: 'java-library'
+apply plugin: 'com.novoda.bintray-release'
+
+targetCompatibility = JavaVersion.VERSION_1_6
+sourceCompatibility = JavaVersion.VERSION_1_6
+
+publish {
+    userOrg = USER
+    groupId = GROUP_ID
+    artifactId = ARTIFACT_ID_ANNOTATION
+    version = VERSION
+    desc = DESCRIPTION
+    website = WEBSITE
+    licences = LICENCES
+}
+
+// Non-Android project: Artifactory Plugin adds only 1 publication
+project.ext.publicationName = "maven"
+apply from: rootProject.file('gradle/gradle-artifactory-upload.gradle')

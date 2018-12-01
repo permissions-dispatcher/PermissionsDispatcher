@@ -144,55 +144,6 @@ class SupportFragmentWithAllAnnotationsPermissionsDispatcherTest {
     }
 
     @Test
-    fun `xiaomi device permissionToOp returns null grant permission`() {
-        testForXiaomi()
-        mockPermissionToOp(null)
-
-        SupportFragmentWithAllAnnotationsPermissionsDispatcher.showCameraWithPermissionCheck(fragment)
-
-        Mockito.verify(fragment, Mockito.times(1)).showCamera()
-    }
-
-    @Test
-    fun `xiaomi device grant permission`() {
-        testForXiaomi()
-        mockPermissionToOp("")
-        mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
-        mockCheckSelfPermission(true)
-        mockGetActivity(fragment, Mockito.mock(AppCompatActivity::class.java))
-
-        SupportFragmentWithAllAnnotationsPermissionsDispatcher.showCameraWithPermissionCheck(fragment)
-
-        Mockito.verify(fragment, Mockito.times(1)).showCamera()
-    }
-
-    @Test
-    fun `xiaomi noteOp returns not allowed value should not call the method`() {
-        testForXiaomi()
-        mockPermissionToOp("")
-        mockNoteOp(AppOpsManagerCompat.MODE_IGNORED)
-        mockCheckSelfPermission(true)
-        mockGetActivity(fragment, Mockito.mock(AppCompatActivity::class.java))
-
-        SupportFragmentWithAllAnnotationsPermissionsDispatcher.showCameraWithPermissionCheck(fragment)
-
-        Mockito.verify(fragment, Mockito.times(0)).showCamera()
-    }
-
-    @Test
-    fun `xiaomi noteOp returns allowed but checkSelfPermission not allowed value should not call the method`() {
-        testForXiaomi()
-        mockPermissionToOp("")
-        mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
-        mockCheckSelfPermission(false)
-        mockGetActivity(fragment, Mockito.mock(AppCompatActivity::class.java))
-
-        SupportFragmentWithAllAnnotationsPermissionsDispatcher.showCameraWithPermissionCheck(fragment)
-
-        Mockito.verify(fragment, Mockito.times(0)).showCamera()
-    }
-
-    @Test
     fun `blow M follows checkSelfPermissions result false`() {
         overwriteCustomSdkInt(22)
         mockCheckSelfPermission(false)
