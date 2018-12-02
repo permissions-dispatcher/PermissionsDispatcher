@@ -1,18 +1,10 @@
 package permissions.dispatcher.processor.util
 
+import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.processor.ProcessorUnit
 import permissions.dispatcher.processor.RuntimePermissionsElement
 import permissions.dispatcher.processor.TYPE_UTILS
-import permissions.dispatcher.processor.exception.DuplicatedMethodNameException
-import permissions.dispatcher.processor.exception.DuplicatedValueException
-import permissions.dispatcher.processor.exception.MixPermissionTypeException
-import permissions.dispatcher.processor.exception.NoAnnotatedMethodsException
-import permissions.dispatcher.processor.exception.NoParametersAllowedException
-import permissions.dispatcher.processor.exception.NoThrowsAllowedException
-import permissions.dispatcher.processor.exception.PrivateMethodException
-import permissions.dispatcher.processor.exception.WrongClassException
-import permissions.dispatcher.processor.exception.WrongParametersException
-import permissions.dispatcher.processor.exception.WrongReturnTypeException
+import permissions.dispatcher.processor.exception.*
 import java.util.*
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
@@ -27,7 +19,7 @@ private const val SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
  * Obtains the [ProcessorUnit] implementation for the provided element.
  * Raises an exception if no suitable implementation exists
  */
-fun <K> findAndValidateProcessorUnit(units: List<ProcessorUnit<K>>, element: Element) : ProcessorUnit<K> {
+fun <K> findAndValidateProcessorUnit(units: List<ProcessorUnit<K>>, element: Element): ProcessorUnit<K> {
     val type = element.asType()
     try {
         return units.first { type.isSubtypeOf(it.getTargetType()) }
@@ -127,6 +119,15 @@ fun <A : Annotation> checkMixPermissionType(items: List<ExecutableElement>, anno
             } else if (permissionValue.contains(SYSTEM_ALERT_WINDOW)) {
                 throw MixPermissionTypeException(it, SYSTEM_ALERT_WINDOW)
             }
+        }
+    }
+}
+
+fun checkSpecialPermissionsWithNeverAskAgain(items: List<ExecutableElement>, annotationClass: Class<OnNeverAskAgain> = OnNeverAskAgain::class.java) {
+    items.forEach {
+        val permissionValue = it.getAnnotation(annotationClass).permissionValue()
+        if (permissionValue.contains(WRITE_SETTINGS) || permissionValue.contains(SYSTEM_ALERT_WINDOW)) {
+            throw SpecialPermissionsWithNeverAskAgainException()
         }
     }
 }
