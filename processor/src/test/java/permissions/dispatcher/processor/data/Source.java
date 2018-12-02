@@ -6001,6 +6001,90 @@ public final class Source {
         }
     };
 
+    public static final BaseTest systemAlertWindowWithOnNeverAskAgain = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyFragment";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.Manifest;",
+                    "import androidx.fragment.app.Fragment;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnNeverAskAgain;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "import permissions.dispatcher.OnShowRationale;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "@RuntimePermissions",
+                    "public class MyFragment extends Fragment {",
+                    "    @NeedsPermission(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindow() {",
+                    "    }",
+                    "    @OnShowRationale(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindowOnShowRationale(PermissionRequest request) {",
+                    "    }",
+                    "    @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindowOnNeverAskAgain() {",
+                    "    }",
+                    "    @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)",
+                    "    void systemAlertWindowOnPermissionDenied() {",
+                    "    }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return EMPTY_SOURCE;
+        }
+    };
+
+    public static final BaseTest writeSettingsWithOnNeverAskAgain = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyFragment";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package test;",
+                    "import android.Manifest;",
+                    "import androidx.fragment.app.Fragment;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnNeverAskAgain;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "import permissions.dispatcher.OnShowRationale;",
+                    "import permissions.dispatcher.PermissionRequest;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "@RuntimePermissions",
+                    "public class MyFragment extends Fragment {",
+                    "    @NeedsPermission(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettings() {",
+                    "    }",
+                    "    @OnShowRationale(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettingOnShowRationale(PermissionRequest request) {",
+                    "    }",
+                    "    @OnNeverAskAgain(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettingOnNeverAskAgain() {",
+                    "    }",
+                    "    @OnPermissionDenied(Manifest.permission.WRITE_SETTINGS)",
+                    "    void writeSettingOnPermissionDenied() {",
+                    "    }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return EMPTY_SOURCE;
+        }
+    };
+
     public static final BaseTest methodOverloadWithoutNeedsPermission = new BaseTest() {
         @Override
         protected String getName() {
