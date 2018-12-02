@@ -4963,9 +4963,6 @@ public final class Source {
                     "    @OnPermissionDenied(Manifest.permission.WRITE_SETTINGS)",
                     "    void writeSettingOnPermissionDenied() {",
                     "    }",
-                    "    @OnNeverAskAgain(Manifest.permission.WRITE_SETTINGS)",
-                    "    void writeSettingOnNeverAskAgain() {",
-                    "    }",
                     "}"
             };
         }
@@ -5006,11 +5003,7 @@ public final class Source {
                     "      if (PermissionUtils.hasSelfPermissions(target.requireActivity(), PERMISSION_WRITESETTINGS) || Settings.System.canWrite(target.requireActivity())) {",
                     "        target.writeSettings();",
                     "      } else {",
-                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_WRITESETTINGS)) {",
-                    "          target.writeSettingOnNeverAskAgain();",
-                    "        } else {",
-                    "          target.writeSettingOnPermissionDenied();",
-                    "        }",
+                    "        target.writeSettingOnPermissionDenied();",
                     "      }",
                     "      break;",
                     "      default:",
@@ -5070,9 +5063,6 @@ public final class Source {
                     "    @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)",
                     "    void systemAlertWindowOnPermissionDenied() {",
                     "    }",
-                    "    @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)",
-                    "    void systemAlertWindowOnNeverAskAgain() {",
-                    "    }",
                     "}"
             };
         }
@@ -5113,11 +5103,7 @@ public final class Source {
                     "      if (PermissionUtils.hasSelfPermissions(target.requireActivity(), PERMISSION_SYSTEMALERTWINDOW) || Settings.canDrawOverlays(target.requireActivity())) {",
                     "        target.systemAlertWindow();",
                     "      } else {",
-                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SYSTEMALERTWINDOW)) {",
-                    "          target.systemAlertWindowOnNeverAskAgain();",
-                    "        } else {",
-                    "          target.systemAlertWindowOnPermissionDenied();",
-                    "        }",
+                    "        target.systemAlertWindowOnPermissionDenied();",
                     "      }",
                     "      break;",
                     "      default:",
@@ -5177,9 +5163,6 @@ public final class Source {
                     "    @OnPermissionDenied(Manifest.permission.WRITE_SETTINGS)",
                     "    void writeSettingsOnPermissionDenied() {",
                     "    }",
-                    "    @OnNeverAskAgain(Manifest.permission.WRITE_SETTINGS)",
-                    "    void writeSettingsOnNeverAskAgain() {",
-                    "    }",
                     "}"
             };
         }
@@ -5220,11 +5203,7 @@ public final class Source {
                     "      if (PermissionUtils.hasSelfPermissions(target, PERMISSION_WRITESETTINGS) || Settings.System.canWrite(target)) {",
                     "        target.writeSettings();",
                     "      } else {",
-                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_WRITESETTINGS)) {",
-                    "          target.writeSettingsOnNeverAskAgain();",
-                    "        } else {",
-                    "          target.writeSettingsOnPermissionDenied();",
-                    "        }",
+                    "        target.writeSettingsOnPermissionDenied();",
                     "      }",
                     "      break;",
                     "      default:",
@@ -5284,9 +5263,6 @@ public final class Source {
                     "    @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)",
                     "    void systemAlertWindowOnPermissionDenied() {",
                     "    }",
-                    "    @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)",
-                    "    void systemAlertWindowOnNeverAskAgain() {",
-                    "    }",
                     "}"
             };
         }
@@ -5327,11 +5303,7 @@ public final class Source {
                     "      if (PermissionUtils.hasSelfPermissions(target, PERMISSION_SYSTEMALERTWINDOW) || Settings.canDrawOverlays(target)) {",
                     "        target.systemAlertWindow();",
                     "      } else {",
-                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SYSTEMALERTWINDOW)) {",
-                    "          target.systemAlertWindowOnNeverAskAgain();",
-                    "        } else {",
-                    "          target.systemAlertWindowOnPermissionDenied();",
-                    "        }",
+                    "        target.systemAlertWindowOnPermissionDenied();",
                     "      }",
                     "      break;",
                     "      default:",
@@ -5393,9 +5365,6 @@ public final class Source {
                     "    @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)",
                     "    void systemAlertWindowOnPermissionDenied() {",
                     "    }",
-                    "    @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)",
-                    "    void systemAlertWindowOnNeverAskAgain() {",
-                    "    }",
                     "}"
             };
         }
@@ -5439,11 +5408,7 @@ public final class Source {
                     "      if (PermissionUtils.hasSelfPermissions(target.requireActivity(), PERMISSION_SYSTEMALERTWINDOW) || Settings.canDrawOverlays(target.requireActivity())) {",
                     "        target.systemAlertWindow();",
                     "      } else {",
-                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SYSTEMALERTWINDOW)) {",
-                    "          target.systemAlertWindowOnNeverAskAgain();",
-                    "        } else {",
-                    "          target.systemAlertWindowOnPermissionDenied();",
-                    "        }",
+                    "        target.systemAlertWindowOnPermissionDenied();",
                     "      }",
                     "      break;",
                     "      default:",
@@ -5505,9 +5470,6 @@ public final class Source {
                     "    @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)",
                     "    void systemAlertWindowOnPermissionDenied() {",
                     "    }",
-                    "    @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)",
-                    "    void systemAlertWindowOnNeverAskAgain() {",
-                    "    }",
                     "}"
             };
         }
@@ -5551,11 +5513,7 @@ public final class Source {
                     "      if (PermissionUtils.hasSelfPermissions(target, PERMISSION_SYSTEMALERTWINDOW) || Settings.canDrawOverlays(target)) {",
                     "        target.systemAlertWindow();",
                     "      } else {",
-                    "        if (!PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SYSTEMALERTWINDOW)) {",
-                    "          target.systemAlertWindowOnNeverAskAgain();",
-                    "        } else {",
-                    "          target.systemAlertWindowOnPermissionDenied();",
-                    "        }",
+                    "        target.systemAlertWindowOnPermissionDenied();",
                     "      }",
                     "      break;",
                     "      default:",

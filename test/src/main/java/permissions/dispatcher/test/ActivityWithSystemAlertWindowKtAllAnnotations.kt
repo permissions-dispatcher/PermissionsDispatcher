@@ -20,10 +20,6 @@ open class ActivityWithSystemAlertWindowKtAllAnnotations : AppCompatActivity() {
     internal fun showDeniedForSystemAlertWindow() {
     }
 
-    @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)
-    internal fun showNeverAskForSystemAlertWindow() {
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         onActivityResult(requestCode)

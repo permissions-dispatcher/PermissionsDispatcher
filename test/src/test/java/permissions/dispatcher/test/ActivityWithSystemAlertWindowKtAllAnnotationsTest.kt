@@ -139,17 +139,6 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
     }
 
     @Test
-    fun `call showNeverAsk method if permission not granted and shouldShowRequestPermissionRationale false`() {
-        mockCheckSelfPermission(false)
-        mockCanDrawOverlays(false)
-        mockShouldShowRequestPermissionRationaleActivity(false)
-
-        activity.onActivityResult(requestCode)
-
-        Mockito.verify(activity, Mockito.times(1)).showNeverAskForSystemAlertWindow()
-    }
-
-    @Test
     fun `call showDenied method if permission not granted and shouldShowRequestPermissionRationale true`() {
         mockCheckSelfPermission(false)
         mockCanDrawOverlays(false)
@@ -159,5 +148,4 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
 
         Mockito.verify(activity, Mockito.times(1)).showDeniedForSystemAlertWindow()
     }
-
 }

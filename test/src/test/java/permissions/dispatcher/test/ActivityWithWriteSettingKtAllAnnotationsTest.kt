@@ -139,17 +139,6 @@ class ActivityWithWriteSettingKtAllAnnotationsTest {
     }
 
     @Test
-    fun `call showNeverAsk method if permission not granted and shouldShowRequestPermissionRationale false`() {
-        mockCheckSelfPermission(false)
-        mockCanWrite(false)
-        mockShouldShowRequestPermissionRationaleActivity(false)
-
-        activity.onActivityResult(requestCode)
-
-        Mockito.verify(activity, Mockito.times(1)).showNeverAskForWriteSettings()
-    }
-
-    @Test
     fun `call showDenied method if permission not granted and shouldShowRequestPermissionRationale true`() {
         mockCheckSelfPermission(false)
         mockCanWrite(false)
@@ -159,5 +148,4 @@ class ActivityWithWriteSettingKtAllAnnotationsTest {
 
         Mockito.verify(activity, Mockito.times(1)).showDeniedForWriteSettings()
     }
-
 }
