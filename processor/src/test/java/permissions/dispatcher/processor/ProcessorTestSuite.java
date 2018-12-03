@@ -131,6 +131,16 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.needsPermissionMethodOverloadFragment);
     }
 
+    @Test public void systemAlertWindowWithOnNeverAskAgain() {
+        expectRuntimeException("'@NeverAskAgain' annotated method never being called with 'WRITE_SETTINGS' or 'SYSTEM_ALERT_WINDOW' permission.");
+        assertJavaSource(Source.systemAlertWindowWithOnNeverAskAgain);
+    }
+
+    @Test public void writeSettingsWithOnNeverAskAgain() {
+        expectRuntimeException("'@NeverAskAgain' annotated method never being called with 'WRITE_SETTINGS' or 'SYSTEM_ALERT_WINDOW' permission.");
+        assertJavaSource(Source.writeSettingsWithOnNeverAskAgain);
+    }
+
     @Test public void methodOverloadWithoutNeedsPermission() {
         assertJavaSource(Source.methodOverloadWithoutNeedsPermission);
     }

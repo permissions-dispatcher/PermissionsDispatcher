@@ -20,10 +20,6 @@ open class ActivityWithWriteSettingKtAllAnnotations : AppCompatActivity() {
     internal fun showDeniedForWriteSettings() {
     }
 
-    @OnNeverAskAgain(Manifest.permission.WRITE_SETTINGS)
-    internal fun showNeverAskForWriteSettings() {
-    }
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         super.onActivityResult(requestCode, resultCode, data)
         onActivityResult(requestCode)

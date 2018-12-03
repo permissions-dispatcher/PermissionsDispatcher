@@ -8,19 +8,7 @@ import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.OnPermissionDenied
 import permissions.dispatcher.OnShowRationale
-import permissions.dispatcher.processor.util.GEN_CLASS_SUFFIX
-import permissions.dispatcher.processor.util.checkDuplicatedMethodName
-import permissions.dispatcher.processor.util.checkDuplicatedValue
-import permissions.dispatcher.processor.util.checkMethodParameters
-import permissions.dispatcher.processor.util.checkMethodSignature
-import permissions.dispatcher.processor.util.checkMixPermissionType
-import permissions.dispatcher.processor.util.checkNotEmpty
-import permissions.dispatcher.processor.util.checkPrivateMethods
-import permissions.dispatcher.processor.util.childElementsAnnotatedWith
-import permissions.dispatcher.processor.util.findMatchingMethodForNeeds
-import permissions.dispatcher.processor.util.packageName
-import permissions.dispatcher.processor.util.simpleString
-import permissions.dispatcher.processor.util.typeMirrorOf
+import permissions.dispatcher.processor.util.*
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 
@@ -73,6 +61,7 @@ class RuntimePermissionsElement(e: TypeElement) {
         checkPrivateMethods(onNeverAskElements, OnNeverAskAgain::class.java)
         checkMethodSignature(onNeverAskElements)
         checkMethodParameters(onNeverAskElements, 0)
+        checkSpecialPermissionsWithNeverAskAgain(onNeverAskElements)
     }
 
     /* Begin public */

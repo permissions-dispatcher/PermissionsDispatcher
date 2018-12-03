@@ -5,7 +5,6 @@ import android.content.Intent;
 
 import androidx.appcompat.app.AppCompatActivity;
 import permissions.dispatcher.NeedsPermission;
-import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.OnShowRationale;
 import permissions.dispatcher.PermissionRequest;
@@ -24,10 +23,6 @@ public class ActivityWithSystemAlertWindowAllAnnotations extends AppCompatActivi
 
     @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)
     void showDeniedForSystemAlertWindow() {
-    }
-
-    @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)
-    void showNeverAskForSystemAlertWindow() {
     }
 
     @Override
