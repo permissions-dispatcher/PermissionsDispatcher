@@ -2,7 +2,6 @@ package permissions.dispatcher.test
 
 import android.content.pm.PackageManager
 import android.os.Process
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.AppOpsManagerCompat
 import androidx.core.content.PermissionChecker
 import org.junit.After
@@ -141,55 +140,6 @@ class SupportFragmentWithAllAnnotationsPermissionsDispatcherTest {
         SupportFragmentWithAllAnnotationsPermissionsDispatcher.onRequestPermissionsResult(fragment, requestCode + 1000, null)
 
         Mockito.verify(fragment, Mockito.times(0)).showNeverAskForCamera()
-    }
-
-    @Test
-    fun `xiaomi device permissionToOp returns null grant permission`() {
-        testForXiaomi()
-        mockPermissionToOp(null)
-
-        SupportFragmentWithAllAnnotationsPermissionsDispatcher.showCameraWithPermissionCheck(fragment)
-
-        Mockito.verify(fragment, Mockito.times(1)).showCamera()
-    }
-
-    @Test
-    fun `xiaomi device grant permission`() {
-        testForXiaomi()
-        mockPermissionToOp("")
-        mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
-        mockCheckSelfPermission(true)
-        mockRequireActivity(fragment, Mockito.mock(AppCompatActivity::class.java))
-
-        SupportFragmentWithAllAnnotationsPermissionsDispatcher.showCameraWithPermissionCheck(fragment)
-
-        Mockito.verify(fragment, Mockito.times(1)).showCamera()
-    }
-
-    @Test
-    fun `xiaomi noteOp returns not allowed value should not call the method`() {
-        testForXiaomi()
-        mockPermissionToOp("")
-        mockNoteOp(AppOpsManagerCompat.MODE_IGNORED)
-        mockCheckSelfPermission(true)
-        mockRequireActivity(fragment, Mockito.mock(AppCompatActivity::class.java))
-
-        SupportFragmentWithAllAnnotationsPermissionsDispatcher.showCameraWithPermissionCheck(fragment)
-
-        Mockito.verify(fragment, Mockito.times(0)).showCamera()
-    }
-
-    @Test
-    fun `xiaomi noteOp returns allowed but checkSelfPermission not allowed value should not call the method`() {
-        testForXiaomi()
-        mockPermissionToOp("")
-        mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
-        mockCheckSelfPermission(false)
-        mockRequireActivity(fragment, Mockito.mock(AppCompatActivity::class.java))
-
-        SupportFragmentWithAllAnnotationsPermissionsDispatcher.showCameraWithPermissionCheck(fragment)
-
-        Mockito.verify(fragment, Mockito.times(0)).showCamera()
     }
 
     @Test

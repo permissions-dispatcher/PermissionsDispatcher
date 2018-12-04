@@ -6,15 +6,12 @@ import android.content.Context
 import android.content.pm.PackageManager
 import android.net.Uri
 import android.os.Build
-import android.os.Process
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
-import androidx.core.app.AppOpsManagerCompat
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import org.mockito.Matchers.any
-import org.mockito.Matchers.anyInt
 import org.mockito.Matchers.anyString
 import org.powermock.api.mockito.PowerMockito
 import java.lang.reflect.Field
@@ -98,24 +95,6 @@ fun overwriteCustomSdkInt(sdkInt: Int = 23) {
 
 fun clearCustomSdkInt() {
     overwriteCustomSdkInt()
-}
-
-fun testForXiaomi() {
-    overwriteCustomManufacture()
-    overwriteCustomSdkInt()
-}
-
-fun mockPermissionToOp(result: String?) {
-    PowerMockito.`when`(AppOpsManagerCompat.permissionToOp(anyString())).thenReturn(result)
-}
-
-fun mockMyUid() {
-    PowerMockito.`when`(Process.myUid()).thenReturn(1)
-}
-
-fun mockNoteOp(result: Int) {
-    mockMyUid()
-    PowerMockito.`when`(AppOpsManagerCompat.noteOp(any(Context::class.java), anyString(), anyInt(), anyString())).thenReturn(result)
 }
 
 fun mockUriParse(result: Uri? = null) {

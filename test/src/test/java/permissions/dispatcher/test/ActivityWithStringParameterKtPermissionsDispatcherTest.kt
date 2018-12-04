@@ -145,52 +145,6 @@ class ActivityWithStringParameterKtPermissionsDispatcherTest {
     }
 
     @Test
-    fun `xiaomi device permissionToOp returns null grant permission`() {
-        testForXiaomi()
-        mockPermissionToOp(null)
-
-        activity.showCameraWithPermissionCheck(arrayOf("option"))
-
-        Mockito.verify(activity, Mockito.times(1)).showCamera(arrayOf("option"))
-    }
-
-    @Test
-    fun `xiaomi device grant permission`() {
-        testForXiaomi()
-        mockPermissionToOp("")
-        mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
-        mockCheckSelfPermission(true)
-
-        activity.showCameraWithPermissionCheck(arrayOf("option"))
-
-        Mockito.verify(activity, Mockito.times(1)).showCamera(arrayOf("option"))
-    }
-
-    @Test
-    fun `xiaomi noteOp returns not allowed value should not call the method`() {
-        testForXiaomi()
-        mockPermissionToOp("")
-        mockNoteOp(AppOpsManagerCompat.MODE_IGNORED)
-        mockCheckSelfPermission(true)
-
-        activity.showCameraWithPermissionCheck(arrayOf("option"))
-
-        Mockito.verify(activity, Mockito.times(0)).showCamera(arrayOf("option"))
-    }
-
-    @Test
-    fun `xiaomi noteOp returns allowed but checkSelfPermission not allowed value should not call the method`() {
-        testForXiaomi()
-        mockPermissionToOp("")
-        mockNoteOp(AppOpsManagerCompat.MODE_ALLOWED)
-        mockCheckSelfPermission(false)
-
-        activity.showCameraWithPermissionCheck(arrayOf("option"))
-
-        Mockito.verify(activity, Mockito.times(0)).showCamera(arrayOf("option"))
-    }
-
-    @Test
     fun `blow M follows checkSelfPermissions result false`() {
         overwriteCustomSdkInt(22)
         mockCheckSelfPermission(false)
