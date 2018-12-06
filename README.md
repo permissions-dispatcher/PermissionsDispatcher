@@ -2,7 +2,6 @@
 
 - [**Fully Kotlin support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_support.md)
 - [**Special Permissions support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/special_permissions.md)
-- **Xiaomi([API level >= 23](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/386#issuecomment-418680789)) support**
 - **100% reflection-free**
 
 PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions.
@@ -99,8 +98,6 @@ Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/ma
 
 - [Getting Special Permissions](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/special_permissions.md)
 - [maxSdkVersion](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/maxsdkversion.md)
-- Xiaomi
-  - Since Xiaomi manipulates something around runtime permission mechanism Google's recommended way [doesn't work well](https://github.com/hotchemi/PermissionsDispatcher/issues/187). But don't worry, PermissionsDispatcher supports it! Check related [PR](https://github.com/hotchemi/PermissionsDispatcher/issues/187) for more detail.
 - [IntelliJ plugin](https://github.com/shiraji/permissions-dispatcher-plugin)
 - AndroidAnnotations plugin
   - If you use [AndroidAnnotations](http://androidannotations.org/), you need to add [AndroidAnnotationsPermissionsDispatcherPlugin](https://github.com/AleksanderMielczarek/AndroidAnnotationsPermissionsDispatcherPlugin).
