@@ -5,10 +5,8 @@ import android.app.Fragment;
 import android.content.Context;
 import android.content.pm.PackageManager;
 import android.os.Build;
-import android.os.Process;
 import android.support.v13.app.FragmentCompat;
 import android.support.v4.app.ActivityCompat;
-import android.support.v4.app.AppOpsManagerCompat;
 import android.support.v4.content.PermissionChecker;
 import android.support.v4.util.SimpleArrayMap;
 
