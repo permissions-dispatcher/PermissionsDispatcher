@@ -1,5 +1,9 @@
 # ChangeLog
 
+- 4.1.0 2018/12/07
+  - Fix: compile time validation for detecting OnNeverAskAgain with special permissions [#549](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/549)
+  - Update: Drop Xiaomi support [#548](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/548)
+  - Fix: Fix CallNeedsPermissionDetector to scan only annotated classes [#536](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/536)
 - 4.0.0 2018/10/20
   - Update: [Update androidx ver to 1.0.0](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/530)
   - Fix: [Add NonNull annotation and use requireActivity](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/526)
@@ -7,6 +11,8 @@
 - 4.0.0-alpha1 2018/07/12
   - Remove: Remove native Fragment support[#498](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/498)
   - Add: Jetpack support [#494](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/494)
+- 3.3.2 2018/12/07
+  - Update: Drop Xiaomi support [#548](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/548)
 - 3.3.1 2018/06/25
   - Internal: Update using Kotlin ver to 1.2.50 [#489](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/489)
   - Add: Add a lint rule for not call WithPermissionCheck inside onResume [#486](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/486)
