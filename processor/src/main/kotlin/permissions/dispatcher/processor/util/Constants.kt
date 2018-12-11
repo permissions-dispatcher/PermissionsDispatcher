@@ -8,3 +8,6 @@ const val GEN_PERMISSION_PREFIX = "PERMISSION_"
 const val GEN_PENDING_PREFIX = "PENDING_"
 const val GEN_WITH_PERMISSION_CHECK_SUFFIX = "WithPermissionCheck"
 const val GEN_PERMISSION_REQUEST_SUFFIX = "PermissionRequest"
+
+const val INCREMENTAL_OPTION_KEY = "permissions-dispatcher.gradle.incremental"
+const val INCREMENTAL_ATP_OPTION = "permissions.dispatcher.processor.PermissionsProcessor,isolating"

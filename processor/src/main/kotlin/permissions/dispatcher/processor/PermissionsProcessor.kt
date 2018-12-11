@@ -3,6 +3,8 @@ package permissions.dispatcher.processor
 import permissions.dispatcher.RuntimePermissions
 import permissions.dispatcher.processor.impl.javaProcessorUnits
 import permissions.dispatcher.processor.impl.kotlinProcessorUnits
+import permissions.dispatcher.processor.util.INCREMENTAL_ATP_OPTION
+import permissions.dispatcher.processor.util.INCREMENTAL_OPTION_KEY
 import permissions.dispatcher.processor.util.findAndValidateProcessorUnit
 import permissions.dispatcher.processor.util.kotlinMetadataClass
 import java.io.File
@@ -41,6 +43,14 @@ class PermissionsProcessor : AbstractProcessor() {
         messager = processingEnv.messager
         ELEMENT_UTILS = processingEnv.elementUtils
         TYPE_UTILS = processingEnv.typeUtils
+    }
+
+    override fun getSupportedOptions(): MutableSet<String> {
+        val options = mutableSetOf<String>()
+        if (processingEnv.options.containsKey(INCREMENTAL_OPTION_KEY)) {
+            options.add(INCREMENTAL_ATP_OPTION)
+        }
+        return options
     }
 
     override fun getSupportedSourceVersion(): SourceVersion? {
