@@ -2,13 +2,12 @@ package permissions.dispatcher.processor.impl.kotlin
 
 import com.squareup.kotlinpoet.FunSpec
 import permissions.dispatcher.processor.util.typeMirrorOf
-import javax.annotation.processing.Messager
 import javax.lang.model.type.TypeMirror
 
 /**
  * [permissions.dispatcher.processor.KtProcessorUnit] implementation for Fragments.
  */
-class KotlinFragmentProcessorUnit(messager: Messager) : KotlinBaseProcessorUnit(messager) {
+class KotlinFragmentProcessorUnit : KotlinBaseProcessorUnit() {
 
     override fun isDeprecated(): Boolean = false
 

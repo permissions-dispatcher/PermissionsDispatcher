@@ -2,13 +2,12 @@ package permissions.dispatcher.processor.impl.java
 
 import com.squareup.javapoet.MethodSpec
 import permissions.dispatcher.processor.util.typeMirrorOf
-import javax.annotation.processing.Messager
 import javax.lang.model.type.TypeMirror
 
 /**
  * ProcessorUnit implementation for Fragments.
  */
-class JavaFragmentProcessorUnit(messager: Messager) : JavaBaseProcessorUnit(messager) {
+class JavaFragmentProcessorUnit : JavaBaseProcessorUnit() {
 
     override fun isDeprecated(): Boolean = false
 
