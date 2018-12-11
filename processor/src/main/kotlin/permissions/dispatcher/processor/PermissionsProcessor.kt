@@ -46,11 +46,8 @@ class PermissionsProcessor : AbstractProcessor() {
     }
 
     override fun getSupportedOptions(): MutableSet<String> {
-        val options = mutableSetOf<String>()
-        if (processingEnv.options.containsKey(INCREMENTAL_OPTION_KEY)) {
-            options.add(INCREMENTAL_ATP_OPTION)
-        }
-        return options
+        val enableIncrementalBuild = processingEnv.options.containsKey(INCREMENTAL_OPTION_KEY)
+        return if (enableIncrementalBuild) mutableSetOf(INCREMENTAL_ATP_OPTION) else super.getSupportedOptions()
     }
 
     override fun getSupportedSourceVersion(): SourceVersion? {
