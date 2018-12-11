@@ -94,8 +94,10 @@ abstract class KotlinBaseProcessorUnit(val messager: Messager) : KtProcessorUnit
     }
 
     private fun createPendingRequestProperty(e: ExecutableElement): PropertySpec {
+        val type = ClassName("permissions.dispatcher", "GrantableRequest").copy(nullable = true)
         return PropertySpec
-                .varBuilder(pendingRequestFieldName(e), ClassName("permissions.dispatcher", "GrantableRequest").asNullable(), KModifier.PRIVATE)
+                .builder(pendingRequestFieldName(e), type, KModifier.PRIVATE)
+                .mutable()
                 .initializer(CodeBlock.of("null"))
                 .build()
     }
