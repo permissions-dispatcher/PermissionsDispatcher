@@ -27,7 +27,6 @@ import permissions.dispatcher.processor.util.typeNameOf
 import permissions.dispatcher.processor.util.varargsParametersCodeBlock
 import permissions.dispatcher.processor.util.withPermissionCheckMethodName
 import java.util.ArrayList
-import javax.annotation.processing.Messager
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
 
@@ -36,7 +35,7 @@ import javax.lang.model.element.Modifier
  * <p>
  * This generates the parts of code independent from specific permission method signatures for different target objects.
  */
-abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit {
+abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
 
     protected val PERMISSION_UTILS: ClassName = ClassName.get("permissions.dispatcher", "PermissionUtils")
     private val BUILD = ClassName.get("android.os", "Build")
@@ -164,7 +163,7 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
         return builder.build()
     }
 
-    fun addWithPermissionCheckBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String) {
+    private fun addWithPermissionCheckBody(builder: MethodSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, targetParam: String) {
         // Create field names for the constants to use
         val requestCodeField = requestCodeFieldName(needsMethod)
         val permissionField = permissionFieldName(needsMethod)
@@ -425,7 +424,7 @@ abstract class JavaBaseProcessorUnit(val messager: Messager) : JavaProcessorUnit
                 .addModifiers(Modifier.PRIVATE, Modifier.STATIC, Modifier.FINAL)
 
         // Add required fields to the target
-        val weakFieldName: String = "weakTarget"
+        val weakFieldName = "weakTarget"
         val weakFieldType = ParameterizedTypeName.get(ClassName.get("java.lang.ref", "WeakReference"), targetType)
         builder.addField(weakFieldType, weakFieldName, Modifier.PRIVATE, Modifier.FINAL)
         needsMethod.parameters.forEach {

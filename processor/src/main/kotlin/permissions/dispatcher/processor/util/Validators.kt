@@ -34,15 +34,14 @@ fun <K> findAndValidateProcessorUnit(units: List<ProcessorUnit<K>>, element: Ele
  * Raises an exception if any annotation value is found multiple times.
  */
 fun <A : Annotation> checkDuplicatedValue(items: List<ExecutableElement>, annotationClass: Class<A>) {
-    val allItems: ArrayList<List<String>> = arrayListOf()
+    val allItems: HashSet<List<String>> = hashSetOf()
     items.forEach {
         val permissionValue = it.getAnnotation(annotationClass).permissionValue().sorted()
-        allItems.forEach { oldItem ->
-            if (oldItem == permissionValue) {
-                throw DuplicatedValueException(permissionValue, it, annotationClass)
-            }
+        if (allItems.contains(permissionValue)) {
+            throw DuplicatedValueException(permissionValue, it, annotationClass)
+        } else {
+            allItems.add(permissionValue)
         }
-        allItems.add(permissionValue)
     }
 }
 
@@ -89,22 +88,23 @@ fun checkMethodSignature(items: List<ExecutableElement>) {
     }
 }
 
-fun checkMethodParameters(items: List<ExecutableElement>, numParams: Int, vararg requiredTypes: TypeMirror) {
+fun checkMethodParameters(items: List<ExecutableElement>, numParams: Int, requiredType: TypeMirror? = null) {
     items.forEach {
         // Check each element's parameters against the requirements
         val params = it.parameters
         if (numParams == 0 && params.isNotEmpty()) {
             throw NoParametersAllowedException(it)
         }
-
         if (numParams != params.size) {
-            throw WrongParametersException(it, requiredTypes)
+            throw WrongParametersException(it, requiredType)
         }
-
-        params.forEachIndexed { i, param ->
-            val requiredType = requiredTypes[i]
+        if (requiredType == null) {
+            return
+        }
+        // maximum params size is 1 for now
+        params.forEach { param ->
             if (!TYPE_UTILS.isSameType(param.asType(), requiredType)) {
-                throw WrongParametersException(it, requiredTypes)
+                throw WrongParametersException(it, requiredType)
             }
         }
     }
