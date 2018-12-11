@@ -135,5 +135,4 @@ fun TypeName.checkParameterStringType(): TypeName {
 /**
  * Returns this TypeName as nullable or non-nullable based on the given condition.
  */
-fun TypeName.mapToNullableTypeIf(nullable: Boolean) =
-        if (nullable) asNullable() else asNonNullable()
+fun TypeName.mapToNullableTypeIf(nullable: Boolean) = copy(nullable = nullable)
