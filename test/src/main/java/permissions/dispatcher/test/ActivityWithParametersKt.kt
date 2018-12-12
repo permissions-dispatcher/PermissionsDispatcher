@@ -5,25 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import permissions.dispatcher.*
 
 @RuntimePermissions
-open class ActivityWithStringParameterKt : AppCompatActivity() {
+open class ActivityWithParametersKt : AppCompatActivity() {
 
     @NeedsPermission(Manifest.permission.CAMERA)
-    fun showCamera(option: Array<out String>) {
+    fun showCamera(arg: Array<out String>) {
     }
 
-    /**
-     * PermissionRequest is nullable for testing, but it shouldn't
-     */
-    @OnShowRationale(Manifest.permission.CAMERA)
-    fun showRationaleForCamera(request: PermissionRequest?) {
-    }
-
-    @OnPermissionDenied(Manifest.permission.CAMERA)
-    fun showDeniedForCamera() {
-    }
-
-    @OnNeverAskAgain(Manifest.permission.CAMERA)
-    fun showNeverAskForCamera() {
+    @NeedsPermission(Manifest.permission.READ_CALENDAR)
+    fun showCalendar(arg: Any) {
     }
 
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
