@@ -66,8 +66,9 @@ fun VariableElement.isNullable(): Boolean =
 fun VariableElement.asPreparedType(): TypeName =
         this.asType()
                 .asTypeName()
-                .checkStringType()
-                .checkParameterStringType()
+                .correctStringType()
+                .correctParameterStringType()
+                .correctAnyType()
                 .mapToNullableTypeIf(this.isNullable())
 
 /**
@@ -117,20 +118,26 @@ fun FileSpec.Builder.addTypes(types: List<TypeSpec>): FileSpec.Builder {
  * To avoid KotlinPoet bug that returns java.lang.String when type name is kotlin.String.
  * This method should be removed after addressing on KotlinPoet side.
  */
-fun TypeName.checkStringType() =
+fun TypeName.correctStringType() =
         if (this.toString() == "java.lang.String") ClassName("kotlin", "String") else this
 
 /**
  * Convert [java.lang.String] to [kotlin.String] in a parameter.
  * ref: https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/427
  */
-fun TypeName.checkParameterStringType(): TypeName {
+fun TypeName.correctParameterStringType(): TypeName {
     if (this is ParameterizedTypeName) {
-        val typeArguments = this.typeArguments.map { it.checkStringType() }.toTypedArray()
+        val typeArguments = this.typeArguments.map { it.correctStringType() }.toTypedArray()
         return this.rawType.parameterizedBy(*typeArguments)
     }
     return this
 }
+
+/**
+ * https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/545
+ */
+fun TypeName.correctAnyType() =
+        if (this.toString() == "java.lang.Object") ClassName("kotlin", "Any") else this
 
 /**
  * Returns this TypeName as nullable or non-nullable based on the given condition.
