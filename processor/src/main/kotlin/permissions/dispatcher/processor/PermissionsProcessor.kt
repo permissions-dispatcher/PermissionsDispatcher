@@ -4,7 +4,6 @@ import permissions.dispatcher.RuntimePermissions
 import permissions.dispatcher.processor.impl.javaProcessorUnits
 import permissions.dispatcher.processor.impl.kotlinProcessorUnits
 import permissions.dispatcher.processor.util.INCREMENTAL_ATP_OPTION
-import permissions.dispatcher.processor.util.INCREMENTAL_OPTION_KEY
 import permissions.dispatcher.processor.util.findAndValidateProcessorUnit
 import permissions.dispatcher.processor.util.kotlinMetadataClass
 import java.io.File
@@ -45,10 +44,7 @@ class PermissionsProcessor : AbstractProcessor() {
         TYPE_UTILS = processingEnv.typeUtils
     }
 
-    override fun getSupportedOptions(): MutableSet<String> {
-        val enableIncrementalBuild = processingEnv.options.containsKey(INCREMENTAL_OPTION_KEY)
-        return if (enableIncrementalBuild) mutableSetOf(INCREMENTAL_ATP_OPTION) else super.getSupportedOptions()
-    }
+    override fun getSupportedOptions(): MutableSet<String> = mutableSetOf(INCREMENTAL_ATP_OPTION)
 
     override fun getSupportedSourceVersion(): SourceVersion? {
         return SourceVersion.latestSupported()
