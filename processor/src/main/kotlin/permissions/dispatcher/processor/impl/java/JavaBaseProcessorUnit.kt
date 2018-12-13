@@ -48,7 +48,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
      * <p>
      * This will delegate to other methods that compose generated code.
      */
-    override final fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): JavaFile {
+    final override fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): JavaFile {
         return JavaFile.builder(rpe.packageName, createTypeSpec(rpe, requestCodeProvider))
                 .addFileComment(FILE_COMMENT)
                 .build()
@@ -68,6 +68,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
 
     private fun createTypeSpec(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): TypeSpec {
         return TypeSpec.classBuilder(rpe.generatedClassName)
+                .addOriginatingElement(rpe.e) // for incremental annotation processing
                 .addModifiers(Modifier.FINAL)
                 .addFields(createFields(rpe.needsElements, requestCodeProvider))
                 .addMethod(createConstructor())

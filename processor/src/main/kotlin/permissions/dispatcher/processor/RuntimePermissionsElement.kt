@@ -12,7 +12,7 @@ import permissions.dispatcher.processor.util.*
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 
-class RuntimePermissionsElement(e: TypeElement) {
+class RuntimePermissionsElement(val e: TypeElement) {
     val typeName: TypeName = TypeName.get(e.asType())
     val ktTypeName = e.asType().asTypeName()
     val typeVariables = e.typeParameters.map { TypeVariableName.get(it) }
