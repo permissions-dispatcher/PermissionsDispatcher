@@ -86,13 +86,13 @@ class PermissionsProcessor : AbstractProcessor() {
             kaptGeneratedDir.parentFile.mkdirs()
         }
 
-        val processorUnit = findAndValidateProcessorUnit(kotlinProcessorUnits(), element)
+        val processorUnit = findAndValidateProcessorUnit(kotlinProcessorUnits, element)
         val kotlinFile = processorUnit.createFile(rpe, requestCodeProvider)
         kotlinFile.writeTo(kaptGeneratedDir)
     }
 
     private fun processJava(element: Element, rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider) {
-        val processorUnit = findAndValidateProcessorUnit(javaProcessorUnits(), element)
+        val processorUnit = findAndValidateProcessorUnit(javaProcessorUnits, element)
         val javaFile = processorUnit.createFile(rpe, requestCodeProvider)
         javaFile.writeTo(filer)
     }

@@ -46,7 +46,7 @@ class RuntimePermissionsElement(val e: TypeElement) {
         checkDuplicatedValue(onRationaleElements, OnShowRationale::class.java)
         checkPrivateMethods(onRationaleElements, OnShowRationale::class.java)
         checkMethodSignature(onRationaleElements)
-        checkMethodParameters(onRationaleElements, 1, typeMirrorOf("permissions.dispatcher.PermissionRequest"))
+        checkMethodParameters(onRationaleElements, 0)
     }
 
     private fun validateDeniedMethods() {

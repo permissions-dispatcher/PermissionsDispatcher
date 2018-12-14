@@ -3,14 +3,12 @@ package permissions.dispatcher.processor.util
 import permissions.dispatcher.OnNeverAskAgain
 import permissions.dispatcher.processor.ProcessorUnit
 import permissions.dispatcher.processor.RuntimePermissionsElement
-import permissions.dispatcher.processor.TYPE_UTILS
 import permissions.dispatcher.processor.exception.*
 import java.util.*
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
 import javax.lang.model.type.TypeKind
-import javax.lang.model.type.TypeMirror
 
 private const val WRITE_SETTINGS = "android.permission.WRITE_SETTINGS"
 private const val SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
@@ -88,7 +86,7 @@ fun checkMethodSignature(items: List<ExecutableElement>) {
     }
 }
 
-fun checkMethodParameters(items: List<ExecutableElement>, numParams: Int, requiredType: TypeMirror? = null) {
+fun checkMethodParameters(items: List<ExecutableElement>, numParams: Int) {
     items.forEach {
         // Check each element's parameters against the requirements
         val params = it.parameters
@@ -96,16 +94,7 @@ fun checkMethodParameters(items: List<ExecutableElement>, numParams: Int, requir
             throw NoParametersAllowedException(it)
         }
         if (numParams != params.size) {
-            throw WrongParametersException(it, requiredType)
-        }
-        if (requiredType == null) {
-            return
-        }
-        // maximum params size is 1 for now
-        params.forEach { param ->
-            if (!TYPE_UTILS.isSameType(param.asType(), requiredType)) {
-                throw WrongParametersException(it, requiredType)
-            }
+            throw WrongParameterSizeException(it, numParams)
         }
     }
 }

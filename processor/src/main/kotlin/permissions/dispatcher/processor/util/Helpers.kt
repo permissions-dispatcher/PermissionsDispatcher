@@ -35,11 +35,15 @@ fun pendingRequestFieldName(e: ExecutableElement) = "$GEN_PENDING_PREFIX${e.simp
 
 fun withPermissionCheckMethodName(e: ExecutableElement) = "${e.simpleString().trimDollarIfNeeded()}$GEN_WITH_PERMISSION_CHECK_SUFFIX"
 
+fun proceedOnShowRationaleMethodName(e: ExecutableElement) = "$GEN_PROCEED_PREFIX${e.simpleString().trimDollarIfNeeded().capitalize()}"
+
+fun cancelOnShowRationaleMethodName(e: ExecutableElement) = "$GEN_CANCEL_PREFIX${e.simpleString().trimDollarIfNeeded().capitalize()}"
+
 fun permissionRequestTypeName(rpe: RuntimePermissionsElement, e: ExecutableElement) =
         "${rpe.inputClassName}${e.simpleString().trimDollarIfNeeded().capitalize()}$GEN_PERMISSION_REQUEST_SUFFIX"
 
 fun <A : Annotation> findMatchingMethodForNeeds(needsElement: ExecutableElement, otherElements: List<ExecutableElement>, annotationType: Class<A>): ExecutableElement? {
-    val value: List<String> = needsElement.getAnnotation(NeedsPermission::class.java).permissionValue()
+    val value = needsElement.getAnnotation(NeedsPermission::class.java).permissionValue()
     return otherElements.firstOrNull {
         it.getAnnotation(annotationType).permissionValue() == value
     }
