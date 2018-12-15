@@ -167,7 +167,7 @@ public final class Source {
         }
     };
 
-    public static final BaseTest RationaleWithWrongParameters1 = new BaseTest() {
+    public static final BaseTest RationaleWithWrongParameters = new BaseTest() {
         @Override
         protected String getName() {
             return "MyActivity";
@@ -189,75 +189,6 @@ public final class Source {
                     "   }",
                     "   @OnShowRationale(Manifest.permission.CAMERA)",
                     "   void cameraRationale(int value) {",
-                    "   }",
-                    "}"
-            };
-        }
-
-        @Override
-        protected String[] getExpectSource() {
-            return EMPTY_SOURCE;
-        }
-    };
-
-    public static final BaseTest RationaleWithWrongParameters2 = new BaseTest() {
-        @Override
-        protected String getName() {
-            return "MyActivity";
-        }
-
-        @Override
-        protected String[] getActualSource() {
-            return new String[]{
-                    "package tests;",
-                    "import android.Manifest;",
-                    "import android.app.Activity;",
-                    "import permissions.dispatcher.RuntimePermissions;",
-                    "import permissions.dispatcher.NeedsPermission;",
-                    "import permissions.dispatcher.OnShowRationale;",
-                    "import permissions.dispatcher.PermissionRequest;",
-                    "@RuntimePermissions",
-                    "public class MyActivity extends Activity {",
-                    "   @NeedsPermission(Manifest.permission.CAMERA)",
-                    "   void showCamera(MyPermissionRequest request) {",
-                    "   }",
-                    "   @OnShowRationale(Manifest.permission.CAMERA)",
-                    "   void cameraRationale(int value) {",
-                    "   }",
-                    "   private static interface MyPermissionRequest extends PermissionRequest {",
-                    "   }",
-                    "}"
-            };
-        }
-
-        @Override
-        protected String[] getExpectSource() {
-            return EMPTY_SOURCE;
-        }
-    };
-
-    public static final BaseTest RationaleWithoutParameters = new BaseTest() {
-        @Override
-        protected String getName() {
-            return "MyActivity";
-        }
-
-        @Override
-        protected String[] getActualSource() {
-            return new String[]{
-                    "package tests;",
-                    "import android.Manifest;",
-                    "import android.app.Activity;",
-                    "import permissions.dispatcher.RuntimePermissions;",
-                    "import permissions.dispatcher.NeedsPermission;",
-                    "import permissions.dispatcher.OnShowRationale;",
-                    "@RuntimePermissions",
-                    "public class MyActivity extends Activity {",
-                    "   @NeedsPermission(Manifest.permission.CAMERA)",
-                    "   void showCamera() {",
-                    "   }",
-                    "   @OnShowRationale(Manifest.permission.CAMERA)",
-                    "   void cameraRationale() {",
                     "   }",
                     "}"
             };
@@ -5455,7 +5386,6 @@ public final class Source {
                     "import permissions.dispatcher.OnNeverAskAgain;",
                     "import permissions.dispatcher.OnPermissionDenied;",
                     "import permissions.dispatcher.OnShowRationale;",
-                    "import permissions.dispatcher.PermissionRequest;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import java.lang.annotation.Annotation;",
                     "import java.util.Map;",
@@ -5465,7 +5395,7 @@ public final class Source {
                     "    void systemAlertWindow() {",
                     "    }",
                     "    @OnShowRationale(Manifest.permission.SYSTEM_ALERT_WINDOW)",
-                    "    void systemAlertWindowOnShowRationale(PermissionRequest request) {",
+                    "    void systemAlertWindowOnShowRationale() {",
                     "    }",
                     "    @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)",
                     "    void systemAlertWindowOnPermissionDenied() {",
@@ -5500,7 +5430,7 @@ public final class Source {
                     "      target.systemAlertWindow();",
                     "    } else {",
                     "      if (PermissionUtils.shouldShowRequestPermissionRationale(target, PERMISSION_SYSTEMALERTWINDOW)) {",
-                    "        target.systemAlertWindowOnShowRationale(new MyActivitySystemAlertWindowPermissionRequest(target));",
+                    "        target.systemAlertWindowOnShowRationale();",
                     "      } else {",
                     "        Intent intent = new Intent(Settings.ACTION_MANAGE_OVERLAY_PERMISSION, Uri.parse(\"package:\" + target.getPackageName()));",
                     "        target.startActivityForResult(intent, REQUEST_SYSTEMALERTWINDOW);",
@@ -6017,7 +5947,6 @@ public final class Source {
                     "import permissions.dispatcher.OnNeverAskAgain;",
                     "import permissions.dispatcher.OnPermissionDenied;",
                     "import permissions.dispatcher.OnShowRationale;",
-                    "import permissions.dispatcher.PermissionRequest;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "@RuntimePermissions",
                     "public class MyFragment extends Fragment {",
@@ -6025,7 +5954,7 @@ public final class Source {
                     "    void systemAlertWindow() {",
                     "    }",
                     "    @OnShowRationale(Manifest.permission.SYSTEM_ALERT_WINDOW)",
-                    "    void systemAlertWindowOnShowRationale(PermissionRequest request) {",
+                    "    void systemAlertWindowOnShowRationale() {",
                     "    }",
                     "    @OnNeverAskAgain(Manifest.permission.SYSTEM_ALERT_WINDOW)",
                     "    void systemAlertWindowOnNeverAskAgain() {",
@@ -6059,7 +5988,6 @@ public final class Source {
                     "import permissions.dispatcher.OnNeverAskAgain;",
                     "import permissions.dispatcher.OnPermissionDenied;",
                     "import permissions.dispatcher.OnShowRationale;",
-                    "import permissions.dispatcher.PermissionRequest;",
                     "import permissions.dispatcher.RuntimePermissions;",
                     "@RuntimePermissions",
                     "public class MyFragment extends Fragment {",
@@ -6067,7 +5995,7 @@ public final class Source {
                     "    void writeSettings() {",
                     "    }",
                     "    @OnShowRationale(Manifest.permission.WRITE_SETTINGS)",
-                    "    void writeSettingOnShowRationale(PermissionRequest request) {",
+                    "    void writeSettingOnShowRationale() {",
                     "    }",
                     "    @OnNeverAskAgain(Manifest.permission.WRITE_SETTINGS)",
                     "    void writeSettingOnNeverAskAgain() {",

@@ -31,19 +31,9 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.NeverAskWithNonVoidReturnType);
     }
 
-    @Test public void rationaleWithWrongParameters1() {
-        expectRuntimeException("Method 'cameraRationale()' must declare parameters of type 'PermissionRequest'");
-        assertJavaSource(Source.RationaleWithWrongParameters1);
-    }
-
-    @Test public void rationaleWithWrongParameters2() {
-        expectRuntimeException("Method 'cameraRationale()' must declare parameters of type 'PermissionRequest'");
-        assertJavaSource(Source.RationaleWithWrongParameters2);
-    }
-
-    @Test public void rationaleWithoutParameters() {
-        expectRuntimeException("Method 'cameraRationale()' must declare parameters of type 'PermissionRequest'");
-        assertJavaSource(Source.RationaleWithoutParameters);
+    @Test public void rationaleWithParameters() {
+        expectRuntimeException("Method 'cameraRationale()' must not have any parameters");
+        assertJavaSource(Source.RationaleWithWrongParameters);
     }
 
     @Test public void deniedWithParameters() {

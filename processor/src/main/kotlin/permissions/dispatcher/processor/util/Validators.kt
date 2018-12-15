@@ -88,13 +88,8 @@ fun checkMethodSignature(items: List<ExecutableElement>) {
 
 fun checkMethodParameters(items: List<ExecutableElement>, numParams: Int) {
     items.forEach {
-        // Check each element's parameters against the requirements
-        val params = it.parameters
-        if (numParams == 0 && params.isNotEmpty()) {
+        if (numParams == 0 && it.parameters.isNotEmpty()) {
             throw NoParametersAllowedException(it)
-        }
-        if (numParams != params.size) {
-            throw WrongParameterSizeException(it, numParams)
         }
     }
 }
