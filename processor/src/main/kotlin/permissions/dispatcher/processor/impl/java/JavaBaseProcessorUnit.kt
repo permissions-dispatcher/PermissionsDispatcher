@@ -19,6 +19,7 @@ import permissions.dispatcher.processor.util.*
 import java.util.ArrayList
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
+import javax.lang.model.element.VariableElement
 
 /**
  * Base class for [JavaProcessorUnit] implementations.
@@ -84,9 +85,8 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
             // For each method annotated with @NeedsPermission, add REQUEST integer and PERMISSION String[] fields
             fields.add(createRequestCodeField(it, requestCodeProvider.nextRequestCode()))
             fields.add(createPermissionField(it))
-
             if (it.parameters.isNotEmpty()) {
-                fields.add(createPendingRequestField(it))
+                fields.addAll(createParameterCacheField(it.parameters))
             }
         }
         return fields
@@ -113,10 +113,12 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
                 .build()
     }
 
-    private fun createPendingRequestField(e: ExecutableElement): FieldSpec {
-        return FieldSpec.builder(ClassName.get("permissions.dispatcher", "GrantableRequest"), pendingRequestFieldName(e))
-                .addModifiers(Modifier.PRIVATE, Modifier.STATIC)
-                .build()
+    private fun createParameterCacheField(parameters: List<VariableElement>): List<FieldSpec> {
+        return parameters.map {
+            FieldSpec.builder(typeNameOf(it), it.simpleString())
+                    .addModifiers(Modifier.PRIVATE, Modifier.STATIC)
+                    .build()
+        }
     }
 
     private fun createConstructor(): MethodSpec {
@@ -183,19 +185,27 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
         )
         builder.nextControlFlow("else")
 
-        val hasParameters: Boolean = needsMethod.parameters.isNotEmpty()
+        val hasParameters = needsMethod.parameters.isNotEmpty()
         if (hasParameters) {
+            needsMethod.parameters.forEach {
+                val varargsCall = CodeBlock.builder()
+                        .addStatement("\$N = \$N",
+                                it.simpleName,
+                                it.simpleName
+                        )
+                builder.addCode(varargsCall.build())
+
+            }
             // If the method has parameters, precede the potential OnRationale call with
             // an instantiation of the temporary Request object
-            val varargsCall = CodeBlock.builder()
-                    .add("\$N = new \$N(\$N, ",
-                            pendingRequestFieldName(needsMethod),
-                            permissionRequestTypeName(rpe, needsMethod),
-                            targetParam
-                    )
-                    .add(varargsParametersCodeBlock(needsMethod))
-                    .addStatement(")")
-            builder.addCode(varargsCall.build())
+//            val varargsCall = CodeBlock.builder()
+//                    .add("\$N = new \$N(\$N, ",
+//                            pendingRequestFieldName(needsMethod),
+//                            permissionRequestTypeName(rpe, needsMethod),
+//                            targetParam
+//                    )
+//                    .add(varargsParametersCodeBlock(needsMethod))
+//                    .addStatement(")")
         }
         // Add the conditional for "OnShowRationale", if present
         val onRationale = rpe.findOnRationaleForNeeds(needsMethod)
@@ -309,10 +319,11 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
         // Based on whether or not the method has parameters, delegate to the "pending request" object or invoke the method directly
         val hasParameters = needsMethod.parameters.isNotEmpty()
         if (hasParameters) {
-            val pendingField = pendingRequestFieldName(needsMethod)
-            builder.beginControlFlow("if (\$N != null)", pendingField)
-            builder.addStatement("\$N.grant()", pendingField)
-            builder.endControlFlow()
+            builder.addCode(CodeBlock.builder()
+                    .add("\$N.\$N(", targetParam, needsMethod.simpleString())
+                    .add(varargsParametersCodeBlock(needsMethod))
+                    .addStatement(")")
+                    .build())
         } else {
             builder.addStatement("target.\$N()", needsMethod.simpleString())
         }
@@ -350,7 +361,12 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
 
         // Remove the temporary pending request field, in case it was used for a method with parameters
         if (hasParameters) {
-            builder.addStatement("\$N = null", pendingRequestFieldName(needsMethod))
+            needsMethod.parameters.forEach {
+                val typeName = typeNameOf(it)
+                if (!typeName.isPrimitive) {
+                    builder.addStatement("\$N = null", it.simpleString())
+                }
+            }
         }
         builder.addStatement("break")
     }
