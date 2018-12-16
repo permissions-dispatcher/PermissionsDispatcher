@@ -11,13 +11,9 @@ class JavaFragmentProcessorUnit : JavaBaseProcessorUnit() {
 
     override fun isDeprecated(): Boolean = false
 
-    override fun getTargetType(): TypeMirror {
-        return typeMirrorOf("androidx.fragment.app.Fragment")
-    }
+    override fun getTargetType(): TypeMirror = typeMirrorOf("androidx.fragment.app.Fragment")
 
-    override fun getActivityName(targetParam: String): String {
-        return "$targetParam.requireActivity()"
-    }
+    override fun getActivityName(targetParam: String): String = "$targetParam.requireActivity()"
 
     override fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String, isPositiveCondition: Boolean) {
         builder.beginControlFlow("if (\$N\$T.shouldShowRequestPermissionRationale(\$N, \$N))", if (isPositiveCondition) "" else "!", PERMISSION_UTILS, targetParam, permissionField)

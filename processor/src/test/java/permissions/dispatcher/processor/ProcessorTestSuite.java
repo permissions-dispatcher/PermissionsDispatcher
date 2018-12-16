@@ -131,16 +131,8 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.writeSettingsWithOnNeverAskAgain);
     }
 
-    @Test public void methodOverloadWithoutNeedsPermission() {
-        assertJavaSource(Source.methodOverloadWithoutNeedsPermission);
-    }
-
     @Test public void onePermissionActivity() {
         assertJavaSource(Source.OnePermissionActivity);
-    }
-
-    @Test public void onePermissionSupportFragment() {
-        assertJavaSource(Source.OnePermissionSupportFragment);
     }
 
     @Test public void onePermissionWithParametersActivity() {
@@ -157,6 +149,10 @@ public class ProcessorTestSuite extends TestSuite {
 
     @Test public void onePermissionWithParametersRationaleAndDeniedActivity() {
         assertJavaSource(Source.OnePermissionWithParametersRationaleAndDeniedActivity);
+    }
+
+    @Test public void onePermissionSupportFragment() {
+        assertJavaSource(Source.OnePermissionSupportFragment);
     }
 
     @Test public void onePermissionWithParametersSupportFragment() {
@@ -239,14 +235,6 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.TwoPermissionsSupportFragment);
     }
 
-    @Test public void onePermissionWithRationaleActivity() {
-        assertJavaSource(Source.OnePermissionWithRationaleActivity);
-    }
-
-    @Test public void onePermissionWithRationaleSupportFragment() {
-        assertJavaSource(Source.OnePermissionWithRationaleSupportFragment);
-    }
-
     @Test public void onePermissionWithNeverAskAndRationaleSupportFragment() {
         assertJavaSource(Source.OnePermissionWithNeverAskAndRationaleSupportFragment);
     }
@@ -261,22 +249,6 @@ public class ProcessorTestSuite extends TestSuite {
 
     @Test public void onePermissionWithNeverAskAndDeniedSupportFragment() {
         assertJavaSource(Source.OnePermissionWithNeverAskAndDeniedSupportFragment);
-    }
-
-    @Test public void twoPermissionsWithOneRationaleActivity() {
-        assertJavaSource(Source.TwoPermissionsWithOneRationaleActivity);
-    }
-
-    @Test public void twoPermissionsWithOneRationaleSupportFragment() {
-        assertJavaSource(Source.TwoPermissionsWithOneRationaleSupportFragment);
-    }
-
-    @Test public void twoPermissionsWithTwoRationalesActivity() {
-        assertJavaSource(Source.TwoPermissionsWithTwoRationalesActivity);
-    }
-
-    @Test public void twoPermissionsWithTwoRationalesSupportFragment() {
-        assertJavaSource(Source.TwoPermissionsWithTwoRationalesSupportFragment);
     }
 
     @Test public void onePermissionWithOtherRationaleActivity() {
@@ -301,14 +273,6 @@ public class ProcessorTestSuite extends TestSuite {
 
     @Test public void onePermissionWithOtherDeniedFragment() {
         assertJavaSource(Source.OnePermissionWithOtherDeniedSupportFragment);
-    }
-
-    @Test public void onePermissionWithRationaleAndDeniedActivity() {
-        assertJavaSource(Source.OnePermissionWithRationaleAndDeniedActivity);
-    }
-
-    @Test public void onePermissionWithRationaleAndDeniedSupportFragment() {
-        assertJavaSource(Source.OnePermissionWithRationaleAndDeniedSupportFragment);
     }
 
     @Test public void noDuplicatesDespiteRepeatedValuesActivity() {

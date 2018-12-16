@@ -86,7 +86,7 @@ fun checkMethodSignature(items: List<ExecutableElement>) {
     }
 }
 
-fun checkMethodParameters(items: List<ExecutableElement>, numParams: Int) {
+fun checkMethodParameters(items: List<ExecutableElement>, numParams: Int = 0) {
     items.forEach {
         if (numParams == 0 && it.parameters.isNotEmpty()) {
             throw NoParametersAllowedException(it)

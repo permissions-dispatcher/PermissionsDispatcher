@@ -35,9 +35,9 @@ fun pendingRequestFieldName(e: ExecutableElement) = "$GEN_PENDING_PREFIX${e.simp
 
 fun withPermissionCheckMethodName(e: ExecutableElement) = "${e.simpleString().trimDollarIfNeeded()}$GEN_WITH_PERMISSION_CHECK_SUFFIX"
 
-fun proceedOnShowRationaleMethodName(e: ExecutableElement) = "$GEN_PROCEED_PREFIX${e.simpleString().trimDollarIfNeeded().capitalize()}"
+fun proceedOnShowRationaleMethodName(e: ExecutableElement) = "proceed${e.simpleString().trimDollarIfNeeded().capitalize()}$GEN_PERMISSION_REQUEST_SUFFIX"
 
-fun cancelOnShowRationaleMethodName(e: ExecutableElement) = "$GEN_CANCEL_PREFIX${e.simpleString().trimDollarIfNeeded().capitalize()}"
+fun cancelOnShowRationaleMethodName(e: ExecutableElement) = "cancel${e.simpleString().trimDollarIfNeeded().capitalize()}$GEN_PERMISSION_REQUEST_SUFFIX"
 
 fun permissionRequestTypeName(rpe: RuntimePermissionsElement, e: ExecutableElement) =
         "${rpe.inputClassName}${e.simpleString().trimDollarIfNeeded().capitalize()}$GEN_PERMISSION_REQUEST_SUFFIX"

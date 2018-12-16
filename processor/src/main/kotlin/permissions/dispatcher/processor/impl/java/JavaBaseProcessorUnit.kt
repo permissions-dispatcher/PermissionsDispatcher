@@ -62,8 +62,8 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
                 .addFields(createFields(rpe.needsElements, requestCodeProvider))
                 .addMethod(createConstructor())
                 .addMethods(createWithPermissionCheckMethods(rpe))
-                .addMethods(createPermissionHandlingMethods(rpe))
                 .addMethods(createOnShowRationaleCallbackMethods(rpe))
+                .addMethods(createPermissionHandlingMethods(rpe))
                 .apply {
                     if (isDeprecated()) {
                         addAnnotation(createDeprecatedAnnotation())
@@ -196,16 +196,6 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
                 builder.addCode(varargsCall.build())
 
             }
-            // If the method has parameters, precede the potential OnRationale call with
-            // an instantiation of the temporary Request object
-//            val varargsCall = CodeBlock.builder()
-//                    .add("\$N = new \$N(\$N, ",
-//                            pendingRequestFieldName(needsMethod),
-//                            permissionRequestTypeName(rpe, needsMethod),
-//                            targetParam
-//                    )
-//                    .add(varargsParametersCodeBlock(needsMethod))
-//                    .addStatement(")")
         }
         // Add the conditional for "OnShowRationale", if present
         val onRationale = rpe.findOnRationaleForNeeds(needsMethod)
@@ -402,37 +392,40 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
     private fun createOnShowRationaleCallbackMethods(rpe: RuntimePermissionsElement): List<MethodSpec> {
         val methods = arrayListOf<MethodSpec>()
         rpe.needsElements.forEach {
-            val onRationale = rpe.findOnRationaleForNeeds(it)
-            if (onRationale != null) {
-                createProceedPermissionRequestMethod(rpe, onRationale)
-            }
-            val onDenied = rpe.findOnDeniedForNeeds(it)
-            if (onDenied != null) {
-                createCancelPermissionRequestMethod(rpe, onDenied)
+            if (rpe.findOnRationaleForNeeds(it) != null) {
+                methods.add(createProceedPermissionRequestMethod(rpe, it))
+                val onDenied = rpe.findOnDeniedForNeeds(it)
+                if (onDenied != null) {
+                    methods.add(createCancelPermissionRequestMethod(rpe, onDenied, it))
+                }
             }
         }
         return methods
     }
 
-    private fun createProceedPermissionRequestMethod(rpe: RuntimePermissionsElement, method: ExecutableElement): MethodSpec {
+    private fun createProceedPermissionRequestMethod(rpe: RuntimePermissionsElement, needsMethod: ExecutableElement): MethodSpec {
         val targetParam = "target"
-        val builder = MethodSpec.methodBuilder(proceedOnShowRationaleMethodName(method))
+        val builder = MethodSpec.methodBuilder(proceedOnShowRationaleMethodName(needsMethod))
                 .addTypeVariables(rpe.typeVariables)
                 .addModifiers(Modifier.STATIC)
                 .returns(TypeName.VOID)
                 .addParameter(ParameterSpec.builder(rpe.typeName, targetParam).addAnnotation(NonNull::class.java).build())
-        addRequestPermissionsStatement(builder, targetParam, permissionFieldName(method), requestCodeFieldName(method))
+        val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
+        val activityVar = getActivityName(targetParam)
+        val permissionField = permissionFieldName(needsMethod)
+        val requestCodeField = requestCodeFieldName(needsMethod)
+        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addRequestPermissionsStatement(builder, targetParam, activityVar, requestCodeField)
+                ?: addRequestPermissionsStatement(builder, targetParam, permissionField, requestCodeField)
         return builder.build()
     }
 
-    private fun createCancelPermissionRequestMethod(rpe: RuntimePermissionsElement, method: ExecutableElement): MethodSpec {
-        val targetParam = "target"
-        return MethodSpec.methodBuilder(cancelOnShowRationaleMethodName(method))
+    private fun createCancelPermissionRequestMethod(rpe: RuntimePermissionsElement, onDenied: ExecutableElement, needsMethod: ExecutableElement): MethodSpec {
+        return MethodSpec.methodBuilder(cancelOnShowRationaleMethodName(needsMethod))
                 .addTypeVariables(rpe.typeVariables)
                 .addModifiers(Modifier.STATIC)
                 .returns(TypeName.VOID)
-                .addParameter(ParameterSpec.builder(rpe.typeName, targetParam).addAnnotation(NonNull::class.java).build())
-                .addStatement("target.\$N()", method.simpleString())
+                .addParameter(ParameterSpec.builder(rpe.typeName, "target").addAnnotation(NonNull::class.java).build())
+                .addStatement("target.\$N()", onDenied.simpleString())
                 .build()
     }
 }

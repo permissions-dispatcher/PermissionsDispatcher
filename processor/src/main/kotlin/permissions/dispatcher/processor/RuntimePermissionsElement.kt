@@ -13,7 +13,7 @@ import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 
 class RuntimePermissionsElement(val e: TypeElement) {
-    val typeName: TypeName = TypeName.get(e.asType())
+    val typeName = TypeName.get(e.asType())
     val ktTypeName = e.asType().asTypeName()
     val typeVariables = e.typeParameters.map { TypeVariableName.get(it) }
     val ktTypeVariables = e.typeParameters.map { it.asTypeVariableName() }
@@ -32,8 +32,6 @@ class RuntimePermissionsElement(val e: TypeElement) {
         validateNeverAskMethods()
     }
 
-    /* Begin private */
-
     private fun validateNeedsMethods() {
         checkNotEmpty(needsElements, this, NeedsPermission::class.java)
         checkPrivateMethods(needsElements, NeedsPermission::class.java)
@@ -46,25 +44,23 @@ class RuntimePermissionsElement(val e: TypeElement) {
         checkDuplicatedValue(onRationaleElements, OnShowRationale::class.java)
         checkPrivateMethods(onRationaleElements, OnShowRationale::class.java)
         checkMethodSignature(onRationaleElements)
-        checkMethodParameters(onRationaleElements, 0)
+        checkMethodParameters(onRationaleElements)
     }
 
     private fun validateDeniedMethods() {
         checkDuplicatedValue(onDeniedElements, OnPermissionDenied::class.java)
         checkPrivateMethods(onDeniedElements, OnPermissionDenied::class.java)
         checkMethodSignature(onDeniedElements)
-        checkMethodParameters(onDeniedElements, 0)
+        checkMethodParameters(onDeniedElements)
     }
 
     private fun validateNeverAskMethods() {
         checkDuplicatedValue(onNeverAskElements, OnNeverAskAgain::class.java)
         checkPrivateMethods(onNeverAskElements, OnNeverAskAgain::class.java)
         checkMethodSignature(onNeverAskElements)
-        checkMethodParameters(onNeverAskElements, 0)
+        checkMethodParameters(onNeverAskElements)
         checkSpecialPermissionsWithNeverAskAgain(onNeverAskElements)
     }
-
-    /* Begin public */
 
     fun findOnRationaleForNeeds(needsElement: ExecutableElement): ExecutableElement? {
         return findMatchingMethodForNeeds(needsElement, onRationaleElements, OnShowRationale::class.java)

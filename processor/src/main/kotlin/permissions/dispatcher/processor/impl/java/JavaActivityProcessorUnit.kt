@@ -10,23 +10,17 @@ import javax.lang.model.type.TypeMirror
  */
 class JavaActivityProcessorUnit : JavaBaseProcessorUnit() {
 
-    private val ACTIVITY_COMPAT = ClassName.get("androidx.core.app", "ActivityCompat")
-
     override fun isDeprecated(): Boolean = false
 
-    override fun getTargetType(): TypeMirror {
-        return typeMirrorOf("android.app.Activity")
-    }
+    override fun getTargetType(): TypeMirror = typeMirrorOf("android.app.Activity")
 
-    override fun getActivityName(targetParam: String): String {
-        return targetParam
-    }
+    override fun getActivityName(targetParam: String): String = targetParam
 
     override fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String, isPositiveCondition: Boolean) {
         builder.beginControlFlow("if (\$N\$T.shouldShowRequestPermissionRationale(\$N, \$N))", if (isPositiveCondition) "" else "!", PERMISSION_UTILS, targetParam, permissionField)
     }
 
     override fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {
-        builder.addStatement("\$T.requestPermissions(\$N, \$N, \$N)", ACTIVITY_COMPAT, targetParam, permissionField, requestCodeField)
+        builder.addStatement("\$T.requestPermissions(\$N, \$N, \$N)", ClassName.get("androidx.core.app", "ActivityCompat"), targetParam, permissionField, requestCodeField)
     }
 }
