@@ -25,8 +25,12 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
-    fun showRationaleForCamera(request: PermissionRequest) {
-        showRationaleDialog(R.string.permission_camera_rationale, request)
+    fun showRationaleForCamera() {
+        AlertDialog.Builder(this)
+            .setMessage(R.string.permission_camera_rationale)
+            .setPositiveButton(R.string.button_allow, {dialog, button -> /* TODO */ })
+            .setNegativeButton(R.string.button_deny, {dialog, button -> /* TODO */ })
+            .show()
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA)
@@ -46,20 +50,29 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 Now generated functions become much more concise and intuitive than Java version!
 
 ```kotlin
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
-        findViewById(R.id.button_camera).setOnClickListener {
-            // NOTE: delegate the permission handling to generated function
-            showCameraWithPermissionCheck()
-        }
+override fun onCreate(savedInstanceState: Bundle?) {
+    super.onCreate(savedInstanceState)
+    setContentView(R.layout.activity_main)
+    findViewById(R.id.button_camera).setOnClickListener {
+        // delegate the permission handling to generated function
+        showCameraWithPermissionCheck()
     }
+}
 
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
-        super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        // NOTE: delegate the permission handling to generated function
-        onRequestPermissionsResult(requestCode, grantResults)
-    }
+@OnShowRationale(Manifest.permission.CAMERA)
+fun showRationaleForCamera() {
+    AlertDialog.Builder(this)
+       .setMessage(R.string.permission_camera_rationale)
+       .setPositiveButton(R.string.button_allow, {dialog, button -> proceedShowCameraPermissionRequest() })
+       .setNegativeButton(R.string.button_deny, {dialog, button -> cancelShowCameraPermissionRequest() })
+       .show()
+}
+
+override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<String>, grantResults: IntArray) {
+    super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+    // delegate the permission handling to generated function
+    onRequestPermissionsResult(requestCode, grantResults)
+}
 ```
 
 Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/sample-kotlin) for more details.
