@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.appcompat.app.AppCompatActivity;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnShowRationale;
-import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
@@ -17,7 +16,7 @@ public class ActivityWithShowRationale extends AppCompatActivity {
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
-    void showRationaleForCamera(final PermissionRequest request) {
+    void showRationaleForCamera() {
     }
 
     @Override

@@ -18,5 +18,4 @@ class SystemAlertWindowHelper : SensitivePermissionInterface {
         builder.addStatement("\$T intent = new \$T(\$T.ACTION_MANAGE_OVERLAY_PERMISSION, \$T.parse(\"package:\" + \$N.getPackageName()))", INTENT, INTENT, SETTINGS, URI, activityVar)
         builder.addStatement("\$N.startActivityForResult(intent, \$N)", targetParam, requestCodeField)
     }
-
 }

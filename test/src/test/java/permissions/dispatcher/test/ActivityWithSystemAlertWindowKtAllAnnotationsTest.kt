@@ -18,7 +18,6 @@ import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
-import permissions.dispatcher.PermissionRequest
 
 @Suppress("IllegalIdentifier")
 @RunWith(PowerMockRunner::class)
@@ -99,7 +98,7 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
 
         activity.systemAlertWindowWithPermissionCheck()
 
-        Mockito.verify(activity, Mockito.times(1)).showRationaleForSystemAlertWindow(Matchers.any(PermissionRequest::class.java))
+        Mockito.verify(activity, Mockito.times(1)).showRationaleForSystemAlertWindow()
     }
 
     @Test

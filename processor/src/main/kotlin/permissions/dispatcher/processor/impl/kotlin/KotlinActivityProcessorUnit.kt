@@ -10,8 +10,6 @@ import javax.lang.model.type.TypeMirror
  */
 class KotlinActivityProcessorUnit : KotlinBaseProcessorUnit() {
 
-    private val ACTIVITY_COMPAT = ClassName("androidx.core.app", "ActivityCompat")
-
     override fun isDeprecated(): Boolean = false
 
     override fun getTargetType(): TypeMirror = typeMirrorOf("android.app.Activity")
@@ -24,6 +22,6 @@ class KotlinActivityProcessorUnit : KotlinBaseProcessorUnit() {
     }
 
     override fun addRequestPermissionsStatement(builder: FunSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {
-        builder.addStatement("%T.requestPermissions(%L, %N, %N)", ACTIVITY_COMPAT, targetParam, permissionField, requestCodeField)
+        builder.addStatement("%T.requestPermissions(%L, %N, %N)", ClassName("androidx.core.app", "ActivityCompat"), targetParam, permissionField, requestCodeField)
     }
 }

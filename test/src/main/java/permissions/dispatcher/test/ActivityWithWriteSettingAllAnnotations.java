@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.OnShowRationale;
-import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
@@ -18,7 +17,7 @@ public class ActivityWithWriteSettingAllAnnotations extends AppCompatActivity {
     }
 
     @OnShowRationale(Manifest.permission.WRITE_SETTINGS)
-    void showRationaleForWriteSettings(final PermissionRequest request) {
+    void showRationaleForWriteSettings() {
     }
 
     @OnPermissionDenied(Manifest.permission.WRITE_SETTINGS)

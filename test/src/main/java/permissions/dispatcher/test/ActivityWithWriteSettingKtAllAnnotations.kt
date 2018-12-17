@@ -13,7 +13,7 @@ open class ActivityWithWriteSettingKtAllAnnotations : AppCompatActivity() {
     }
 
     @OnShowRationale(Manifest.permission.WRITE_SETTINGS)
-    internal fun showRationaleForWriteSettings(request: PermissionRequest?) {
+    internal fun showRationaleForWriteSettings() {
     }
 
     @OnPermissionDenied(Manifest.permission.WRITE_SETTINGS)

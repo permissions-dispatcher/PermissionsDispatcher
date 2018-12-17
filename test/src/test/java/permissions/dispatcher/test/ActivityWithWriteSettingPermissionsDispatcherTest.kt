@@ -121,5 +121,4 @@ class ActivityWithWriteSettingPermissionsDispatcherTest {
 
         Mockito.verify(activity, Mockito.times(0)).writeSetting()
     }
-
 }

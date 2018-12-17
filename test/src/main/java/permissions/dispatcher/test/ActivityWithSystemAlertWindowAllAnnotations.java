@@ -7,7 +7,6 @@ import androidx.appcompat.app.AppCompatActivity;
 import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.OnShowRationale;
-import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
@@ -18,7 +17,7 @@ public class ActivityWithSystemAlertWindowAllAnnotations extends AppCompatActivi
     }
 
     @OnShowRationale(Manifest.permission.SYSTEM_ALERT_WINDOW)
-    void showRationaleForSystemAlertWindow(final PermissionRequest request) {
+    void showRationaleForSystemAlertWindow() {
     }
 
     @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)

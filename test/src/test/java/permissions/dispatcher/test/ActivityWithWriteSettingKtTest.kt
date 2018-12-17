@@ -122,5 +122,4 @@ class ActivityWithWriteSettingKtTest {
 
         Mockito.verify(activity, Mockito.times(0)).writeSetting()
     }
-
 }

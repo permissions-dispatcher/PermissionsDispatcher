@@ -10,12 +10,10 @@ import org.junit.Before
 import org.junit.BeforeClass
 import org.junit.Test
 import org.junit.runner.RunWith
-import org.mockito.Matchers.any
 import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
-import permissions.dispatcher.PermissionRequest
 
 @Suppress("IllegalIdentifier")
 @RunWith(PowerMockRunner::class)
@@ -75,7 +73,7 @@ class ActivityWithAllAnnotationsPermissionsDispatcherTest {
 
         ActivityWithAllAnnotationsPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
-        Mockito.verify(activity, Mockito.times(1)).showRationaleForCamera(any(PermissionRequest::class.java))
+        Mockito.verify(activity, Mockito.times(1)).showRationaleForCamera()
     }
 
     @Test
@@ -85,7 +83,7 @@ class ActivityWithAllAnnotationsPermissionsDispatcherTest {
 
         ActivityWithAllAnnotationsPermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
-        Mockito.verify(activity, Mockito.times(0)).showRationaleForCamera(any(PermissionRequest::class.java))
+        Mockito.verify(activity, Mockito.times(0)).showRationaleForCamera()
     }
 
     @Test

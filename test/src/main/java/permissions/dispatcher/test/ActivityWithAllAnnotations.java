@@ -8,7 +8,6 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.OnShowRationale;
-import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
@@ -19,7 +18,7 @@ public class ActivityWithAllAnnotations extends AppCompatActivity {
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
-    void showRationaleForCamera(final PermissionRequest request) {
+    void showRationaleForCamera() {
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA)

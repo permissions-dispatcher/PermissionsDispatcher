@@ -18,7 +18,6 @@ import org.mockito.Mockito
 import org.powermock.api.mockito.PowerMockito
 import org.powermock.core.classloader.annotations.PrepareForTest
 import org.powermock.modules.junit4.PowerMockRunner
-import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.test.ActivityWithSystemAlertWindowAllAnnotationsPermissionsDispatcher.onActivityResult
 import permissions.dispatcher.test.ActivityWithSystemAlertWindowAllAnnotationsPermissionsDispatcher.systemAlertWindowWithPermissionCheck
 
@@ -100,7 +99,7 @@ class ActivityWithSystemAlertWindowAllAnnotationsPermissionsDispatcherTest {
 
         systemAlertWindowWithPermissionCheck(activity)
 
-        Mockito.verify(activity, Mockito.times(1)).showRationaleForSystemAlertWindow(Matchers.any(PermissionRequest::class.java))
+        Mockito.verify(activity, Mockito.times(1)).showRationaleForSystemAlertWindow()
     }
 
     @Test

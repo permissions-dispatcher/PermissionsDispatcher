@@ -75,7 +75,7 @@ class ActivityWithShowRationalePermissionsDispatcherTest {
 
         ActivityWithShowRationalePermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
-        Mockito.verify(activity, Mockito.times(1)).showRationaleForCamera(Matchers.any(PermissionRequest::class.java))
+        Mockito.verify(activity, Mockito.times(1)).showRationaleForCamera()
     }
 
     @Test
@@ -85,7 +85,7 @@ class ActivityWithShowRationalePermissionsDispatcherTest {
 
         ActivityWithShowRationalePermissionsDispatcher.showCameraWithPermissionCheck(activity)
 
-        Mockito.verify(activity, Mockito.times(0)).showRationaleForCamera(Matchers.any(PermissionRequest::class.java))
+        Mockito.verify(activity, Mockito.times(0)).showRationaleForCamera()
     }
 
     @Test

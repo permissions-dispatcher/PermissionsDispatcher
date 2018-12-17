@@ -121,5 +121,4 @@ class ActivityWithSystemAlertWindowPermissionsDispatcherTest {
 
         Mockito.verify(activity, Mockito.times(0)).systemAlertWindow()
     }
-
 }

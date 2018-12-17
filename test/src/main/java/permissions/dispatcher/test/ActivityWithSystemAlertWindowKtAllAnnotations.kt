@@ -13,7 +13,7 @@ open class ActivityWithSystemAlertWindowKtAllAnnotations : AppCompatActivity() {
     }
 
     @OnShowRationale(Manifest.permission.SYSTEM_ALERT_WINDOW)
-    internal fun showRationaleForSystemAlertWindow(request: PermissionRequest?) {
+    internal fun showRationaleForSystemAlertWindow() {
     }
 
     @OnPermissionDenied(Manifest.permission.SYSTEM_ALERT_WINDOW)

@@ -12,7 +12,7 @@ open class SupportFragmentWithAllAnnotationsKt : Fragment() {
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
-    fun showRationaleForCamera(request: PermissionRequest?) {
+    fun showRationaleForCamera() {
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA)
