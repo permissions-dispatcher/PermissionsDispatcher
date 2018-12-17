@@ -19,7 +19,6 @@ import permissions.dispatcher.processor.util.*
 import java.util.ArrayList
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
-import javax.lang.model.element.VariableElement
 
 /**
  * Base class for [JavaProcessorUnit] implementations.
@@ -85,9 +84,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
             // For each method annotated with @NeedsPermission, add REQUEST integer and PERMISSION String[] fields
             fields.add(createRequestCodeField(it, requestCodeProvider.nextRequestCode()))
             fields.add(createPermissionField(it))
-            if (it.parameters.isNotEmpty()) {
-                fields.addAll(createParameterCacheField(it.parameters))
-            }
+            fields.addAll(createArgFields(it))
         }
         return fields
     }
@@ -113,9 +110,9 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
                 .build()
     }
 
-    private fun createParameterCacheField(parameters: List<VariableElement>): List<FieldSpec> {
-        return parameters.map {
-            FieldSpec.builder(typeNameOf(it), it.simpleString())
+    private fun createArgFields(method: ExecutableElement): List<FieldSpec> {
+        return method.parameters.map {
+            FieldSpec.builder(typeNameOf(it), argumentFieldName(method, it))
                     .addModifiers(Modifier.PRIVATE, Modifier.STATIC)
                     .build()
         }
@@ -190,7 +187,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
             needsMethod.parameters.forEach {
                 val varargsCall = CodeBlock.builder()
                         .addStatement("\$N = \$N",
-                                it.simpleName,
+                                argumentFieldName(needsMethod, it),
                                 it.simpleName
                         )
                 builder.addCode(varargsCall.build())
@@ -311,7 +308,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
         if (hasParameters) {
             builder.addCode(CodeBlock.builder()
                     .add("\$N.\$N(", targetParam, needsMethod.simpleString())
-                    .add(varargsParametersCodeBlock(needsMethod))
+                    .add(varargsParametersCodeBlock(needsMethod, withCache = true))
                     .addStatement(")")
                     .build())
         } else {
@@ -319,7 +316,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
         }
 
         // Add the conditional for "permission denied" and/or "never ask again", if present
-        val onNeverAsk: ExecutableElement? = rpe.findOnNeverAskForNeeds(needsMethod)
+        val onNeverAsk = rpe.findOnNeverAskForNeeds(needsMethod)
         val hasNeverAsk = onNeverAsk != null
 
         if (hasDenied || hasNeverAsk) {
@@ -328,7 +325,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
         if (hasNeverAsk) {
             // Split up the "else" case with another if condition checking for "never ask again" first
             addShouldShowRequestPermissionRationaleCondition(builder, targetParam, permissionFieldName(needsMethod), false)
-            builder.addStatement("target.\$N()", onNeverAsk!!.simpleString())
+            builder.addStatement("target.\$N()", onNeverAsk?.simpleString())
 
             // If a "permission denied" is present as well, go into an else case, otherwise close this temporary branch
             if (hasDenied) {
@@ -354,7 +351,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
             needsMethod.parameters.forEach {
                 val typeName = typeNameOf(it)
                 if (!typeName.isPrimitive) {
-                    builder.addStatement("\$N = null", it.simpleString())
+                    builder.addStatement("\$N = null",  argumentFieldName(needsMethod, it))
                 }
             }
         }

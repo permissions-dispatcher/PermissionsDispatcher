@@ -46,10 +46,11 @@ fun <A : Annotation> findMatchingMethodForNeeds(needsElement: ExecutableElement,
     }
 }
 
-fun varargsParametersCodeBlock(needsElement: ExecutableElement): CodeBlock {
+fun varargsParametersCodeBlock(needsElement: ExecutableElement, withCache: Boolean = false): CodeBlock {
     val varargsCall = CodeBlock.builder()
     needsElement.parameters.forEachIndexed { i, it ->
-        varargsCall.add("\$L", it.simpleString())
+        val name = if (withCache) argumentFieldName(needsElement, it) else it.simpleString()
+        varargsCall.add("\$L", name)
         if (i < needsElement.parameters.size - 1) {
             varargsCall.add(", ")
         }
