@@ -1,7 +1,6 @@
 package permissions.dispatcher.processor.impl.java
 
 import androidx.annotation.NonNull
-import com.squareup.javapoet.AnnotationSpec
 import com.squareup.javapoet.ArrayTypeName
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.CodeBlock
@@ -52,8 +51,6 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
 
     abstract fun getActivityName(targetParam: String): String
 
-    abstract fun isDeprecated(): Boolean
-
     private fun createTypeSpec(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): TypeSpec {
         return TypeSpec.classBuilder(rpe.generatedClassName)
                 .addOriginatingElement(rpe.e) // for incremental annotation processing
@@ -63,16 +60,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
                 .addMethods(createWithPermissionCheckMethods(rpe))
                 .addMethods(createOnShowRationaleCallbackMethods(rpe))
                 .addMethods(createPermissionHandlingMethods(rpe))
-                .apply {
-                    if (isDeprecated()) {
-                        addAnnotation(createDeprecatedAnnotation())
-                    }
-                }
                 .build()
-    }
-
-    private fun createDeprecatedAnnotation(): AnnotationSpec {
-        return AnnotationSpec.builder(java.lang.Deprecated::class.java).build()
     }
 
     private fun createFields(needsElements: List<ExecutableElement>, requestCodeProvider: RequestCodeProvider): List<FieldSpec> {

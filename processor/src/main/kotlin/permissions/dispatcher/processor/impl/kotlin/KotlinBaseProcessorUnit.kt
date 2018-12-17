@@ -30,8 +30,6 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
     abstract fun getActivityName(targetParam: String = "this"): String
 
-    abstract fun isDeprecated(): Boolean
-
     override fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): FileSpec {
         return FileSpec.builder(rpe.packageName, rpe.generatedClassName)
                 .addComment(FILE_COMMENT)
@@ -46,13 +44,6 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
     private fun createJvmNameAnnotation(generatedClassName: String): AnnotationSpec {
         return AnnotationSpec.builder(ClassName("", "JvmName"))
                 .addMember("%S", generatedClassName)
-                .build()
-    }
-
-    private fun createDeprecatedAnnotation(): AnnotationSpec {
-        return AnnotationSpec
-                .builder(Deprecated::class.java)
-                .addMember("%L = %S", "message", DEPRECATED_MESSAGE)
                 .build()
     }
 
@@ -106,16 +97,10 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         val builder = FunSpec.builder(withPermissionCheckMethodName(method))
                 .addTypeVariables(rpe.ktTypeVariables)
                 .receiver(rpe.ktTypeName)
-
         method.parameters.forEach { param ->
             builder.addParameter(param.simpleString(), param.asPreparedType())
         }
-
-        // Delegate method body generation to implementing classes
         addWithPermissionCheckBody(builder, method, rpe)
-        if (isDeprecated()) {
-            builder.addAnnotation(createDeprecatedAnnotation())
-        }
         return builder.build()
     }
 

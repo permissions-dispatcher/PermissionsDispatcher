@@ -10,8 +10,6 @@ import javax.lang.model.type.TypeMirror
  */
 class KotlinActivityProcessorUnit : KotlinBaseProcessorUnit() {
 
-    override fun isDeprecated(): Boolean = false
-
     override fun getTargetType(): TypeMirror = typeMirrorOf("android.app.Activity")
 
     override fun getActivityName(targetParam: String): String = targetParam

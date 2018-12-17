@@ -9,8 +9,6 @@ import javax.lang.model.type.TypeMirror
  */
 class KotlinFragmentProcessorUnit : KotlinBaseProcessorUnit() {
 
-    override fun isDeprecated(): Boolean = false
-
     override fun getTargetType(): TypeMirror = typeMirrorOf("androidx.fragment.app.Fragment")
 
     override fun getActivityName(targetParam: String): String = "$targetParam.requireActivity()"
