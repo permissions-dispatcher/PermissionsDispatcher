@@ -50,10 +50,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
-    fun showRationaleForCamera(request: PermissionRequest) {
+    fun showRationaleForCamera() {
         // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
         // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
-        showRationaleDialog(R.string.permission_camera_rationale, request)
+        showRationaleDialog(R.string.permission_camera_rationale)
     }
 
     @OnNeverAskAgain(Manifest.permission.CAMERA)
@@ -79,10 +79,10 @@ class MainActivity : AppCompatActivity() {
     }
 
     @OnShowRationale(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
-    fun showRationaleForContacts(request: PermissionRequest) {
+    fun showRationaleForContacts() {
         // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
         // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
-        showRationaleDialog(R.string.permission_contacts_rationale, request)
+        showRationaleDialog(R.string.permission_contacts_rationale)
     }
 
     @OnNeverAskAgain(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
@@ -90,10 +90,20 @@ class MainActivity : AppCompatActivity() {
         Toast.makeText(this, R.string.permission_contacts_never_ask_again, Toast.LENGTH_SHORT).show()
     }
 
-    private fun showRationaleDialog(@StringRes messageResId: Int, request: PermissionRequest) {
+    private fun showRationaleDialog(@StringRes messageResId: Int) {
         AlertDialog.Builder(this)
-                .setPositiveButton(R.string.button_allow) { _, _ -> request.proceed() }
-                .setNegativeButton(R.string.button_deny) { _, _ -> request.cancel() }
+                .setPositiveButton(R.string.button_allow) { _, _ ->
+                    when(messageResId) {
+                        R.string.permission_camera_rationale -> proceedShowCameraPermissionRequest()
+                        R.string.permission_contacts_rationale -> proceedShowContactsPermissionRequest()
+                    }
+                }
+                .setNegativeButton(R.string.button_deny) { _, _ ->
+                    when(messageResId) {
+                        R.string.permission_camera_rationale -> cancelShowCameraPermissionRequest()
+                        R.string.permission_contacts_rationale -> cancelShowContactsPermissionRequest()
+                    }
+                }
                 .setCancelable(false)
                 .setMessage(messageResId)
                 .show()

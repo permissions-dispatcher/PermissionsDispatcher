@@ -14,10 +14,16 @@ import permissions.dispatcher.NeedsPermission;
 import permissions.dispatcher.OnNeverAskAgain;
 import permissions.dispatcher.OnPermissionDenied;
 import permissions.dispatcher.OnShowRationale;
-import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 import permissions.dispatcher.sample.camera.CameraPreviewFragment;
 import permissions.dispatcher.sample.contacts.ContactsFragment;
+
+import static permissions.dispatcher.sample.MainActivityPermissionsDispatcher.cancelShowCameraPermissionRequest;
+import static permissions.dispatcher.sample.MainActivityPermissionsDispatcher.cancelShowContactsPermissionRequest;
+import static permissions.dispatcher.sample.MainActivityPermissionsDispatcher.proceedShowCameraPermissionRequest;
+import static permissions.dispatcher.sample.MainActivityPermissionsDispatcher.proceedShowContactsPermissionRequest;
+import static permissions.dispatcher.sample.MainActivityPermissionsDispatcher.showCameraWithPermissionCheck;
+import static permissions.dispatcher.sample.MainActivityPermissionsDispatcher.showContactsWithPermissionCheck;
 
 @RuntimePermissions
 public class MainActivity extends AppCompatActivity {
@@ -29,13 +35,13 @@ public class MainActivity extends AppCompatActivity {
         findViewById(R.id.button_camera).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivityPermissionsDispatcher.showCameraWithPermissionCheck(MainActivity.this);
+                showCameraWithPermissionCheck(MainActivity.this);
             }
         });
         findViewById(R.id.button_contacts).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                MainActivityPermissionsDispatcher.showContactsWithPermissionCheck(MainActivity.this);
+                showContactsWithPermissionCheck(MainActivity.this);
             }
         });
     }
@@ -58,16 +64,14 @@ public class MainActivity extends AppCompatActivity {
 
     @OnPermissionDenied(Manifest.permission.CAMERA)
     void onCameraDenied() {
-        // NOTE: Deal with a denied permission, e.g. by showing specific UI
-        // or disabling certain functionality
+        // NOTE: Deal with a denied permission, e.g. by showing specific UI or disabling certain functionality
         Toast.makeText(this, R.string.permission_camera_denied, Toast.LENGTH_SHORT).show();
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
-    void showRationaleForCamera(PermissionRequest request) {
+    void showRationaleForCamera() {
         // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
-        // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
-        showRationaleDialog(R.string.permission_camera_rationale, request);
+        showRationaleDialog(R.string.permission_camera_rationale);
     }
 
     @OnNeverAskAgain(Manifest.permission.CAMERA)
@@ -87,16 +91,14 @@ public class MainActivity extends AppCompatActivity {
 
     @OnPermissionDenied({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})
     void onContactsDenied() {
-        // NOTE: Deal with a denied permission, e.g. by showing specific UI
-        // or disabling certain functionality
+        // NOTE: Deal with a denied permission, e.g. by showing specific UI or disabling certain functionality
         Toast.makeText(this, R.string.permission_contacts_denied, Toast.LENGTH_SHORT).show();
     }
 
     @OnShowRationale({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})
-    void showRationaleForContact(PermissionRequest request) {
+    void showRationaleForContact() {
         // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
-        // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
-        showRationaleDialog(R.string.permission_contacts_rationale, request);
+        showRationaleDialog(R.string.permission_contacts_rationale);
     }
 
     @OnNeverAskAgain({Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS})
@@ -104,18 +106,28 @@ public class MainActivity extends AppCompatActivity {
         Toast.makeText(this, R.string.permission_contacts_never_ask_again, Toast.LENGTH_SHORT).show();
     }
 
-    private void showRationaleDialog(@StringRes int messageResId, final PermissionRequest request) {
+    private void showRationaleDialog(@StringRes final int messageResId) {
         new AlertDialog.Builder(this)
                 .setPositiveButton(R.string.button_allow, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(@NonNull DialogInterface dialog, int which) {
-                        request.proceed();
+                        switch (messageResId) {
+                            case R.string.permission_camera_rationale:
+                                proceedShowCameraPermissionRequest(MainActivity.this);
+                            case R.string.permission_contacts_rationale:
+                                proceedShowContactsPermissionRequest(MainActivity.this);
+                        }
                     }
                 })
                 .setNegativeButton(R.string.button_deny, new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(@NonNull DialogInterface dialog, int which) {
-                        request.cancel();
+                        switch (messageResId) {
+                            case R.string.permission_camera_rationale:
+                                cancelShowCameraPermissionRequest(MainActivity.this);
+                            case R.string.permission_contacts_rationale:
+                                cancelShowContactsPermissionRequest(MainActivity.this);
+                        }
                     }
                 })
                 .setCancelable(false)
