@@ -52,7 +52,6 @@ class MainActivity : AppCompatActivity() {
     @OnShowRationale(Manifest.permission.CAMERA)
     fun showRationaleForCamera() {
         // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
-        // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
         showRationaleDialog(R.string.permission_camera_rationale)
     }
 
@@ -81,7 +80,6 @@ class MainActivity : AppCompatActivity() {
     @OnShowRationale(Manifest.permission.READ_CONTACTS, Manifest.permission.WRITE_CONTACTS)
     fun showRationaleForContacts() {
         // NOTE: Show a rationale to explain why the permission is needed, e.g. with a dialog.
-        // Call proceed() or cancel() on the provided PermissionRequest to continue or abort
         showRationaleDialog(R.string.permission_contacts_rationale)
     }
 

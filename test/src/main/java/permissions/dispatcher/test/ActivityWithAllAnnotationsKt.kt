@@ -11,9 +11,6 @@ open class ActivityWithAllAnnotationsKt : AppCompatActivity() {
     fun showCamera() {
     }
 
-    /**
-     * PermissionRequest is nullable for testing, but it shouldn't
-     */
     @OnShowRationale(Manifest.permission.CAMERA)
     fun showRationaleForCamera() {
     }
