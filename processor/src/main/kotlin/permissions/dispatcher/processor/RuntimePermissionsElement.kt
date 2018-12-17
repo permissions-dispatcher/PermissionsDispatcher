@@ -24,6 +24,7 @@ class RuntimePermissionsElement(val e: TypeElement) {
     private val onRationaleElements = e.childElementsAnnotatedWith(OnShowRationale::class.java)
     private val onDeniedElements = e.childElementsAnnotatedWith(OnPermissionDenied::class.java)
     private val onNeverAskElements = e.childElementsAnnotatedWith(OnNeverAskAgain::class.java)
+    private val cacheMatchingMethodForNeeds = mutableMapOf<Int, ExecutableElement?>()
 
     init {
         validateNeedsMethods()
@@ -64,7 +65,20 @@ class RuntimePermissionsElement(val e: TypeElement) {
         checkSpecialPermissionsWithNeverAskAgain(onNeverAskElements)
     }
 
-    /* Begin public */
+    private fun <A : Annotation> findMatchingMethodForNeeds(needsElement: ExecutableElement, otherElements: List<ExecutableElement>, annotationType: Class<A>): ExecutableElement? {
+        val permissions = needsElement.getAnnotation(NeedsPermission::class.java).permissionValue()
+        val key = permissions.hashCode() + annotationType.hashCode()
+        val cachedValue = cacheMatchingMethodForNeeds[key]
+        return if (cachedValue != null) {
+            cachedValue
+        } else {
+            val newValue = otherElements.firstOrNull {
+                it.getAnnotation(annotationType).permissionValue() == permissions
+            }
+            cacheMatchingMethodForNeeds[key] = newValue
+            newValue
+        }
+    }
 
     fun findOnRationaleForNeeds(needsElement: ExecutableElement): ExecutableElement? {
         return findMatchingMethodForNeeds(needsElement, onRationaleElements, OnShowRationale::class.java)

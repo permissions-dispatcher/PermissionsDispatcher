@@ -2,7 +2,6 @@ package permissions.dispatcher.processor.util
 
 import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.TypeName
-import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.ELEMENT_UTILS
 import permissions.dispatcher.processor.RuntimePermissionsElement
 import javax.lang.model.element.Element
@@ -37,13 +36,6 @@ fun withPermissionCheckMethodName(e: ExecutableElement) = "${e.simpleString().tr
 
 fun permissionRequestTypeName(rpe: RuntimePermissionsElement, e: ExecutableElement) =
         "${rpe.inputClassName}${e.simpleString().trimDollarIfNeeded().capitalize()}$GEN_PERMISSION_REQUEST_SUFFIX"
-
-fun <A : Annotation> findMatchingMethodForNeeds(needsElement: ExecutableElement, otherElements: List<ExecutableElement>, annotationType: Class<A>): ExecutableElement? {
-    val value: List<String> = needsElement.getAnnotation(NeedsPermission::class.java).permissionValue()
-    return otherElements.firstOrNull {
-        it.getAnnotation(annotationType).permissionValue() == value
-    }
-}
 
 fun varargsParametersCodeBlock(needsElement: ExecutableElement): CodeBlock {
     val varargsCall = CodeBlock.builder()
