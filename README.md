@@ -1,6 +1,6 @@
 # PermissionsDispatcher [![Build Status](https://travis-ci.org/permissions-dispatcher/PermissionsDispatcher.svg?branch=master)](https://travis-ci.org/permissions-dispatcher/PermissionsDispatcher)
 
-- [**Fully Kotlin support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_support.md)
+- [**Kotlin support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_support.md)
 - [**Special Permissions support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/special_permissions.md)
 - **100% reflection-free**
 
@@ -8,9 +8,11 @@ PermissionsDispatcher provides a simple annotation-based API to handle runtime p
 
 This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code clean and safe.
 
+For more information please see [the website](https://permissions-dispatcher.github.io/).
+
 ## Download
 
-NOTE: 4.x only supports [Jetpack](https://developer.android.com/jetpack/). If you use appcompat 3.x which is almost stable is the way to go.
+NOTE: 4.x only supports [Jetpack](https://developer.android.com/jetpack/). If you still use appcompat 3.x is the way to go.
 
 To add PermissionsDispatcher to your project, include the following in your **app module** `build.gradle` file:
 
@@ -23,6 +25,17 @@ dependencies {
 }
 ```
 
+With Kotlin:
+
+```groovy
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+  implementation "com.github.hotchemi:permissionsdispatcher:${latest.version}"
+  kapt "com.github.hotchemi:permissionsdispatcher-processor:${latest.version}"
+}
+```
+
 Snapshots of the development version are available in [JFrog's snapshots repository](https://oss.jfrog.org/oss-snapshot-local/). 
 Add the repo below to download `SNAPSHOT` releases.
 
@@ -32,12 +45,6 @@ repositories {
   maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
 }
 ```
-
-### Misc
-
-- If you include [Jitpack.io](https://jitpack.io/) dependencies in your project, it is important to review the order of the repositories available to your app module
-  - Because of the library's artifact ID, Jitpack might be tempted to resolve the dependency on its own, which could lead to an error during Gradle's configuration time
-- If you're going to bump up the major version number we recommend to refer to [migration guide](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/migration_guide.md) 
 
 ## Licence
 

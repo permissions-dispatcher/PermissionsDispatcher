@@ -1,3 +1,5 @@
+## Usage with Java
+
 Here's a minimum example, in which you register a `MainActivity` which requires `Manifest.permission.CAMERA`.
 
 ### 0. Prepare AndroidManifest

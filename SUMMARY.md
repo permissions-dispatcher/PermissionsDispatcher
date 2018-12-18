@@ -1,23 +1,21 @@
 # Summary
 
-## Usage
+* [Introduction](README.md)
 
-* [Kotlin](doc/kotlin_support.md)
-* [Java](doc/java.md)
+## Getting Started
+
+* [Java](doc/java_usage.md)
+* [Kotlin](doc/kotlin_usage.md)
 
 ## Features
 
-- [Getting Special Permissions](doc/special_permissions.md)
+- [Special Permissions](doc/special_permissions.md)
 - [maxSdkVersion](doc/maxsdkversion.md)
 
 ## Plugins
 
 - [IntelliJ plugin](https://github.com/shiraji/permissions-dispatcher-plugin)
-- [AndroidAnnotations plugin](http://androidannotations.org/)
-
-## Known Issues
-
-- [Asking permission in onResume](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/90)
+- [AndroidAnnotations plugin](https://github.com/permissions-dispatcher/AndroidAnnotationsPermissionsDispatcherPlugin)
 
 ## Others
 
