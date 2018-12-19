@@ -31,7 +31,8 @@ branches:
 script: ./gradlew clean check --stacktrace
 
 after_success:
-  - "./scripts/deploy_snapshot.sh"
+  - ./scripts/deploy_snapshot.sh
+  - ./scripts/push-to-github-io.sh
 
 deploy:
   skip_cleanup: true
