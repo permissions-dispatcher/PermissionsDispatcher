@@ -22,12 +22,6 @@ jdk:
   - oraclejdk8
 
 before_install:
-  # To commit to permissions-dispatcher.github.io
-  - openssl aes-256-cbc -K $encrypted_786b61619ad8_key -iv $encrypted_786b61619ad8_iv -in id_rsa.enc -out ~\/.ssh/id_rsa -d
-  - chmod 600 deploy_key
-  - eval `ssh-agent -s`
-  - ssh-add deploy_key
-  # Install Android SDK
   - echo "sdk.dir=$ANDROID_HOME" > local.properties
   - mkdir "$ANDROID_HOME/licenses" || true
   - cp ./android-sdk-licenses/* "$ANDROID_HOME/licenses/"
