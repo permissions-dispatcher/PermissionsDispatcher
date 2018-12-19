@@ -1,4 +1,4 @@
-## Getting Special Permissions
+## Special Permissions
 
 PermissionsDispatcher takes care of special permissions `Manifest.permission.SYSTEM_ALERT_WINDOW` and `Manifest.permission.WRITE_SETTINGS`.
 

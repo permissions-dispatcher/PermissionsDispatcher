@@ -1,27 +1,12 @@
-## Fully Kotlin support
+## Usage with Kotlin
 
-From 3.0.0 we started support `.kt` file generation.
-
-Let's think about the same example as described in `README.md`.
+Here's a minimum example, in which you register a `MainActivity` which requires `Manifest.permission.CAMERA`.
 
 ### 0. Preparation
 
 Add the following line to `AndroidManifest.xml`:
  
 `<uses-permission android:name="android.permission.CAMERA" />`
-
-Include the following in your **app module** `build.gradle` file:
-
-`${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg)](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
-
-```groovy
-apply plugin: 'kotlin-kapt'
-
-dependencies {
-  implementation "com.github.hotchemi:permissionsdispatcher:${latest.version}"
-  kapt "com.github.hotchemi:permissionsdispatcher-processor:${latest.version}"
-}
-```
 
 ### 1. Attach annotations
 
