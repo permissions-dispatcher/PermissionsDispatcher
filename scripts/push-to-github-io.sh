@@ -31,6 +31,7 @@ rm -rf ${repoName}
 git clone ${repoUrl} ${repoName}
 
 echo "Install Node and dependencies"
+curl -o- https://raw.githubusercontent.com/creationix/nvm/${NVM_VERSION}/install.sh | bash
 . $HOME/.nvm/nvm.sh
 nvm install stable
 nvm use stable
