@@ -25,17 +25,23 @@ openssl aes-256-cbc -K $encrypted_786b61619ad8_key -iv $encrypted_786b61619ad8_i
 chmod 600 deploy_key
 eval `ssh-agent -s`
 ssh-add deploy_key
+
 echo "Clone repo"
 rm -rf ${repoName}
 git clone ${repoUrl} ${repoName}
+
 echo "Install Node and dependencies"
-". $HOME/.nvm/nvm.sh"
-nvm install 9.5.0
+. $HOME/.nvm/nvm.sh
+nvm install stable
+nvm use stable
 npm install -g gitbook-cli
+
 echo "Build HTML"
 gitbook build
+
 echo "Copy files"
 cp -Rf "${distDir}/doc"* "${distDir}/gitbook"* "${distDir}/index.html" "${distDir}/search_index.json" "${repoName}"
+
 echo "Commit and push"
 cd "${repoName}"
 commit_and_push_changes "${branch}" "${commitMessage}"
