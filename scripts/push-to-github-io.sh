@@ -29,6 +29,7 @@ echo "Clone repo"
 rm -rf ${repoName}
 git clone ${repoUrl} ${repoName}
 echo "Install Node and dependencies"
+". $HOME/.nvm/nvm.sh"
 nvm install 9.5.0
 npm install -g gitbook-cli
 echo "Build HTML"

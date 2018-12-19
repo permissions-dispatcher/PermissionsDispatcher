@@ -39,3 +39,10 @@ deploy:
   on:
     tags: true
     repo: permissions-dispatcher/PermissionsDispatcher
+
+cache:
+  directories:
+    - $HOME/.m2
+    - $HOME/.gradle/caches/
+    - $HOME/.gradle/wrapper/
+    - $HOME/.android/build-cache
