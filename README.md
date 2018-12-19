@@ -1,6 +1,6 @@
 # PermissionsDispatcher [![Build Status](https://travis-ci.org/permissions-dispatcher/PermissionsDispatcher.svg?branch=master)](https://travis-ci.org/permissions-dispatcher/PermissionsDispatcher)
 
-- [**Kotlin support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_support.md)
+- [**Kotlin support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_usage.md)
 - [**Special Permissions support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/special_permissions.md)
 - **100% reflection-free**
 
