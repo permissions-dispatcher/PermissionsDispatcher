@@ -46,7 +46,7 @@ repositories {
 }
 ```
 
-## Licence
+## License
 
 ```
 Copyright 2016 Shintaro Katafuchi, Marcel Schnelle, Yoshinori Isogai

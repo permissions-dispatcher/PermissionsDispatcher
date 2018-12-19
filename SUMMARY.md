@@ -1,11 +1,11 @@
 # Summary
 
-* [Introduction](README.md)
+- [Introduction](README.md)
 
 ## Getting Started
 
-* [Java](doc/java_usage.md)
-* [Kotlin](doc/kotlin_usage.md)
+- [Java](doc/java_usage.md)
+- [Kotlin](doc/kotlin_usage.md)
 
 ## Features
 
@@ -19,5 +19,6 @@
 
 ## Others
 
+- [Changelog](CHANGELOG.md)
 - [Users](doc/users.md)
 - [Migration Guide](doc/migration_guide.md)

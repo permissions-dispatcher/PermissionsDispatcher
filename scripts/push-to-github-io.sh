@@ -14,10 +14,10 @@ commit_and_push_changes() {
     && git push --quiet --force "${repoUrl}" "$1"
 }
 
-# if [ "$TRAVIS_BRANCH" != "master" ] || [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
-#   echo "Skip updating gitbook: branch is not master or the build was triggered by pull request."
-#   exit 0;
-# fi
+if [ "$TRAVIS_BRANCH" != "master" ] || [ "$TRAVIS_PULL_REQUEST" != "false" ]; then
+  echo "Skip updating gitbook: branch is not master or the build was triggered by pull request."
+  exit 0;
+fi
 
 echo "Decrypt deploy key"
 openssl aes-256-cbc -K $encrypted_786b61619ad8_key -iv $encrypted_786b61619ad8_iv -in .travis/deploy_key.enc -out deploy_key -d
@@ -39,7 +39,7 @@ echo "Build HTML"
 gitbook build
 
 echo "Copy files"
-cp -Rf "${distDir}/doc"* "${distDir}/gitbook"* "${distDir}/index.html" "${distDir}/search_index.json" "${repoName}"
+cp -Rf "${distDir}/doc"* "${distDir}/gitbook"* "${distDir}/*.html" "${distDir}/search_index.json" "${repoName}"
 
 echo "Commit and push"
 cd "${repoName}"
