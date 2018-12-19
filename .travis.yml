@@ -4,6 +4,8 @@ env:
   global:
     - secure: "KY2ZIqFr6RCbZvFpCGo1CXtnmvbGq+uEw/haDOeva7V86A5K+2IzzoCdBTyIcGWo4MfAlfwvtr2z/5JTLQQ9XE2h0N1oVTqJCBPTmorXDFv7CNHxortje9Ra0jrQZY69pXCJePlI9XQ4QOS2pHMujucYt7RFTV/TmU3yI+xBd6PVVTt54mRCSrIAbl5YWGK9lHUWygBn+rLspmAxamSOccqjJlmotzqFp60gedgbrcGOPhLRcuESDn8w45fP0I1owXEhvnIOlMlTavoDc+qeMLckR9xyCYFqxt0jTPaQViR0+JPm7P9Qwho4r9dBcoK+ojqg56fyqQ89sckZ22jXqjmWrKViQdCEB5Oul/n2R2fgH+OfZ1eUffaNTKRAz8a7JgwmPC+X7BiQKxY+GGeZ7tlMxlSyGQGr5EDsAypr9R7r+6WuHtlM7wfSdWNWgMY+CnViJH0f1pl5nftqBzE2PJArU4w1r5tPdkVnGzUHgDrksTGU9WRQ4q/HP+8xZkQjsY1hRuXJlXm+SvMPNyJRn1yxyu2zeetdOmnEUHVN1TgGol3k/sHCUtqF6N4cskpCTFTdXNSZPd3uZs0JLhQR4ygJ6Es+yfPM6pae8jKmUNsUJpl9ctOpwvyZYIsc3rqtLjBWN47v6S/wtOmdJhh1uxz79K7vcPh1Z3pcfGgoVUs="
     - secure: "ucfbFyzFVzzmGivT3MrH7CbW1Wjs2B2gFIc/iqsJ/jF+1vh0ki2wwmE8pFFGo/4iKF59yCnj0NtxnInX3YVRtLOKD1bqS0yAPOskLlx3XhH5gg4owJ6vo9vuKoizcRabT/ss8SjlFkv7PDHmFWVyUtZmgjkwZbuQbTnMBQv1qzDo+AfS8cuDQAXvWzfMF1R9wEpc1/hmRCYMTpUS3c0qms2wxPatLLnXHGT3qVfHsAFm46mBiwA2K7G8UwRHLQCqC0RE9/4PDvmrTSt4xdq9PsY6CGqBHJmDW8ylWW6JONzFw4g3l/9GH0uBu4iryZmZORjTCRsIWbqzFcLCF+AN+mLxIsmRnRqabxOv4QRgIRq0S5ODfOkLbrAMTRH7P4JitwSnMUrG6Rfmb5XRTg6Di0L3Wd2n4wP9n7R/2037Z7C9/nwfv5UewCn75H5DynLGA00szLLe4ws4oY0OEJQQoCkjXkNoXvPuCv6XaVTg61JgSJGMJsjxNGGrAjXJvpXgGPdqMqert/quc5kdyabU0O7H9EfLBPQ0jFMrDXZkfjGRvyshp4bhIthIw1oerQy2DDtkPsQkhRajPg2AyHo5ttGnsr7fyZ1eAol8SgvP180zqsHJj8rPwET7WN+QgPA/xBuj9CFUpoRF3QFVoxMFouimgUhwKV1nZ8uCJ4vaSSA="
+    = secure: "BEOoJWIoQSp9j6XOxAIN3o7oe/RH6OePD+gGeX4PmQcqVnqYzUxVSUMknQSKzTpHlrXHPGOh2sJRCcNynSEhRryC/qEu73Z/lwgye+xnaz7YTnqo+lfVnzWDPvMTi4IuLJuL6R31ZeM9XOqvOA4k6RoxcbRp6WI4mPtrReipsq6bJwBRJlC6bnxIvrkmiRLm/E/clx1bfVVOpAMk6SELc/lBtXq20BO96J/WkUHGKmva5Pp7K8lQ+vXhCasHrmKxXrzYAvjZTnQGEZmTE5z3+2H8jQ9OBZdI13JOE+Lm+COIa+/GcEUNUsc0hReqJSJmC+7EzTWxDhxpUpjS+Pjy67Btly7cAo3U7HFTR/b00en+acAFeznsNc1tJDBWk+PQwxGyETxOfkZNcWn9RNHqZat/zIhIqbdwuu0M+IcvrZ3yRQV0UmIcnAHxU+e3+IXo9KXe3oz2Mi1VaxzH8pLftEHzDc3VXObnvFaKNSLdhIS2UdlFVX0iPfU2e7U6yKOI5z5MDzRVhgCHdMqyfAcoTOrwRePVoDk5UFxy9C2TAIIJ9xlfW4YydIbIJRahjtRe5+Jp2lH9qiBgjt6/IgiXpI4C6H+8rsfz4N7pssmymM7+0hQuSevWaJnhCt9kPdiwHzHJ3lUm/ud1WGZvQQUFH/pTQJXOYqxmDRivQlzWSWQ="
+    - secure: "znN56WtufsW5EYRWCbc5sJOkuVnZw8J2nhGTGCtLwXOrQhYZvVHlxhNmwkWctBF/kJHNtxGWnq3bcsD3wOm7a/BSdZDCS+JoL0MN75QY93a2xoEoBSO4Wr0oW2s2HFc/+Ik9O8EeeH4YImYUYoQ+LVuFJ6twr+8vQDjrt7S2cndiBdX9cXnMbz5hh98rSy5NFawafp0p+lby8eKV8HjdwDkyHyZGtg2BU1s01ef45iOAXmZtvuRffASIoRTvF8qTanqv90ZUzm50Pl3UcLEx7A5tR+/hExeK1pY5RiRGjrZEWawVIyBjOuQtvjFaLlfmVnIt44fwF7luuVWI6slxyDp/RsXAazOmaaB5vVt8KlhwTUxgQ2NGFXjVaC//C9AiMnnU4ZrBF/D33VkcyHBvtTATtlLbIQliG3x119UGWAjTzJwSAIc/YgEowKK/MR/qHfRSxz+HTR73KV8DA1/yaRAhLPUY9iJ4Kmn0uVKc4WxSJpq+bPyXf4FGmc1AOt4VkSYpwsBxB8kZiqq2er1z+u2lYf2LZFhZ1rtZxvccrQurDE30LSyg2oZAI75/x7o97CLciTu342CM4c1FayRUV4CxIHwOEPenb7DfYvEyiexPDG3/DACcMGVUsYa4oFw3dftufJK9fWkI308uG19L4wqcVvMqAXqpn1NbQU0Akxk="
 
 android:
   components:
@@ -20,13 +22,15 @@ jdk:
   - oraclejdk8
 
 before_install:
+  # To commit to permissions-dispatcher.github.io
+  - openssl aes-256-cbc -K $encrypted_786b61619ad8_key -iv $encrypted_786b61619ad8_iv -in id_rsa.enc -out ~\/.ssh/id_rsa -d
+  - chmod 600 deploy_key
+  - eval `ssh-agent -s`
+  - ssh-add deploy_key
+  # Install Android SDK
   - echo "sdk.dir=$ANDROID_HOME" > local.properties
   - mkdir "$ANDROID_HOME/licenses" || true
   - cp ./android-sdk-licenses/* "$ANDROID_HOME/licenses/"
-
-branches:
-  except:
-    - gh-pages
 
 script: ./gradlew clean check --stacktrace
 
