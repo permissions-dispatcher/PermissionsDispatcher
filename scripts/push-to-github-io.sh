@@ -21,7 +21,7 @@ commit_and_push_changes() {
 # fi
 
 echo "Decrypt deploy key"
-openssl aes-256-cbc -K $encrypted_786b61619ad8_key -iv $encrypted_786b61619ad8_iv -in deploy_key.enc -out deploy_key -d
+openssl aes-256-cbc -K $encrypted_786b61619ad8_key -iv $encrypted_786b61619ad8_iv -in .travis/deploy_key.enc -out deploy_key -d
 chmod 600 deploy_key
 eval `ssh-agent -s`
 ssh-add deploy_key
