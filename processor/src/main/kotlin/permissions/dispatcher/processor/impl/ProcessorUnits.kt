@@ -6,5 +6,4 @@ import permissions.dispatcher.processor.impl.kotlin.KotlinActivityProcessorUnit
 import permissions.dispatcher.processor.impl.kotlin.KotlinFragmentProcessorUnit
 
 val javaProcessorUnits = listOf(JavaActivityProcessorUnit(), JavaFragmentProcessorUnit())
-
 val kotlinProcessorUnits = listOf(KotlinActivityProcessorUnit(), KotlinFragmentProcessorUnit())

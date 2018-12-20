@@ -12,13 +12,9 @@ class JavaActivityProcessorUnit : JavaBaseProcessorUnit() {
 
     private val ACTIVITY_COMPAT = ClassName.get("androidx.core.app", "ActivityCompat")
 
-    override fun getTargetType(): TypeMirror {
-        return typeMirrorOf("android.app.Activity")
-    }
+    override fun getTargetType(): TypeMirror = typeMirrorOf("android.app.Activity")
 
-    override fun getActivityName(targetParam: String): String {
-        return targetParam
-    }
+    override fun getActivityName(targetParam: String): String = targetParam
 
     override fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String, isPositiveCondition: Boolean) {
         builder.beginControlFlow("if (\$N\$T.shouldShowRequestPermissionRationale(\$N, \$N))", if (isPositiveCondition) "" else "!", PERMISSION_UTILS, targetParam, permissionField)
