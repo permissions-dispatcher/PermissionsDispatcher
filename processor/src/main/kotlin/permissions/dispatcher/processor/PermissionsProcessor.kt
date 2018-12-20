@@ -8,7 +8,6 @@ import permissions.dispatcher.processor.util.kotlinMetadataClass
 import java.io.File
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.Filer
-import javax.annotation.processing.Messager
 import javax.annotation.processing.ProcessingEnvironment
 import javax.annotation.processing.RoundEnvironment
 import javax.lang.model.SourceVersion
@@ -33,12 +32,10 @@ class PermissionsProcessor : AbstractProcessor() {
 
     /* Processing Environment helpers */
     private var filer: Filer by Delegates.notNull()
-    var messager: Messager by Delegates.notNull()
 
     override fun init(processingEnv: ProcessingEnvironment) {
         super.init(processingEnv)
         filer = processingEnv.filer
-        messager = processingEnv.messager
         ELEMENT_UTILS = processingEnv.elementUtils
         TYPE_UTILS = processingEnv.typeUtils
     }
@@ -86,13 +83,13 @@ class PermissionsProcessor : AbstractProcessor() {
             kaptGeneratedDir.parentFile.mkdirs()
         }
 
-        val processorUnit = findAndValidateProcessorUnit(kotlinProcessorUnits(), element)
+        val processorUnit = findAndValidateProcessorUnit(kotlinProcessorUnits, element)
         val kotlinFile = processorUnit.createFile(rpe, requestCodeProvider)
         kotlinFile.writeTo(kaptGeneratedDir)
     }
 
     private fun processJava(element: Element, rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider) {
-        val processorUnit = findAndValidateProcessorUnit(javaProcessorUnits(), element)
+        val processorUnit = findAndValidateProcessorUnit(javaProcessorUnits, element)
         val javaFile = processorUnit.createFile(rpe, requestCodeProvider)
         javaFile.writeTo(filer)
     }

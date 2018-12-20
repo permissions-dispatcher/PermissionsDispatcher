@@ -5,10 +5,6 @@ import permissions.dispatcher.processor.impl.java.JavaFragmentProcessorUnit
 import permissions.dispatcher.processor.impl.kotlin.KotlinActivityProcessorUnit
 import permissions.dispatcher.processor.impl.kotlin.KotlinFragmentProcessorUnit
 
-fun javaProcessorUnits() = listOf(
-        JavaActivityProcessorUnit(),
-        JavaFragmentProcessorUnit())
+val javaProcessorUnits = listOf(JavaActivityProcessorUnit(), JavaFragmentProcessorUnit())
 
-fun kotlinProcessorUnits() = listOf(
-        KotlinActivityProcessorUnit(),
-        KotlinFragmentProcessorUnit())
+val kotlinProcessorUnits = listOf(KotlinActivityProcessorUnit(), KotlinFragmentProcessorUnit())
