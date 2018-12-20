@@ -4,6 +4,7 @@
 
 ## Getting Started
 
+- [Installation](doc/installation.md)
 - [Java](doc/java_usage.md)
 - [Kotlin](doc/kotlin_usage.md)
 
@@ -20,5 +21,5 @@
 ## Others
 
 - [Changelog](CHANGELOG.md)
-- [Users](doc/users.md)
 - [Migration Guide](doc/migration_guide.md)
+- [Users](doc/users.md)
