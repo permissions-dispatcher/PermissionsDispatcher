@@ -52,8 +52,8 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
                 .addFields(createFields(rpe, requestCodeProvider))
                 .addMethod(createConstructor())
                 .addMethods(createWithPermissionCheckMethods(rpe))
-                .addMethods(createPermissionHandlingMethods(rpe))
                 .addMethods(createOnShowRationaleCallbackMethods(rpe))
+                .addMethods(createPermissionHandlingMethods(rpe))
                 .addTypes(createPermissionRequestClasses(rpe))
                 .build()
     }

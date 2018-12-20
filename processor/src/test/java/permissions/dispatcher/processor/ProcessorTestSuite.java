@@ -357,4 +357,28 @@ public class ProcessorTestSuite extends TestSuite {
     public void nestedStaticFragment() {
         assertJavaSource(Source.NestedStaticFragment);
     }
+
+    @Test public void onePermissionWithNoArgumentRationaleActivity() {
+        assertJavaSource(Source.OnePermissionWithNoArgumentRationaleActivity);
+    }
+
+    @Test public void onePermissionWithNoArgumentRationaleAndDeniedActivity() {
+        assertJavaSource(Source.OnePermissionWithNoArgumentRationaleAndDeniedActivity);
+    }
+
+    @Test public void onePermissionWithParamNoArgumentRationaleAndDeniedActivity() {
+        assertJavaSource(Source.OnePermissionWithParamNoArgumentRationaleAndDeniedActivity);
+    }
+
+    @Test public void onePermissionWithNoArgumentRationaleFragment() {
+        assertJavaSource(Source.OnePermissionWithNoArgumentRationaleFragment);
+    }
+
+    @Test public void onePermissionWithNoArgumentRationaleAndDeniedFragment() {
+        assertJavaSource(Source.OnePermissionWithNoArgumentRationaleAndDeniedFragment);
+    }
+
+    @Test public void onePermissionWithParamNoArgumentRationaleAndDeniedFragment() {
+        assertJavaSource(Source.OnePermissionWithParamNoArgumentRationaleAndDeniedFragment);
+    }
 }
