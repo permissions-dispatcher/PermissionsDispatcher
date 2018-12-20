@@ -12,8 +12,6 @@ class KotlinActivityProcessorUnit : KotlinBaseProcessorUnit() {
 
     private val ACTIVITY_COMPAT = ClassName("androidx.core.app", "ActivityCompat")
 
-    override fun isDeprecated(): Boolean = false
-
     override fun getTargetType(): TypeMirror = typeMirrorOf("android.app.Activity")
 
     override fun getActivityName(targetParam: String): String = targetParam

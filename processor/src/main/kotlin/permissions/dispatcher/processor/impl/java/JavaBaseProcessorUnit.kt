@@ -62,10 +62,6 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
 
     abstract fun getActivityName(targetParam: String): String
 
-    abstract fun isDeprecated(): Boolean
-
-    /* Begin private */
-
     private fun createTypeSpec(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): TypeSpec {
         return TypeSpec.classBuilder(rpe.generatedClassName)
                 .addOriginatingElement(rpe.e) // for incremental annotation processing
@@ -75,16 +71,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
                 .addMethods(createWithPermissionCheckMethods(rpe))
                 .addMethods(createPermissionHandlingMethods(rpe))
                 .addTypes(createPermissionRequestClasses(rpe))
-                .apply {
-                    if (isDeprecated()) {
-                        addAnnotation(createDeprecatedAnnotation())
-                    }
-                }
                 .build()
-    }
-
-    private fun createDeprecatedAnnotation(): AnnotationSpec {
-        return AnnotationSpec.builder(java.lang.Deprecated::class.java).build()
     }
 
     private fun createFields(needsElements: List<ExecutableElement>, requestCodeProvider: RequestCodeProvider): List<FieldSpec> {

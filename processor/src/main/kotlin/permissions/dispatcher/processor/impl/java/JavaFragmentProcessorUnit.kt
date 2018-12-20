@@ -9,8 +9,6 @@ import javax.lang.model.type.TypeMirror
  */
 class JavaFragmentProcessorUnit : JavaBaseProcessorUnit() {
 
-    override fun isDeprecated(): Boolean = false
-
     override fun getTargetType(): TypeMirror {
         return typeMirrorOf("androidx.fragment.app.Fragment")
     }

@@ -12,8 +12,6 @@ class JavaActivityProcessorUnit : JavaBaseProcessorUnit() {
 
     private val ACTIVITY_COMPAT = ClassName.get("androidx.core.app", "ActivityCompat")
 
-    override fun isDeprecated(): Boolean = false
-
     override fun getTargetType(): TypeMirror {
         return typeMirrorOf("android.app.Activity")
     }
