@@ -10,8 +10,6 @@ import javax.lang.model.type.TypeMirror
  */
 class JavaActivityProcessorUnit : JavaBaseProcessorUnit() {
 
-    private val ACTIVITY_COMPAT = ClassName.get("androidx.core.app", "ActivityCompat")
-
     override fun getTargetType(): TypeMirror = typeMirrorOf("android.app.Activity")
 
     override fun getActivityName(targetParam: String): String = targetParam
@@ -21,6 +19,6 @@ class JavaActivityProcessorUnit : JavaBaseProcessorUnit() {
     }
 
     override fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {
-        builder.addStatement("\$T.requestPermissions(\$N, \$N, \$N)", ACTIVITY_COMPAT, targetParam, permissionField, requestCodeField)
+        builder.addStatement("\$T.requestPermissions(\$N, \$N, \$N)", ClassName.get("androidx.core.app", "ActivityCompat"), targetParam, permissionField, requestCodeField)
     }
 }
