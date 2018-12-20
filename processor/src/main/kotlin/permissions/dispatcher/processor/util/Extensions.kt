@@ -55,6 +55,7 @@ fun <A : Annotation> Element.hasAnnotation(annotationType: Class<A>): Boolean =
  */
 fun VariableElement.isNullable(): Boolean =
         this.annotationMirrors
+                .asSequence()
                 .map { it.annotationType.simpleString() }
                 .toList()
                 .contains("Nullable")
@@ -91,8 +92,10 @@ fun Annotation.permissionValue(): List<String> {
  */
 fun <A : Annotation> Element.childElementsAnnotatedWith(annotationClass: Class<A>): List<ExecutableElement> =
         this.enclosedElements
+                .asSequence()
                 .filter { it.hasAnnotation(annotationClass) }
                 .map { it as ExecutableElement }
+                .toList()
 
 /**
  * Returns whether or not a TypeMirror is a subtype of the provided other TypeMirror.
