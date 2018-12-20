@@ -1,7 +1,6 @@
 package permissions.dispatcher.processor.impl.java
 
 import androidx.annotation.NonNull
-import com.squareup.javapoet.AnnotationSpec
 import com.squareup.javapoet.ArrayTypeName
 import com.squareup.javapoet.ClassName
 import com.squareup.javapoet.CodeBlock
@@ -16,16 +15,7 @@ import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.JavaProcessorUnit
 import permissions.dispatcher.processor.RequestCodeProvider
 import permissions.dispatcher.processor.RuntimePermissionsElement
-import permissions.dispatcher.processor.util.FILE_COMMENT
-import permissions.dispatcher.processor.util.pendingRequestFieldName
-import permissions.dispatcher.processor.util.permissionFieldName
-import permissions.dispatcher.processor.util.permissionRequestTypeName
-import permissions.dispatcher.processor.util.permissionValue
-import permissions.dispatcher.processor.util.requestCodeFieldName
-import permissions.dispatcher.processor.util.simpleString
-import permissions.dispatcher.processor.util.typeNameOf
-import permissions.dispatcher.processor.util.varargsParametersCodeBlock
-import permissions.dispatcher.processor.util.withPermissionCheckMethodName
+import permissions.dispatcher.processor.util.*
 import java.util.ArrayList
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.Modifier
@@ -70,6 +60,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
                 .addMethod(createConstructor())
                 .addMethods(createWithPermissionCheckMethods(rpe))
                 .addMethods(createPermissionHandlingMethods(rpe))
+                .addMethods(createOnShowRationaleCallbackMethods(rpe))
                 .addTypes(createPermissionRequestClasses(rpe))
                 .build()
     }
@@ -386,6 +377,48 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
             }
         }
         return false
+    }
+
+    private fun createOnShowRationaleCallbackMethods(rpe: RuntimePermissionsElement): List<MethodSpec> {
+        val methods = arrayListOf<MethodSpec>()
+        rpe.needsElements.forEach {
+            val rationale = rpe.findOnRationaleForNeeds(it)
+            val isParamsEmpty = rationale?.parameters?.isEmpty() ?: false
+            if (isParamsEmpty) {
+                methods.add(createProceedPermissionRequestMethod(rpe, it))
+                val onDenied = rpe.findOnDeniedForNeeds(it)
+                if (onDenied != null) {
+                    methods.add(createCancelPermissionRequestMethod(rpe, onDenied, it))
+                }
+            }
+        }
+        return methods
+    }
+
+    private fun createProceedPermissionRequestMethod(rpe: RuntimePermissionsElement, needsMethod: ExecutableElement): MethodSpec {
+        val targetParam = "target"
+        val builder = MethodSpec.methodBuilder(needsMethod.proceedOnShowRationaleMethodName())
+                .addTypeVariables(rpe.typeVariables)
+                .addModifiers(Modifier.STATIC)
+                .returns(TypeName.VOID)
+                .addParameter(ParameterSpec.builder(rpe.typeName, targetParam).addAnnotation(NonNull::class.java).build())
+        val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
+        val activityVar = getActivityName(targetParam)
+        val permissionField = permissionFieldName(needsMethod)
+        val requestCodeField = requestCodeFieldName(needsMethod)
+        ADD_WITH_CHECK_BODY_MAP[needsPermissionParameter]?.addRequestPermissionsStatement(builder, targetParam, activityVar, requestCodeField)
+                ?: addRequestPermissionsStatement(builder, targetParam, permissionField, requestCodeField)
+        return builder.build()
+    }
+
+    private fun createCancelPermissionRequestMethod(rpe: RuntimePermissionsElement, onDenied: ExecutableElement, needsMethod: ExecutableElement): MethodSpec {
+        return MethodSpec.methodBuilder(needsMethod.cancelOnShowRationaleMethodName())
+                .addTypeVariables(rpe.typeVariables)
+                .addModifiers(Modifier.STATIC)
+                .returns(TypeName.VOID)
+                .addParameter(ParameterSpec.builder(rpe.typeName, "target").addAnnotation(NonNull::class.java).build())
+                .addStatement("target.\$N()", onDenied.simpleString())
+                .build()
     }
 
     private fun createPermissionRequestClasses(rpe: RuntimePermissionsElement): List<TypeSpec> {
