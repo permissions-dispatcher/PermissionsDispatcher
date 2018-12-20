@@ -6,11 +6,11 @@ import javax.tools.JavaFileObject;
 
 public abstract class BaseTest {
 
-    public final JavaFileObject actual() {
+    final JavaFileObject actual() {
         return JavaFileObjects.forSourceLines(getName(), getActualSource());
     }
 
-    public final JavaFileObject expect() {
+    final JavaFileObject expect() {
         return JavaFileObjects.forSourceLines(getName() + "PermissionsDispatcher", getExpectSource());
     }
 

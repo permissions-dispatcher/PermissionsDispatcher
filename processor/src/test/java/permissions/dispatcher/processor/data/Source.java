@@ -236,7 +236,7 @@ public final class Source {
         }
     };
 
-    public static final BaseTest RationaleWithoutParameters = new BaseTest() {
+    public static final BaseTest RationaleWithOneMoreParameters = new BaseTest() {
         @Override
         protected String getName() {
             return "MyActivity";
@@ -251,13 +251,14 @@ public final class Source {
                     "import permissions.dispatcher.RuntimePermissions;",
                     "import permissions.dispatcher.NeedsPermission;",
                     "import permissions.dispatcher.OnShowRationale;",
+                    "import permissions.dispatcher.PermissionRequest;",
                     "@RuntimePermissions",
                     "public class MyActivity extends Activity {",
                     "   @NeedsPermission(Manifest.permission.CAMERA)",
                     "   void showCamera() {",
                     "   }",
                     "   @OnShowRationale(Manifest.permission.CAMERA)",
-                    "   void cameraRationale() {",
+                    "   void cameraRationale(PermissionRequest request, int value) {",
                     "   }",
                     "}"
             };

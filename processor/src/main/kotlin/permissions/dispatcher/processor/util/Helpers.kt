@@ -35,6 +35,8 @@ fun pendingRequestFieldName(e: ExecutableElement) = "$GEN_PENDING_PREFIX${e.simp
 
 fun withPermissionCheckMethodName(e: ExecutableElement) = "${e.simpleString().trimDollarIfNeeded()}$GEN_WITH_PERMISSION_CHECK_SUFFIX"
 
+fun ExecutableElement.argumentFieldName(arg: Element) = "${simpleString()}${arg.simpleString().capitalize()}"
+
 fun ExecutableElement.proceedOnShowRationaleMethodName() = "proceed${simpleString().trimDollarIfNeeded().capitalize()}$GEN_PERMISSION_REQUEST_SUFFIX"
 
 fun ExecutableElement.cancelOnShowRationaleMethodName() = "cancel${simpleString().trimDollarIfNeeded().capitalize()}$GEN_PERMISSION_REQUEST_SUFFIX"
@@ -49,10 +51,11 @@ fun <A : Annotation> findMatchingMethodForNeeds(needsElement: ExecutableElement,
     }
 }
 
-fun varargsParametersCodeBlock(needsElement: ExecutableElement): CodeBlock {
+fun varargsParametersCodeBlock(needsElement: ExecutableElement, withCache: Boolean = false): CodeBlock {
     val varargsCall = CodeBlock.builder()
     needsElement.parameters.forEachIndexed { i, it ->
-        varargsCall.add("\$L", it.simpleString())
+        val name = if (withCache) needsElement.argumentFieldName(it) else it.simpleString()
+        varargsCall.add("\$L", name)
         if (i < needsElement.parameters.size - 1) {
             varargsCall.add(", ")
         }

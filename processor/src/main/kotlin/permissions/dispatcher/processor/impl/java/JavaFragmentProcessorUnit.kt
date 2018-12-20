@@ -5,7 +5,7 @@ import permissions.dispatcher.processor.util.typeMirrorOf
 import javax.lang.model.type.TypeMirror
 
 /**
- * ProcessorUnit implementation for Fragments.
+ * ProcessorUnit implementation for Fragment.
  */
 class JavaFragmentProcessorUnit : JavaBaseProcessorUnit() {
 

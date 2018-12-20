@@ -32,18 +32,18 @@ public class ProcessorTestSuite extends TestSuite {
     }
 
     @Test public void rationaleWithWrongParameters1() {
-        expectRuntimeException("Method 'cameraRationale()' must declare parameters of type 'PermissionRequest'");
+        expectRuntimeException("Method 'cameraRationale()' must has less than or equal to 1 size parameter and type of it is supposed to be 'PermissionRequest'");
         assertJavaSource(Source.RationaleWithWrongParameters1);
     }
 
     @Test public void rationaleWithWrongParameters2() {
-        expectRuntimeException("Method 'cameraRationale()' must declare parameters of type 'PermissionRequest'");
+        expectRuntimeException("Method 'cameraRationale()' must has less than or equal to 1 size parameter and type of it is supposed to be 'PermissionRequest'");
         assertJavaSource(Source.RationaleWithWrongParameters2);
     }
 
-    @Test public void rationaleWithoutParameters() {
-        expectRuntimeException("Method 'cameraRationale()' must declare parameters of type 'PermissionRequest'");
-        assertJavaSource(Source.RationaleWithoutParameters);
+    @Test public void rationaleWithOneMoreParameters() {
+        expectRuntimeException("Method 'cameraRationale()' must has less than or equal to 1 size parameter and type of it is supposed to be 'PermissionRequest'");
+        assertJavaSource(Source.RationaleWithOneMoreParameters);
     }
 
     @Test public void deniedWithParameters() {

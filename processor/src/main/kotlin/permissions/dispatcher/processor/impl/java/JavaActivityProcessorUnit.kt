@@ -6,7 +6,7 @@ import permissions.dispatcher.processor.util.typeMirrorOf
 import javax.lang.model.type.TypeMirror
 
 /**
- * ProcessorUnit implementation for Activity classes.
+ * ProcessorUnit implementation for Activity.
  */
 class JavaActivityProcessorUnit : JavaBaseProcessorUnit() {
 
