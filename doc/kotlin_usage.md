@@ -2,7 +2,7 @@
 
 Here's a minimum example, in which you register a `MainActivity` which requires `Manifest.permission.CAMERA`.
 
-### 0. Preparation
+### 0. Prepare AndroidManifest
 
 Add the following line to `AndroidManifest.xml`:
  
@@ -10,7 +10,17 @@ Add the following line to `AndroidManifest.xml`:
 
 ### 1. Attach annotations
 
+PermissionsDispatcher introduces only a few annotations, keeping its general API concise:
+
 > NOTE: Annotated methods must not be `private`.
+
+|Annotation|Required|Description|
+|---|---|---|
+|`@RuntimePermissions`|**✓**|Register an `Activity` or `Fragment`(we support both) to handle permissions|
+|`@NeedsPermission`|**✓**|Annotate a method which performs the action that requires one or more permissions|
+|`@OnShowRationale`||Annotate a method which explains why the permission/s is/are needed. It passes in a `PermissionRequest` object which can be used to continue or abort the current permission request upon user input|
+|`@OnPermissionDenied`||Annotate a method which is invoked if the user doesn't grant the permissions|
+|`@OnNeverAskAgain`||Annotate a method which is invoked if the user chose to have the device "never ask again" about a permission|
 
 ```kotlin
 @RuntimePermissions
