@@ -11,7 +11,7 @@ android:
   components:
     - tools
     - platform-tools
-    - 28.0.0-rc2
+    - build-tools-28.0.3
     - android-28
     - extra-google-google_play_services
     - extra-android-m2repository
@@ -20,11 +20,6 @@ android:
 
 jdk:
   - oraclejdk8
-
-before_install:
-  - echo "sdk.dir=$ANDROID_HOME" > local.properties
-  - mkdir "$ANDROID_HOME/licenses" || true
-  - cp ./android-sdk-licenses/* "$ANDROID_HOME/licenses/"
 
 script: ./gradlew clean check --stacktrace
 
