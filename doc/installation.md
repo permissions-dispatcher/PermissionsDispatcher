@@ -8,8 +8,8 @@ To add PermissionsDispatcher to your project, include the following in your **ap
 
 ```groovy
 dependencies {
-  implementation "com.github.hotchemi:permissionsdispatcher:${latest.version}"
-  annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:${latest.version}"
+  implementation "org.permissionsdispatcher:permissionsdispatcher:${latest.version}"
+  annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:${latest.version}"
 }
 ```
 
@@ -19,8 +19,8 @@ With Kotlin:
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-  implementation "com.github.hotchemi:permissionsdispatcher:${latest.version}"
-  kapt "com.github.hotchemi:permissionsdispatcher-processor:${latest.version}"
+  implementation "org.permissionsdispatcher:permissionsdispatcher:${latest.version}"
+  kapt "org.permissionsdispatcher:permissionsdispatcher-processor:${latest.version}"
 }
 ```
 

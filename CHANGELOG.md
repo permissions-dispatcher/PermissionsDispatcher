@@ -1,5 +1,11 @@
 # ChangeLog
 
+- 4.2.0 2018/12/21
+  - Add: OnShowRationale API change with keeping backward compatibility [#569](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/569)
+  - Update: Change maven groupId from `com.github.hotchemi` to `org.permissionsdispatcher` [#560](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/560)
+  - Doc: Publish document site! https://permissions-dispatcher.github.io
+  - Fix: Any is translated to java.lang.Object [#545](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/545)
+  - Add: Support Java incremental compilation [#473](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/473)
 - 4.1.0 2018/12/07
   - Fix: compile time validation for detecting OnNeverAskAgain with special permissions [#549](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/549)
   - Update: Drop Xiaomi support [#548](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/548)
