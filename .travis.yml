@@ -21,6 +21,9 @@ android:
 jdk:
   - oraclejdk8
 
+before_install:
+  - echo "sdk.dir=$ANDROID_HOME" > local.properties
+
 script: ./gradlew clean check --stacktrace
 
 after_success:
