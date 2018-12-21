@@ -33,7 +33,7 @@ class ActivityWithWriteSettingKtTest {
         @JvmStatic
         fun setUpForClass() {
             // TODO Reflection on Kotlin top-level properties?
-            requestCode = 14
+            requestCode = 15
         }
     }
 

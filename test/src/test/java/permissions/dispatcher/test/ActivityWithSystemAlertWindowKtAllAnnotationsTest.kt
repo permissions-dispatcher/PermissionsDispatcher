@@ -35,7 +35,7 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
         @JvmStatic
         fun setUpForClass() {
             // TODO Reflection on Kotlin top-level properties?
-            requestCode = 11
+            requestCode = 12
         }
     }
 

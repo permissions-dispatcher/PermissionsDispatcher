@@ -90,21 +90,20 @@ fun checkMethodSignature(items: List<ExecutableElement>) {
 
 fun checkMethodParameters(items: List<ExecutableElement>, numParams: Int, requiredType: TypeMirror? = null) {
     items.forEach {
-        // Check each element's parameters against the requirements
         val params = it.parameters
         if (numParams == 0 && params.isNotEmpty()) {
             throw NoParametersAllowedException(it)
         }
-        if (numParams != params.size) {
-            throw WrongParametersException(it, requiredType)
-        }
         if (requiredType == null) {
             return
         }
-        // maximum params size is 1 for now
+        if (numParams < params.size) {
+            throw WrongParametersException(it, numParams, requiredType)
+        }
+        // maximum params size is 1
         params.forEach { param ->
             if (!TYPE_UTILS.isSameType(param.asType(), requiredType)) {
-                throw WrongParametersException(it, requiredType)
+                throw WrongParametersException(it, numParams, requiredType)
             }
         }
     }

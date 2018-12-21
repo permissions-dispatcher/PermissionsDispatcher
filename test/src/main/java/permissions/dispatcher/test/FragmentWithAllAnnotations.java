@@ -12,7 +12,7 @@ import permissions.dispatcher.PermissionRequest;
 import permissions.dispatcher.RuntimePermissions;
 
 @RuntimePermissions
-public class SupportFragmentWithAllAnnotations extends Fragment {
+public class FragmentWithAllAnnotations extends Fragment {
 
     @NeedsPermission(Manifest.permission.CAMERA)
     void showCamera() {
@@ -33,7 +33,6 @@ public class SupportFragmentWithAllAnnotations extends Fragment {
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults);
-        SupportFragmentWithAllAnnotationsPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
+        FragmentWithAllAnnotationsPermissionsDispatcher.onRequestPermissionsResult(this, requestCode, grantResults);
     }
-
 }

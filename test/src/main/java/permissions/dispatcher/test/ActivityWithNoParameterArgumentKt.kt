@@ -1,18 +1,18 @@
 package permissions.dispatcher.test
 
 import android.Manifest
-import androidx.fragment.app.Fragment
+import androidx.appcompat.app.AppCompatActivity
 import permissions.dispatcher.*
 
 @RuntimePermissions
-open class SupportFragmentWithAllAnnotationsKt : Fragment() {
+open class ActivityWithNoParameterArgumentKt : AppCompatActivity() {
 
     @NeedsPermission(Manifest.permission.CAMERA)
     fun showCamera() {
     }
 
     @OnShowRationale(Manifest.permission.CAMERA)
-    fun showRationaleForCamera(request: PermissionRequest?) {
+    fun showRationaleForCamera() {
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA)
@@ -27,5 +27,4 @@ open class SupportFragmentWithAllAnnotationsKt : Fragment() {
         super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         onRequestPermissionsResult(requestCode, grantResults)
     }
-
 }

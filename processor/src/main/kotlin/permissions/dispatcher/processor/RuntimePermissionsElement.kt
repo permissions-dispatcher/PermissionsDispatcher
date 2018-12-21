@@ -32,8 +32,6 @@ class RuntimePermissionsElement(val e: TypeElement) {
         validateNeverAskMethods()
     }
 
-    /* Begin private */
-
     private fun validateNeedsMethods() {
         checkNotEmpty(needsElements, this, NeedsPermission::class.java)
         checkPrivateMethods(needsElements, NeedsPermission::class.java)
@@ -63,8 +61,6 @@ class RuntimePermissionsElement(val e: TypeElement) {
         checkMethodParameters(onNeverAskElements, 0)
         checkSpecialPermissionsWithNeverAskAgain(onNeverAskElements)
     }
-
-    /* Begin public */
 
     fun findOnRationaleForNeeds(needsElement: ExecutableElement): ExecutableElement? {
         return findMatchingMethodForNeeds(needsElement, onRationaleElements, OnShowRationale::class.java)
