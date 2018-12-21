@@ -22,4 +22,5 @@
 
 - [Changelog](CHANGELOG.md)
 - [Migration Guide](doc/migration_guide.md)
+- [Source Code](https://github.com/permissions-dispatcher/PermissionsDispatcher)
 - [Users](doc/users.md)
