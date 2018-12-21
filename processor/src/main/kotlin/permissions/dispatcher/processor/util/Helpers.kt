@@ -63,10 +63,11 @@ fun varargsParametersCodeBlock(needsElement: ExecutableElement, withCache: Boole
     return varargsCall.build()
 }
 
-fun varargsKtParametersCodeBlock(needsElement: ExecutableElement): com.squareup.kotlinpoet.CodeBlock {
+fun varargsKtParametersCodeBlock(needsElement: ExecutableElement, withCache: Boolean = false): com.squareup.kotlinpoet.CodeBlock {
     val varargsCall = com.squareup.kotlinpoet.CodeBlock.builder()
     needsElement.parameters.forEachIndexed { i, it ->
-        varargsCall.add("%L", it.simpleString())
+        val name = if (withCache) "${needsElement.argumentFieldName(it)}!!" else it.simpleString()
+        varargsCall.add("%L", name)
         if (i < needsElement.parameters.size - 1) {
             varargsCall.add(", ")
         }

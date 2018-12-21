@@ -2,7 +2,6 @@ package permissions.dispatcher.test
 
 import android.content.pm.PackageManager
 import android.os.Process
-import androidx.appcompat.app.AppCompatActivity
 import androidx.core.app.AppOpsManagerCompat
 import androidx.core.content.PermissionChecker
 import org.junit.After
@@ -19,10 +18,10 @@ import permissions.dispatcher.PermissionRequest
 
 @Suppress("IllegalIdentifier")
 @RunWith(PowerMockRunner::class)
-@PrepareForTest(PermissionChecker::class, SupportFragmentWithAllAnnotationsKt::class, AppOpsManagerCompat::class, Process::class)
-class SupportFragmentWithAllAnnotationsKtPermissionsDispatcherTest {
+@PrepareForTest(PermissionChecker::class, FragmentWithAllAnnotationsKt::class, AppOpsManagerCompat::class, Process::class)
+class FragmentWithAllAnnotationsKtPermissionsDispatcherTest {
 
-    private lateinit var fragment: SupportFragmentWithAllAnnotationsKt
+    private lateinit var fragment: FragmentWithAllAnnotationsKt
 
     companion object {
         private var requestCode = 0
@@ -32,14 +31,14 @@ class SupportFragmentWithAllAnnotationsKtPermissionsDispatcherTest {
         @JvmStatic
         fun setUpForClass() {
             // TODO Reflection on Kotlin top-level properties?
-            requestCode = 17
+            requestCode = 18
             requestPermissions = arrayOf("android.permission.CAMERA")
         }
     }
 
     @Before
     fun setUp() {
-        fragment = PowerMockito.mock(SupportFragmentWithAllAnnotationsKt::class.java)
+        fragment = PowerMockito.mock(FragmentWithAllAnnotationsKt::class.java)
 
         PowerMockito.mockStatic(PermissionChecker::class.java)
         PowerMockito.mockStatic(Process::class.java)

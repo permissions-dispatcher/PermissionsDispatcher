@@ -35,10 +35,6 @@ fun mockCheckSelfPermission(result: Boolean) {
     PowerMockito.`when`(PermissionChecker.checkSelfPermission(any(Context::class.java), anyString())).thenReturn(value)
 }
 
-fun mockRequireActivity(fragment: Fragment, result: FragmentActivity) {
-    PowerMockito.`when`(fragment.requireActivity()).thenReturn(result)
-}
-
 fun mockCanDrawOverlays(result: Boolean) {
     PowerMockito.`when`(Settings.canDrawOverlays(any(Context::class.java))).thenReturn(result)
 }
