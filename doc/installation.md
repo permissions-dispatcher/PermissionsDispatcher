@@ -4,7 +4,7 @@ NOTE: 4.x only supports [Jetpack](https://developer.android.com/jetpack/). If yo
 
 To add PermissionsDispatcher to your project, include the following in your **app module** `build.gradle` file:
 
-`${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg?version=4.1.0) ](https://bintray.com/hotchemi/maven/permissionsdispatcher/4.1.0/link)
+`${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/org.permissionsdispatcher/permissionsdispatcher/images/download.svg) ](https://bintray.com/hotchemi/org.permissionsdispatcher/permissionsdispatcher/_latestVersion)
 
 ```groovy
 dependencies {
