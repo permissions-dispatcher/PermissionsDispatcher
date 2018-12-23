@@ -37,6 +37,10 @@ dependencies {
     testCompile "junit:junit:$JUNIT_VERSION"
     testCompile "com.google.testing.compile:compile-testing:$COMPILE_TESTING_VERSION"
     testCompile "commons-io:commons-io:$COMMONS_IO_VERSION"
+
+    testCompile 'org.jetbrains.kotlin:kotlin-compiler-embeddable:1.3.11'
+    testCompile 'org.jetbrains.kotlin:kotlin-annotation-processing-embeddable:1.2.61'
+    testCompile 'me.eugeniomarletti.kotlin.metadata:kotlin-metadata:1.4.0'
     testCompile androidJar()
     testCompile files(Jvm.current().getToolsJar())
     testCompileAar "androidx.legacy:legacy-support-v4:$ANDROIDX_LIBRARY_VERSION"
