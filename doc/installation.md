@@ -4,12 +4,12 @@ NOTE: 4.x only supports [Jetpack](https://developer.android.com/jetpack/). If yo
 
 To add PermissionsDispatcher to your project, include the following in your **app module** `build.gradle` file:
 
-`${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg?version=4.1.0) ](https://bintray.com/hotchemi/maven/permissionsdispatcher/4.1.0/link)
+`${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/org.permissionsdispatcher/permissionsdispatcher/images/download.svg) ](https://bintray.com/hotchemi/org.permissionsdispatcher/permissionsdispatcher/_latestVersion)
 
 ```groovy
 dependencies {
-  implementation "com.github.hotchemi:permissionsdispatcher:${latest.version}"
-  annotationProcessor "com.github.hotchemi:permissionsdispatcher-processor:${latest.version}"
+  implementation "org.permissionsdispatcher:permissionsdispatcher:${latest.version}"
+  annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:${latest.version}"
 }
 ```
 
@@ -19,8 +19,8 @@ With Kotlin:
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-  implementation "com.github.hotchemi:permissionsdispatcher:${latest.version}"
-  kapt "com.github.hotchemi:permissionsdispatcher-processor:${latest.version}"
+  implementation "org.permissionsdispatcher:permissionsdispatcher:${latest.version}"
+  kapt "org.permissionsdispatcher:permissionsdispatcher-processor:${latest.version}"
 }
 ```
 

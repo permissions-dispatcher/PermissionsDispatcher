@@ -18,7 +18,7 @@
 - [IntelliJ plugin](https://github.com/shiraji/permissions-dispatcher-plugin)
 - [AndroidAnnotations plugin](https://github.com/permissions-dispatcher/AndroidAnnotationsPermissionsDispatcherPlugin)
 
-## Others
+## Misc
 
 - [Changelog](CHANGELOG.md)
 - [Migration Guide](doc/migration_guide.md)
