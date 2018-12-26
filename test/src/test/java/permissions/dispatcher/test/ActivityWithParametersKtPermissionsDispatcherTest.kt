@@ -27,7 +27,6 @@ class ActivityWithStringParameterKtPermissionsDispatcherTest {
 
     @After
     fun tearDown() {
-        clearCustomManufacture()
         clearCustomSdkInt()
     }
 

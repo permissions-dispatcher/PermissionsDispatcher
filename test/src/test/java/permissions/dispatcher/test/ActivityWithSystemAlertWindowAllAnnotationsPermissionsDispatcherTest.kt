@@ -3,7 +3,6 @@ package permissions.dispatcher.test
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.os.Process
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.app.AppOpsManagerCompat
@@ -25,7 +24,7 @@ import permissions.dispatcher.test.ActivityWithSystemAlertWindowAllAnnotationsPe
 @Suppress("IllegalIdentifier")
 @RunWith(PowerMockRunner::class)
 @PrepareForTest(ActivityCompat::class, PermissionChecker::class,
-        AppOpsManagerCompat::class, Process::class, Settings::class, Build.VERSION::class, Uri::class)
+        AppOpsManagerCompat::class, Settings::class, Build.VERSION::class, Uri::class)
 class ActivityWithSystemAlertWindowAllAnnotationsPermissionsDispatcherTest {
     private lateinit var activity: ActivityWithSystemAlertWindowAllAnnotations
 
@@ -35,8 +34,7 @@ class ActivityWithSystemAlertWindowAllAnnotationsPermissionsDispatcherTest {
         @BeforeClass
         @JvmStatic
         fun setUpForClass() {
-            // TODO Reflection on Kotlin top-level properties?
-            requestCode = 10
+            requestCode = getRequestSystemAlertWindow(ActivityWithSystemAlertWindowAllAnnotationsPermissionsDispatcher::class.java)
         }
     }
 
@@ -45,8 +43,6 @@ class ActivityWithSystemAlertWindowAllAnnotationsPermissionsDispatcherTest {
         activity = Mockito.mock(ActivityWithSystemAlertWindowAllAnnotations::class.java)
         PowerMockito.mockStatic(ActivityCompat::class.java)
         PowerMockito.mockStatic(PermissionChecker::class.java)
-        PowerMockito.mockStatic(Process::class.java)
-        PowerMockito.mockStatic(AppOpsManagerCompat::class.java)
         PowerMockito.mockStatic(Settings::class.java)
         PowerMockito.mockStatic(Uri::class.java)
 
@@ -56,7 +52,6 @@ class ActivityWithSystemAlertWindowAllAnnotationsPermissionsDispatcherTest {
 
     @After
     fun tearDown() {
-        clearCustomManufacture()
         clearCustomSdkInt()
     }
 

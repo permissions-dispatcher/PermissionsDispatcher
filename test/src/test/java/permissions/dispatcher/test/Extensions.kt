@@ -10,12 +10,14 @@ import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
-import androidx.fragment.app.FragmentActivity
 import org.mockito.Matchers.any
 import org.mockito.Matchers.anyString
 import org.powermock.api.mockito.PowerMockito
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
+import kotlin.jvm.internal.CallableReference
+import kotlin.reflect.KFunction
+import kotlin.reflect.KProperty
 
 fun mockShouldShowRequestPermissionRationaleActivity(result: Boolean) {
     PowerMockito.`when`(ActivityCompat.shouldShowRequestPermissionRationale(any(Activity::class.java), anyString())).thenReturn(result)
@@ -53,31 +55,13 @@ private fun getPrivateIntField(clazz: Class<*>, fieldName: String): Int {
     return getPrivateField(clazz, fieldName).getInt(null)
 }
 
-fun getRequestWritesetting(clazz: Class<*>)
-        = getPrivateIntField(clazz, "REQUEST_WRITESETTING")
+fun getRequestWritesetting(clazz: Class<*>) = getPrivateIntField(clazz, "REQUEST_WRITESETTING")
 
-fun getRequestSystemAlertWindow(clazz: Class<*>)
-        = getPrivateIntField(clazz, "REQUEST_SYSTEMALERTWINDOW")
+fun getRequestSystemAlertWindow(clazz: Class<*>) = getPrivateIntField(clazz, "REQUEST_SYSTEMALERTWINDOW")
 
-fun getRequestCameraConstant(clazz: Class<*>)
-        = getPrivateIntField(clazz, "REQUEST_SHOWCAMERA")
+fun getRequestCameraConstant(clazz: Class<*>) = getPrivateIntField(clazz, "REQUEST_SHOWCAMERA")
 
-fun getPermissionRequestConstant(clazz: Class<*>)
-        = getPrivateField(clazz, "PERMISSION_SHOWCAMERA").get(null) as Array<String>
-
-fun overwriteCustomManufacture(manufactureText: String = "Xiaomi") {
-    val modifiersField = Field::class.java.getDeclaredField("modifiers")
-    modifiersField.isAccessible = true
-
-    val manufacture = Build::class.java.getDeclaredField("MANUFACTURER")
-    manufacture.isAccessible = true
-    modifiersField.setInt(manufacture, manufacture.modifiers and Modifier.FINAL.inv())
-    manufacture.set(null, manufactureText)
-}
-
-fun clearCustomManufacture() {
-    overwriteCustomManufacture("")
-}
+fun getPermissionRequestConstant(clazz: Class<*>) = getPrivateField(clazz, "PERMISSION_SHOWCAMERA").get(null) as Array<String>
 
 fun overwriteCustomSdkInt(sdkInt: Int = 23) {
     val modifiersField = Field::class.java.getDeclaredField("modifiers")
@@ -95,4 +79,40 @@ fun clearCustomSdkInt() {
 
 fun mockUriParse(result: Uri? = null) {
     PowerMockito.`when`(Uri.parse(anyString())).thenReturn(result)
+}
+
+/**
+ * get other package level property value by other package level function name which is in the same kotlin file
+ */
+fun <R> KFunction<R>.packageLevelGetPropertyValueByName(otherPropertyName: String): Any? {
+    return getTopPropertyValueByName(this as CallableReference, otherPropertyName)
+}
+
+fun getTopPropertyValueByName(otherCallableReference: CallableReference, propertyName: String): Any? {
+    val owner = otherCallableReference.owner ?: return null
+    val containerClass: Class<*>
+    try {
+        containerClass = owner::class.members.firstOrNull { it.name == "jClass" }?.call(owner) as Class<*>
+    } catch (e: Exception) {
+        throw IllegalArgumentException("No such property 'jClass'")
+    }
+
+    var tobeSearchMethodClass: Class<*>? = containerClass
+
+    while (tobeSearchMethodClass != null) {
+        tobeSearchMethodClass.declaredFields.forEach { field ->
+            if (field.name == propertyName) {
+                field.isAccessible = true
+                // top property(package property) should be static in java level
+                if (Modifier.isStatic(field.modifiers)) {
+                    return field.get(null)
+                } else {
+                    throw IllegalStateException("It is not a top property : $propertyName")
+                }
+            }
+        }
+        tobeSearchMethodClass = tobeSearchMethodClass.superclass
+    }
+
+    throw IllegalArgumentException("Can't find the property named :$propertyName in the same file with ${otherCallableReference.name}")
 }

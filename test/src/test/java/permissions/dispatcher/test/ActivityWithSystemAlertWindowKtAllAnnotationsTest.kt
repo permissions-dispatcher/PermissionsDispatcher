@@ -3,10 +3,8 @@ package permissions.dispatcher.test
 import android.content.Intent
 import android.net.Uri
 import android.os.Build
-import android.os.Process
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
-import androidx.core.app.AppOpsManagerCompat
 import androidx.core.content.PermissionChecker
 import org.junit.After
 import org.junit.Before
@@ -22,8 +20,7 @@ import permissions.dispatcher.PermissionRequest
 
 @Suppress("IllegalIdentifier")
 @RunWith(PowerMockRunner::class)
-@PrepareForTest(ActivityCompat::class, PermissionChecker::class,
-        AppOpsManagerCompat::class, Process::class, Settings::class, Build.VERSION::class, Uri::class)
+@PrepareForTest(ActivityCompat::class, PermissionChecker::class, Settings::class, Build.VERSION::class, Uri::class)
 class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
     
     private lateinit var activity: ActivityWithSystemAlertWindowKtAllAnnotations
@@ -34,8 +31,7 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
         @BeforeClass
         @JvmStatic
         fun setUpForClass() {
-            // TODO Reflection on Kotlin top-level properties?
-            requestCode = 12
+            requestCode = ActivityWithSystemAlertWindowKtAllAnnotations::systemAlertWindowWithPermissionCheck.packageLevelGetPropertyValueByName("REQUEST_SYSTEMALERTWINDOW") as Int
         }
     }
 
@@ -44,8 +40,6 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
         activity = Mockito.mock(ActivityWithSystemAlertWindowKtAllAnnotations::class.java)
         PowerMockito.mockStatic(ActivityCompat::class.java)
         PowerMockito.mockStatic(PermissionChecker::class.java)
-        PowerMockito.mockStatic(Process::class.java)
-        PowerMockito.mockStatic(AppOpsManagerCompat::class.java)
         PowerMockito.mockStatic(Settings::class.java)
         PowerMockito.mockStatic(Uri::class.java)
 
@@ -55,7 +49,6 @@ class ActivityWithSystemAlertWindowKtAllAnnotationsTest {
 
     @After
     fun tearDown() {
-        clearCustomManufacture()
         clearCustomSdkInt()
     }
 
