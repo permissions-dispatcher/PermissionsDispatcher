@@ -5970,4 +5970,93 @@ public final class Source {
             };
         }
     };
+
+    public static final BaseTest OnePermissionWithParamNoArgumentRationaleAndConductor = new BaseTest() {
+        @Override
+        protected String getName() {
+            return "MyController";
+        }
+
+        @Override
+        protected String[] getActualSource() {
+            return new String[]{
+                    "package tests;",
+                    "import android.Manifest;",
+                    "import androidx.annotation.NonNull;",
+                    "import android.view.LayoutInflater;",
+                    "import android.view.View;",
+                    "import android.view.ViewGroup;",
+                    "import com.bluelinelabs.conductor.Controller;",
+                    "import permissions.dispatcher.RuntimePermissions;",
+                    "import permissions.dispatcher.NeedsPermission;",
+                    "import permissions.dispatcher.OnShowRationale;",
+                    "import permissions.dispatcher.OnPermissionDenied;",
+                    "@RuntimePermissions",
+                    "public class MyController extends Controller {",
+                    "   @Override",
+                    "   protected View onCreateView(@NonNull LayoutInflater inflater, @NonNull ViewGroup container) {",
+                    "       return null;",
+                    "   }",
+                    "   @NeedsPermission(Manifest.permission.CAMERA)",
+                    "   void showCamera(String arg) {",
+                    "   }",
+                    "   @OnShowRationale(Manifest.permission.CAMERA)",
+                    "   void cameraRationale() {",
+                    "   }",
+                    "   @OnPermissionDenied(Manifest.permission.CAMERA)",
+                    "   void cameraDenied() {",
+                    "   }",
+                    "}"
+            };
+        }
+
+        @Override
+        protected String[] getExpectSource() {
+            return new String[]{
+                    "package tests;",
+                    "import androidx.annotation.NonNull;",
+                    "import java.lang.String;",
+                    "import permissions.dispatcher.PermissionUtils;",
+                    "final class MyControllerPermissionsDispatcher {",
+                    "   private static final int REQUEST_SHOWCAMERA = 0;",
+                    "   private static final String[] PERMISSION_SHOWCAMERA = new String[] {\"android.permission.CAMERA\"};",
+                    "   private static String showCameraArg;",
+                    "   private MyControllerPermissionsDispatcher() {",
+                    "   }",
+                    "   static void showCameraWithPermissionCheck(@NonNull MyController target, String arg) {",
+                    "       if (PermissionUtils.hasSelfPermissions(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "           target.showCamera(arg);",
+                    "       } else {",
+                    "           showCameraArg = arg;",
+                    "           if (PermissionUtils.shouldShowRequestPermissionRationale(target.getActivity(), PERMISSION_SHOWCAMERA)) {",
+                    "               target.cameraRationale();",
+                    "           } else {",
+                    "               target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "           }",
+                    "       }",
+                    "   }",
+                    "   static void proceedShowCameraPermissionRequest(@NonNull MyController target) {",
+                    "       target.requestPermissions(PERMISSION_SHOWCAMERA, REQUEST_SHOWCAMERA);",
+                    "   }",
+                    "   static void cancelShowCameraPermissionRequest(@NonNull MyController target) {",
+                    "       target.cameraDenied();",
+                    "   }",
+                    "   static void onRequestPermissionsResult(@NonNull MyController target, int requestCode, int[] grantResults) {",
+                    "       switch (requestCode) {",
+                    "           case REQUEST_SHOWCAMERA:",
+                    "               if (PermissionUtils.verifyPermissions(grantResults)) {",
+                    "                   target.showCamera(showCameraArg);",
+                    "               } else {",
+                    "                   target.cameraDenied();",
+                    "               }",
+                    "               showCameraArg = null;",
+                    "               break;",
+                    "           default:",
+                    "               break;",
+                    "       }",
+                    "   }",
+                    "}"
+            };
+        }
+    };
 }

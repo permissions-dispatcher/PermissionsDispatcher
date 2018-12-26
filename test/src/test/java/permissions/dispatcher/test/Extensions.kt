@@ -10,6 +10,7 @@ import android.provider.Settings
 import androidx.core.app.ActivityCompat
 import androidx.core.content.PermissionChecker
 import androidx.fragment.app.Fragment
+import com.bluelinelabs.conductor.Controller
 import org.mockito.Matchers.any
 import org.mockito.Matchers.anyString
 import org.powermock.api.mockito.PowerMockito
@@ -76,6 +77,14 @@ fun clearCustomSdkInt() {
 
 fun mockUriParse(result: Uri? = null) {
     PowerMockito.`when`(Uri.parse(anyString())).thenReturn(result)
+}
+
+fun mockShouldShowRequestPermissionRationaleConductorController(controller: Controller, result: Boolean) {
+    PowerMockito.`when`(ActivityCompat.shouldShowRequestPermissionRationale(controller.activity!!, anyString())).thenReturn(result)
+}
+
+fun mockGetActivity(controller: Controller, result: Activity) {
+    PowerMockito.`when`(controller.activity).thenReturn(result)
 }
 
 /**
