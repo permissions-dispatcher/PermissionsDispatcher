@@ -46,7 +46,6 @@ class ConductorWithAllAnnotationsPermissionsDispatcherTest {
 
     @After
     fun tearDown() {
-        clearCustomManufacture()
         clearCustomSdkInt()
     }
 

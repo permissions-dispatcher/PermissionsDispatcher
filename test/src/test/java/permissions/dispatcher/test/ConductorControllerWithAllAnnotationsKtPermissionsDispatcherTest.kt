@@ -31,8 +31,7 @@ class ConductorWithAllAnnotationsKtPermissionsDispatcherTest {
         @BeforeClass
         @JvmStatic
         fun setUpForClass() {
-            // TODO Reflection on Kotlin top-level properties?
-            requestCode = 18
+            requestCode = ConductorWithAllAnnotationsKt::showCameraWithPermissionCheck.packageLevelGetPropertyValueByName("REQUEST_SHOWCAMERA") as Int
             requestPermissions = arrayOf("android.permission.CAMERA")
         }
     }
@@ -46,7 +45,6 @@ class ConductorWithAllAnnotationsKtPermissionsDispatcherTest {
 
     @After
     fun tearDown() {
-        clearCustomManufacture()
         clearCustomSdkInt()
     }
 
