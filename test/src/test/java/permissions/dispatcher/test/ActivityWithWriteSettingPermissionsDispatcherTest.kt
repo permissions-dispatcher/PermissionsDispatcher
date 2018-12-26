@@ -29,7 +29,7 @@ class ActivityWithWriteSettingPermissionsDispatcherTest {
         @BeforeClass
         @JvmStatic
         fun setUpForClass() {
-            requestCode = getRequestWritesetting(ActivityWithWriteSettingPermissionsDispatcher::class.java)
+            requestCode = getRequestWriteSetting(ActivityWithWriteSettingPermissionsDispatcher::class.java)
         }
     }
 

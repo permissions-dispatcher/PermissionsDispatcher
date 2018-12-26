@@ -31,7 +31,7 @@ class ActivityWithWriteSettingAllAnnotationsPermissionsDispatcherTest {
         @BeforeClass
         @JvmStatic
         fun setUpForClass() {
-            requestCode = getRequestWritesetting(ActivityWithWriteSettingAllAnnotationsPermissionsDispatcher::class.java)
+            requestCode = getRequestWriteSetting(ActivityWithWriteSettingAllAnnotationsPermissionsDispatcher::class.java)
         }
     }
 

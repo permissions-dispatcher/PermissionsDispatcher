@@ -17,7 +17,6 @@ import java.lang.reflect.Field
 import java.lang.reflect.Modifier
 import kotlin.jvm.internal.CallableReference
 import kotlin.reflect.KFunction
-import kotlin.reflect.KProperty
 
 fun mockShouldShowRequestPermissionRationaleActivity(result: Boolean) {
     PowerMockito.`when`(ActivityCompat.shouldShowRequestPermissionRationale(any(Activity::class.java), anyString())).thenReturn(result)
@@ -51,11 +50,9 @@ private fun getPrivateField(clazz: Class<*>, fieldName: String): Field {
     return field
 }
 
-private fun getPrivateIntField(clazz: Class<*>, fieldName: String): Int {
-    return getPrivateField(clazz, fieldName).getInt(null)
-}
+private fun getPrivateIntField(clazz: Class<*>, fieldName: String): Int = getPrivateField(clazz, fieldName).getInt(null)
 
-fun getRequestWritesetting(clazz: Class<*>) = getPrivateIntField(clazz, "REQUEST_WRITESETTING")
+fun getRequestWriteSetting(clazz: Class<*>) = getPrivateIntField(clazz, "REQUEST_WRITESETTING")
 
 fun getRequestSystemAlertWindow(clazz: Class<*>) = getPrivateIntField(clazz, "REQUEST_SYSTEMALERTWINDOW")
 
@@ -98,14 +95,13 @@ fun getTopPropertyValueByName(otherCallableReference: CallableReference, propert
     }
 
     var tobeSearchMethodClass: Class<*>? = containerClass
-
     while (tobeSearchMethodClass != null) {
-        tobeSearchMethodClass.declaredFields.forEach { field ->
-            if (field.name == propertyName) {
-                field.isAccessible = true
+        tobeSearchMethodClass.declaredFields.forEach {
+            if (it.name == propertyName) {
+                it.isAccessible = true
                 // top property(package property) should be static in java level
-                if (Modifier.isStatic(field.modifiers)) {
-                    return field.get(null)
+                if (Modifier.isStatic(it.modifiers)) {
+                    return it.get(null)
                 } else {
                     throw IllegalStateException("It is not a top property : $propertyName")
                 }
