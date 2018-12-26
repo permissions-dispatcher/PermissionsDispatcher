@@ -42,6 +42,7 @@ dependencies {
 
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
     implementation "androidx.appcompat:appcompat:$ANDROIDX_LIBRARY_VERSION"
+    implementation "com.bluelinelabs:conductor:$CONDUCTOR_VERSION"
 
     testImplementation "junit:junit:$JUNIT_VERSION"
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:1.3.11"
