@@ -1,9 +1,7 @@
 package permissions.dispatcher.test
 
 import android.content.pm.PackageManager
-import android.os.Process
 import androidx.core.app.ActivityCompat
-import androidx.core.app.AppOpsManagerCompat
 import androidx.core.content.PermissionChecker
 import org.junit.After
 import org.junit.Before
@@ -19,7 +17,7 @@ import permissions.dispatcher.PermissionRequest
 
 @Suppress("IllegalIdentifier")
 @RunWith(PowerMockRunner::class)
-@PrepareForTest(ActivityCompat::class, PermissionChecker::class, AppOpsManagerCompat::class, Process::class)
+@PrepareForTest(ActivityCompat::class, PermissionChecker::class)
 class ActivityWithAllAnnotationsPermissionsDispatcherTest {
 
     private lateinit var activity: ActivityWithAllAnnotations
@@ -39,13 +37,10 @@ class ActivityWithAllAnnotationsPermissionsDispatcherTest {
         activity = Mockito.mock(ActivityWithAllAnnotations::class.java)
         PowerMockito.mockStatic(ActivityCompat::class.java)
         PowerMockito.mockStatic(PermissionChecker::class.java)
-        PowerMockito.mockStatic(Process::class.java)
-        PowerMockito.mockStatic(AppOpsManagerCompat::class.java)
     }
 
     @After
     fun tearDown() {
-        clearCustomManufacture()
         clearCustomSdkInt()
     }
 
