@@ -4,6 +4,7 @@ import com.google.common.collect.LinkedHashMultimap
 import okio.Buffer
 import okio.buffer
 import okio.sink
+import org.apache.commons.io.FileUtils
 import org.jetbrains.kotlin.cli.common.CLITool
 import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
 import permissions.dispatcher.processor.KtProcessorTestSuite
@@ -14,11 +15,11 @@ import java.io.PrintStream
 import java.net.URLClassLoader
 import java.net.URLDecoder
 import java.util.zip.ZipEntry
+import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
 import kotlin.reflect.KClass
 
-/** Prepares an invocation of the Kotlin compiler. */
-class KotlinCompilerCall(var scratchDir: File) {
+class KotlinCompilerCall(private val scratchDir: File) {
     private val sourcesDir = File(scratchDir, "sources")
     private val classesDir = File(scratchDir, "classes")
     private val servicesJar = File(scratchDir, "services.jar")
@@ -26,7 +27,6 @@ class KotlinCompilerCall(var scratchDir: File) {
     private val kaptArgs = mutableMapOf<String, String>()
     private val classpath = mutableListOf<String>()
     private val services = LinkedHashMultimap.create<KClass<*>, KClass<*>>()!!
-    private val inheritClasspath = true
 
     /** Adds a source file to be compiled. */
     fun addKt(path: String = "sources.kt", source: String) {
@@ -83,7 +83,6 @@ class KotlinCompilerCall(var scratchDir: File) {
     private fun annotationProcessorArgs(): List<String> {
         val kaptSourceDir = File(scratchDir, "kapt/sources")
         val kaptStubsDir = File(scratchDir, "kapt/stubs")
-
         return listOf(
                 "-Xplugin=${kapt3Jar()}",
                 "-P", "plugin:org.jetbrains.kotlin.kapt3:sources=$kaptSourceDir",
@@ -100,17 +99,13 @@ class KotlinCompilerCall(var scratchDir: File) {
         result.addAll(classpath)
 
         // Copy over the classpath of the running application.
-        if (inheritClasspath) {
-            for (classpathFile in classpathFiles()) {
-                result.add(classpathFile.toString())
-            }
+        for (classpathFile in classpathFiles()) {
+            result.add(classpathFile.toString())
         }
-
         if (!services.isEmpty) {
             writeServicesJar()
             result.add(servicesJar.toString())
         }
-
         return result.toList()
     }
 
@@ -145,7 +140,17 @@ class KotlinCompilerCall(var scratchDir: File) {
             if (url.protocol != "file") {
                 throw UnsupportedOperationException("unable to handle classpath element $url")
             }
-            result.add(File(URLDecoder.decode(url.path, "UTF-8")))
+            if (url.path.endsWith(".aar")) {
+                // extract jar file from aar and add it to classpath
+                val zipFile = ZipFile(url.path)
+                val sourceInputStream = zipFile.getInputStream(zipFile.getEntry("classes.jar"))
+                val newFileName = url.path.replace(".aar", ".jar")
+                val destinationFile = File(File(scratchDir, "unzippedAar"), newFileName)
+                FileUtils.copyInputStreamToFile(sourceInputStream, destinationFile)
+                result.add(destinationFile)
+            } else {
+                result.add(File(URLDecoder.decode(url.path, "UTF-8")))
+            }
         }
         return result.toList()
     }

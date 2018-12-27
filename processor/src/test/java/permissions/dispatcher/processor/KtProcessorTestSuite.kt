@@ -5,7 +5,6 @@ import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.cli.common.ExitCode
 import org.junit.Assert.assertEquals
 import org.junit.Assert.assertThat
-import org.junit.Ignore
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
@@ -357,7 +356,6 @@ class KtProcessorTestSuite {
     }
 
     @Test
-    @Ignore("We should fix this validation for Kotlin")
     fun wrongAnnotatedClass() {
         val call = KotlinCompilerCall(temporaryFolder.root)
         call.addService(Processor::class, PermissionsProcessor::class)
@@ -371,9 +369,7 @@ class KtProcessorTestSuite {
 
         @RuntimePermissions
         class MyService: Service() {
-            override fun onBind(p0: Intent?): IBinder? {
-                TODO("not implemented")
-            }
+            override fun onBind(intent: Intent?): IBinder? = null
             @NeedsPermission(Manifest.permission.CAMERA)
             fun showCamera() {
             }
