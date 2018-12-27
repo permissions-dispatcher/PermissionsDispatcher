@@ -6,10 +6,13 @@ import okio.buffer
 import okio.sink
 import org.jetbrains.kotlin.cli.common.CLITool
 import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
+import permissions.dispatcher.processor.KtProcessorTestSuite
 import java.io.File
 import java.io.FileOutputStream
 import java.io.ObjectOutputStream
 import java.io.PrintStream
+import java.net.URLClassLoader
+import java.net.URLDecoder
 import java.util.zip.ZipEntry
 import java.util.zip.ZipOutputStream
 import kotlin.reflect.KClass
@@ -19,11 +22,11 @@ class KotlinCompilerCall(var scratchDir: File) {
     private val sourcesDir = File(scratchDir, "sources")
     private val classesDir = File(scratchDir, "classes")
     private val servicesJar = File(scratchDir, "services.jar")
-    private var inheritClasspath = false
     private val args = mutableListOf<String>()
     private val kaptArgs = mutableMapOf<String, String>()
     private val classpath = mutableListOf<String>()
     private val services = LinkedHashMultimap.create<KClass<*>, KClass<*>>()!!
+    var inheritClasspath = false
 
     /** Adds a source file to be compiled. */
     fun addKt(path: String, source: String) {
@@ -133,17 +136,17 @@ class KotlinCompilerCall(var scratchDir: File) {
 
     /** Returns the files on the host process' classpath. */
     private fun classpathFiles(): List<File> {
-//        val classLoader = JsonClassCodegenProcessorTest::class.java.classLoader
-//        if (classLoader !is URLClassLoader) {
-//            throw UnsupportedOperationException("unable to extract classpath from $classLoader")
-//        }
+        val classLoader = KtProcessorTestSuite::class.java.classLoader
+        if (classLoader !is URLClassLoader) {
+            throw UnsupportedOperationException("unable to extract classpath from $classLoader")
+        }
         val result = mutableListOf<File>()
-//        for (url in classLoader.urLs) {
-//            if (url.protocol != "file") {
-//                throw UnsupportedOperationException("unable to handle classpath element $url")
-//            }
-//            result.add(File(URLDecoder.decode(url.path, "UTF-8")))
-//        }
+        for (url in classLoader.urLs) {
+            if (url.protocol != "file") {
+                throw UnsupportedOperationException("unable to handle classpath element $url")
+            }
+            result.add(File(URLDecoder.decode(url.path, "UTF-8")))
+        }
         return result.toList()
     }
 
