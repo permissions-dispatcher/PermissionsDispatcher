@@ -34,11 +34,14 @@ dependencies {
     compile "com.squareup:kotlinpoet:$KOTLINPOET_VERSION"
     compile project(path: ':annotation')
 
+    testCompile androidJar()
+    testCompile files(Jvm.current().getToolsJar())
     testCompile "junit:junit:$JUNIT_VERSION"
     testCompile "com.google.testing.compile:compile-testing:$COMPILE_TESTING_VERSION"
     testCompile "commons-io:commons-io:$COMMONS_IO_VERSION"
-    testCompile androidJar()
-    testCompile files(Jvm.current().getToolsJar())
+    testCompile "com.squareup.okio:okio:2.1.0"
+    testCompile "org.jetbrains.kotlin:kotlin-compiler-embeddable:$KOTLIN_COMPILER_LIB_VERSION"
+    testCompile "org.jetbrains.kotlin:kotlin-annotation-processing-embeddable:$KOTLIN_COMPILER_LIB_VERSION"
     testCompileAar "androidx.legacy:legacy-support-v4:$ANDROIDX_LIBRARY_VERSION"
     testCompileAar "com.bluelinelabs:conductor:$CONDUCTOR_VERSION"
     testCompileAar project(path: ":library", configuration: "default")
