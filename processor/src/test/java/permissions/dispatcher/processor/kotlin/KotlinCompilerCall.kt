@@ -26,7 +26,7 @@ class KotlinCompilerCall(var scratchDir: File) {
     private val kaptArgs = mutableMapOf<String, String>()
     private val classpath = mutableListOf<String>()
     private val services = LinkedHashMultimap.create<KClass<*>, KClass<*>>()!!
-    var inheritClasspath = false
+    private val inheritClasspath = true
 
     /** Adds a source file to be compiled. */
     fun addKt(path: String = "sources.kt", source: String) {

@@ -110,11 +110,6 @@ public class ProcessorTestSuite extends TestSuite {
         assertJavaSource(Source.DuplicatedNeverAsk);
     }
 
-    @Test public void duplicatesInListsActivity() {
-        expectRuntimeException("[android.permission.CAMERA, android.permission.WRITE_EXTERNAL_STORAGE] is duplicated in 'onCameraDenied2()' annotated with '@OnPermissionDenied'");
-        assertJavaSource(Source.DuplicatesInListsActivity);
-    }
-
     @Test public void needsPermissionMethodOverload() {
         expectRuntimeException("'showCamera()' has duplicated '@NeedsPermission' method. The method annotated with '@NeedsPermission' must has the unique name.");
         assertJavaSource(Source.needsPermissionMethodOverload);
