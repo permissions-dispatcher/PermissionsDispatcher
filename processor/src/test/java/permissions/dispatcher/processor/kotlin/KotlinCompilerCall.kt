@@ -29,7 +29,7 @@ class KotlinCompilerCall(var scratchDir: File) {
     var inheritClasspath = false
 
     /** Adds a source file to be compiled. */
-    fun addKt(path: String, source: String) {
+    fun addKt(path: String = "sources.kt", source: String) {
         val sourceFile = File(sourcesDir, path)
         sourceFile.parentFile.mkdirs()
         sourceFile.sink().buffer().use {
