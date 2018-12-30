@@ -8,6 +8,7 @@ import org.apache.commons.io.FileUtils
 import org.jetbrains.kotlin.cli.common.CLITool
 import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
 import permissions.dispatcher.processor.KtProcessorTestSuite
+import permissions.dispatcher.processor.PermissionsProcessor
 import java.io.File
 import java.io.FileOutputStream
 import java.io.ObjectOutputStream
@@ -60,11 +61,14 @@ class KotlinCompilerCall(private val scratchDir: File) {
         }
 
         fullArgs.addAll(annotationProcessorArgs())
-        if (kaptArgs.isNotEmpty()) {
-            fullArgs.apply {
-                add("-P")
-                add("plugin:org.jetbrains.kotlin.kapt3:apoptions=${encodeOptions(kaptArgs)}")
-            }
+        val kaptGeneratedSourcePath = File(scratchDir, "generated/source/kaptKotlin/")
+        if (!kaptGeneratedSourcePath.exists()) {
+            kaptGeneratedSourcePath.mkdirs()
+        }
+        kaptArgs[PermissionsProcessor.KAPT_KOTLIN_GENERATED_OPTION_NAME] = kaptGeneratedSourcePath.path
+        fullArgs.apply {
+            add("-P")
+            add("plugin:org.jetbrains.kotlin.kapt3:apoptions=${encodeOptions(kaptArgs)}")
         }
 
         val systemErrBuffer = Buffer()
@@ -89,6 +93,7 @@ class KotlinCompilerCall(private val scratchDir: File) {
                 "-P", "plugin:org.jetbrains.kotlin.kapt3:classes=$classesDir",
                 "-P", "plugin:org.jetbrains.kotlin.kapt3:stubs=$kaptStubsDir",
                 "-P", "plugin:org.jetbrains.kotlin.kapt3:apclasspath=$servicesJar",
+                "-P", "plugin:org.jetbrains.kotlin.kapt3:aptMode=stubsAndApt",
                 "-P", "plugin:org.jetbrains.kotlin.kapt3:correctErrorTypes=true"
         )
     }
@@ -97,7 +102,6 @@ class KotlinCompilerCall(private val scratchDir: File) {
     private fun fullClasspath(): List<String> {
         val result = mutableListOf<String>()
         result.addAll(classpath)
-
         // Copy over the classpath of the running application.
         for (classpathFile in classpathFiles()) {
             result.add(classpathFile.toString())
@@ -180,4 +184,3 @@ class KotlinCompilerCall(private val scratchDir: File) {
         return buffer.readByteString().base64()
     }
 }
-

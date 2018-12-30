@@ -3,12 +3,12 @@ package permissions.dispatcher.processor
 import org.hamcrest.CoreMatchers.containsString
 import org.intellij.lang.annotations.Language
 import org.jetbrains.kotlin.cli.common.ExitCode
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertThat
+import org.junit.Assert.*
 import org.junit.Rule
 import org.junit.Test
 import org.junit.rules.TemporaryFolder
 import permissions.dispatcher.processor.kotlin.KotlinCompilerCall
+import java.io.File
 import javax.annotation.processing.Processor
 
 class KtProcessorTestSuite {
@@ -550,5 +550,29 @@ class KtProcessorTestSuite {
         val result = call.execute()
         assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
         assertThat(result.systemErr, containsString("'@NeverAskAgain' annotated method never being called with 'WRITE_SETTINGS' or 'SYSTEM_ALERT_WINDOW' permission."))
+    }
+
+    @Test
+    fun compileValidCodeSuccessful() {
+        val call = KotlinCompilerCall(temporaryFolder.root)
+        call.addService(Processor::class, PermissionsProcessor::class)
+        @Language("kotlin") val source = """
+        import android.Manifest
+        import android.app.Activity
+        import permissions.dispatcher.RuntimePermissions
+        import permissions.dispatcher.NeedsPermission
+
+        @RuntimePermissions
+        class MyActivity: Activity() {
+            @NeedsPermission(Manifest.permission.CAMERA)
+            fun showCamera() {
+            }
+        }
+        """.trimMargin()
+        call.addKt(source = source)
+        val result = call.execute()
+        assertEquals(ExitCode.OK, result.exitCode)
+        val kaptSourceDir = File(temporaryFolder.root, "generated/source/kapt")
+        assertTrue(File(kaptSourceDir, "MyActivityPermissionsDispatcher.kt").exists())
     }
 }
