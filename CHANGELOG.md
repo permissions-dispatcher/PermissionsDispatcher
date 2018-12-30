@@ -1,5 +1,7 @@
 # ChangeLog
 
+- 4.3.0 2018/12/31
+  - Add: Conductor support [#574](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/574)
 - 4.2.0 2018/12/21
   - Add: OnShowRationale API change with keeping backward compatibility [#569](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/569)
   - Update: Change maven groupId from `com.github.hotchemi` to `org.permissionsdispatcher` [#560](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/560)
