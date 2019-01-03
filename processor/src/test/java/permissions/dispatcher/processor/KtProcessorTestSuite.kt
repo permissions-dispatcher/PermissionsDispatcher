@@ -1,24 +1,12 @@
 package permissions.dispatcher.processor
 
-import org.hamcrest.CoreMatchers.containsString
 import org.intellij.lang.annotations.Language
-import org.jetbrains.kotlin.cli.common.ExitCode
-import org.junit.Assert.*
-import org.junit.Rule
 import org.junit.Test
-import org.junit.rules.TemporaryFolder
 import permissions.dispatcher.processor.kotlin.*
 
 class KtProcessorTestSuite {
-    @Rule
-    @JvmField
-    val temporaryFolder = TemporaryFolder()
-
     @Test
     fun noPermissionActivity() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
-
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -27,16 +15,17 @@ class KtProcessorTestSuite {
         @RuntimePermissions
         class MyActivity: Activity()
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("Annotated class 'MyActivity' doesn't have any method annotated with '@NeedsPermission'"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("Annotated class 'MyActivity' doesn't have any method annotated with '@NeedsPermission'")
     }
 
     @Test
     fun permissionWithNonVoidReturnType() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -51,16 +40,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("Method 'showCamera()' must specify return type 'void', not 'int'"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("Method 'showCamera()' must specify return type 'void', not 'int'")
     }
 
     @Test
     fun rationaleWithNonVoidReturnType() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -79,16 +69,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("Method 'cameraRationale()' must specify return type 'void', not 'int'"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("Method 'cameraRationale()' must specify return type 'void', not 'int'")
     }
 
     @Test
     fun deniedWithNonVoidReturnType() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -107,16 +98,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("Method 'cameraDenied()' must specify return type 'void', not 'int'"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("Method 'cameraDenied()' must specify return type 'void', not 'int'")
     }
 
     @Test
     fun neverAskWithNonVoidReturnType() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -135,16 +127,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("Method 'cameraNeverAskAgain()' must specify return type 'void', not 'int'"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("Method 'cameraNeverAskAgain()' must specify return type 'void', not 'int'")
     }
 
     @Test
     fun rationaleWithWrongParameters() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -162,16 +155,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("Method 'cameraRationale()' must has less than or equal to 1 size parameter and type of it is supposed to be 'PermissionRequest'"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("Method 'cameraRationale()' must has less than or equal to 1 size parameter and type of it is supposed to be 'PermissionRequest'")
     }
 
     @Test
     fun rationaleWithOneMoreParameters() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -190,16 +184,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("Method 'cameraRationale()' must has less than or equal to 1 size parameter and type of it is supposed to be 'PermissionRequest'"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("Method 'cameraRationale()' must has less than or equal to 1 size parameter and type of it is supposed to be 'PermissionRequest'")
     }
 
     @Test
     fun deniedWithParameters() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -217,16 +212,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("Method 'cameraDenied()' must not have any parameters"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("Method 'cameraDenied()' must not have any parameters")
     }
 
     @Test
     fun neverAskWithParameters() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -244,16 +240,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("Method 'cameraNeverAskAgain()' must not have any parameters"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("Method 'cameraNeverAskAgain()' must not have any parameters")
     }
 
     @Test
     fun privatePermission() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -267,16 +264,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("Method 'showCamera()' annotated with '@NeedsPermission' must not be private"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("Method 'showCamera()' annotated with '@NeedsPermission' must not be private")
     }
 
     @Test
     fun privateRationale() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -294,16 +292,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("Method 'cameraRationale()' annotated with '@OnShowRationale' must not be private"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("Method 'cameraRationale()' annotated with '@OnShowRationale' must not be private")
     }
 
     @Test
     fun privateDenied() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -321,16 +320,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("Method 'cameraDenied()' annotated with '@OnPermissionDenied' must not be private"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("Method 'cameraDenied()' annotated with '@OnPermissionDenied' must not be private")
     }
 
     @Test
     fun privateNeverAskAgain() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -348,16 +348,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("Method 'cameraNeverAskAgain()' annotated with '@OnNeverAskAgain' must not be private"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("Method 'cameraNeverAskAgain()' annotated with '@OnNeverAskAgain' must not be private")
     }
 
     @Test
     fun wrongAnnotatedClass() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Service
@@ -374,16 +375,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("Class 'MyService' can't be annotated with '@RuntimePermissions'"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("Class 'MyService' can't be annotated with '@RuntimePermissions'")
     }
 
     @Test
     fun duplicatedRationale() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -404,16 +406,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("[android.permission.CAMERA] is duplicated in 'cameraRationale2()' annotated with '@OnShowRationale'"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("[android.permission.CAMERA] is duplicated in 'cameraRationale2()' annotated with '@OnShowRationale'")
     }
 
     @Test
     fun duplicatedDenied() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -434,16 +437,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("[android.permission.CAMERA] is duplicated in 'cameraDenied2()' annotated with '@OnPermissionDenied'"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("[android.permission.CAMERA] is duplicated in 'cameraDenied2()' annotated with '@OnPermissionDenied'")
     }
 
     @Test
     fun duplicatedNeverAsk() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -464,16 +468,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("[android.permission.CAMERA] is duplicated in 'cameraNeverAskAgain2()' annotated with '@OnNeverAskAgain'"))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("[android.permission.CAMERA] is duplicated in 'cameraNeverAskAgain2()' annotated with '@OnNeverAskAgain'")
     }
 
     @Test
     fun needsPermissionMethodOverload() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -491,16 +496,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("'showCamera()' has duplicated '@NeedsPermission' method. The method annotated with '@NeedsPermission' must has the unique name."))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("'showCamera()' has duplicated '@NeedsPermission' method. The method annotated with '@NeedsPermission' must has the unique name.")
     }
 
     @Test
     fun systemAlertWindowOnNerverAskAgain() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -518,16 +524,17 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("'@NeverAskAgain' annotated method never being called with 'WRITE_SETTINGS' or 'SYSTEM_ALERT_WINDOW' permission."))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("'@NeverAskAgain' annotated method never being called with 'WRITE_SETTINGS' or 'SYSTEM_ALERT_WINDOW' permission.")
     }
 
     @Test
     fun writeSettingsWithOnNeverAskAgain() {
-        val call = Compiler(temporaryFolder.root)
-        call.withProcessors(PermissionsProcessor())
         @Language("kotlin") val source = """
         import android.Manifest
         import android.app.Activity
@@ -545,10 +552,13 @@ class KtProcessorTestSuite {
             }
         }
         """.trimMargin()
-        call.addKtFile(fileName = "sources.kt", source = source)
-        val result = call.compile()
-        assertEquals(result.exitCode, ExitCode.COMPILATION_ERROR)
-        assertThat(result.warnings, containsString("'@NeverAskAgain' annotated method never being called with 'WRITE_SETTINGS' or 'SYSTEM_ALERT_WINDOW' permission."))
+
+        kotlinc()
+                .withProcessors(PermissionsProcessor())
+                .addKtFile("sources.kt", source)
+                .compile()
+                .failed()
+                .withErrorContaining("'@NeverAskAgain' annotated method never being called with 'WRITE_SETTINGS' or 'SYSTEM_ALERT_WINDOW' permission.")
     }
 
     @Test

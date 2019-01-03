@@ -1,12 +1,12 @@
 package permissions.dispatcher.processor.kotlin
 
-import junit.framework.Assert
+import junit.framework.Assert.assertEquals
 import java.io.File
 
 fun File.hasSourceEquivalentTo(source: String) {
-    Assert.assertEquals(this.readText(), source)
+    assertEquals(this.readText(), source)
 }
 
 fun File.hasSourceEquivalentTo(file: File) {
-    Assert.assertEquals(this.readText(), file.readText())
+    assertEquals(this.readText(), file.readText())
 }

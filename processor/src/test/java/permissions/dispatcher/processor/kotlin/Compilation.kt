@@ -1,9 +1,12 @@
 package permissions.dispatcher.processor.kotlin
 
+import org.hamcrest.CoreMatchers.containsString
 import org.jetbrains.kotlin.cli.common.ExitCode
+import org.junit.Assert.assertEquals
+import org.junit.Assert.assertThat
 import java.io.File
 
-class Compilation(val warnings: String, val exitCode: ExitCode, private val rootDir: File) {
+class Compilation(val error: String, val exitCode: ExitCode, private val generatedKtDir: File) {
     fun succeeded() = apply {
         if (exitCode != ExitCode.OK) {
             throw CompilationFailureException(exitCode)
@@ -12,19 +15,20 @@ class Compilation(val warnings: String, val exitCode: ExitCode, private val root
 
     fun succeededWithoutWarnings() = apply {
         succeeded()
-        if (warnings.isNotEmpty()) {
-            throw CompilationWithWarningException(warnings)
+        if (error.isNotEmpty()) {
+            throw CompilationWithWarningException(error)
         }
     }
 
     fun failed() = apply {
-//        if (exitCode != ExitCode.OK) {
-//            throw CompilationFailureException(exitCode)
-//        }
+        assertEquals(ExitCode.COMPILATION_ERROR, exitCode)
+    }
+
+    fun withErrorContaining(message: String) {
+        assertThat(error, containsString(message))
     }
 
     fun generatedFile(qualifiedName: String): File {
-        val kaptSourceDir = File(rootDir, "generated/source/kapt")
-        return File(kaptSourceDir, qualifiedName)
+        return File(generatedKtDir, qualifiedName)
     }
 }
