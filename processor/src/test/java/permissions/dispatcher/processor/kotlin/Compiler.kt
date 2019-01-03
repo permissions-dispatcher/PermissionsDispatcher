@@ -5,7 +5,6 @@ import okio.Buffer
 import okio.buffer
 import okio.sink
 import org.apache.commons.io.FileUtils
-import org.jetbrains.kotlin.cli.common.CLITool
 import org.jetbrains.kotlin.cli.jvm.K2JVMCompiler
 import permissions.dispatcher.processor.KtProcessorTestSuite
 import permissions.dispatcher.processor.PermissionsProcessor
@@ -18,19 +17,20 @@ import java.net.URLDecoder
 import java.util.zip.ZipEntry
 import java.util.zip.ZipFile
 import java.util.zip.ZipOutputStream
+import javax.annotation.processing.Processor
 import kotlin.reflect.KClass
 
-class KotlinCompilerCall(private val scratchDir: File) {
+class Compiler(private val scratchDir: File) {
     private val sourcesDir = File(scratchDir, "sources")
     private val classesDir = File(scratchDir, "classes")
     private val servicesJar = File(scratchDir, "services.jar")
     private val kaptArgs = mutableMapOf<String, String>()
     private val classpath = mutableListOf<String>()
-    val services = LinkedHashMultimap.create<KClass<*>, KClass<*>>()!!
+    private val services = LinkedHashMultimap.create<KClass<*>, KClass<*>>()!!
 
     /** Adds a source file to be compiled. */
-    fun addKt(path: String = "sources.kt", source: String) {
-        val sourceFile = File(sourcesDir, path)
+    fun addKtFile(fileName: String, source: String) = apply {
+        val sourceFile = File(sourcesDir, fileName)
         sourceFile.parentFile.mkdirs()
         sourceFile.sink().buffer().use {
             it.writeUtf8(source)
@@ -38,11 +38,13 @@ class KotlinCompilerCall(private val scratchDir: File) {
     }
 
     /** Adds a service like an annotation processor to make available to the compiler. */
-    fun addService(serviceClass: KClass<*>, implementation: KClass<*>) {
-        services.put(serviceClass, implementation)
+    fun withProcessors(vararg processors: Processor) = apply {
+        processors.forEach {
+            services.put(Processor::class, it::class)
+        }
     }
 
-    fun execute(): KotlinCompilerResult {
+    fun compile(): Compilation {
         val fullArgs = mutableListOf<String>()
 
         fullArgs.add("-d")
@@ -53,6 +55,8 @@ class KotlinCompilerCall(private val scratchDir: File) {
             fullArgs.add("-classpath")
             fullArgs.add(fullClasspath.joinToString(separator = ":"))
         }
+
+        fullArgs.add("-no-stdlib")
 
         for (source in sourcesDir.listFiles()) {
             fullArgs.add(source.toString())
@@ -71,15 +75,11 @@ class KotlinCompilerCall(private val scratchDir: File) {
         }
 
         val systemErrBuffer = Buffer()
-        val oldSystemErr = System.err
-        System.setErr(PrintStream(systemErrBuffer.outputStream()))
-        try {
-            val exitCode = CLITool.doMainNoExit(K2JVMCompiler(), fullArgs.toTypedArray())
-            val systemErr = systemErrBuffer.readUtf8()
-            return KotlinCompilerResult(systemErr, exitCode)
-        } finally {
-            System.setErr(oldSystemErr)
-        }
+        val errStream = PrintStream(systemErrBuffer.outputStream())
+        val args = fullArgs.toTypedArray()
+        val exitCode = K2JVMCompiler().exec(errStream, *args)
+        val systemErr = systemErrBuffer.readUtf8()
+        return Compilation(systemErr, exitCode, scratchDir)
     }
 
     /** Returns arguments necessary to enable and configure kapt3. */
@@ -173,11 +173,11 @@ class KotlinCompilerCall(private val scratchDir: File) {
      */
     private fun encodeOptions(options: Map<String, String>): String {
         val buffer = Buffer()
-        ObjectOutputStream(buffer.outputStream()).use { oos ->
-            oos.writeInt(options.size)
+        ObjectOutputStream(buffer.outputStream()).use {
+            it.writeInt(options.size)
             for ((key, value) in options.entries) {
-                oos.writeUTF(key)
-                oos.writeUTF(value)
+                it.writeUTF(key)
+                it.writeUTF(value)
             }
         }
         return buffer.readByteString().base64()
