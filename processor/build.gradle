@@ -43,11 +43,9 @@ dependencies {
     testCompile "com.google.testing.compile:compile-testing:$COMPILE_TESTING_VERSION"
     testCompile "commons-io:commons-io:$COMMONS_IO_VERSION"
     testCompile "com.squareup.okio:okio:2.1.0"
-    // below lines are supposed to be as this order to obtain dependencies in KotlinCompilerCall.classpathFiles
     testCompile "androidx.legacy:legacy-support-v4:$ANDROIDX_LIBRARY_VERSION"
     testCompile "com.bluelinelabs:conductor:$CONDUCTOR_VERSION"
-    testCompile "org.jetbrains.kotlin:kotlin-compiler-embeddable:$KOTLIN_COMPILER_LIB_VERSION"
-    testCompile "org.jetbrains.kotlin:kotlin-annotation-processing-embeddable:$KOTLIN_COMPILER_LIB_VERSION"
+    testCompile "org.permissionsdispatcher:kompile-testing:$KOMPILE_TESTING_VERSION"
 }
 
 publishing {

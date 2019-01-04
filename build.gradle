@@ -21,6 +21,9 @@ allprojects {
         mavenCentral()
         google()
         jcenter()
+        maven {
+            url "https://dl.bintray.com/hotchemi/maven"
+        }
     }
 
     tasks.whenTaskAdded {

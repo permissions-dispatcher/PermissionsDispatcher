@@ -1,8 +1,8 @@
 package permissions.dispatcher.processor
 
+import kompile.testing.kotlinc
 import org.intellij.lang.annotations.Language
 import org.junit.Test
-import permissions.dispatcher.processor.kotlin.*
 
 class KtProcessorTestSuite {
     @Test
@@ -617,7 +617,7 @@ fun MyActivity.onRequestPermissionsResult(requestCode: Int, grantResults: IntArr
                 .withProcessors(PermissionsProcessor())
                 .addKotlin("souces.kt", source)
                 .compile()
-                .succeeded()
+                .succeededWithoutWarnings()
                 .generatedFile("MyActivityPermissionsDispatcher.kt")
                 .hasSourceEquivalentTo(expected)
     }
