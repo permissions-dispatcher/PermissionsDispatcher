@@ -1,34 +1,28 @@
 package permissions.dispatcher.processor.kotlin
 
-import org.hamcrest.CoreMatchers.containsString
 import org.jetbrains.kotlin.cli.common.ExitCode
-import org.junit.Assert.assertEquals
-import org.junit.Assert.assertThat
+import org.junit.ComparisonFailure
 import java.io.File
 
 class Compilation(val error: String, val exitCode: ExitCode, private val generatedKtDir: File) {
-    fun succeeded() = apply {
+    fun succeeded(): SuccessfulCompilationClause {
         if (exitCode != ExitCode.OK) {
-            throw CompilationFailureException(exitCode)
+            throw ComparisonFailure(null, ExitCode.OK.name, exitCode.name)
         }
+        return SuccessfulCompilationClause(generatedKtDir)
     }
 
-    fun succeededWithoutWarnings() = apply {
-        succeeded()
+    fun succeededWithoutWarnings(): SuccessfulCompilationClause {
         if (error.isNotEmpty()) {
             throw CompilationWithWarningException(error)
         }
+        return succeeded()
     }
 
-    fun failed() = apply {
-        assertEquals(ExitCode.COMPILATION_ERROR, exitCode)
-    }
-
-    fun withErrorContaining(message: String) {
-        assertThat(error, containsString(message))
-    }
-
-    fun generatedFile(qualifiedName: String): File {
-        return File(generatedKtDir, qualifiedName)
+    fun failed(): UnsuccessfulCompilationClause {
+        if (exitCode == ExitCode.OK) {
+            throw ComparisonFailure(null, ExitCode.COMPILATION_ERROR.name, exitCode.name)
+        }
+        return UnsuccessfulCompilationClause(error)
     }
 }

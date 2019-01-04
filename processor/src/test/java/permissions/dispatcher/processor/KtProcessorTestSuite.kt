@@ -18,7 +18,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("Annotated class 'MyActivity' doesn't have any method annotated with '@NeedsPermission'")
@@ -43,7 +43,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("Method 'showCamera()' must specify return type 'void', not 'int'")
@@ -72,7 +72,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("Method 'cameraRationale()' must specify return type 'void', not 'int'")
@@ -101,7 +101,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("Method 'cameraDenied()' must specify return type 'void', not 'int'")
@@ -130,7 +130,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("Method 'cameraNeverAskAgain()' must specify return type 'void', not 'int'")
@@ -158,7 +158,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("Method 'cameraRationale()' must has less than or equal to 1 size parameter and type of it is supposed to be 'PermissionRequest'")
@@ -187,7 +187,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("Method 'cameraRationale()' must has less than or equal to 1 size parameter and type of it is supposed to be 'PermissionRequest'")
@@ -215,7 +215,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("Method 'cameraDenied()' must not have any parameters")
@@ -243,7 +243,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("Method 'cameraNeverAskAgain()' must not have any parameters")
@@ -267,7 +267,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("Method 'showCamera()' annotated with '@NeedsPermission' must not be private")
@@ -295,7 +295,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("Method 'cameraRationale()' annotated with '@OnShowRationale' must not be private")
@@ -323,7 +323,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("Method 'cameraDenied()' annotated with '@OnPermissionDenied' must not be private")
@@ -351,7 +351,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("Method 'cameraNeverAskAgain()' annotated with '@OnNeverAskAgain' must not be private")
@@ -378,7 +378,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("Class 'MyService' can't be annotated with '@RuntimePermissions'")
@@ -409,7 +409,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("[android.permission.CAMERA] is duplicated in 'cameraRationale2()' annotated with '@OnShowRationale'")
@@ -440,7 +440,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("[android.permission.CAMERA] is duplicated in 'cameraDenied2()' annotated with '@OnPermissionDenied'")
@@ -471,7 +471,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("[android.permission.CAMERA] is duplicated in 'cameraNeverAskAgain2()' annotated with '@OnNeverAskAgain'")
@@ -499,7 +499,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("'showCamera()' has duplicated '@NeedsPermission' method. The method annotated with '@NeedsPermission' must has the unique name.")
@@ -527,7 +527,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("'@NeverAskAgain' annotated method never being called with 'WRITE_SETTINGS' or 'SYSTEM_ALERT_WINDOW' permission.")
@@ -555,7 +555,7 @@ class KtProcessorTestSuite {
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("sources.kt", source)
+                .addKotlin("sources.kt", source)
                 .compile()
                 .failed()
                 .withErrorContaining("'@NeverAskAgain' annotated method never being called with 'WRITE_SETTINGS' or 'SYSTEM_ALERT_WINDOW' permission.")
@@ -615,7 +615,7 @@ fun MyActivity.onRequestPermissionsResult(requestCode: Int, grantResults: IntArr
 
         kotlinc()
                 .withProcessors(PermissionsProcessor())
-                .addKtFile("souces.kt", source)
+                .addKotlin("souces.kt", source)
                 .compile()
                 .succeeded()
                 .generatedFile("MyActivityPermissionsDispatcher.kt")

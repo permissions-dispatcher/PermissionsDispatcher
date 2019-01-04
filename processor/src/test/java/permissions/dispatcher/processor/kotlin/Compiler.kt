@@ -26,7 +26,7 @@ class Compiler(private val rootDir: File) {
     private val services = LinkedHashMultimap.create<KClass<*>, KClass<*>>()!!
 
     /** Adds a source file to be compiled. */
-    fun addKtFile(fileName: String, source: String) = apply {
+    fun addKotlin(fileName: String, source: String) = apply {
         val sourceFile = File(sourcesDir, fileName)
         sourceFile.parentFile.mkdirs()
         sourceFile.sink().buffer().use {
