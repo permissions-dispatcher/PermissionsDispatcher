@@ -67,7 +67,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
     }
 
     private fun createRequestCodeProp(e: ExecutableElement, index: Int): PropertySpec {
-        return PropertySpec.builder(requestCodeFieldName(e), Int::class.java, KModifier.PRIVATE)
+        return PropertySpec.builder(requestCodeFieldName(e), Int::class.java, KModifier.CONST, KModifier.PRIVATE)
                 .initializer("%L", index)
                 .build()
     }

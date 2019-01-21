@@ -588,7 +588,7 @@ import kotlin.IntArray
 import kotlin.String
 import permissions.dispatcher.PermissionUtils
 
-private val REQUEST_SHOWCAMERA: Int = 0
+private const val REQUEST_SHOWCAMERA: Int = 0
 
 private val PERMISSION_SHOWCAMERA: Array<String> = arrayOf("android.permission.CAMERA")
 
