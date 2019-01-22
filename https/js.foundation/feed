@@ -1,0 +1,1314 @@
+<?xml version="1.0" encoding="UTF-8"?><rss version="2.0"
+	xmlns:content="http://purl.org/rss/1.0/modules/content/"
+	xmlns:wfw="http://wellformedweb.org/CommentAPI/"
+	xmlns:dc="http://purl.org/dc/elements/1.1/"
+	xmlns:atom="http://www.w3.org/2005/Atom"
+	xmlns:sy="http://purl.org/rss/1.0/modules/syndication/"
+	xmlns:slash="http://purl.org/rss/1.0/modules/slash/"
+	>
+
+<channel>
+	<title>JS Foundation</title>
+	<atom:link href="https://js.foundation/feed" rel="self" type="application/rss+xml" />
+	<link>https://js.foundation</link>
+	<description>Innovate Together</description>
+	<lastBuildDate>Wed, 16 Jan 2019 17:00:25 +0000</lastBuildDate>
+	<language>en-US</language>
+	<sy:updatePeriod>hourly</sy:updatePeriod>
+	<sy:updateFrequency>1</sy:updateFrequency>
+	<generator>https://wordpress.org/?v=4.9.8</generator>
+	<item>
+		<title>Protecting Your Origin Server</title>
+		<link>https://js.foundation/js-devs-zone/2019/01/16/protecting-your-origin-server</link>
+		<pubDate>Wed, 16 Jan 2019 17:00:25 +0000</pubDate>
+		<dc:creator><![CDATA[Kaitlyn Barnard]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[JS Devs Zone]]></category>
+
+		<guid isPermaLink="false">https://js.foundation/?p=2401</guid>
+		<description><![CDATA[<p>Today&#8217;s post is by Yaniv Parasol, Director of Product at StackPath as part of our JS Devs Zone blog series, which highlights technical tutorials and thought leadership on JS Foundation technologies and the greater JavaScript ecosystem written by outstanding members of the JavaScript community. When it comes to web security there are...</p>
+<p>The post <a rel="nofollow" href="https://js.foundation/js-devs-zone/2019/01/16/protecting-your-origin-server">Protecting Your Origin Server</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<p><strong>Today&#8217;s post is by Yaniv Parasol, Director of Product at <a href="https://www.stackpath.com/">StackPath</a> as part of our JS Devs Zone blog series, which highlights technical tutorials and thought leadership on JS Foundation technologies and the greater JavaScript ecosystem written by outstanding members of the JavaScript community.</strong></p>
+<p>When it comes to web security there are many services and technologies providing protection against known vulnerabilities, anti-automation, and DDoS.</p>
+<p>Many of these services provide protection against Distributed Denial of Service (DDoS) attacks. DDoS attacks occur when multiple systems (in most cases compromised machines/bots) flooding a web site or web service with large enough volume of requests causing it to become overloaded and unavailable for legitimate users.</p>
+<p>Using a security service, in most cases, means your origin IP address will be masked by one of the security service anycast IP addresses (DNS queries will return an IP address from the security service you’re using), hiding it from attackers who can generate a DDoS attack targeting your origin server.</p>
+<p><strong><img class="aligncenter wp-image-2402 size-full" src="https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture1.png" alt="" width="654" height="654" srcset="https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture1.png 654w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture1-150x150.png 150w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture1-300x300.png 300w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture1-250x250.png 250w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture1-100x100.png 100w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture1-140x140.png 140w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture1-500x500.png 500w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture1-350x350.png 350w" sizes="(max-width: 654px) 100vw, 654px" /></strong></p>
+<h3><strong>So, all I need to do is use a web application protection service?</strong></h3>
+<p>Using a security service IP address (and therefore hiding your origin IP address from DNS queries) is not enough, there are many ways and tools an attacker can use to detect your origin IP address and use it to attack your origin server directly, bypassing the security service you are using.<strong> </strong></p>
+<p><strong><img class="aligncenter wp-image-2405 size-full" src="https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture2.png" alt="" width="716" height="716" srcset="https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture2.png 716w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture2-150x150.png 150w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture2-300x300.png 300w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture2-250x250.png 250w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture2-100x100.png 100w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture2-140x140.png 140w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture2-500x500.png 500w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture2-350x350.png 350w" sizes="(max-width: 716px) 100vw, 716px" /></strong></p>
+<h3><strong>Understanding some of the tools an attacker can use to discover your origin IP address</strong></h3>
+<h5><strong>1. Historical DNS data </strong></h5>
+<p>There are many tools available online that store historical DNS data:</p>
+<ul>
+<li><a href="https://securitytrails.com">https://securitytrails.com</a></li>
+<li><a href="https://viewdns.info/iphistory/">https://viewdns.info/iphistory/</a></li>
+</ul>
+<h5><strong><img class="aligncenter wp-image-2404 size-full" src="https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture3.png" alt="" width="845" height="320" srcset="https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture3.png 845w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture3-300x114.png 300w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture3-768x291.png 768w" sizes="(max-width: 845px) 100vw, 845px" /></strong></h5>
+<h5><strong>2. Subdomains </strong></h5>
+<p>Attackers will scan and search for subdomains sharing the same IP address as the origin server.</p>
+<h5><strong>3. Sending an email </strong></h5>
+<p>One of the most simple and clever ways to figure out an origin IP address is by having the origin server send you an email which will contain the IP address of the server. This will not always work as some of the websites will use a third-party service for sending emails.</p>
+<p>Registering an account, using the forgot password or simply using the contact form will result in a confirmation email that will be sent to the email address you specify during this process. In this example you can see that the origin IP of the server is included in the message:</p>
+<p><em><img class="wp-image-2403 size-full aligncenter" src="https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture4.png" alt="" width="974" height="72" srcset="https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture4.png 974w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture4-300x22.png 300w, https://js.foundation/wp-content/uploads/sites/33/2019/01/Picture4-768x57.png 768w" sizes="(max-width: 974px) 100vw, 974px" /></em></p>
+<p style="text-align: center"><em>** Show full message option in most of the known email clients will provide you with the details above</em></p>
+<h3><strong>Summary </strong></h3>
+<p>Using a cloud security service is not enough for protecting your origin server. There are several steps you can make in order to ensure your server is protected:</p>
+<ul>
+<li>Changing your origin server IP just before starting to use a security service.</li>
+<li>DNS record review, none of the DNS records should include any details about the origin IP address</li>
+<li>Don’t host mail or any other service on your web server</li>
+<li>Go over the subdomains you have and make sure none of them is pointing to your origin server</li>
+<li>Only allow traffic from the IP ranges the security service is using (all other traffic should get blocked)</li>
+</ul>
+<p>Attackers only need to find a single flow and there are lots of possible ways to do so.</p>
+<p>Make sure you have a checklist and check each topic carefully to ensure your origin IP address is private.</p>
+<p>The post <a rel="nofollow" href="https://js.foundation/js-devs-zone/2019/01/16/protecting-your-origin-server">Protecting Your Origin Server</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>A Note from the JS Foundation: 2018 Accomplishments and Our Path Forward</title>
+		<link>https://js.foundation/blog/2018/12/13/a-note-from-the-js-foundation-2018-accomplishments-and-our-path-forward</link>
+		<pubDate>Thu, 13 Dec 2018 16:00:31 +0000</pubDate>
+		<dc:creator><![CDATA[Kaitlyn Barnard]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+
+		<guid isPermaLink="false">https://js.foundation/?p=2381</guid>
+		<description><![CDATA[<p>In early October, we announced an intent to merge with the Node.js Foundation. There is an incredible amount of potential in a combined Foundation, especially as it gives us the opportunity to support an even wider range of projects that the JavaScript ecosystem is dependent on and projects that focus...</p>
+<p>The post <a rel="nofollow" href="https://js.foundation/blog/2018/12/13/a-note-from-the-js-foundation-2018-accomplishments-and-our-path-forward">A Note from the JS Foundation: 2018 Accomplishments and Our Path Forward</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<p><span style="font-weight: 400">In early October, </span><a href="https://js.foundation/announcements/2018/10/04/the-node-js-foundation-and-js-foundation-announce-an-intent-to-merge-a-message-from-the-boards-and-a-faq-around-the-announcement"><span style="font-weight: 400">we announced</span></a><span style="font-weight: 400"> an intent to merge with the Node.js Foundation. There is an incredible amount of potential in a combined Foundation, especially as it gives us the opportunity to support an even wider range of projects that the JavaScript ecosystem is dependent on and projects that focus on new areas of growth for JavaScript.</span></p>
+<p><span style="font-weight: 400">When we started the JS Foundation in 2016, our mission was to help JavaScript application and server-side projects cultivate best practices and policies that promote a broad and diverse contribution base for long-term stability as well as continue our work in standards bodies like ECMA and W3C to ensure a developer voice is represented in those efforts. This goal and drive has not changed, but we believe we can streamline operations to better serve the community and our members, and expand this opportunity to more projects if we have a combined Foundation.</span></p>
+<p><span style="font-weight: 400">If you are interested in learning more about the process or participating in discussions on the intent to merge, you can </span><a href="https://github.com/nodejs/bootstrap"><span style="font-weight: 400">follow discussions on GitHub</span></a><span style="font-weight: 400"> and join a weekly meetings on the topic, next meeting is December 17 at 2pm ET</span><span style="font-weight: 400"> and you can listen in on YouTube </span><a href="https://www.youtube.com/channel/UCQPYJluYC_sn_Qz_XE-YbTQ"><span style="font-weight: 400">here</span></a><span style="font-weight: 400">. You can also view our </span><a href="https://www.youtube.com/watch?v=QNMeZaVhoKQ&amp;list=PLfMzBWSH11xaZvhv1X5Fq1H-oMdnAtG6k&amp;index=53"><span style="font-weight: 400">initial town hall meeting</span></a><span style="font-weight: 400">, which happened at Node+JS Interactive.</span></p>
+<p><span style="font-weight: 400">As this year comes to a close, we are excited about our future, and are equally proud of all that we’ve achieved this year. Below is a glimpse of top achievements from the JS Foundation, and our 28 projects in 2018. </span></p>
+<p><span style="font-weight: 400">Please share your favorite JavaScript moments in the comment section too <img src="https://s.w.org/images/core/emoji/11/72x72/1f389.png" alt="🎉" class="wp-smiley" style="height: 1em; max-height: 1em;" /></span></p>
+<h2><b>First Conference: Node+JS Interactive </b></h2>
+<p><span style="font-weight: 400">Node+JS Interactive happened in mid-October and was hosted by the JS Foundation and Node.js Foundation. The conference brought nearly 1,000 developers to Vancouver, Canada to discuss and collaborate on topics like JavaScript, serverless, community, Node.js, IoT and much more. </span></p>
+<p><span style="font-weight: 400">If you were not able to attend, you can watch a playlist of the conference via YouTube </span><a href="https://www.youtube.com/watch?v=7-tcLvyaEBM&amp;list=PLfMzBWSH11xaZvhv1X5Fq1H-oMdnAtG6k"><span style="font-weight: 400">here</span></a><span style="font-weight: 400">. A few highlights include:</span></p>
+<ul>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=EtokIPTBQZY&amp;index=8&amp;list=PLfMzBWSH11xaZvhv1X5Fq1H-oMdnAtG6k"><span style="font-weight: 400">JS Behind the Firewall</span></a></li>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=hXI8MHcbJMw&amp;index=9&amp;list=PLfMzBWSH11xaZvhv1X5Fq1H-oMdnAtG6k"><span style="font-weight: 400">The Winding Road Towards JS Interoperability</span></a></li>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=3_7BikDCXk8&amp;list=PLfMzBWSH11xaZvhv1X5Fq1H-oMdnAtG6k&amp;index=10"><span style="font-weight: 400">Node Generator: Realizing Rapid Low-Code Prototyping of Node-RED</span></a></li>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=6Vh5IvHIF2Q&amp;index=11&amp;list=PLfMzBWSH11xaZvhv1X5Fq1H-oMdnAtG6k"><span style="font-weight: 400">Reading the Repo: A Workshop on Clear, Effective Communication</span></a></li>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=Urvj09ycqYQ&amp;index=22&amp;list=PLfMzBWSH11xaZvhv1X5Fq1H-oMdnAtG6k"><span style="font-weight: 400">Designing Accessibility for Other Developers</span></a></li>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=N0BeFY3B2sI&amp;index=24&amp;list=PLfMzBWSH11xaZvhv1X5Fq1H-oMdnAtG6k"><span style="font-weight: 400">Internationalize your Web Application with Globalize.js</span></a></li>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=JR9ym-_fteM&amp;index=32&amp;list=PLfMzBWSH11xaZvhv1X5Fq1H-oMdnAtG6k"><span style="font-weight: 400">Scaling Webpack to Thousands of Concurrent Builds</span></a></li>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=yN7sYL974NY&amp;list=PLfMzBWSH11xaZvhv1X5Fq1H-oMdnAtG6k&amp;index=34"><span style="font-weight: 400">Master Serverless with JSF Architect</span></a></li>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=jo6MFQIaDLA&amp;index=41&amp;list=PLfMzBWSH11xaZvhv1X5Fq1H-oMdnAtG6k"><span style="font-weight: 400">Wiring the Internet of Things with Node-RED</span></a></li>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=ynIRng3mI-E"><span style="font-weight: 400">Building your own Internet of Things with JavaScript: From Constrained Device to Secure Gateway</span></a></li>
+</ul>
+<h2><a href="https://js.foundation/blog/2018/02/07/javascript-internet-things-jerryscript-fitbit-ionic"><b>FitBit Opens SDK to JavaScript Developers</b></a></h2>
+<p><a href="https://www.fitbit.com/ionic"><span style="font-weight: 400">FitBit Ionic</span></a><span style="font-weight: 400"> marked the first big push from FitBit in the smartwatch sector. Under the surface of this watch, the company uses JerryScript, an open source lightweight JavaScript engine built to power the Internet of Things AND a JS Foundation project. </span></p>
+<p><span style="font-weight: 400">In conjunction with the launch of the Ionic smartwatch &#8211; and for the first time &#8211; Fitbit released its software development kit (SDK) to allow JavaScript developers to create applications and clock faces for Fitbit OS to share and submit those apps to the Fitbit App Gallery. </span></p>
+<p><span style="font-weight: 400">JerryScript is also used in FitBit’s latest watch, </span><a href="https://www.fitbit.com/versa"><span style="font-weight: 400">Versa</span></a><span style="font-weight: 400">. </span><a href="https://www.zdnet.com/article/fitbit-beats-q2-expectations-with-strong-versa-sales/"><span style="font-weight: 400">FitBit beat Q2 expectations</span></a><span style="font-weight: 400"> due to the strong Versa sales, which outpaced the combined sales of Samsung, Garmin and Fossil smartwatches in North America. </span></p>
+<h2><b>Dojo Releases Dojo 2, Dojo 3, Dojo 4&#8230;</b></h2>
+<p><span style="font-weight: 400">2018 was a very big year for </span><a href="https://dojo.io/"><span style="font-weight: 400">Dojo</span></a><span style="font-weight: 400">, a JavaScript toolkit that helps developers scale their development processes, with its </span><b>first major rewrite in 10 years</b><span style="font-weight: 400">, versions </span><a href="https://dojo.io/blog/2018/05/02/2018-05-02-Dojo2-0-0-release/"><span style="font-weight: 400">2</span></a><span style="font-weight: 400">, </span><a href="https://dojo.io/blog/2018/07/27/2018-07-27-Dojo-version-3-release/"><span style="font-weight: 400">3</span></a><span style="font-weight: 400">, </span><a href="https://dojo.io/blog/2018/10/15/2018-10-15-Version-4-Dojo/"><span style="font-weight: 400">4</span></a><span style="font-weight: 400"> released, and version 5 on the way! </span></p>
+<p><span style="font-weight: 400">The improvements in version 2 provide </span><span style="font-weight: 400">a vastly more efficient development experience and front-end architecture, as well as, a compelling way to build modern applications with </span><a href="https://www.sitepen.com/blog/2018/10/29/update-the-definitive-typescript-guide/"><span style="font-weight: 400">TypeScript</span></a><span style="font-weight: 400">, leveraging a dizzying array of modern standards and best practices including but not limited to ES2015+, TypeScript, </span><a href="https://www.sitepen.com/blog/2018/07/06/web-components-in-2018/"><span style="font-weight: 400">custom elements (web components)</span></a><span style="font-weight: 400">, </span><a href="https://dojo.io/blog/2018/09/13/2018-09-13-Building-PWA-Dojo/"><span style="font-weight: 400">Progressive Web Apps (PWA)</span></a><span style="font-weight: 400">, reactive virtual DOM, Intersection Observers, routing, accessibility (a11y), internationalization (i18n), CSS modules, data stores, and much more.</span></p>
+<p><span style="font-weight: 400">The main focus for versions 3 and 4 was improving application optimization and analyzing, focusing on tooling that can enable these features by default.</span></p>
+<p><span style="font-weight: 400">Developer ergonomics, efficient source code, consistent and flexible architecture, interoperability and alignment with modern standards, and strong community support are fundamental reasons for choosing a framework. We’re constantly looking for ways to improve Dojo and provide the community with the best possible modern framework.</span></p>
+<p><span style="font-weight: 400">Version 5 will be released early next year! </span></p>
+<p><span style="font-weight: 400">The reason for this new rapid development?</span></p>
+<p><span style="font-weight: 400">Working with other JS Foundation projects, Dojo brings releases to developers faster. Collaboration = Winning!</span></p>
+<h2><b>Intern 4.3 Release: High-quality JavaScript Testing Software</b></h2>
+<p><a href="https://github.com/theintern"><span style="font-weight: 400">Intern: next-gen JavaScript testing</span></a><span style="font-weight: 400"> had a</span><span style="font-weight: 400"> 4.3 release this year which includes a number of fixes and updates to continue providing a solid test platform for unit, functional, performance, accessibility, and visual regression testing, code coverage analysis, and Intern Recorded, a Chrome DevTools extension for recording functional tests.</span></p>
+<h2><b>Particle Releases IoT Rules Engine and Node-RED Becomes its Legos</b></h2>
+<p><span style="font-weight: 400">Particle released several </span><a href="https://blog.particle.io/2018/10/03/particle-announces-three-new-iot-products-and-particle-mesh-shipping-at-spectra/"><span style="font-weight: 400">IoT products</span></a><span style="font-weight: 400"> in October of this year; including the IoT Rules Engine, which offers developers building blocks to create the rules needed for any IoT use case.</span></p>
+<p><span style="font-weight: 400">The engine is built on JS Foundation’s Node-RED, which gives developers access to thousands of community-contributed logic snippets, called nodes, for their workflows. </span></p>
+<p><span style="font-weight: 400">Hitachi also plans to use Node-RED as the tooling for its </span><span style="font-weight: 400">Lumada platform</span><span style="font-weight: 400">, </span><span style="font-weight: 400">and Node-RED is the core of Sense Tecnic Systems’ cloud hosted FRED service to streamline the development and integration of IoT applications aimed at the enterprise. </span></p>
+<h2><b>Use of Interledger.js Builds and Promises of Blockchain are Realized</b></h2>
+<p><span style="font-weight: 400">Blockchain technology is at a crucial growth point in the industry. Increased interoperability and standardization as well as faster development is needed for further growth, according to a </span><a href="https://www.cnbc.com/2018/10/01/five-crucial-challenges-for-blockchain-to-overcome-deloitte.html"><span style="font-weight: 400">recent report from Deloitte</span></a><span style="font-weight: 400">.</span></p>
+<p><span style="font-weight: 400">Interledger, a computer protocol designed to enable payments between different distributed ledger networks, stands to help with interoperability issues. Interledger.js is the JavaScript reference implementation of the Interledger protocol.</span></p>
+<p><span style="font-weight: 400">Several new applications and protocols based on the Interledger.js reference implementation emerged this year, including: </span></p>
+<ul>
+<li style="font-weight: 400"><a href="https://mojaloop.io"><span style="font-weight: 400">Mojaloop</span></a><span style="font-weight: 400">, a project in the Bill and Melinda Gates Foundation that increases access to digital financial services to developing countries via mobile devices. This is enabled through the Interledger protocol and Interledger.js technology. </span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Coil is </span><a href="https://www.ccn.com/content-creators-on-youtube-twitch-and-wikipedia-can-now-accept-ripple-xrp/"><span style="font-weight: 400">bringing web modernization </span></a><span style="font-weight: 400">to content creators via the Interledger protocol.</span></li>
+<li style="font-weight: 400"><a href="https://codius.org"><span style="font-weight: 400">Codius</span></a><span style="font-weight: 400"> is a distributed hosting protocol that brings peer-to-peer hosting, decentralized applications and smart contracts to app developers. Codius apps can “can pay each other using any currency using Interledger.”</span></li>
+</ul>
+<p><span style="font-weight: 400">This is just the beginning to a larger trend around JavaScript advancing blockchain innovation in the market.</span></p>
+<h2><b>A New Name and Improved User Experience with webhint</b></h2>
+<p><span style="font-weight: 400">In August of this year, sonarwhal changed its name to webhint to better describe what the project does: a linting tool for the web that caters to a developers specific project needs (you give the tool the “hint” that it needs.</span></p>
+<p><span style="font-weight: 400">Along with the new name, the team improved its user experience. The start up time is now 300% faster than before and it’s much easier to install webhint globally &#8211; more on how user experience improved in </span><a href="https://medium.com/webhint/webhint-a-hinting-engine-for-the-web-ef0d3fa32ea9"><span style="font-weight: 400">this blog post</span></a><span style="font-weight: 400">. </span></p>
+<h2><b>Web Interoperability Improvements</b></h2>
+<p><span style="font-weight: 400">A lot of work has gone into improving the test suites for JavaScript (test262) and the other web platform languages (</span><a href="https://wpt.fyi/interop/"><span style="font-weight: 400">web-platform-tests</span></a><span style="font-weight: 400">). These are multi-year projects for spec conformance and regression-testing. In JS and </span><a href="https://github.com/tc39"><span style="font-weight: 400">Ecma TC39</span></a><span style="font-weight: 400">, a new feature can&#8217;t make it into the language unless it has tests, and those tests pass with introducing regressions (with some exceptions). This is also becoming a trend at the World Wide Web Consortium (W3C) with more than half of the active working groups pushing for tests in WPT.</span></p>
+<p><span style="font-weight: 400">Interoperability prevents vendor (and data) lock-in, and facilitates the connection of a diverse group of people, networks, applications, data, and systems. Improvements to these tests increase the technical compatibility of features across different browsers and language runtimes, which means web developers can confidently write applications that run in a variety of contexts with fewer regressions.</span></p>
+<p><span style="font-weight: 400">The Node.js, JS community and web standards communities have paid specific attention to the WPT and Test262 tests to help language implementers share a common test suite allowing them to contribute and improve tests in a way that benefits the whole platform. The Node.js community is leading an effort within the group to re-write tests so that the same test suites used in the browser can be consumed &amp; contributed to by Node.js. </span></p>
+<p><span style="font-weight: 400">&#8220;Web interoperability is one of the most important and exciting opportunities for the JavaScript and Node.js communities to work together on,&#8221; said Jory Burson, standards liaison for Bocoup. &#8220;This collaboration helps highlight areas where we have the greatest opportunity to close an interoperability gap and work with the developer community, browser vendors, spec authors, and other implementers to figure out the right solution and path forward.&#8221;</span></p>
+<h2><b>Thank you!</b></h2>
+<p><span style="font-weight: 400">Thank you to everyone who worked to build the JavaScript tools and technologies that power everything from the web, IoT, native apps, DevOps, protocols and more. </span></p>
+<p><span style="font-weight: 400">We can’t wait to see what the next chapter brings for this amazing ecosystem and awesome community.</span></p>
+<p>The post <a rel="nofollow" href="https://js.foundation/blog/2018/12/13/a-note-from-the-js-foundation-2018-accomplishments-and-our-path-forward">A Note from the JS Foundation: 2018 Accomplishments and Our Path Forward</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>JavaScript Newsletter, #10</title>
+		<link>https://js.foundation/newsletter/2018/12/10/javascript-newsletter-10</link>
+		<pubDate>Tue, 11 Dec 2018 00:27:03 +0000</pubDate>
+		<dc:creator><![CDATA[Kaitlyn Barnard]]></dc:creator>
+				<category><![CDATA[Newsletter]]></category>
+
+		<guid isPermaLink="false">https://js.foundation/?p=2385</guid>
+		<description><![CDATA[<p>The post <a rel="nofollow" href="https://js.foundation/newsletter/2018/12/10/javascript-newsletter-10">JavaScript Newsletter, #10</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[
+		<div id="fws_5c4721dd6ac47"  data-midnight="dark" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"><div class="inner-wrap"> <div class="row-bg    "  style="" data-color_overlay="" data-color_overlay_2="" data-gradient_direction="" data-overlay_strength="0.3" data-enable_gradient="false"></div></div> </div><div class="col span_12 dark left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"  data-border-radius="none" data-shadow="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+			<div class="wpb_wrapper">
+				<h2 style="text-align: left" class="vc_custom_heading" >News from the JavaScript Community</h2>
+			</div> 
+		</div>
+	</div> 
+</div></div>
+		<div id="fws_5c4721dd6b46d"  data-midnight="dark" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"><div class="inner-wrap"> <div class="row-bg  using-bg-color  "  style="background-color: #ffffff; " data-color_overlay="" data-color_overlay_2="" data-gradient_direction="" data-overlay_strength="0.3" data-enable_gradient="false"></div></div> </div><div class="col span_12 dark left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"  data-border-radius="none" data-shadow="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+			<div class="wpb_wrapper">
+				
+	<div id="fws_5c4721dd6b9f1" data-midnight="" data-column-margin="default" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section  vc_custom_1510049876256   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"> <div class="row-bg   "  style=""></div> </div><div class="col span_12  left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"   data-shadow="none" data-border-radius="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+		<div class="wpb_wrapper">
+			<h3 style="text-align: left" class="vc_custom_heading" ><br />
+Node.js Foundation and JS Foundation Intent to Merge Update</h3>
+	<div class="wpb_text_column wpb_content_element  vc_custom_1544486029497" >
+		<div class="wpb_wrapper">
+			<p>As many of you know, after two years of having two separate Foundations, the Node.js Foundation and JS Foundation boards recently met to discuss the benefits of merging into a single, combined organization. Currently, the boards are in what we call a “bootstrap” phase, where we are exploring all of the potential details that must be considered as part of a merger.</p>
+
+		</div>
+	</div>
+<a class="nectar-button small regular accent-color has-icon  regular-button" style=""  href="https://www2.thelinuxfoundation.org/e/6342/er-utm-content-jsfnewsletter10/41ytbb/939670807" data-color-override="false" data-hover-color-override="false" data-hover-text-color-override="#fff"><span>LEARN MORE</span><i class="icon-button-arrow"></i></a>
+		</div> 
+	</div>
+	</div> 
+</div></div>
+	<div id="fws_5c4721dd6c803" data-midnight="" data-column-margin="default" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section  vc_custom_1510049876256   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"> <div class="row-bg   "  style=""></div> </div><div class="col span_12  left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"   data-shadow="none" data-border-radius="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+		<div class="wpb_wrapper">
+			<h3 style="text-align: left" class="vc_custom_heading" >Building Your Own Internet of Things Using JavaScript</h3>
+	<div class="wpb_text_column wpb_content_element  vc_custom_1544486137136" >
+		<div class="wpb_wrapper">
+			<p>Imagine that you just arrived home on a late dark night. Rather than searching for the light switches on the wall, would you like to turn on the light by simply clapping your hands? The demo shown below pretty much does what we described here – control your lights via hand claps. This demo will walk you through how to build a simple end to end IoT system with JerryScript.</p>
+
+		</div>
+	</div>
+<a class="nectar-button small regular accent-color has-icon  regular-button" style=""  href="https://www2.thelinuxfoundation.org/e/6342/er-utm-content-jsfnewsletter10/41ytbd/939670807" data-color-override="false" data-hover-color-override="false" data-hover-text-color-override="#fff"><span>READ MORE</span><i class="icon-button-arrow"></i></a>
+		</div> 
+	</div>
+	</div> 
+</div></div>
+	<div id="fws_5c4721dd6ccb5" data-midnight="" data-column-margin="default" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section  vc_custom_1510049876256   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"> <div class="row-bg   "  style=""></div> </div><div class="col span_12  left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"   data-shadow="none" data-border-radius="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+		<div class="wpb_wrapper">
+			<h3 style="text-align: left" class="vc_custom_heading" >The Evergreen Web Application</h3>
+	<div class="wpb_text_column wpb_content_element  vc_custom_1544486198897" >
+		<div class="wpb_wrapper">
+			<p>You may have heard the phrase “use the platform”, and an evergreen web application is full embrace of the spirit of that phrase. It is intended to provide a foundation for creating web applications of any size that are modern, performant, and that most importantly are intuitive to the developers creating them, and a great experience for the users using them.</p>
+
+		</div>
+	</div>
+<a class="nectar-button small regular accent-color has-icon  regular-button" style=""  href="https://www2.thelinuxfoundation.org/e/6342/er-utm-content-jsfnewsletter10/41ytbg/939670807" data-color-override="false" data-hover-color-override="false" data-hover-text-color-override="#fff"><span>READ MORE </span><i class="icon-button-arrow"></i></a>
+		</div> 
+	</div>
+	</div> 
+</div></div>
+	<div id="fws_5c4721dd6d10e" data-midnight="" data-column-margin="default" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section  vc_custom_1510049876256   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"> <div class="row-bg   "  style=""></div> </div><div class="col span_12  left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"   data-shadow="none" data-border-radius="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+		<div class="wpb_wrapper">
+			<h3 style="text-align: left" class="vc_custom_heading" >Graphql, gRPC, and End-to-End Type Coverage</h3>
+	<div class="wpb_text_column wpb_content_element  vc_custom_1544486276366" >
+		<div class="wpb_wrapper">
+			<p>StackPath recently launched a new customer portal to allow customers to configure all of their services (CDN,WAF, DNS, and Monitoring) in one place. The project involved combining many different data sources, some existing systems and some brand new. In the end, they chose to use Apollo GraphQL, gRPC, React, and TypeScript. In this blog, Thomas Ladd of StackPath covers why they chose these technologies and demonstrates using a simple example project.</p>
+
+		</div>
+	</div>
+<a class="nectar-button small regular accent-color has-icon  regular-button" style=""  href="https://www2.thelinuxfoundation.org/e/6342/er-utm-content-jsfnewsletter10/41ytbj/939670807" data-color-override="false" data-hover-color-override="false" data-hover-text-color-override="#fff"><span>READ MORE</span><i class="icon-button-arrow"></i></a>
+		</div> 
+	</div>
+	</div> 
+</div></div>
+			</div> 
+		</div>
+	</div> 
+</div></div>
+		<div id="fws_5c4721dd6d618"  data-midnight="dark" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"><div class="inner-wrap"> <div class="row-bg  using-bg-color  "  style="background-color: #ffffff; " data-color_overlay="" data-color_overlay_2="" data-gradient_direction="" data-overlay_strength="0.3" data-enable_gradient="false"></div></div> </div><div class="col span_12 dark left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"  data-border-radius="none" data-shadow="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+			<div class="wpb_wrapper">
+				<div class="img-with-aniamtion-wrap " data-max-width="100%" data-border-radius="none"><div class="inner"><img data-shadow="none" data-shadow-direction="middle" class="img-with-animation " data-delay="0" height="354" width="1024" data-animation="none" src="https://js.foundation/wp-content/uploads/sites/33/2017/11/header-community.png" srcset="https://js.foundation/wp-content/uploads/sites/33/2017/11/header-community.png 1024w, https://js.foundation/wp-content/uploads/sites/33/2017/11/header-community-300x104.png 300w, https://js.foundation/wp-content/uploads/sites/33/2017/11/header-community-768x266.png 768w" sizes="100vw" alt="" /></div></div>
+	<div id="fws_5c4721dd6e22c" data-midnight="" data-column-margin="default" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section  vc_custom_1510049876256   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"> <div class="row-bg   "  style=""></div> </div><div class="col span_12  left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"   data-shadow="none" data-border-radius="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+		<div class="wpb_wrapper">
+			<h3 style="text-align: left" class="vc_custom_heading" >This year in JavaScript: 2018 in review and npm’s predictions for 2019</h3>
+	<div class="wpb_text_column wpb_content_element  vc_custom_1544486802805" >
+		<div class="wpb_wrapper">
+			<p>The JS Foundation, npm, and the Node.js Foundation partnered up to survey over 16,000 developers to ask what they’re up to.</p>
+
+		</div>
+	</div>
+<a class="nectar-button small regular accent-color has-icon  regular-button" style=""  href="https://www2.thelinuxfoundation.org/e/6342/er-utm-content-jsfnewsletter10/41ytbl/939670807" data-color-override="false" data-hover-color-override="false" data-hover-text-color-override="#fff"><span>LEARN MORE</span><i class="icon-button-arrow"></i></a>
+		</div> 
+	</div>
+	</div> 
+</div></div>
+	<div id="fws_5c4721dd6e824" data-midnight="" data-column-margin="default" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section  vc_custom_1510049876256   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"> <div class="row-bg   "  style=""></div> </div><div class="col span_12  left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"   data-shadow="none" data-border-radius="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+		<div class="wpb_wrapper">
+			<h3 style="text-align: left" class="vc_custom_heading" >Appium 1.10 is finally here!</h3>
+	<div class="wpb_text_column wpb_content_element  vc_custom_1544486842026" >
+		<div class="wpb_wrapper">
+			<p>There are many awesome features in this release, including the general availability of the Espresso driver.</p>
+
+		</div>
+	</div>
+<a class="nectar-button small regular accent-color has-icon  regular-button" style=""  href="https://www2.thelinuxfoundation.org/e/6342/er-utm-content-jsfnewsletter10/41ytbn/939670807" data-color-override="false" data-hover-color-override="false" data-hover-text-color-override="#fff"><span>READ MORE</span><i class="icon-button-arrow"></i></a>
+		</div> 
+	</div>
+	</div> 
+</div></div>
+	<div id="fws_5c4721dd6edc1" data-midnight="" data-column-margin="default" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section  vc_custom_1510049876256   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"> <div class="row-bg   "  style=""></div> </div><div class="col span_12  left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"   data-shadow="none" data-border-radius="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+		<div class="wpb_wrapper">
+			<h3 style="text-align: left" class="vc_custom_heading" >Introducing Llama Vision, a website that detects llamas through your camera</h3>
+	<div class="wpb_text_column wpb_content_element  vc_custom_1544486891573" >
+		<div class="wpb_wrapper">
+			<p>Learn how to detect llamas with Tensorflow.js, the machine learning library for JavaScript.</p>
+
+		</div>
+	</div>
+<a class="nectar-button small regular accent-color has-icon  regular-button" style=""  href="https://www2.thelinuxfoundation.org/e/6342/er-utm-content-jsfnewsletter10/41ytbq/939670807" data-color-override="false" data-hover-color-override="false" data-hover-text-color-override="#fff"><span>READ MORE</span><i class="icon-button-arrow"></i></a>
+		</div> 
+	</div>
+	</div> 
+</div></div>
+	<div id="fws_5c4721dd6f2a6" data-midnight="" data-column-margin="default" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section  vc_custom_1510049876256   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"> <div class="row-bg   "  style=""></div> </div><div class="col span_12  left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"   data-shadow="none" data-border-radius="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+		<div class="wpb_wrapper">
+			<h3 style="text-align: left" class="vc_custom_heading" >231: Nodejs Automation Frameworks with Casey Cantwell</h3>
+	<div class="wpb_text_column wpb_content_element  vc_custom_1544486923584" >
+		<div class="wpb_wrapper">
+			<p>Check out this Test Talk podcast with Casey Cantwell a Senior QA Architect about WebDriver.io Automation.</p>
+
+		</div>
+	</div>
+<a class="nectar-button small regular accent-color has-icon  regular-button" style=""  href="https://www2.thelinuxfoundation.org/e/6342/er-utm-content-jsfnewsletter10/41ytbs/939670807" data-color-override="false" data-hover-color-override="false" data-hover-text-color-override="#fff"><span>LISTEN NOW</span><i class="icon-button-arrow"></i></a>
+		</div> 
+	</div>
+	</div> 
+</div></div>
+	<div id="fws_5c4721dd6f79e" data-midnight="" data-column-margin="default" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section  vc_custom_1510049876256   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"> <div class="row-bg   "  style=""></div> </div><div class="col span_12  left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"   data-shadow="none" data-border-radius="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+		<div class="wpb_wrapper">
+			<h3 style="text-align: left" class="vc_custom_heading" >Internationalize your Web Applications with Globalize.js</h3>
+	<div class="wpb_text_column wpb_content_element  vc_custom_1544486958283" >
+		<div class="wpb_wrapper">
+			<p>In this talk from Node + JS Interactive, Alolita Sharma introduces the key features of Globalize.js including new capabilities, performance optimizations, and data distribution mechanisms that have been added recently.</p>
+<p>You can also check out the <a href="https://www2.thelinuxfoundation.org/e/6342/zBWSH11xaZvhv1X5Fq1H-oMdnAtG6k/41ytbv/939670807" target="_blank" rel="noopener">full playlist</a> of Node + JS Interactive sessions.</p>
+
+		</div>
+	</div>
+<a class="nectar-button small regular accent-color has-icon  regular-button" style=""  href="https://www2.thelinuxfoundation.org/e/6342/er-utm-content-jsfnewsletter10/41ytbx/939670807" data-color-override="false" data-hover-color-override="false" data-hover-text-color-override="#fff"><span>WATCH NOW</span><i class="icon-button-arrow"></i></a>
+		</div> 
+	</div>
+	</div> 
+</div></div>
+			</div> 
+		</div>
+	</div> 
+</div></div>
+		<div id="fws_5c4721dd6fd8b"  data-midnight="dark" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"><div class="inner-wrap"> <div class="row-bg  using-bg-color  "  style="background-color: #ffffff; " data-color_overlay="" data-color_overlay_2="" data-gradient_direction="" data-overlay_strength="0.3" data-enable_gradient="false"></div></div> </div><div class="col span_12 dark left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"  data-border-radius="none" data-shadow="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+			<div class="wpb_wrapper">
+				<div class="img-with-aniamtion-wrap " data-max-width="100%" data-border-radius="none"><div class="inner"><img data-shadow="none" data-shadow-direction="middle" class="img-with-animation " data-delay="0" height="354" width="1024" data-animation="none" src="https://js.foundation/wp-content/uploads/sites/33/2017/11/header-jobs.png" srcset="https://js.foundation/wp-content/uploads/sites/33/2017/11/header-jobs.png 1024w, https://js.foundation/wp-content/uploads/sites/33/2017/11/header-jobs-300x104.png 300w, https://js.foundation/wp-content/uploads/sites/33/2017/11/header-jobs-768x266.png 768w" sizes="100vw" alt="" /></div></div>
+	<div id="fws_5c4721dd709b9" data-midnight="" data-column-margin="default" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section  vc_custom_1510049876256   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"> <div class="row-bg   "  style=""></div> </div><div class="col span_12  left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"   data-shadow="none" data-border-radius="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+		<div class="wpb_wrapper">
+			
+	<div class="wpb_text_column wpb_content_element  vc_custom_1544487832247" >
+		<div class="wpb_wrapper">
+			<p><a href="https://www2.thelinuxfoundation.org/e/6342/per2b2b-keyword-federalhotjobs/41ytbz/939670807" target="_blank" rel="noopener">Junior JavaScript/Ruby Developer</a> &#8211; Accenture</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/ition-senior-open-web-engineer/41ytc2/939670807" target="_blank" rel="noopener">Senior Open Web Engineer</a> &#8211; Bocoup</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/j-251FDBC390/41ytc4/939670807" target="_blank" rel="noopener">Senior Software Engineer</a> &#8211; BrowserStack</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/id-5016-jobDetails-211775-5016/41ytc6/939670807" target="_blank" rel="noopener">Full Stack Engineer</a> &#8211; IBM</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/kenzan-jobs-132112/41ytc8/939670807" target="_blank" rel="noopener">Platform Engineer</a> &#8211; Kenzan</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/bs--staff-ui-software-engineer/41ytcb/939670807" target="_blank" rel="noopener">Staff UI Software Engineer</a> &#8211; Ripple</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/-New-Product-Development-R8951/41ytcd/939670807" target="_blank" rel="noopener">Product Manager, New Product Development</a>  &#8211; Samsung</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/any-careers-job-gh-jid-1432992/41ytcg/939670807" target="_blank" rel="noopener">Front End Engineer</a> &#8211; Sauce Labs</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/tml-position-software-engineer/41ytcj/939670807" target="_blank" rel="noopener">Software Engineer</a> &#8211; SitePen</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/-view-P-AAAAAADAAADP-pY7jAAAXU/41ytcl/939670807" target="_blank" rel="noopener">Software Engineer</a> &#8211; Sourcegraph</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/20180622172746OMRRMAGIL3L7TWVC/41ytcn/939670807" target="_blank" rel="noopener">Product Manager</a> &#8211; StackPath</p>
+
+		</div>
+	</div>
+
+		</div> 
+	</div>
+	</div> 
+</div></div>
+			</div> 
+		</div>
+	</div> 
+</div></div>
+		<div id="fws_5c4721dd70fd5"  data-midnight="dark" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"><div class="inner-wrap"> <div class="row-bg  using-bg-color  "  style="background-color: #ffffff; " data-color_overlay="" data-color_overlay_2="" data-gradient_direction="" data-overlay_strength="0.3" data-enable_gradient="false"></div></div> </div><div class="col span_12 dark left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"  data-border-radius="none" data-shadow="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+			<div class="wpb_wrapper">
+				<div class="img-with-aniamtion-wrap " data-max-width="100%" data-border-radius="none"><div class="inner"><img data-shadow="none" data-shadow-direction="middle" class="img-with-animation " data-delay="0" height="354" width="1024" data-animation="none" src="https://js.foundation/wp-content/uploads/sites/33/2017/11/header-events.png" srcset="https://js.foundation/wp-content/uploads/sites/33/2017/11/header-events.png 1024w, https://js.foundation/wp-content/uploads/sites/33/2017/11/header-events-300x104.png 300w, https://js.foundation/wp-content/uploads/sites/33/2017/11/header-events-768x266.png 768w" sizes="100vw" alt="" /></div></div>
+	<div id="fws_5c4721dd71d2a" data-midnight="" data-column-margin="default" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section  vc_custom_1510049876256   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"> <div class="row-bg   "  style=""></div> </div><div class="col span_12  left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"   data-shadow="none" data-border-radius="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+		<div class="wpb_wrapper">
+			<h3 style="text-align: left" class="vc_custom_heading" >CFPs</h3>
+	<div class="wpb_text_column wpb_content_element  vc_custom_1544487848644" >
+		<div class="wpb_wrapper">
+			<p dir="ltr"><a href="https://www2.thelinuxfoundation.org/e/6342/2018-12-10/41ytcq/939670807" target="_blank" rel="noopener">CityJSConf 2019</a><br />
+London, United Kingdom &#8211; Closes January 31, 2019</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/js-2019/41ytcs/939670807" target="_blank" rel="noopener">BYTECONF</a><br />
+Online &#8211; Closes February 1, 2019</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/g2XG-OP3a-HGInczb7CXw-viewform/41ytcv/939670807" target="_blank" rel="noopener">ForwardJS Ottawa</a><br />
+Ottawa, Canada &#8211; Closes April 9, 2019</p>
+
+		</div>
+	</div>
+
+		</div> 
+	</div>
+	</div> 
+</div></div>
+	<div id="fws_5c4721dd7244c" data-midnight="" data-column-margin="default" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section  vc_custom_1510049876256   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"> <div class="row-bg   "  style=""></div> </div><div class="col span_12  left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"   data-shadow="none" data-border-radius="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+		<div class="wpb_wrapper">
+			<h3 style="text-align: left" class="vc_custom_heading" >Conferences</h3>
+	<div class="wpb_text_column wpb_content_element  vc_custom_1544487870048" >
+		<div class="wpb_wrapper">
+			<p dir="ltr"><a href="https://www2.thelinuxfoundation.org/e/6342/2018-12-10/41ytcx/939670807" target="_blank" rel="noopener">ngAtlanta</a><br />
+Atlanta, GA &#8211; January 9-12, 2019</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/2018-12-10/41ytcz/939670807" target="_blank" rel="noopener">Covalence</a><br />
+San Francisco, CA &#8211; January 16, 2019</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/sf-2019-/41ytd2/939670807" target="_blank" rel="noopener">Smashing Conference</a><br />
+San Francisco, CA &#8211; April 16-17, 2019</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/2018-12-10/41ytd4/939670807" target="_blank" rel="noopener">ForwardJS</a><br />
+San Francisco, CA &#8211; January 24, 2019</p>
+<p><a href="https://www2.thelinuxfoundation.org/e/6342/2018-12-10/41ytd6/939670807" target="_blank" rel="noopener">JS Kongress</a><br />
+Munich, Germany &#8211; March 11-12, 2019</p>
+
+		</div>
+	</div>
+
+		</div> 
+	</div>
+	</div> 
+</div></div>
+			</div> 
+		</div>
+	</div> 
+</div></div>
+		<div id="fws_5c4721dd72a3b"  data-midnight="dark" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"><div class="inner-wrap"> <div class="row-bg  using-bg-color  "  style="background-color: #ffffff; " data-color_overlay="" data-color_overlay_2="" data-gradient_direction="" data-overlay_strength="0.3" data-enable_gradient="false"></div></div> </div><div class="col span_12 dark left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"  data-border-radius="none" data-shadow="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+			<div class="wpb_wrapper">
+				<div class="img-with-aniamtion-wrap " data-max-width="100%" data-border-radius="none"><div class="inner"><img data-shadow="none" data-shadow-direction="middle" class="img-with-animation " data-delay="0" height="354" width="1024" data-animation="none" src="https://js.foundation/wp-content/uploads/sites/33/2017/11/header-contribute.png" srcset="https://js.foundation/wp-content/uploads/sites/33/2017/11/header-contribute.png 1024w, https://js.foundation/wp-content/uploads/sites/33/2017/11/header-contribute-300x104.png 300w, https://js.foundation/wp-content/uploads/sites/33/2017/11/header-contribute-768x266.png 768w" sizes="100vw" alt="" /></div></div>
+	<div id="fws_5c4721dd73457" data-midnight="" data-column-margin="default" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section  vc_custom_1510049876256   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"> <div class="row-bg   "  style=""></div> </div><div class="col span_12  left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"   data-shadow="none" data-border-radius="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+		<div class="wpb_wrapper">
+			<h3 style="text-align: left" class="vc_custom_heading" >Have Something to Share?</h3>
+	<div class="wpb_text_column wpb_content_element  vc_custom_1510597528790" >
+		<div class="wpb_wrapper">
+			<p>We&#8217;re always looking for new projects, events, and ideas that should be shared in these issues. Please reach out if there&#8217;s something you&#8217;d like us to include!</p>
+
+		</div>
+	</div>
+<a class="nectar-button small regular accent-color has-icon  regular-button" style=""  href="mailto:newsletter@js.foundation" data-color-override="false" data-hover-color-override="false" data-hover-text-color-override="#fff"><span>CONTRIBUTE</span><i class="icon-button-arrow"></i></a>
+		</div> 
+	</div>
+	</div> 
+</div></div>
+			</div> 
+		</div>
+	</div> 
+</div></div>
+		<div id="fws_5c4721dd73a22"  data-midnight="dark" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"><div class="inner-wrap"> <div class="row-bg    "  style="" data-color_overlay="" data-color_overlay_2="" data-gradient_direction="" data-overlay_strength="0.3" data-enable_gradient="false"></div></div> </div><div class="col span_12 dark left">
+	<div  class="vc_col-sm-4 wpb_column column_container vc_column_container col no-extra-padding"  data-border-radius="none" data-shadow="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+			<div class="wpb_wrapper">
+				
+	<div class="wpb_text_column wpb_content_element " >
+		<div class="wpb_wrapper">
+			<h3>Join the Conversation</h3>
+
+		</div>
+	</div>
+
+			</div> 
+		</div>
+	</div> 
+
+	<div  class="vc_col-sm-2 wpb_column column_container vc_column_container col no-extra-padding"  data-border-radius="none" data-shadow="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+			<div class="wpb_wrapper">
+				<div class="img-with-aniamtion-wrap center" data-max-width="100%" data-border-radius="none"><div class="inner"><a href="https://twitter.com/the_jsf" target="_self" class="center"><img data-shadow="none" data-shadow-direction="middle" class="img-with-animation " data-delay="0" height="55" width="55" data-animation="none" src="https://js.foundation/wp-content/uploads/sites/33/2017/11/twitter-grey-e1510599565118.png"  alt="" /></a></div></div>
+			</div> 
+		</div>
+	</div> 
+
+	<div  class="vc_col-sm-2 wpb_column column_container vc_column_container col no-extra-padding"  data-border-radius="none" data-shadow="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+			<div class="wpb_wrapper">
+				<div class="img-with-aniamtion-wrap center" data-max-width="100%" data-border-radius="none"><div class="inner"><a href="https://www.linkedin.com/company/js-foundation/" target="_self" class="center"><img data-shadow="none" data-shadow-direction="middle" class="img-with-animation " data-delay="0" height="55" width="55" data-animation="none" src="https://js.foundation/wp-content/uploads/sites/33/2017/11/linkedin-grey-e1510599673120.png"  alt="" /></a></div></div>
+			</div> 
+		</div>
+	</div> 
+
+	<div  class="vc_col-sm-2 wpb_column column_container vc_column_container col no-extra-padding"  data-border-radius="none" data-shadow="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+			<div class="wpb_wrapper">
+				<div class="img-with-aniamtion-wrap center" data-max-width="100%" data-border-radius="none"><div class="inner"><a href="https://www.youtube.com/channel/UCELvh4Cp3one4-mtDmzHfZw/featured" target="_self" class="center"><img data-shadow="none" data-shadow-direction="middle" class="img-with-animation " data-delay="0" height="55" width="65" data-animation="none" src="https://js.foundation/wp-content/uploads/sites/33/2017/11/youtube-grey-e1510599609707.png"  alt="" /></a></div></div>
+			</div> 
+		</div>
+	</div> 
+
+	<div  class="vc_col-sm-2 wpb_column column_container vc_column_container col no-extra-padding"  data-border-radius="none" data-shadow="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+			<div class="wpb_wrapper">
+				<div class="img-with-aniamtion-wrap center" data-max-width="100%" data-border-radius="none"><div class="inner"><a href="https://github.com/JSFoundation" target="_self" class="center"><img data-shadow="none" data-shadow-direction="middle" class="img-with-animation " data-delay="0" height="55" width="65" data-animation="none" src="https://js.foundation/wp-content/uploads/sites/33/2017/11/github-grey-e1510599633184.png"  alt="" /></a></div></div>
+			</div> 
+		</div>
+	</div> 
+</div></div>
+		<div id="fws_5c4721dd75f8f"  data-midnight="dark" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"><div class="inner-wrap"> <div class="row-bg  using-bg-color  "  style="background-color: #ffffff; " data-color_overlay="" data-color_overlay_2="" data-gradient_direction="" data-overlay_strength="0.3" data-enable_gradient="false"></div></div> </div><div class="col span_12 dark left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"  data-border-radius="none" data-shadow="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+			<div class="wpb_wrapper">
+				
+	<div id="fws_5c4721dd76362" data-midnight="" data-column-margin="default" data-bg-mobile-hidden="" class="wpb_row vc_row-fluid vc_row standard_section  vc_custom_1510049876256   "  style="padding-top: 0px; padding-bottom: 0px; "><div class="row-bg-wrap"> <div class="row-bg   "  style=""></div> </div><div class="col span_12  left">
+	<div  class="vc_col-sm-12 wpb_column column_container vc_column_container col no-extra-padding"   data-shadow="none" data-border-radius="none" data-border-animation="" data-border-animation-delay="" data-border-width="none" data-border-style="solid" data-border-color="" data-bg-cover="" data-padding-pos="all" data-has-bg-color="false" data-bg-color="" data-bg-opacity="1" data-hover-bg="" data-hover-bg-opacity="1" data-animation="" data-delay="0">
+		<div class="vc_column-inner">
+		<div class="wpb_wrapper">
+			
+	<div class="wpb_text_column wpb_content_element  vc_custom_1510602102140" >
+		<div class="wpb_wrapper">
+			<p>Would you like this newsletter delivered directly to your inbox? Subscribe below to stay informed about the latest developments in the JavaScript community.</p>
+
+		</div>
+	</div>
+
+	<div class="wpb_raw_code wpb_content_element wpb_raw_html" >
+		<div class="wpb_wrapper">
+			<iframe width="100%" height="250" style="border: 0;" src="https://go.pardot.com/l/6342/2017-03-23/3qd8sd" type="text/html" frameborder="0" allowtransparency="true"></iframe>
+		</div>
+	</div>
+
+	<div class="wpb_raw_code wpb_content_element wpb_raw_html" >
+		<div class="wpb_wrapper">
+			<meta name="og:description" content="News, events, jobs and more from the JavaScript community" />
+<meta name="og:title" content="JavaScript Newsletter, #10 - JS Foundation" />
+<meta name="og:url" content="https://js.foundation/newsletter/2018/09/04/javascript-newsletter-9" />
+<meta name="og:image" content="https://js.foundation/wp-content/uploads/sites/33/2017/11/newsletter-header.png" />
+
+<meta name="twitter:card" content="summary_large_image" />
+<meta name="twitter:description" content="News, events, jobs and more from the JavaScript community" />
+<meta name="twitter:title" content="JavaScript Newsletter, #10 - JS Foundation" />
+<meta name="twitter:site" content="@the_jsf" />
+<meta name="twitter:image" content="https://js.foundation/wp-content/uploads/sites/33/2017/11/newsletter-header.png" />
+<meta name="twitter:creator" content="@the_jsf" />
+		</div>
+	</div>
+
+		</div> 
+	</div>
+	</div> 
+</div></div>
+			</div> 
+		</div>
+	</div> 
+</div></div>
+<p>The post <a rel="nofollow" href="https://js.foundation/newsletter/2018/12/10/javascript-newsletter-10">JavaScript Newsletter, #10</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>Building Your Own Internet of Things Using JavaScript</title>
+		<link>https://js.foundation/js-devs-zone/2018/11/26/building-your-own-internet-of-things-using-javascript</link>
+		<pubDate>Tue, 04 Dec 2018 17:22:04 +0000</pubDate>
+		<dc:creator><![CDATA[Kaitlyn Barnard]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[JS Devs Zone]]></category>
+
+		<guid isPermaLink="false">https://js.foundation/?p=2364</guid>
+		<description><![CDATA[<p>Today’s post is by Ziran Sun from Samsung Research UK as part of our JS Devs Zone blog series, which highlights technical tutorials and thought leadership on JS Foundation technologies and the greater JavaScript ecosystem written by outstanding members of the JavaScript community. Are you a JavaScript developer? Have you...</p>
+<p>The post <a rel="nofollow" href="https://js.foundation/js-devs-zone/2018/11/26/building-your-own-internet-of-things-using-javascript">Building Your Own Internet of Things Using JavaScript</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<p><strong>Today’s post is by Ziran Sun from Samsung Research UK as part of our JS Devs Zone blog series, which highlights technical tutorials and thought leadership on JS Foundation technologies and the greater JavaScript ecosystem written by outstanding members of the JavaScript community.</strong></p>
+<p><span style="font-weight: 400">Are you a JavaScript developer? Have you ever thought of applying your JavaScript skills beyond the web and exploring its potentials in the exciting and fast growing Internet of Things (IoT) world? What about starting to building a simple end-to-end IoT system, from constrained devices to a secure gateway?</span></p>
+<p><span style="font-weight: 400">At this year’s </span><a href="https://events.linuxfoundation.org/events/node-js-interactive-2018/"><span style="font-weight: 400">Node + JS Interactive,</span></a><span style="font-weight: 400"> I presented a </span><a href="https://events.linuxfoundation.org/events/node-js-interactive-2018/agenda/schedule/"><span style="font-weight: 400">talk</span></a><span style="font-weight: 400"> on how to build your own Internet of Things using JavaScript. Now let’s walk through this.</span></p>
+<h2><span style="font-weight: 400">A Simple IoT Demo Using JavaScript</span></h2>
+<h3><span style="font-weight: 400">The Demo </span></h3>
+<p><span style="font-weight: 400">Imagine that you just arrived home on a late dark night. Rather than searching for the light switches on the wall, would you like to turn on the light by simply clapping your hands? The demo shown below pretty much does what we described here &#8211; control your lights via hand claps.</span></p>
+<p><span style="font-weight: 400"><img class="aligncenter wp-image-2379 size-full" src="https://js.foundation/wp-content/uploads/sites/33/2018/11/Screen-Shot-2018-12-03-at-2.45.41-PM.png" alt="" width="1428" height="682" srcset="https://js.foundation/wp-content/uploads/sites/33/2018/11/Screen-Shot-2018-12-03-at-2.45.41-PM.png 1428w, https://js.foundation/wp-content/uploads/sites/33/2018/11/Screen-Shot-2018-12-03-at-2.45.41-PM-300x143.png 300w, https://js.foundation/wp-content/uploads/sites/33/2018/11/Screen-Shot-2018-12-03-at-2.45.41-PM-768x367.png 768w, https://js.foundation/wp-content/uploads/sites/33/2018/11/Screen-Shot-2018-12-03-at-2.45.41-PM-1024x489.png 1024w" sizes="(max-width: 1428px) 100vw, 1428px" /></span></p>
+<p><span style="font-weight: 400">In this demo, we have &#8211;</span></p>
+<ul>
+<li><a href="https://www.raspberrypi.org/products/raspberry-pi-zero-w/"><span style="font-weight: 400">Raspberry Pi Zero board</span></a><span style="font-weight: 400"> as the end device.  </span></li>
+<li><a href="https://shop.pimoroni.com/products/blinkt"><span style="font-weight: 400">PIMORONI Blinkt! Light</span></a><span style="font-weight: 400">, a super slim line Raspberry Pi add-on board with eight super-bright RGB LED indicators. The light is mounted onto Raspberry Pi Zero board via GPIO pins.</span></li>
+<li><a href="https://iot.mozilla.org/gateway/"><span style="font-weight: 400">Mozilla Things Gateway</span></a><span style="font-weight: 400">. The gateway has a </span><a href="https://hacks.mozilla.org/2018/02/making-a-clap-sensing-web-thing/"><span style="font-weight: 400">clap-sensing add-on</span></a><span style="font-weight: 400"> that takes audio inputs, e.g. sound of hand claps in this case. </span></li>
+<li><span style="font-weight: 400">Platform (a laptop PC or a Raspberry Pi 3) to run </span><i><span style="font-weight: 400">The Things Gateway </span></i><span style="font-weight: 400">framework.</span></li>
+</ul>
+<p><span style="font-weight: 400">The demo video is also available </span><a href="https://vimeo.com/user90242752/review/293325534/5d519c4bc7"><span style="font-weight: 400">here</span></a><span style="font-weight: 400"> if you are interested. </span></p>
+<h3><span style="font-weight: 400">Why JavaScript?</span></h3>
+<p><span style="font-weight: 400">This demo application was </span><b>written fully with JavaScript</b><span style="font-weight: 400">. So why JavaScript?</span></p>
+<ul>
+<li><span style="font-weight: 400">Popularity. There&#8217;s a huge pool of JavaScript developers. According to</span><a href="https://insights.stackoverflow.com/survey/2017#technology-programming-languages"> <span style="font-weight: 400">StackOverflow’s annual survey</span></a><span style="font-weight: 400">, for the fifth year in a row, JavaScript is the most popular language with 62.5% of respondents claiming to use it.</span></li>
+<li><b><span style="font-weight: 400">Maturity &#8211; Javascript and frameworks around it are maturing.</span></b></li>
+<li><span style="font-weight: 400">Productivity: The language itself is pretty much platform and OS independent and there are a vast number of easy to use 3rd-party libraries available. These factors result in less time to introduce your products to markets.</span></li>
+<li><span style="font-weight: 400">It all sounds good! Bear in mind though that JavaScript is a scripting language. We can see it works in web, on servers. What about in the IoT, which has a lot deeply embedded or constrained devices?</span></li>
+</ul>
+<h2><span style="font-weight: 400">On Constrained Device</span></h2>
+<p><span style="font-weight: 400">“Constrained devices” here we are referring small devices with limited CPU, memory, and power resources. IoT is about to connect billions of “Things” devices, whose memory footprints could spread from 2KB to 1GB or over.  In our work, we are looking at having a JavaScript engine run on an IoT device, which does require a reasonable amount of memory. Devices with RAM size under 32KB are probably out of the picture in this case. </span></p>
+<p><span style="font-weight: 400">In the demo, we have introduced </span><a href="https://github.com/jerryscript-project/jerryscript"><span style="font-weight: 400">JerryScript</span></a><span style="font-weight: 400"> to the end device.</span></p>
+<ul>
+<li style="font-weight: 400"><span style="font-weight: 400">JerryScript is an ultra-lightweight JavaScript engine, which can run on a device with RAM under 64KB and ROM under 200 KB. </span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">JerryScript was created by </span><i><span style="font-weight: 400">Samsung</span></i><span style="font-weight: 400"> from scratch in 2014.</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">The JerryScript project is now under the umbrella of </span><a href="https://js.foundation/"><span style="font-weight: 400">JS Foundation</span></a><span style="font-weight: 400"> and was one of</span> <span style="font-weight: 400">the </span><i><span style="font-weight: 400">JS Foundation’</span></i><span style="font-weight: 400">s very first sponsored projects.  </span></li>
+</ul>
+<p><span style="font-weight: 400">At the moment there two leading IoT JS platforms based on JerryScript engine: </span><a href="https://github.com/Samsung/iotjs"><span style="font-weight: 400">IoT.js</span></a><span style="font-weight: 400"> by </span><i><span style="font-weight: 400">Samsung</span></i><span style="font-weight: 400"> and </span><a href="https://github.com/intel/zephyr.js/blob/master/docs/API.md"><span style="font-weight: 400">Zephyr.js</span></a><span style="font-weight: 400"> by </span><i><span style="font-weight: 400">Intel</span></i><span style="font-weight: 400">. Both platforms are to provide JavaScript APIs to developers. One core goal of IoT.js and Zephyr.js is to bring the success of Node.js into the embedded world and retain backward compatibility with Node.js as much as possible. Comparing with IoT.js, Zephyr.js is more platform specific for the moment while hardware and OS supports in IoT.js are very much in line with JerryScript. To understand more on IoT.js and JerryScript, you can check our previous blog on </span><a href="https://js.foundation/blog/2018/03/22/an-introduction-to-iot-js-architecture"><span style="font-weight: 400">IoT.js Architecture</span></a><span style="font-weight: 400">.  </span></p>
+<p><span style="font-weight: 400">The demo used IoT.js as the IoT platform shown below. With the IoT.js GPIO module in place, it allows us to access the Blinkt Light directly via </span><a href="https://github.com/Samsung/iotjs/blob/master/src/js/gpio.js"><span style="font-weight: 400">GPIO JavaScript APIs</span></a><span style="font-weight: 400">.</span></p>
+<h2><span style="font-weight: 400"><img class="aligncenter wp-image-2378 size-medium" src="https://js.foundation/wp-content/uploads/sites/33/2018/11/Screen-Shot-2018-12-03-at-2.45.50-PM-262x300.png" alt="" width="262" height="300" srcset="https://js.foundation/wp-content/uploads/sites/33/2018/11/Screen-Shot-2018-12-03-at-2.45.50-PM-262x300.png 262w, https://js.foundation/wp-content/uploads/sites/33/2018/11/Screen-Shot-2018-12-03-at-2.45.50-PM-768x878.png 768w, https://js.foundation/wp-content/uploads/sites/33/2018/11/Screen-Shot-2018-12-03-at-2.45.50-PM.png 848w" sizes="(max-width: 262px) 100vw, 262px" /></span></h2>
+<h2><span style="font-weight: 400">Connect Device to Secure Gateway</span></h2>
+<p><span style="font-weight: 400">For gateway, we have chosen </span><a href="https://iot.mozilla.org/gateway/"><span style="font-weight: 400">The Things Gateway by Mozilla</span></a><span style="font-weight: 400">, an open gateway that anybody can now create with a Raspberry Pi to control Internet of Things devices. </span><i><span style="font-weight: 400">The Things Gateway</span></i><span style="font-weight: 400"> has provided privacy and security features such as TLS encrypted tunneling service and third-party applications authorization using the de-facto authorization standard OAuth 2.0 etc. A more detailed discussion on these security features can be found in our previous blog </span><a href="https://medium.com/samsung-internet-dev/web-internet-of-things-and-gdpr-1182bbc3162f"><span style="font-weight: 400">here</span></a><span style="font-weight: 400">.</span></p>
+<p><span style="font-weight: 400">The backend of </span><i><span style="font-weight: 400">The Things Gateway</span></i><span style="font-weight: 400"> uses the </span><a href="https://iot.mozilla.org/wot/"><span style="font-weight: 400">Web Things API</span></a><span style="font-weight: 400"> from Mozilla IoT, to communicate with the front end. </span><i><span style="font-weight: 400">Web Things API</span></i><span style="font-weight: 400"> is a proposal by Mozilla with “Web Thing Description” to describe things, “Web Thing REST API” and “Web Thing WebSocket API” to interact with ‘Things’. </span></p>
+<p><span style="font-weight: 400">In the demo, Blinkt! light is the “thing” for </span><i><span style="font-weight: 400">The Things Gateway</span></i><span style="font-weight: 400"> and we need to describe Blinkt! Light following the “Web Things Description” format: </span></p><pre class="crayon-plain-tag">{
+ "name":"Blinkt! light",
+ "type": "thing",
+ "Description": "A Blinkt! light",
+ "properties": {
+   "on": {
+     "type": "boolean",
+     "description": "Whether the Blinkt! light is turned on",
+     "href": "/things/blinkt/properties/on"
+   }
+ },
+ "actions": {
+   "toggle": {
+     "description": "Turn the Blinkt! Light on and off"
+   }
+ }
+}</pre><p>
+<span style="font-weight: 400">My colleague, Phil Coval, has published </span><span style="font-weight: 400">&#8220;</span><a href="https://github.com/rzr/webthing-iotjs"><span style="font-weight: 400">WebThing-IotJS</span></a><span style="font-weight: 400">&#8220;</span><span style="font-weight: 400">, an IoT.js implementation of WebThing API</span> <span style="font-weight: 400">based on </span><a href="https://github.com/mozilla-iot/webthing-node"><span style="font-weight: 400">Mozilla-IoT&#8217;s webthing-node</span></a><span style="font-weight: 400">. It provides a baseline to add your own Web Thing on top of IoT.js. You can take </span><a href="https://github.com/ziransun/webthing-iotjs"><span style="font-weight: 400">Blinkt! Light Web Thing code</span></a><span style="font-weight: 400"> as an example to try it out. </span></p>
+<p><i><span style="font-weight: 400">The Things Gateway </span></i><span style="font-weight: 400">has provided a rules engine. Through the rules engine, we can set rules between the clap-sensing add-on and Blinkt! Light webthing. In this demo, the Blinkt! Light state changes when the clap-sensing add-on detects an incoming hand-clapping sound.</span></p>
+<h2><span style="font-weight: 400">There is a lot more you can do…</span></h2>
+<p><span style="font-weight: 400">We have shown you an example on how to build a simple end to end IoT system and walked through technologies behind the scenes. Are you ready to give it go? We’d love to hear your stories on building IoT systems using JavaScript!</span></p>
+<p>The post <a rel="nofollow" href="https://js.foundation/js-devs-zone/2018/11/26/building-your-own-internet-of-things-using-javascript">Building Your Own Internet of Things Using JavaScript</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>Node.js Foundation and JS Foundation Intent to Merge Update &#8211; November 2018</title>
+		<link>https://js.foundation/blog/2018/11/27/node-js-foundation-and-js-foundation-intent-to-merge-update-november-2018</link>
+		<pubDate>Tue, 27 Nov 2018 17:00:43 +0000</pubDate>
+		<dc:creator><![CDATA[Kaitlyn Barnard]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+
+		<guid isPermaLink="false">https://js.foundation/?p=2375</guid>
+		<description><![CDATA[<p>As many of you know, after two years of having two separate Foundations, the Node.js Foundation and JS Foundation boards recently met to discuss the benefits of merging into a single, combined organization. Following this meeting, both boards believe that one tightly integrated Foundation working toward common objectives will be...</p>
+<p>The post <a rel="nofollow" href="https://js.foundation/blog/2018/11/27/node-js-foundation-and-js-foundation-intent-to-merge-update-november-2018">Node.js Foundation and JS Foundation Intent to Merge Update &#8211; November 2018</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<p><span style="font-weight: 400">As many of you know, after two years of having two separate Foundations, the Node.js Foundation and JS Foundation boards recently met to discuss the benefits of merging into a single, combined organization. Following this meeting, both boards believe that one tightly integrated Foundation working toward common objectives will be able to provide the brightest future for Node.js and the wide range of JavaScript projects.</span></p>
+<p><span style="font-weight: 400">Among other things, a merger of the two organizations will help streamline the operational parts of running a foundation, ensuring we are all working towards complementary goals while minimizing redundancy. This will also provide an opportunity to improve member engagement, reducing confusion over which Foundation to join when potential members can benefit from both. By increasing collaboration across the JavaScript ecosystem and affiliated standard bodies, we can also more effectively create a single vibrant home for any project in the JavaScript ecosystem.</span></p>
+<p><span style="font-weight: 400">Currently, the boards are in what we call a “bootstrap” phase, where we are exploring all of the potential details that must be considered as part of a merger.  A </span><a href="https://github.com/nodejs/bootstrap/issues/14"><span style="font-weight: 400">Joint Bootstrap Team</span></a><span style="font-weight: 400"> was put in place to outline the potential organizational structure, governance policies, foundation expectations and leadership for a merged Foundation. It is important to note that no legal work to create a merged Foundation will begin until both boards are confident in the proposals.</span></p>
+<p><span style="font-weight: 400">We wish to be transparent through this process, because although we feel this will be a great benefit to both communities, it will also be a change. We have been recording our meetings and publishing notes, which can be found below. If you missed the town hall meeting at Node+JS Interactive and the conference calls to date, you can listen to them via:</span></p>
+<ul>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=QNMeZaVhoKQ"><span style="font-weight: 400">Node+JS Interactive Town Hall Meeting</span></a></li>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=h3FlBn7fbfI"><span style="font-weight: 400">Bootstrap Meeting 1</span></a><span style="font-weight: 400"> (</span><a href="https://docs.google.com/document/d/168pPLkyEslfr728xdobUJiawQSwDZ6n0KMmpC5h9-MU/edit?usp=sharing"><span style="font-weight: 400">notes from the meeting</span></a><span style="font-weight: 400">)</span></li>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=D_T61arYXE4"><span style="font-weight: 400">Bootstrap Meeting 2</span></a><span style="font-weight: 400"> (</span><a href="https://docs.google.com/document/d/1XB-r3UoqyxLPUlDsZ0hW6DO5ljQHvZO2JqiNLE6nJdI/edit"><span style="font-weight: 400">notes from the meeting</span></a><span style="font-weight: 400">)</span></li>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=4wR8IWFP_I8"><span style="font-weight: 400">Bootstrap Meeting 3</span></a><span style="font-weight: 400"> (</span><a href="https://github.com/nodejs/bootstrap/issues/30"><span style="font-weight: 400">notes from the meeting</span></a><span style="font-weight: 400">)</span></li>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=dIRyJ2nzYCY"><span style="font-weight: 400">Bootstrap Meeting 4</span></a><span style="font-weight: 400"> (</span><a href="https://github.com/nodejs/bootstrap/blob/master/meetings/2018-11-12.md"><span style="font-weight: 400">notes from the meeting</span></a><span style="font-weight: 400">)</span></li>
+<li style="font-weight: 400"><a href="https://www.youtube.com/watch?v=ULPDzG5Yvdk&amp;t=10s"><span style="font-weight: 400">Bootstrap Meeting 5</span></a><span style="font-weight: 400"> (</span><a href="https://github.com/nodejs/bootstrap/blob/master/meetings/2018-11-19.md"><span style="font-weight: 400">notes from the meeting</span></a><span style="font-weight: 400">)</span></li>
+</ul>
+<p><b>The next conference call is tentatively scheduled for December 3 at 2 pm ET.</b> <span style="font-weight: 400">You can join via Zoom </span><a href="https://zoom.us/j/868881095"><span style="font-weight: 400">here</span></a><span style="font-weight: 400"> or listen on YouTube</span><a href="https://www.youtube.com/c/nodejs+foundation/live"><span style="font-weight: 400"> here</span></a><span style="font-weight: 400">. This is one chance of many to voice your hopes and opinions about a merger between the Node.js and JS communities. We will also be periodically posting information about these topics on the </span><a href="https://js.foundation/blog"><span style="font-weight: 400">JS Foundation</span></a><span style="font-weight: 400"> and </span><a href="https://medium.com/@nodejs"><span style="font-weight: 400">Node.js Foundation</span></a><span style="font-weight: 400"> blogs to ensure folks are informed of the progress and changes. </span></p>
+<p><span style="font-weight: 400">Reminder &#8211; the public intent to merge discussion </span><a href="https://github.com/nodejs/bootstrap/issues/26"><span style="font-weight: 400">are available on GitHub</span></a><span style="font-weight: 400">. If you have comments, you are welcome to participate and ask questions.</span></p>
+<p>The post <a rel="nofollow" href="https://js.foundation/blog/2018/11/27/node-js-foundation-and-js-foundation-intent-to-merge-update-november-2018">Node.js Foundation and JS Foundation Intent to Merge Update &#8211; November 2018</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>The Evergreen Web Application</title>
+		<link>https://js.foundation/blog/2018/10/29/the-evergreen-web-application</link>
+		<pubDate>Mon, 29 Oct 2018 15:30:35 +0000</pubDate>
+		<dc:creator><![CDATA[Kaitlyn Barnard]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[JS Devs Zone]]></category>
+
+		<guid isPermaLink="false">https://js.foundation/?p=2337</guid>
+		<description><![CDATA[<p>Today’s post is written by Owen Buckley, Principal Architect of UI at Clarivate Analytics and founder of Project Evergreen,as part of our JS Devs Zone blog series, which highlights technical tutorials and thought leadership on JS Foundation technologies and the greater JavaScript ecosystem written by outstanding members of the JavaScript community....</p>
+<p>The post <a rel="nofollow" href="https://js.foundation/blog/2018/10/29/the-evergreen-web-application">The Evergreen Web Application</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<p><strong>Today’s post is written by Owen Buckley, Principal Architect of UI at Clarivate Analytics and founder of Project Evergreen,as part of our JS Devs Zone blog series, which highlights technical tutorials and thought leadership on JS Foundation technologies and the greater JavaScript ecosystem written by outstanding members of the JavaScript community.</strong></p>
+<p><span style="font-weight: 400">What’s your favorite part about starting a new project? For me it’s always been the excitement of jumping into something new, understanding the problem domain, encountering new challenges, and taking all the opportunities I can to learn from previous projects.In the end, I value the common goal uniting all projects: to come out the other end with something meaningful such that the business, developers, and users all get a meaningful experience out of it.</span></p>
+<p><span style="font-weight: 400">Working in frontend development has been one of the most rewarding aspects of my career. Although it can feel daunting to keep up with the ecosystem at times, there is no shortage of amazing libraries, frameworks, tools and personalities out there to appeal to any developer or workflow, for any kind of project, all lead by an incredibly smart and talented open source community. I (and my employers) owe a lot to the OSS community for the great things that have come out of it over the years, constantly challenging the status quo and daring to think differently about how to approach web development.  Node.js, jQuery, React, Angular, npm, Bower, Grunt, Gulp, Browserify, Babel, webpack, and many, many more have all had significant and meaningful impacts on the workflows of developers around the world. Even more endearing is the spirit of collaboration, not competition, that I see reflected in these various projects and their communities, reminding me something Steve Jobs said once:</span></p>
+<p><span style="font-weight: 400"><img class="aligncenter wp-image-2355 " src="https://js.foundation/wp-content/uploads/sites/33/2018/10/Screen-Shot-2018-10-18-at-9.44.34-AM-1024x596.png" alt="" width="605" height="352" srcset="https://js.foundation/wp-content/uploads/sites/33/2018/10/Screen-Shot-2018-10-18-at-9.44.34-AM-1024x596.png 1024w, https://js.foundation/wp-content/uploads/sites/33/2018/10/Screen-Shot-2018-10-18-at-9.44.34-AM-300x175.png 300w, https://js.foundation/wp-content/uploads/sites/33/2018/10/Screen-Shot-2018-10-18-at-9.44.34-AM-768x447.png 768w, https://js.foundation/wp-content/uploads/sites/33/2018/10/Screen-Shot-2018-10-18-at-9.44.34-AM.png 1202w" sizes="(max-width: 605px) 100vw, 605px" /></span></p>
+<p><span style="font-weight: 400">Ideas are so bountiful, that whatever the needs of your project are, there are hearts and minds out there that are eager to share with you their tips and tricks, words of wisdom, and ways of working so that our jobs may be easier and that we may obtain clarity in our efforts. Apple understood that only they were responsible for their own destiny, and that sometimes they might be ahead, other times they may be behind, but what was most important was defining and establishing their own set of guiding principles and being disciplined enough to stay true to them.</span></p>
+<p><span style="font-weight: 400">In that spirit of what Steve Jobs said and echoed quite eloquently by </span><a href="https://www.youtube.com/watch?v=qp0HIF3SfI4"><span style="font-weight: 400">Simon Sinek</span></a><span style="font-weight: 400">, is making sure to understand the </span><i><span style="font-weight: 400">why</span></i><span style="font-weight: 400"> of something and the story behind its creation. React makes a great example. At the time React came out, the paradigm it introduced was certainly different than what was generally available at the time, and more than the striking visual aesthetics and ergonomics of JSX, was the embrace of functional programming and opinion on data flow that all reasoned well with the idea of UI as a set of components that helped establish the React paradigm and mental model.</span></p>
+<p><a href="https://twitter.com/dan_abramov/status/790333373864669185"><span style="font-weight: 400">Although React never claimed to be the fastest kid on the block</span></a><span style="font-weight: 400">, performance benchmarks and comparison articles between it and Angular (and others) inevitably (and continue) to come out. While being slow or “full featured” was certainly not the intention of React, what I often felt was lacking in many of those comparison articles was a good deep dive that spoke to the mental model of React (or Angular) more thoroughly. The React core team itself would tell you that </span><a href="https://reactjs.org/blog/2013/06/05/why-react.html"><span style="font-weight: 400">the goal of React was for creating and maintaining user interfaces at scale that is easy for developers to reason about</span></a><span style="font-weight: 400">, and that what they created is just one way to approach it and that it’s </span><i><span style="font-weight: 400">OK</span></i><span style="font-weight: 400"> if you don’t like it. Much like with Apple and Microsoft, for React to “succeed” does not mean that Angular has to “lose”. This is of course equally true for Angular, Vue, Polymer, et al.</span></p>
+<p><span style="font-weight: 400">One thing I like to remind myself of is that patterns aren’t exclusive to any one particular implementation. React doesn&#8217;t “own” the concept of components, much like Angular doesn’t own the concept of data-binding. While React may have popularized the idea of components (AngularJS had the concept too, they were just called directives), nothing prevents an Angular component from adopting a functional, “props” based API, like a stateless React component might. Having worked in both Angular and React across different kinds of domains, I have been fortunate to learn a lot of interesting ways to solve different kinds of problems, understanding their pros and cons, and ultimately a personal mental model of my own for software development that considers them all as shared tools in a common toolbelt. More than the just the technology itself though is the expectation of documentation, developer experience, accessibility of the paradigm, and a host of other institutional considerations that comes with evaluating now workflows and dependencies.</span></p>
+<h1><span style="font-weight: 400">The New Face of JavaScript and CSS <img src="https://s.w.org/images/core/emoji/11/72x72/1f3ad.png" alt="🎭" class="wp-smiley" style="height: 1em; max-height: 1em;" /></span></h1>
+<p><span style="font-weight: 400">The recent renaissance in the frontend development community has been nothing short of prolific and inspiring, in my humble opinion. Rising to meet the needs of users across all browsers and devices, have come amazing and powerful tools for building web applications. Frontend development is now supported by libraries and frameworks and build pipelines powered by webpack, Rollup and Babel, static site generators like Gatsby and Jekyll, great testing tools and libraries like Jest, Mocha, Karma,, Appium and Selenium just to name a few, and the rise of the Progressive Web Application (PWA). The amount of software available to build applications is near limitless and even more encouraging is seeing these tools all buy into a common goal of catering to developer experience as a critical component in their mission of creating software that aims to help others deliver great user experiences.</span></p>
+<p><span style="font-weight: 400">As a developer, what’s been inspiring to me has been over time seeing the paradigms driving libraries, frameworks, and early languages like CoffeeScript gain more traction in the community, and seeing that drive the rapid advancement of the JavaScript specification (ECMAScript / TC39), starting with the all-star release of ES2015, which brought a number of features seeing wide adoption within the JavaScript community like modules, classes, more functional programming oriented Array methods (map, reduce, filter), and Promises. Of course we can’t forget all the amazing work being done around CSS like </span><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Flexbox"><span style="font-weight: 400">Flexbox</span></a><span style="font-weight: 400">, </span><a href="https://developer.mozilla.org/en-US/docs/Learn/CSS/CSS_layout/Grids"><span style="font-weight: 400">CSS Grid</span></a><span style="font-weight: 400"> and adoption into the specification of new syntax like nested selectors which are found in preprocessors like LESS and SASS. These new language features are also complimented with new browser APIs, like the set of specifications that make up “</span><a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components"><span style="font-weight: 400">Web Components</span></a><span style="font-weight: 400">”. With the introduction of the </span><a href="https://developer.mozilla.org/en-US/docs/Web/API/Window/customElements"><span style="font-weight: 400">Custom Elements</span></a><span style="font-weight: 400"> API, developers can now create their own UI components, much in the way a browser already provides a <pre class="crayon-plain-tag">&lt;video&gt;</pre> </span><span style="font-weight: 400"> or an <pre class="crayon-plain-tag">&lt;input type=”date”&gt;</pre> </span><span style="font-weight: 400">.</span></p>
+<p><span style="font-weight: 400">Impressive as all of this is given it is just the tip of the iceberg, there is one crucial element to all this that I think really makes it such a land of opportunity for developers and that truly “sells” the concept of the web as a platform; </span><b>the shift to evergreen browsers</b><span style="font-weight: 400">. All major browser vendors have moved to a continuous release cycle that updates browsers in place, without the burden of users having to repeatedly seek out, download and install new software just to get access to new releases. This is also appealing to developers, as users with newer browser versions afford developers the ability to deliver modern JavaScript to users, which is often smaller in size and more performant than the transpiled alternative.</span></p>
+<p><span style="font-weight: 400">In essence, three factors have converged in the frontend ecosystem that are getting me particularly excited about exploring a new approach to application development; </span><b><i>language specifications, browsers, </i></b><span style="font-weight: 400">and</span><b><i> tooling</i></b><span style="font-weight: 400">. It’s safe to say, the landscape of the web platform is looking very promising! (pun intended)</span></p>
+<h1><span style="font-weight: 400">The Evergreen Web Application <img src="https://s.w.org/images/core/emoji/11/72x72/267b.png" alt="♻" class="wp-smiley" style="height: 1em; max-height: 1em;" /></span></h1>
+<p><span style="font-weight: 400">Although I’m certainly not the first to say this, I do agree that the case can be made for making web applications that adhere to a new set of “constraints” if you will. You may have heard the phrase “</span><a href="https://www.polymer-project.org/about"><span style="font-weight: 400">use the platform</span></a><span style="font-weight: 400">”, and an evergreen web application is full embrace of the spirit of that phrase.  It is intended to provide a foundation for creating web applications of any size that are modern, performant, and that most importantly (to me) are intuitive to the developers creating them, and a great experience for the users using them.  </span><span style="font-weight: 400"><br />
+</span><span style="font-weight: 400"><br />
+</span><span style="font-weight: 400">This is all made possible by the three factors I cited above:</span></p>
+<ul>
+<li style="font-weight: 400"><strong>Language Specifications</strong><span style="font-weight: 400"> &#8211; New JavaScript / CSS features and browser APIs are getting added yearly that provide first class support for common primitives and developer experiences often required through additional dependencies, and in certain cases can just be polyfilled and removed once the polyfill is no longer needed (as browsers catch up).</span></li>
+<li style="font-weight: 400"><strong>Browsers</strong><span style="font-weight: 400"> &#8211; Evergreen browsers are now offered by all the major browser vendors which means quicker adoption of new language specs, passive benefits to performance and security, and the comfort of long term support for it all.</span></li>
+<li style="font-weight: 400"><strong>Tooling</strong><span style="font-weight: 400"> &#8211; Babel and PostCSS can transform modern JavaScript and CSS intelligently based on known browser statistics as shipping modern code is more easily optimized by browsers. This ensures that only the code that needs to be transpiled gets transpiled, which benefits users the most.</span></li>
+</ul>
+<p><span style="font-weight: 400">I think a visual aid always helps, so let’s take a look at an </span><a href="https://gist.github.com/thescientist13/fc5ae1e4a95baccf2ff4e21752a8f599"><span style="font-weight: 400">example</span></a><span style="font-weight: 400"> of a basic custom element that may look very similar to something you might already be writing now. In the snippet below, we’ve defined our own HTML tag (custom element) using </span><i><span style="font-weight: 400">just</span></i><span style="font-weight: 400"> JavaScript.</span></p>
+<p><span style="font-weight: 400"><img class="aligncenter wp-image-2340 size-large" src="https://js.foundation/wp-content/uploads/sites/33/2018/10/Screen-Shot-2018-10-04-at-9.22.51-AM-e1538670378952-1024x714.png" alt="" width="1024" height="714" srcset="https://js.foundation/wp-content/uploads/sites/33/2018/10/Screen-Shot-2018-10-04-at-9.22.51-AM-e1538670378952-1024x714.png 1024w, https://js.foundation/wp-content/uploads/sites/33/2018/10/Screen-Shot-2018-10-04-at-9.22.51-AM-e1538670378952-300x209.png 300w, https://js.foundation/wp-content/uploads/sites/33/2018/10/Screen-Shot-2018-10-04-at-9.22.51-AM-e1538670378952-768x535.png 768w, https://js.foundation/wp-content/uploads/sites/33/2018/10/Screen-Shot-2018-10-04-at-9.22.51-AM-e1538670378952.png 1039w" sizes="(max-width: 1024px) 100vw, 1024px" /></span></p>
+<p><span style="font-weight: 400">To break down some of what’s going on here:</span></p>
+<ul>
+<li style="font-weight: 400"><a href="https://developer.mozilla.org/en-US/docs/Web/API/HTMLElement"><span style="font-weight: 400">HTMLElement</span></a><span style="font-weight: 400"> &#8211; native “base” class for creating an HTML element</span></li>
+<li style="font-weight: 400"><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Classes"><span style="font-weight: 400">class</span></a><span style="font-weight: 400"> &#8211; Syntactic sugar over JavaScript’s prototype based inheritance that pairs well with component based development</span></li>
+<li style="font-weight: 400"><a href="https://developer.mozilla.org/en-US/docs/Web/API/Element/attachShadow"><span style="font-weight: 400">attachShadow</span></a><span style="font-weight: 400"> &#8211; creates a </span><a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_shadow_DOM"><span style="font-weight: 400">Shadow DOM</span></a><span style="font-weight: 400"> tree</span></li>
+<li style="font-weight: 400"><a href="https://developer.mozilla.org/en-US/docs/Web/Web_Components/Using_custom_elements#Using_the_lifecycle_callbacks"><span style="font-weight: 400">connectedCallback</span></a><span style="font-weight: 400"> &#8211; lifecycle method when the element is inserted into the DOM</span></li>
+<li style="font-weight: 400"><a href="https://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/definehttps://developer.mozilla.org/en-US/docs/Web/API/CustomElementRegistry/define"><span style="font-weight: 400">customElements.define</span></a><span style="font-weight: 400"> &#8211; this is how we register our custom element with the browser</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">getTemplate</span><span style="font-weight: 400"> &#8211; Uses a </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals"><span style="font-weight: 400">template literal</span></a><span style="font-weight: 400"> to interpolate JavaScript variables within a string</span></li>
+</ul>
+<p><span style="font-weight: 400">The idea is that by sticking to just browser “primitives” and APIs we can leverage it as a strategic advantage:</span></p>
+<ul>
+<li style="font-weight: 400"><span style="font-weight: 400">Polyfills can just be removed over time and can be detected using progressive enhancement to only be loaded if needed</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">The JavaScript “standard library” is growing, and you may find that utility functions you might have used libraries like lodash for, may already exist with no library needed!</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Browsers will continue to improve and optimize “native” JavaScript</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Babel / PostCSS keeps bundle transpilation optimized so as browser demographics shift, bundles will adapt and only transpile what is needed</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Developer documentation already available through terrific resources like </span><a href="https://developer.mozilla.org/en-US/"><span style="font-weight: 400">MDN</span></a></li>
+<li style="font-weight: 400"><span style="font-weight: 400">TC39 adoption / browser vendor support for modern features and APIs is happening quickly</span></li>
+</ul>
+<p><span style="font-weight: 400">Like with any technology, there will naturally be some considerations to keep in mind:</span></p>
+<ul>
+<li style="font-weight: 400"><span style="font-weight: 400">The “platform” will never solve every use case, so routing, state management, etc. will require some sort of library, however this is often to the benefit of developer experience, which is always a justifiable exception IMO.</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Requires a bit more hands on knowledge of modern build tooling.</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Browser APIs tend to be a bit verbose, and could lead to a bit more boilerplate.</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Resources and documentation are a bit scattered about (but actively being worked on!).</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Not all tooling is “1.0” production ready, so YMMV.</span></li>
+</ul>
+<p><span style="font-weight: 400">At the end of the day, </span><i><span style="font-weight: 400">the complexity has to go somewhere</span></i><span style="font-weight: 400">, and for the particular needs of a given project, taking ownership of it may be appealing or strategically advantageous.</span></p>
+<blockquote><p><i><span style="font-weight: 400">Personally, curiosity was my main motivator at first, to see what the development experience was like, and if I would be willing to recommend it to others in knowing how robust the ecosystems are for tools like Angular and React, which leads me to the next section&#8230;</span></i></p></blockquote>
+<h1><span style="font-weight: 400">Project Evergreen (and Friends!) <img src="https://s.w.org/images/core/emoji/11/72x72/1f64c.png" alt="🙌" class="wp-smiley" style="height: 1em; max-height: 1em;" /></span></h1>
+<p><span style="font-weight: 400">Now you might have come this far and thought to yourself,</span><i><span style="font-weight: 400"> “Wait a minute, I think I missed a section. There was no npm install or something to download. How do I get started or learn more?”</span></i></p>
+<p><span style="font-weight: 400">That is exactly what the spirit of this article is about! Naturally the web will never satisfy every use case, nor should it, but as a provider of primitives and standard APIs, the web does provide a surprising amount of developer features you can start using to write apps with, and plenty to pull off the shelf to fill in the gaps. As acknowledged at this time the experience may feel very much DIY and that yes, at larger scales, it may very well make more sense to use React or Angular, for a number of reasonable reasons.</span></p>
+<p><span style="font-weight: 400">However, I think for anyone starting a new project, evaluating an “evergreen” approach is worth exploring for any developer / business case. Just as important as the technology is to me, I am keenly aware of the importance of balancing developer experiences with being able to ship modern user experiences. For that reason I happy to report that that there is good interop with all the popular tools in the JavaScript ecosystem, like:</span></p>
+<ul>
+<li style="font-weight: 400"><span style="font-weight: 400">npm / Yarn</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">ES2015+ w/ Babel</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">PostCSS</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">webpack</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">TypeScript</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Karma</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Redux</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Framework Interop (see Custom Elements Everywhere)</span></li>
+<li>Dojo</li>
+</ul>
+<p><span style="font-weight: 400">This ensures that we can get all our code splitting, lazy loading, unit testing, production bundling, etc. just like we would any other modern UI application!  <img src="https://s.w.org/images/core/emoji/11/72x72/1f389.png" alt="🎉" class="wp-smiley" style="height: 1em; max-height: 1em;" /></span></p>
+<p><span style="font-weight: 400">I’m also very happy to report that there this an active and enthusiastic community and so I would like to share a few links to resources and repositories that can further assist in the evaluation of developing an Evergreen Web Application:</span></p>
+<ul>
+<li style="font-weight: 400"><a href="https://github.com/ProjectEvergreen"><span style="font-weight: 400">Project Evergreen</span></a><span style="font-weight: 400"> &#8211; A GitHub organization of my own focused on providing learning resources by sharing code samples, developer oriented documentation, guides, and future spec tracking. Try out the <a href="https://github.com/ProjectEvergreen/create-evergreen-app">Create Evergreen App</a> project to get started with developing a modern evergreen web application today!</span></li>
+<li style="font-weight: 400"><a href="https://polymer.github.io/lit-html/"><span style="font-weight: 400">lit-html</span></a><span style="font-weight: 400"> &#8211; A small library from the Polymer team combing </span><a href="https://developer.mozilla.org/en-US/docs/Web/JavaScript/Reference/Template_literals#Tagged_templates"><span style="font-weight: 400">tagged template literals</span></a><span style="font-weight: 400"> and </span><a href="https://developer.mozilla.org/en-US/docs/Web/HTML/Element/template"><span style="font-weight: 400">&lt;template&gt;</span></a><span style="font-weight: 400"> for creating performant and dynamic HTML and SVG elements</span></li>
+<li style="font-weight: 400"><a href="https://github.com/Polymer/lit-element"><span style="font-weight: 400">lit-element</span></a><span style="font-weight: 400"> &#8211; Component “base” class for creating custom elements that uses lit-html under the hood, from the Polymer team</span></li>
+<li style="font-weight: 400"><a href="https://github.com/thepassle/create-lit-app"><span style="font-weight: 400">create-lit-app</span></a><span style="font-weight: 400"> &#8211; A starter project inspired by </span><a href="https://github.com/facebook/create-react-app#readme"><span style="font-weight: 400">create-react-app</span></a><span style="font-weight: 400">, using lit-element</span></li>
+<li style="font-weight: 400"><a href="https://github.com/WebReflection/hyperHTML"><span style="font-weight: 400">hyperHTML</span></a><span style="font-weight: 400"> &#8211; Template literal based library</span></li>
+<li style="font-weight: 400"><a href="https://github.com/LarsDenBakker/lit-html-examples"><span style="font-weight: 400">lit-html-examples</span></a><span style="font-weight: 400"> &#8211; Examples of using lit-html</span></li>
+<li style="font-weight: 400"><a href="https://custom-elements-everywhere.com/"><span style="font-weight: 400">Custom Elements Everywhere</span></a><span style="font-weight: 400"> &#8211; Site scoring interop support of libraries and frameworks with Web Components</span></li>
+</ul>
+<h1><span style="font-weight: 400">In Closing <img src="https://s.w.org/images/core/emoji/11/72x72/1f4d5.png" alt="📕" class="wp-smiley" style="height: 1em; max-height: 1em;" /></span></h1>
+<p><span style="font-weight: 400">At the end of the day, developing applications should start from a place of design and thoughtfulness, bringing the right technology to bear where and when it makes the most sense. When choosing a library or framework, think about what each one brings to the table, and how it would fit in with the application design as well as the team tasked to develop and maintain it. In addition, libraries and frameworks like React, Angular and Vue provide more than just component / syntax models, and so I urge you to deeply understand their paradigms, ecosystems, and tradeoffs.</span></p>
+<p><span style="font-weight: 400">I think if the saying </span><i><span style="font-weight: 400">“the best code is the code not written”</span></i><span style="font-weight: 400"> rings true to you, then I think you’ll be excited about what the web platform has to offer.</span></p>
+<p><span style="font-weight: 400">Happy developing!  <img src="https://s.w.org/images/core/emoji/11/72x72/270c.png" alt="✌" class="wp-smiley" style="height: 1em; max-height: 1em;" /></span></p>
+<hr />
+<p><a href="https://www.linkedin.com/in/owen-buckley-91393447/"><span style="font-weight: 400"><img class=" wp-image-2338 alignleft" src="https://js.foundation/wp-content/uploads/sites/33/2018/10/owen-buckley.jpeg" alt="" width="170" height="170" srcset="https://js.foundation/wp-content/uploads/sites/33/2018/10/owen-buckley.jpeg 200w, https://js.foundation/wp-content/uploads/sites/33/2018/10/owen-buckley-150x150.jpeg 150w, https://js.foundation/wp-content/uploads/sites/33/2018/10/owen-buckley-100x100.jpeg 100w, https://js.foundation/wp-content/uploads/sites/33/2018/10/owen-buckley-140x140.jpeg 140w" sizes="(max-width: 170px) 100vw, 170px" />Owen Buckley</span></a><span style="font-weight: 400"> is an energetic and enthusiastic software developer specializing in web application architectures, build tools, and product development. He is most passionate about helping people learn more about technology and how it can help improve their process, teams, and products. He is currently Principal Architect of UI at </span><a href="https://clarivate.com/"><span style="font-weight: 400">Clarivate Analytics</span></a><span style="font-weight: 400"> and founder of </span><a href="https://project-evergreen.thegreenhouse.io/"><span style="font-weight: 400">Project Evergreen</span></a><span style="font-weight: 400">.  </span></p>
+<p><span style="font-weight: 400">You can find him most active on </span><a href="https://github.com/thegreenhouseio"><span style="font-weight: 400">GitHub</span></a><span style="font-weight: 400">, </span><a href="https://twitter.com/thegreenhouseio"><span style="font-weight: 400">Twitter</span></a><span style="font-weight: 400">, working on the Providence Geeks </span><a href="https://www.pvdgeeks.org/"><span style="font-weight: 400">website</span></a><span style="font-weight: 400">, attending / speaking at local Rhode Island technology meetups, or maybe even cutting some tracks in his home </span><a href="http://www.analogstudios.net/"><span style="font-weight: 400">music studio</span></a><span style="font-weight: 400">. Please feel free to reach out and say hi!  <img src="https://s.w.org/images/core/emoji/11/72x72/1f44b.png" alt="👋" class="wp-smiley" style="height: 1em; max-height: 1em;" /></span></p>
+<p>The post <a rel="nofollow" href="https://js.foundation/blog/2018/10/29/the-evergreen-web-application">The Evergreen Web Application</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>Coil Joins the JS Foundation to Help Monetize Web Applications</title>
+		<link>https://js.foundation/announcements/2018/10/10/coil-joins-the-js-foundation-to-help-monetize-web-applications</link>
+		<pubDate>Wed, 10 Oct 2018 18:27:50 +0000</pubDate>
+		<dc:creator><![CDATA[Kaitlyn Barnard]]></dc:creator>
+				<category><![CDATA[Announcements]]></category>
+
+		<guid isPermaLink="false">https://js.foundation/?p=2349</guid>
+		<description><![CDATA[<p>SAN FRANCISCO – October 10, 2018 – We’re excited to announce the newest member to join the JS Foundation, Coil, a community of content creators and contributors where contributors pay a monthly subscription and while they surf the web, Coil will pay out to the creators in real time. Coil...</p>
+<p>The post <a rel="nofollow" href="https://js.foundation/announcements/2018/10/10/coil-joins-the-js-foundation-to-help-monetize-web-applications">Coil Joins the JS Foundation to Help Monetize Web Applications</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<p><img class=" wp-image-2350 alignright" src="https://js.foundation/wp-content/uploads/sites/33/2018/10/coil-logo-300x158.png" alt="" width="260" height="137" srcset="https://js.foundation/wp-content/uploads/sites/33/2018/10/coil-logo-300x158.png 300w, https://js.foundation/wp-content/uploads/sites/33/2018/10/coil-logo-768x403.png 768w, https://js.foundation/wp-content/uploads/sites/33/2018/10/coil-logo-1024x538.png 1024w" sizes="(max-width: 260px) 100vw, 260px" /></p>
+<p><span style="font-weight: 400">SAN FRANCISCO – October 10, 2018 – We’re excited to announce the newest member to join the JS Foundation, </span><a href="https://coil.com/"><span style="font-weight: 400">Coil</span></a><span style="font-weight: 400">, a community of content creators and contributors where contributors pay a monthly subscription and while they surf the web, Coil will pay out to the creators in real time.</span></p>
+<p><span style="font-weight: 400">Coil utilizes </span><a href="https://github.com/interledger/rfcs/blob/master/0028-web-monetization/0028-web-monetization.md"><span style="font-weight: 400">Web Monetization</span></a><span style="font-weight: 400">, an open source browser API that uses ILP (</span><a href="https://interledger.org/"><span style="font-weight: 400">Interledger</span></a><span style="font-weight: 400"> Protocol) micropayments to monetize a site. By enabling Web Monetization, website creators can securely receive donations while also providing rewards to any contributing users, creating a self-sustaining economy. The JavaScript reference implementation of the Interledger protocol, </span><a href="https://interledgerjs.org"><span style="font-weight: 400">Interledger.js</span></a><span style="font-weight: 400">, is one of the JS Foundation’s projects.</span></p>
+<p><span style="font-weight: 400">“We are grateful to the JS Foundation for their efforts to keep the JavaScript ecosystem both open and secure. The Foundation brings together a diverse community to support core platform technologies long-term. At Coil, our mission is to create a better business model for the web and to do that we rely heavily on JS Foundation supported projects such as Interledger.js, Webpack, ESLint, and WebdriverIO.”  &#8211; Stefan Thomas, Coil Founder &amp; President</span></p>
+<p><span style="font-weight: 400">With the addition of Coil as our newest member, we continue to build support throughout our project ecosystem and evolve the model for sustainable open source JavaScript from a single project focus to an encompassing, umbrella effort across the many projects driving innovation in this space. Keep an eye out for more great content and announcements from our newest member.</span></p>
+<p><span style="font-weight: 400">For a full list of members and information on how to join, visit: </span><a href="https://js.foundation/about/members"><span style="font-weight: 400">https://js.foundation/about/members</span></a><span style="font-weight: 400">. </span><span style="font-weight: 400">Want to keep connected? Follow us on </span><a href="https://twitter.com/the_jsf"><span style="font-weight: 400">Twitter</span></a><span style="font-weight: 400"> and </span><a href="https://www.youtube.com/channel/UCELvh4Cp3one4-mtDmzHfZw"><span style="font-weight: 400">YouTube</span></a><span style="font-weight: 400"> and be sure to subscribe to our </span><a href="https://js.foundation/news/newsletter"><span style="font-weight: 400">newsletter</span></a><span style="font-weight: 400">!</span></p>
+<p>The post <a rel="nofollow" href="https://js.foundation/announcements/2018/10/10/coil-joins-the-js-foundation-to-help-monetize-web-applications">Coil Joins the JS Foundation to Help Monetize Web Applications</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>Graphql, gRPC, and End-to-End Type Coverage</title>
+		<link>https://js.foundation/blog/2018/10/09/graphql-grpc-end-to-end-type-coverage</link>
+		<pubDate>Tue, 09 Oct 2018 15:00:09 +0000</pubDate>
+		<dc:creator><![CDATA[Kaitlyn Barnard]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[JS Devs Zone]]></category>
+
+		<guid isPermaLink="false">https://js.foundation/?p=2323</guid>
+		<description><![CDATA[<p>Today’s post is written by Thomas Ladd of StackPath as part of our JS Devs Zone blog series, which highlights technical tutorials and thought leadership on JS Foundation technologies and the greater JavaScript ecosystem written by outstanding members of the JavaScript community. Introduction At StackPath, we recently launched a new customer portal...</p>
+<p>The post <a rel="nofollow" href="https://js.foundation/blog/2018/10/09/graphql-grpc-end-to-end-type-coverage">Graphql, gRPC, and End-to-End Type Coverage</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<p><strong>Today’s post is written by Thomas Ladd of StackPath </strong><strong>as part of our JS Devs Zone blog series, which highlights technical tutorials and thought leadership on JS Foundation technologies and the greater JavaScript ecosystem written by outstanding members of the JavaScript community.</strong></p>
+<h2><span style="font-weight: 400">Introduction</span></h2>
+<p>At <a href="https://www.stackpath.com/" target="_blank" rel="noopener">StackPath</a>, we recently launched a new customer portal to allow customers to configure all of their services with us (<a href="https://www.stackpath.com/services/content-delivery-network-cdn/" target="_blank" rel="noopener">CDN</a>,<a href="https://www.stackpath.com/services/waf/" target="_blank" rel="noopener">WAF</a>, <a href="https://www.stackpath.com/services/managed-dns/" target="_blank" rel="noopener">DNS</a>, and <a href="https://www.stackpath.com/services/monitoring/" target="_blank" rel="noopener">Monitoring</a>) in one place. The project involved combining many different data sources, some existing systems and some brand new. When starting a new project, development speed is often a top priority. We wanted to be able to move quickly, but also make good investments early on that would lead to a stable product long-term, allowing us to continue adding products and features to a strong foundation. In the end, we chose to use Apollo GraphQL, gRPC, React, and TypeScript and have been very happy with the results. In this blog, we will cover why we chose these technologies and demonstrate using a simple example project.</p>
+<h2><span style="font-weight: 400">GraphQL</span></h2>
+<p><span style="font-weight: 400">When I heard we needed to “combine many different data sources” in this project, using GraphQL as an API gateway immediately came to mind as a good fit.</span></p>
+<p><span style="font-weight: 400">The main advantages we saw for using GraphQL, as opposed to hitting REST API’s directly from our React application were:</span></p>
+<ul>
+<li style="font-weight: 400"><span style="font-weight: 400">Hiding the complexity of the backend topology from the frontend and allowing the services to remain more isolated.</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Reducing the number of network round-trips, since GraphQL queries can retrieve multiple resources with a single request.</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Providing a clear way to add additional services in the future. Add additional queries and mutations to our schema, and start consuming them in our app.</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Using apollo-client and react-apollo simplifies frontend code around caching and data management.</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Flexible querying sets us up well when building future mobile and internal applications.</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">The GraphQL schema provides a holistic view of all the data available in our system.</span></li>
+</ul>
+<p><span style="font-weight: 400">(If you’d like to learn more about GraphQL, I recommend checking out </span><a href="https://graphql.org/learn/"><span style="font-weight: 400">the official tutorial</span></a><span style="font-weight: 400">.)</span></p>
+<p><span style="font-weight: 400">Our GraphQL server acts mostly as a passthrough. All of our resolvers follow the same pattern: They request some data from backend services and may do a small amount of transformation so that the resolvers return data that matches our schema. Almost no business logic exists within the resolvers.</span></p>
+<p><span style="font-weight: 400">As a result, static typing is very effective to ensure that our service responses and transformation logic matches up with our schema. Since the GraphQL schema itself is a collection of types, it is pretty easy to generate TypeScript types from that schema. We use </span><a href="https://github.com/dotansimha/graphql-code-generator"><span style="font-weight: 400">graphql-code-generator</span></a><span style="font-weight: 400"> to generate types from our schema, and then use those types when writing our resolvers.</span></p>
+<h3><span style="font-weight: 400">Example GraphQL</span></h3>
+<p><span style="font-weight: 400">Our example app will be the standard </span><a href="http://todomvc.com/"><span style="font-weight: 400">TODO MVC</span></a><span style="font-weight: 400">, supporting listing, creating, and deleting TODO items. Our GraphQL schema for these three operations is:</span><span style="font-weight: 400"><br />
+</span></p><pre class="crayon-plain-tag">const typeDefs = gql`
+ type Query {
+   todos: [Todo!]
+ }
+
+ type Mutation {
+   createTodo(input: CreateTodoInput!): CreateTodoPayload
+   deleteTodo(input: DeleteTodoInput!): DeleteTodoPayload
+ }
+
+ type Todo {
+   id: String!
+   title: String
+ }
+
+ input CreateTodoInput {
+   title: String!
+ }
+
+ type CreateTodoPayload {
+   todo: Todo
+ }
+
+ input DeleteTodoInput {
+   id: ID!
+ }
+
+ type DeleteTodoPayload {
+   success: Boolean
+ }
+`;</pre><p>
+<span style="font-weight: 400">In our package.json, we have the following scripts defined:</span></p><pre class="crayon-plain-tag">"scripts": {
+   "start": "ts-node src/index.ts",
+   "genTypes": "graphql get-schema &amp;&amp; gql-gen --schema schema.json --template graphql-codegen-typescript-template --out ./src/types.ts"
+ },</pre><p>
+<span style="font-weight: 400">With that schema, we are able to generate our types using <code>yarn genTypes</code>, which populates our types.ts file with types that we then use in our resolver implementation:</span></p><pre class="crayon-plain-tag">const resolvers: { [key: string]: any } = {
+ Query: {
+   todos: (): Promise&lt;Array&lt;Todo&gt;&gt; =&gt; {
+     // Get Todos
+   }
+ },
+ Mutation: {
+   createTodo: (
+     _obj: object,
+     args: CreateTodoMutationArgs
+   ): Promise&lt;CreateTodoPayload&gt; =&gt; {
+    // Create Todo
+   },
+
+   deleteTodo: (
+     _obj: object,
+     args: DeleteTodoMutationArgs
+   ): Promise&lt;DeleteTodoPayload&gt; =&gt; {
+     // Delete Todo
+   }
+ }
+};</pre><p>
+<span style="font-weight: 400">The body of each resolver involves making requests to our backend services, which we’ll build in the next example section.</span></p>
+<h2><span style="font-weight: 400">gRPC</span></h2>
+<p><span style="font-weight: 400">Initially, we planned on integrating with our backend services using REST APIs. However, our backend team had already standardized on using gRPC as means of communicating between services. </span></p>
+<p><span style="font-weight: 400">(For those unfamiliar with it, gRPC is a remote procedure call (RPC) framework open-sourced by Google utilizing HTTP/2 and protocol buffers. In gRPC, .proto files describe all of a service’s methods and all of the data types for inputs and outputs of those methods. From that proto file, protoc (protocol buffer compiler) generates both client and server code. You can read more about what gRPC is </span><a href="https://grpc.io/docs/guides/"><span style="font-weight: 400">here</span></a><span style="font-weight: 400">.)</span></p>
+<p><span style="font-weight: 400">We still had the option of using a REST API exposed via </span><a href="https://github.com/grpc-ecosystem/grpc-gateway"><span style="font-weight: 400">grpc-gateway</span></a><span style="font-weight: 400">, but we wanted to explore using gRPC to see what advantages it brought to the table. The main advantages we saw with gRPC were:</span></p>
+<ul>
+<li style="font-weight: 400"><span style="font-weight: 400">Really easy to generate a fully typed client for all of our backend services. We use </span><a href="https://github.com/agreatfool/grpc_tools_node_protoc_ts"><span style="font-weight: 400">this plugin</span></a><span style="font-weight: 400"> to generate the TypeScript definitions.</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">Both the backend and frontend teams being familiar with and using gRPC allowed for easy knowledge sharing.</span></li>
+</ul>
+<p><span style="font-weight: 400">Working with a typed client is a joy. Every service has a client where every method is typed with its request and response message type. We do not have to consult a separate API doc because the types for the client have all the information we and our IDE needs, and we know it is correct because it was generated from the proto file.</span></p>
+<h3><span style="font-weight: 400">Example gRPC</span></h3>
+<p><span style="font-weight: 400">We’ll define the same three operations that our GraphQL schema has in a proto file:</span></p><pre class="crayon-plain-tag">syntax = "proto3";
+
+service TodoManager {
+ rpc CreateTodo(CreateTodoRequest) returns (CreateTodoResponse) {}
+
+ rpc GetTodos(GetTodosRequest) returns (GetTodosResponse) {}
+
+ rpc DeleteTodo(DeleteTodoRequest) returns (DeleteTodoResponse) {}
+}
+
+message CreateTodoRequest {
+ string title = 1;
+}
+
+message CreateTodoResponse {
+ Todo todo = 1;
+}
+
+message GetTodosRequest {}
+
+// GetStacksRequest returns stacks
+message GetTodosResponse {
+ repeated Todo results = 2;
+}
+
+message DeleteTodoRequest {
+ string todo_id = 1;
+}
+
+message DeleteTodoResponse {
+ bool success = 1;
+}
+
+message Todo {
+ string id = 1;
+ string title = 2;
+}</pre><p>
+<span style="font-weight: 400">With this todo.proto file, we use protoc to generate both the client and a skeleton for the service that just requires filling in the implementation for each method.</span></p><pre class="crayon-plain-tag">#!/bin/sh
+
+PROTOC_PLUGIN="node_modules/.bin/grpc_tools_node_protoc_plugin"
+OUT_DIR="."
+
+./node_modules/.bin/grpc_tools_node_protoc \
+ --js_out="import_style=commonjs,binary:${OUT_DIR}" \
+ --grpc_out="${OUT_DIR}" \
+ --plugin="protoc-gen-grpc=${PROTOC_PLUGIN}" \
+ src/todo.proto
+
+protoc \
+ --plugin=protoc-gen-ts=./node_modules/.bin/protoc-gen-ts \
+ --ts_out="${OUT_DIR}" \
+ src/todo.proto</pre><p>
+<span style="font-weight: 400">Running this script generates four files:</span></p>
+<ol>
+<li style="font-weight: 400"><span style="font-weight: 400">todo_grpc_pb.d.ts</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">todo_grpc_pb.js</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">todo_pb.d.ts</span></li>
+<li style="font-weight: 400"><span style="font-weight: 400">todo_pb.js</span></li>
+</ol>
+<p><span style="font-weight: 400">The todo_pb.js contains the message objects and todo_grpc_pb.js contains the service/client object. The .d.ts files are TypeScript definitions for each one. A simple in-memory implementation of our service looks like this:</span></p><pre class="crayon-plain-tag">import { TodoManagerService } from "./todo_grpc_pb";
+import {
+ CreateTodoRequest,
+ CreateTodoResponse,
+ GetTodosRequest,
+ GetTodosResponse,
+ DeleteTodoRequest,
+ DeleteTodoResponse,
+ Todo
+} from "./todo_pb";
+import grpc, { ServerUnaryCall, sendUnaryData } from "grpc";
+
+let id = 1;
+let todos: Array&lt;Todo&gt; = [];
+
+const createTodo = (
+ call: ServerUnaryCall&lt;CreateTodoRequest&gt;,
+ callback: sendUnaryData&lt;CreateTodoResponse&gt;
+) =&gt; {
+ const title = call.request.getTitle();
+ const todo = new Todo();
+ todo.setId(String(id++));
+ todo.setTitle(title);
+ todos = [...todos, todo];
+
+ const response = new CreateTodoResponse();
+ response.setTodo(todo);
+ callback(null, response);
+};
+
+const getTodos = (
+ call: ServerUnaryCall&lt;GetTodosRequest&gt;,
+ callback: sendUnaryData&lt;GetTodosResponse&gt;
+) =&gt; {
+ const response = new GetTodosResponse();
+ response.setResultsList(todos);
+
+ callback(null, response);
+};
+
+const deleteTodo = (
+ call: ServerUnaryCall&lt;DeleteTodoRequest&gt;,
+ callback: sendUnaryData&lt;DeleteTodoResponse&gt;
+) =&gt; {
+ const id = call.request.getTodoId();
+ todos = todos.filter(item =&gt; item.getId() !== id);
+ const response = new DeleteTodoResponse();
+ response.setSuccess(true);
+
+ callback(null, response);
+};
+
+function main() {
+ const server = new grpc.Server();
+ server.addService(TodoManagerService, { createTodo, getTodos, deleteTodo });
+ server.bind("0.0.0.0:50051", grpc.ServerCredentials.createInsecure());
+ server.start();
+}
+
+main();</pre><p>
+<span style="font-weight: 400">Returning to our GraphQL server, we can now import the gRPC client and fill in the resolver implementation.</span></p><pre class="crayon-plain-tag">import {
+ GetTodosRequest,
+ CreateTodoRequest,
+ DeleteTodoRequest
+} from "../../grpc/src/todo_pb";
+import { createClient } from "../../grpc/src/client";
+
+const todoClient = createClient();
+
+const resolvers: { [key: string]: any } = {
+ Query: {
+   todos: (): Promise&lt;Array&lt;Todo&gt;&gt; =&gt; {
+     const request = new GetTodosRequest();
+     return new Promise((resolve, reject) =&gt; {
+       todoClient.getTodos(request, (error, response) =&gt; {
+         if (error) {
+           reject(error);
+         }
+         return resolve(response.toObject().resultsList);
+       });
+     });
+   }
+ },
+ Mutation: {
+   createTodo: (
+     _obj: object,
+     args: CreateTodoMutationArgs
+   ): Promise&lt;CreateTodoPayload&gt; =&gt; {
+     const request = new CreateTodoRequest();
+     request.setTitle(args.input.title);
+     return new Promise((resolve, reject) =&gt; {
+       todoClient.createTodo(request, (error, response) =&gt; {
+         if (error) {
+           reject(error);
+         }
+         return resolve(response.toObject());
+       });
+     });
+   },
+
+   deleteTodo: (
+     _obj: object,
+     args: DeleteTodoMutationArgs
+   ): Promise&lt;DeleteTodoPayload&gt; =&gt; {
+     const request = new DeleteTodoRequest();
+     request.setTodoId(args.input.id);
+     return new Promise((resolve, reject) =&gt; {
+       todoClient.deleteTodo(request, (error, response) =&gt; {
+         if (error) {
+           reject(error);
+         }
+         return resolve(response.toObject());
+       });
+     });
+   }
+ }
+};</pre><p>
+<span style="font-weight: 400">We now have a fully functional GraphQL server that communicates to a backend service using gRPC.</span></p>
+<h2><span style="font-weight: 400">React</span></h2>
+<p><span style="font-weight: 400">We did not spend much time discussing this choice. Our team’s experience was heavily weighted towards React, and we did not have any compelling reasons to switch to anything else. In order to achieve type safety between the GraphQL server and the frontend, we use </span><a href="https://github.com/apollographql/apollo-cli"><span style="font-weight: 400">Apollo CLI’s</span></a><span style="font-weight: 400"> codegen:generate command to generate types for all of our queries.</span></p>
+<h3><span style="font-weight: 400">Example React</span></h3>
+<p><span style="font-weight: 400">We will need these three queries for our app:</span></p><pre class="crayon-plain-tag">query GetTodos {
+ todos {
+   id
+   title
+ }
+}
+
+mutation CreateTodo($input: CreateTodoInput!) {
+ createTodo(input: $input) {
+   todo {
+     id
+     title
+   }
+ }
+}
+
+mutation DeleteTodo($input: DeleteTodoInput!) {
+ deleteTodo(input: $input) {
+   success
+ }
+}</pre><p>
+<span style="font-weight: 400">From these queries and our schema definition, we can generate types for these queries. We take this a step further and generate the </span><a href="https://github.com/apollographql/react-apollo"><span style="font-weight: 400">react-apollo</span></a><span style="font-weight: 400"> components for each operation using </span><a href="https://github.com/TLadd/apollo-typed-components"><span style="font-weight: 400">apollo-typed-components</span></a><span style="font-weight: 400">, which gives us GetTodosQuery, CreateTodoMutation, and DeleteTodoMutation components in ApolloComps.tsx.</span></p>
+<p><span style="font-weight: 400">Note that TypeScript uses .ts and .tsx file extensions rather than .js and .jsx extensions. Unlike .jsx/.js, however, you’re required to use .tsx when a file contains any JSX so TypeScript can disambiguate between JSX and other TypeScript language features. For instance, angle bracket assertions like:</span></p><pre class="crayon-plain-tag">const foo = &lt;Foo&gt;bar</pre><p>
+<span style="font-weight: 400">are valid in a .ts file, but not a .tsx file. Instead, the <code>as</code> operator can be used to rewrite the expression as:</span></p><pre class="crayon-plain-tag">const foo = bar as Foo</pre><p>
+<span style="font-weight: 400">Our generated Query/Mutation components in ApolloComps.tsx all look similar to this:</span><span style="font-weight: 400"><br />
+</span></p><pre class="crayon-plain-tag">/* Generated using apollo-typed-components */
+import * as React from "react";
+import { Mutation } from "react-apollo";
+import { CreateTodo } from "./queries.graphql"
+import { CreateTodo as CreateTodoType, CreateTodoVariables } from "types";
+
+type GetComponentProps&lt;T&gt; = T extends React.Component&lt;infer P&gt; ? P : never;
+type Omit&lt;T, K&gt; = Pick&lt;T, Exclude&lt;keyof T, K&gt;&gt;;
+
+class CreateTodoMutationClass extends Mutation&lt;CreateTodoType, CreateTodoVariables&gt; {};
+
+export const CreateTodoMutation = (props: Omit&lt;GetComponentProps&lt;CreateTodoMutationClass&gt;, "mutation"&gt;) =&gt; &lt;CreateTodoMutationClass mutation={CreateTodo} {...props} /&gt;;</pre><p>
+<span style="font-weight: 400">The CreateTodoType and the CreateTodoVariables are types generated from Apollo’s codegen:generate command. CreateTodoVariables is the type for the arguments the mutation expects, and CreateTodoType is the type for the value the mutation returns. CreateTodoMutationClass is declared by simply extending react-apollo’s Mutation component with these two types, giving us a component to use whose <code>variables</code> and <code>data</code> props are typed. The component we actually export is CreateTodoMutation, which is a wrapper around CreateTodoMutationClass that passes in the CreateTodo query defined above in queries.graphql. In order to property type CreateTodoMutation, we use two utility types: GetComponentProps and Omit. GetComponentProps takes a React component T and returns a type for the props that component T expects. The Omit utility type takes an object of type T and a key of type K, and returns a type identical to T, but with the K key removed. Combining these two utility types, we express CreateTodoMutation’s props type as the type of CreateTodoMutationClass’s props type with the mutation prop omitted, since it is being automatically supplied in the wrapper.</span></p>
+<p><span style="font-weight: 400">Between the mutation definition, the types, and the components, there are admittedly quite a few moving pieces in ApolloComps.tsx. Thankfully, generating these files removes the onus from the developer to combine all of these pieces correctly for each operation and instead leaves us with a single, consumable component for each operation. </span></p>
+<p><span style="font-weight: 400">Utilizing all three of our generated components, our frontend code is then:</span></p><pre class="crayon-plain-tag">import React, { Component } from "react";
+import { GetTodos } from "./queries.graphql";
+import { GetTodos_todos } from "./types";
+import {
+ GetTodosQuery,
+ CreateTodoMutation,
+ DeleteTodoMutation
+} from "./ApolloComps";
+
+type TodosListProps = {
+ onDelete: (id: string) =&gt; {};
+ todos: Array&lt;GetTodos_todos&gt;;
+};
+const TodosList = ({ onDelete, todos }: TodosListProps) =&gt; {
+ return (
+   &lt;section className="main"&gt;
+     &lt;ul className="todo-list"&gt;
+       {todos.map(todo =&gt; (
+         &lt;li key={todo.id}&gt;
+           &lt;div className="view"&gt;
+             &lt;label&gt;{todo.title}&lt;/label&gt;
+             &lt;button className="destroy" onClick={() =&gt; onDelete(todo.id)} /&gt;
+           &lt;/div&gt;
+         &lt;/li&gt;
+       ))}
+     &lt;/ul&gt;
+   &lt;/section&gt;
+ );
+};
+
+type AppProps = {
+ onCreate: (title: string) =&gt; {};
+ onDelete: (id: string) =&gt; {};
+ todos: Array&lt;GetTodos_todos&gt;;
+};
+type AppState = {
+ newTodo: string;
+};
+
+class App extends Component&lt;AppProps, AppState&gt; {
+ state = {
+   newTodo: ""
+ };
+
+ render() {
+   const { onCreate, onDelete, todos } = this.props;
+
+   return (
+     &lt;section className="todoapp"&gt;
+       &lt;header className="header"&gt;
+         &lt;h1&gt;{"todos"}&lt;/h1&gt;
+         &lt;input
+           className="new-todo"
+           placeholder="What needs to be done?"
+           value={this.state.newTodo}
+           onKeyDown={(e: React.KeyboardEvent) =&gt; {
+             if (e.keyCode !== 13) {
+               return;
+             }
+             e.preventDefault();
+
+             var val = this.state.newTodo.trim();
+
+             if (val) {
+               onCreate(val);
+               this.setState({ newTodo: "" });
+             }
+           }}
+           onChange={(e: React.ChangeEvent&lt;HTMLInputElement&gt;) =&gt;
+             this.setState({ newTodo: e.target.value })
+           }
+           autoFocus={true}
+         /&gt;
+       &lt;/header&gt;
+       {todos.length ? &lt;TodosList onDelete={onDelete} todos={todos} /&gt; : null}
+     &lt;/section&gt;
+   );
+ }
+}
+
+const ApolloApp = () =&gt; {
+ return (
+   &lt;GetTodosQuery&gt;
+     {({ data }) =&gt; (
+       &lt;DeleteTodoMutation&gt;
+         {deleteTodo =&gt; (
+           &lt;CreateTodoMutation&gt;
+             {createTodo =&gt; {
+               if (!data || !data.todos) {
+                 return null;
+               }
+
+               const todos = data.todos;
+
+               return (
+                 &lt;App
+                   onCreate={(title: string) =&gt;
+                     createTodo({
+                       variables: {
+                         input: {
+                           title
+                         }
+                       },
+                       update: (cache, response) =&gt; {
+                         const createdTodo =
+                           response.data &amp;&amp;
+                           response.data.createTodo &amp;&amp;
+                           response.data.createTodo.todo;
+                         if (createdTodo) {
+                           cache.writeQuery({
+                             query: GetTodos,
+                             data: {
+                               todos: [...todos, createdTodo]
+                             }
+                           });
+                         }
+                       }
+                     })
+                   }
+                   onDelete={(id: string) =&gt;
+                     deleteTodo({
+                       variables: {
+                         input: {
+                           id
+                         }
+                       },
+                       update: cache =&gt; {
+                         cache.writeQuery({
+                           query: GetTodos,
+                           data: {
+                             todos: todos.filter(item =&gt; item.id !== id)
+                           }
+                         });
+                       }
+                     })
+                   }
+                   todos={todos}
+                 /&gt;
+               );
+             }}
+           &lt;/CreateTodoMutation&gt;
+         )}
+       &lt;/DeleteTodoMutation&gt;
+     )}
+   &lt;/GetTodosQuery&gt;
+ );
+};
+
+export default ApolloApp;</pre><p>
+<h2><span style="font-weight: 400">Closing Thoughts</span></h2>
+<p><span style="font-weight: 400">By using Apollo GraphQL, gRPC, React, and TypeScript, we have a lot of flexibility when querying our data but are still able to keep our services fairly isolated from one another. Additionally, by achieving end-to-end type coverage, it is very difficult to accidentally misuse data or introduce a breaking change. If we do need to introduce a breaking change, it is easy to determine which parts of our system need to be fixed before making that change.</span></p>
+<p><span style="font-weight: 400">One of our main takeaways is how powerful enforceable data descriptions are (in this case, the GraphQL schema and the gRPC proto files). Being able to generate types and enforce that your implementation matches the spec ensures you don’t lose safety across the network in different parts of the system. Regardless of the specific technologies at play, type safety between services and clients really boosts confidence in overall system stability.</span><span style="font-weight: 400"><br />
+</span><span style="font-weight: 400"><br />
+</span><span style="font-weight: 400">Example code at </span><a href="https://github.com/TLadd/todo-graphql-grpc"><span style="font-weight: 400">https://github.com/TLadd/todo-graphql-grpc</span></a><span style="font-weight: 400">   </span></p>
+<p>The post <a rel="nofollow" href="https://js.foundation/blog/2018/10/09/graphql-grpc-end-to-end-type-coverage">Graphql, gRPC, and End-to-End Type Coverage</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>The Node.js Foundation and JS Foundation Announce an Intent to Merge (A Message from the Boards and a FAQ around the Announcement)</title>
+		<link>https://js.foundation/announcements/2018/10/04/the-node-js-foundation-and-js-foundation-announce-an-intent-to-merge-a-message-from-the-boards-and-a-faq-around-the-announcement</link>
+		<pubDate>Thu, 04 Oct 2018 15:30:20 +0000</pubDate>
+		<dc:creator><![CDATA[zkeaton]]></dc:creator>
+				<category><![CDATA[Announcements]]></category>
+
+		<guid isPermaLink="false">https://js.foundation/?p=2330</guid>
+		<description><![CDATA[<p>*The introduction of this blog comes from the Board of Directors for both the Node.js and JS Foundations. Introduction Today, the Node.js Foundation and JS Foundation announced an intent to merge. An intent to merge means that we the boards of both Foundations have agreed to public discussions related to...</p>
+<p>The post <a rel="nofollow" href="https://js.foundation/announcements/2018/10/04/the-node-js-foundation-and-js-foundation-announce-an-intent-to-merge-a-message-from-the-boards-and-a-faq-around-the-announcement">The Node.js Foundation and JS Foundation Announce an Intent to Merge (A Message from the Boards and a FAQ around the Announcement)</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<p><em>*The introduction of this blog comes from the Board of Directors for both the Node.js and JS Foundations.</em></p>
+<p><strong>Introduction</strong></p>
+<p>Today, the Node.js Foundation and JS Foundation announced an <a href="https://www.linuxfoundation.org/news/2018/10/node-js-foundation-and-js-foundation-announce-intent-to-create-joint-organization-to-support-the-broad-node-js-and-javascript-communities/">intent to merge</a>. An intent to merge means that we the boards of both Foundations have agreed to public discussions related to a possible merger. <em>We have not made any formal decisions at this point regarding a new or merged Foundation and its potential organizational structure, governance policies, technical framework or leadership. This will be formalized based on feedback from the Node.js and JavaScript communities.</em></p>
+<p>After having two separate Foundations for two years, we believe there needs to be a tighter integration between both Foundations to enable greater support for Node.js and a broader range of JavaScript projects. We look forward to continuing to support the healthy growth of the JavaScript ecosystem and look forward to the potential of supporting an even wider range of projects that the JavaScript ecosystem is dependent on as well as projects that focus on new areas of growth for JavaScript.</p>
+<p>If you would like to participate in our public discussions on the topic, we encourage you to join our first public meeting, which is happening today at 1 pm PDT. Submit your questions via <a href="https://goo.gl/forms/S8A3OdapYz0qG1Gy1">this form</a> and join the livestream, which will happen on the <a href="https://www.youtube.com/c/nodejs+foundation/live">Node.js Foundation YouTube channel</a>.</p>
+<p>We will also hold a Q&amp;A session during Node+JS Interactive from 7:30am &#8211; 8:30am PT, October 10 at West Ballroom A. Anyone attending <a href="https://events.linuxfoundation.org/events/node-js-interactive-2018/">Node+JS Interactive </a>is welcome to attend; questions can be submitted in advance anonymously via this <span lang="EN"><a href="https://goo.gl/forms/d1Np1ZhUOBpWY3No1">Google Form</a></span> by email at pr@nodejs.org.</p>
+<p>Below is an FAQ to help answer general questions you may have. If you have additional questions, please submit to the Google Form above.</p>
+<p>We look forward to the next chapter of Node.js and the JavaScript ecosystem &#8211; we hope you do too!</p>
+<p><strong><img class="size-medium wp-image-2334 aligncenter" src="https://js.foundation/wp-content/uploads/sites/33/2018/10/faq-2643072_1920-300x164.jpg" alt="" width="300" height="164" srcset="https://js.foundation/wp-content/uploads/sites/33/2018/10/faq-2643072_1920-300x164.jpg 300w, https://js.foundation/wp-content/uploads/sites/33/2018/10/faq-2643072_1920-768x419.jpg 768w, https://js.foundation/wp-content/uploads/sites/33/2018/10/faq-2643072_1920-1024x559.jpg 1024w" sizes="(max-width: 300px) 100vw, 300px" /><br />
+FAQ</strong></p>
+<p><strong>Q: What is being announced?</strong></p>
+<p>The Node.js Foundation and JS Foundation are announcing an intent to merge and intend to moderate a panel at Node+JS Interactive to answer questions and solicit community input on the possible structure of a new Foundation.</p>
+<p><strong>Q: How is intent to merge different than merging?</strong></p>
+<p>An intent to merge means that the boards have agreed to public discussions related to a possible merger to seek input from the community. The board of directors have not made any formal decisions at this point regarding a new or merged Foundation and its potential organizational structure, governance policies, technical framework or leadership.</p>
+<p><strong>Q: Why did the boards decide to pursue an intent to merge? </strong></p>
+<p>The boards decided to pursue an intent to merge to help:</p>
+<ul>
+<li class="graf graf--li">Enhanced operational excellence;</li>
+<li class="graf graf--li">Streamlined member engagement;</li>
+<li class="graf graf--li">Increased collaboration across the JavaScript ecosystem and affiliated standards bodies;</li>
+<li class="graf graf--li">An “umbrella” project structure that brings stronger collaboration across all JavaScript projects; and</li>
+<li class="graf graf--li">A single, clear home available for any project in the JavaScript ecosystem rather than projects having to choose between the JS and Node.js Foundation.</li>
+</ul>
+<p><strong>Q: How will this merger impact and benefit the larger JavaScript communities?</strong></p>
+<p>The intent here is to increase collaboration in the JavaScript ecosystem for continued and healthy growth both from a technology and standards perspective.</p>
+<p><strong>Q: How will this impact the technical direction of the Node.js Project and the projects that fall under the JS Foundation, like jQuery, ESLint, Appium?</strong></p>
+<p>This will not change the technical independence or autonomy for Node.js or any keyJS Foundation projects like jQuery, ESLint or Appium.</p>
+<p><strong>Q: What are the next steps in the intent to merge process? </strong></p>
+<ul>
+<li>The initial public discussion takes place today at 1pm PDT &#8211; see info on how to submit questions and join the discussion above.</li>
+<li>An open public discussion at Node+JS Interactive for community questions and feedback &#8211; see info on how to submit questions and join the discussion above.</li>
+<li>A webinar following Node+JS Interactive to gather additional community input (timing is currently being discussed).</li>
+<li>Begin ED search, agree on a name of merged entity.</li>
+<li>Work with the community to develop self-governance and project levels.</li>
+<li>Execute merger legal documents.</li>
+<li>Identify staffing to run merged entity.</li>
+</ul>
+<p>The post <a rel="nofollow" href="https://js.foundation/announcements/2018/10/04/the-node-js-foundation-and-js-foundation-announce-an-intent-to-merge-a-message-from-the-boards-and-a-faq-around-the-announcement">The Node.js Foundation and JS Foundation Announce an Intent to Merge (A Message from the Boards and a FAQ around the Announcement)</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></content:encoded>
+			</item>
+		<item>
+		<title>The Top Ten Reasons to Attend Node+JS Interactive</title>
+		<link>https://js.foundation/blog/2018/09/26/the-top-ten-reasons-to-attend-nodejs-interactive</link>
+		<pubDate>Wed, 26 Sep 2018 18:14:03 +0000</pubDate>
+		<dc:creator><![CDATA[Kaitlyn Barnard]]></dc:creator>
+				<category><![CDATA[Blog]]></category>
+		<category><![CDATA[Events]]></category>
+
+		<guid isPermaLink="false">https://js.foundation/?p=2320</guid>
+		<description><![CDATA[<p>Node+JS Interactive is less than a month away, and we wanted to share our top picks for attending the event. Friendly reminder: Ticket prices go up starting September 28. Be sure to register before then to save $200! 1. Real-world stories for real-world solutions: This is a true story of 50+...</p>
+<p>The post <a rel="nofollow" href="https://js.foundation/blog/2018/09/26/the-top-ten-reasons-to-attend-nodejs-interactive">The Top Ten Reasons to Attend Node+JS Interactive</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></description>
+				<content:encoded><![CDATA[<p><span style="font-weight: 400"><a href="https://events.linuxfoundation.org/events/node-js-interactive-2018/?utm_source=jsf-blog&amp;utm_medium=blog&amp;utm_campaign=jsint18&amp;utm_content=top10">Node+JS Interactive</a> is less than a month away, and we wanted to share our top picks for attending the event. </span></p>
+<p><span style="font-weight: 400">Friendly reminder: Ticket prices go up starting September 28. Be sure </span><a href="https://events.linuxfoundation.org/events/node-js-interactive-2018/attend/register/"><span style="font-weight: 400">to register </span></a><span style="font-weight: 400">before then to save $200!</span></p>
+<p><b>1. Real-world stories for real-world solutions</b><span style="font-weight: 400">: This is a true story of 50+ speakers, picked to present, share their knowledge work together&#8230;.Find out what happens, when people from around the world… Really, though, the conference provides a place for you to learn how companies like Netflix, NPR, Disney, Walmart and more are using JavaScript technologies to solve businesses problems and create new opportunities for growth. </span></p>
+<p><b>2. Beautiful Vancouver, Canada: </b><span style="font-weight: 400">The setting for this event is out of this world gorgeous. The Vancouver Convention Centre, located downtown right on the water, is perfect for an early morning run, grabbing some </span><a href="https://events.linuxfoundation.org/events/node-js-interactive-2018/venue_travel/places-to-eat/"><span style="font-weight: 400">delicious food</span></a><span style="font-weight: 400">, going for a scroll, or just quietly reflecting and taking in this beautiful view outside the conference center (see below). </span></p>
+<p><b>3. The perfect amount of options: </b><span style="font-weight: 400">JavaScript is used throughout the IT stack, so we are offering plenty of different topics to fit your needs, including accessibility, application development and APIs, artificial intelligence and machine learning, community and developers, serverless, internationalization, IoT, performance, progressive web apps, security, standards, testing tools and infrastructure and more.</span></p>
+<p><b>4. Workshops, more workshops, everyone likes workshops: </b><span style="font-weight: 400">Along with the amazing keynotes, panels and sessions, we will have hands-on workshops that cover everything from building effective communication techniques in open source community environments to mastering serverless with JS architecture. View the full schedule of talks </span><a href="https://events.linuxfoundation.org/events/node-js-interactive-2018/agenda/schedule/"><span style="font-weight: 400">here</span></a><span style="font-weight: 400">. </span></p>
+<p><b>5. Node.js Community Corner: </b><span style="font-weight: 400">Do you want to start participating in the Node.js community? Get deeper involved? The Node.js Community corner is perfect for you. It will feature talks about what is happening within the Node.js Project through a series of talks on topics curated BY the Node.js community. The Node.js Community will also host a </span><a href="https://www.youtube.com/watch?v=r_jTeI2Idm4&amp;list=PLfMzBWSH11xYGvu6M4pBX_BjGnKE25JRP"><span style="font-weight: 400">Code+Learn </span></a><span style="font-weight: 400">(currently booked, but waitlist available) and a </span><a href="https://events.linuxfoundation.org/events/node-js-interactive-2018/agenda/add-on-events/"><span style="font-weight: 400">Collaboration Summit </span></a><span style="font-weight: 400">after the conference. </span></p>
+<p><b>6. Career Development and Mentoring: </b><span style="font-weight: 400">If you are looking for guidance on how to build up your JavaScript skills, how to grow your career or even how to get more involved in the JavaScript ecosystem, we want to help. We’ll be hosting a speed networking and mentoring session and job fair. More on both of these activities </span><a href="https://medium.com/@nodejs/build-your-career-at-node-js-interactive-248716b43d5e"><span style="font-weight: 400">here</span></a><span style="font-weight: 400">. </span></p>
+<p><b>7. Top Minds Under One Roof: </b><span style="font-weight: 400">This event is meant to unite the industry’s most respected domain experts and key maintainers behind the most popular and important JavaScript projects. They’ll share their first-hand insights on project roadmaps and what’s ahead. You’ll get a better understanding and be a step ahead other developers on what’s next and future new development trends. </span></p>
+<p><b>8. It Goes Beyond the Tech: <span style="font-weight: 400">We’ll be covering a lot of interesting tech talks during this conference, but also look at non-technical factors that impact our communities. We’ll examine things like onboarding processes, communication best practices, diversity and inclusivity across our projects, mentorship opportunities and more. We’ll look closely at the intention behind our work, what changes to make and actions to take to improve. We’ll get inspiration from from </span><a href="https://jsi2018.sched.com/speaker/april_wensel.1yhj312d?iframe=yes&amp;w=100%&amp;sidebar=yes&amp;bg=no"><span style="font-weight: 400">April Wensel</span></a><span style="font-weight: 400"> on compassionate coding and </span><a href="https://jsi2018.sched.com/speaker/keerthanakrishnan?iframe=yes&amp;w=100%&amp;sidebar=yes&amp;bg=no"><span style="font-weight: 400">Keerthana Krishnan</span></a><span style="font-weight: 400"> on building websites for the invisible majority. </span></b></p>
+<p><b>9. <a href="http://bit.ly/2w1PNfa">Meet Your Peers!</a><span style="font-weight: 400">: One of the greatest things about any conference &#8212; especially an open source event &#8212; is the chance to meet folks that you work with online every day in-person. </span></b></p>
+<p><b>10. Make a Trip Out of It: </b><span style="font-weight: 400">Yes, Vancouver, BC is beautiful, we’ve covered this, but in order to make the trip easier for you, we are offering</span><a href="https://events.linuxfoundation.org/events/node-js-interactive-2018/attend/child-care/"><span style="font-weight: 400"> free child care</span></a><span style="font-weight: 400">. If you would like to make a trip with your family, we want to make it a little easier for you. A few fun things to do in Vancouver include: walking, jogging or riding a bike through </span><a href="https://www.tripadvisor.com/Attraction_Review-g154943-d155652-Reviews-Stanley_Park-Vancouver_British_Columbia.html"><span style="font-weight: 400">Stanley Park</span></a><span style="font-weight: 400">; checking out some of the beautiful gardens like VanDusen Botanical Garden; or going whale watching. Vancouver is also one of North America’s top foodie cities.</span></p>
+<p>The post <a rel="nofollow" href="https://js.foundation/blog/2018/09/26/the-top-ten-reasons-to-attend-nodejs-interactive">The Top Ten Reasons to Attend Node+JS Interactive</a> appeared first on <a rel="nofollow" href="https://js.foundation">JS Foundation</a>.</p>
+]]></content:encoded>
+			</item>
+	</channel>
+</rss>
