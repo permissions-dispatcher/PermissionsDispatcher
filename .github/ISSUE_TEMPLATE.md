@@ -1,6 +1,7 @@
 ## FAQs
 
-<!--
+### 
+<!--https://www.linkedin.com/sharing/share-offsite/?url=https%3A%2F%2Fjs.foundation%2Fblog%2F2018%2F03%2F22%2Fhow-to-run-iot-js-on-the-raspberry-pi-0
 Before you add the issue, please make sure to read over the following Frequently Asked Questions:
 
 **"XxxPermissionsDispatcher class is not generated"**
