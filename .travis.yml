@@ -26,9 +26,7 @@ before_install:
 
 script: ./gradlew clean check --stacktrace
 
-after_success:
-  - ./scripts/deploy_snapshot.sh
-  - ./scripts/push-to-github-io.sh
+after_success: ./scripts/deploy_snapshot.sh
 
 deploy:
   skip_cleanup: true
