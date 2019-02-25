@@ -8,9 +8,7 @@ PermissionsDispatcher provides a simple annotation-based API to handle runtime p
 
 This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code clean and safe.
 
-## Usage
-
-> [Java ver](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/java_usage.md)
+## Usage([Java](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/java_usage.md))
 
 Here's a minimum example, in which you register a `MainActivity` which requires `Manifest.permission.CAMERA`.
 
