@@ -8,9 +8,9 @@
   - Doc: Publish document site! https://permissions-dispatcher.github.io
   - Fix: Any is translated to java.lang.Object [#545](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/545)
   - Add: Support Java incremental compilation [#473](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/473)
+  - Update: Drop Xiaomi support [#548](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/548)
 - 4.1.0 2018/12/07
   - Fix: compile time validation for detecting OnNeverAskAgain with special permissions [#549](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/549)
-  - Update: Drop Xiaomi support [#548](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/548)
   - Fix: Fix CallNeedsPermissionDetector to scan only annotated classes [#536](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/536)
 - 4.0.0 2018/10/20
   - Update: [Update androidx ver to 1.0.0](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/530)
