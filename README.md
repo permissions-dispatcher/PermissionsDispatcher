@@ -95,18 +95,29 @@ Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/ma
 
 Thankfully we've got hundreds of [users](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/users.md) around the world!
 
-## Download
+## Installation
 
-**NOTE: 4.x only supports [Jetpack](https://developer.android.com/jetpack/). If you use appcompat 3.x which is almost stable is the way to go.**
+NOTE: 4.x only supports [Jetpack](https://developer.android.com/jetpack/). If you still use appcompat 3.x is the way to go.
 
 To add PermissionsDispatcher to your project, include the following in your **app module** `build.gradle` file:
 
-`${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/maven/permissionsdispatcher/images/download.svg)](https://bintray.com/hotchemi/maven/permissionsdispatcher/_latestVersion)
+`${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/org.permissionsdispatcher/permissionsdispatcher/images/download.svg) ](https://bintray.com/hotchemi/org.permissionsdispatcher/permissionsdispatcher/_latestVersion)
 
 ```groovy
 dependencies {
-  implementation "com.github.hotchemi:permissionsdispatcher:${latest.version}"
-  kapt "com.github.hotchemi:permissionsdispatcher-processor:${latest.version}"
+  implementation "org.permissionsdispatcher:permissionsdispatcher:${latest.version}"
+  annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:${latest.version}"
+}
+```
+
+With Kotlin:
+
+```groovy
+apply plugin: 'kotlin-kapt'
+
+dependencies {
+  implementation "org.permissionsdispatcher:permissionsdispatcher:${latest.version}"
+  kapt "org.permissionsdispatcher:permissionsdispatcher-processor:${latest.version}"
 }
 ```
 
