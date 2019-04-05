@@ -47,7 +47,7 @@ abstract class JavaBaseProcessorUnit : JavaProcessorUnit {
 
     private fun createTypeSpec(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): TypeSpec {
         return TypeSpec.classBuilder(rpe.generatedClassName)
-                .addOriginatingElement(rpe.e) // for incremental annotation processing
+                .addOriginatingElement(rpe.element) // for incremental annotation processing
                 .addModifiers(Modifier.FINAL)
                 .addFields(createFields(rpe, requestCodeProvider))
                 .addMethod(createConstructor())
