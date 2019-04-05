@@ -9,20 +9,6 @@ import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.type.TypeMirror
 
-/**
- * Class Reference to the kotlin.Metadata annotation class,
- * used by the processor to tell apart Kotlin from Java files during code generation.
- */
-val kotlinMetadataClass: Class<Annotation>? by lazy {
-    try {
-        @Suppress("UNCHECKED_CAST")
-        Class.forName("kotlin.Metadata") as Class<Annotation>
-    } catch (e: Throwable) {
-        // Java-only environment, or outdated Kotlin version
-        null
-    }
-}
-
 fun typeMirrorOf(className: String): TypeMirror = ELEMENT_UTILS.getTypeElement(className).asType()
 
 fun typeNameOf(it: Element): TypeName = TypeName.get(it.asType())
