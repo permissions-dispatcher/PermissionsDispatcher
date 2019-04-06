@@ -29,6 +29,7 @@ artifacts {
 dependencies {
     compile "androidx.annotation:annotation:$ANDROIDX_LIBRARY_VERSION"
     compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
+    compile "org.jetbrains.kotlinx:kotlinx-metadata-jvm:$KOTLIN_METADATA_VERSION"
     compile "com.squareup:javapoet:$JAVAPOET_VERSION"
     compile "com.squareup:kotlinpoet:$KOTLINPOET_VERSION"
     compile project(path: ':annotation')

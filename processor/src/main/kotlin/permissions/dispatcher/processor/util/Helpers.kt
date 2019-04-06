@@ -2,26 +2,18 @@ package permissions.dispatcher.processor.util
 
 import com.squareup.javapoet.CodeBlock
 import com.squareup.javapoet.TypeName
+import kotlinx.metadata.ClassName
+import kotlinx.metadata.Flag
+import kotlinx.metadata.Flags
+import kotlinx.metadata.KmClassVisitor
+import kotlinx.metadata.jvm.KotlinClassHeader
+import kotlinx.metadata.jvm.KotlinClassMetadata
 import permissions.dispatcher.NeedsPermission
 import permissions.dispatcher.processor.ELEMENT_UTILS
 import permissions.dispatcher.processor.RuntimePermissionsElement
 import javax.lang.model.element.Element
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.type.TypeMirror
-
-/**
- * Class Reference to the kotlin.Metadata annotation class,
- * used by the processor to tell apart Kotlin from Java files during code generation.
- */
-val kotlinMetadataClass: Class<Annotation>? by lazy {
-    try {
-        @Suppress("UNCHECKED_CAST")
-        Class.forName("kotlin.Metadata") as Class<Annotation>
-    } catch (e: Throwable) {
-        // Java-only environment, or outdated Kotlin version
-        null
-    }
-}
 
 fun typeMirrorOf(className: String): TypeMirror = ELEMENT_UTILS.getTypeElement(className).asType()
 
@@ -34,6 +26,28 @@ fun permissionFieldName(e: ExecutableElement) = "$GEN_PERMISSION_PREFIX${e.simpl
 fun pendingRequestFieldName(e: ExecutableElement) = "$GEN_PENDING_PREFIX${e.simpleString().trimDollarIfNeeded().toUpperCase()}"
 
 fun withPermissionCheckMethodName(e: ExecutableElement) = "${e.simpleString().trimDollarIfNeeded()}$GEN_WITH_PERMISSION_CHECK_SUFFIX"
+
+fun Element.kotlinMetadata(): KotlinClassMetadata? =
+        getAnnotation(Metadata::class.java)?.run {
+            KotlinClassMetadata.read(KotlinClassHeader(kind, metadataVersion, bytecodeVersion, data1, data2, extraString, packageName, extraInt))
+        }
+
+val Element.isInternal: Boolean
+    get() {
+        val classMetadata = kotlinMetadata()
+                as? KotlinClassMetadata.Class
+                ?: return false
+
+        var returnValue = false
+        classMetadata.accept(object : KmClassVisitor() {
+            override fun visit(flags: Flags, name: ClassName) {
+                if (Flag.IS_INTERNAL(flags)) {
+                    returnValue = true
+                }
+            }
+        })
+        return returnValue
+    }
 
 fun ExecutableElement.argumentFieldName(arg: Element) = "${simpleString()}${arg.simpleString().capitalize()}"
 

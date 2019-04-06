@@ -12,18 +12,18 @@ import permissions.dispatcher.processor.util.*
 import javax.lang.model.element.ExecutableElement
 import javax.lang.model.element.TypeElement
 
-class RuntimePermissionsElement(val e: TypeElement) {
-    val typeName: TypeName = TypeName.get(e.asType())
-    val ktTypeName = e.asType().asTypeName()
-    val typeVariables = e.typeParameters.map { TypeVariableName.get(it) }
-    val ktTypeVariables = e.typeParameters.map { it.asTypeVariableName() }
-    val packageName = e.packageName()
-    val inputClassName = e.simpleString()
+class RuntimePermissionsElement(val element: TypeElement) {
+    val typeName: TypeName = TypeName.get(element.asType())
+    val ktTypeName = element.asType().asTypeName()
+    val typeVariables = element.typeParameters.map { TypeVariableName.get(it) }
+    val ktTypeVariables = element.typeParameters.map { it.asTypeVariableName() }
+    val packageName = element.packageName()
+    val inputClassName = element.simpleString()
     val generatedClassName = inputClassName + GEN_CLASS_SUFFIX
-    val needsElements = e.childElementsAnnotatedWith(NeedsPermission::class.java)
-    private val onRationaleElements = e.childElementsAnnotatedWith(OnShowRationale::class.java)
-    private val onDeniedElements = e.childElementsAnnotatedWith(OnPermissionDenied::class.java)
-    private val onNeverAskElements = e.childElementsAnnotatedWith(OnNeverAskAgain::class.java)
+    val needsElements = element.childElementsAnnotatedWith(NeedsPermission::class.java)
+    private val onRationaleElements = element.childElementsAnnotatedWith(OnShowRationale::class.java)
+    private val onDeniedElements = element.childElementsAnnotatedWith(OnPermissionDenied::class.java)
+    private val onNeverAskElements = element.childElementsAnnotatedWith(OnNeverAskAgain::class.java)
 
     init {
         validateNeedsMethods()

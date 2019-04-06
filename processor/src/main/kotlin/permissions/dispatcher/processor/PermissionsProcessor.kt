@@ -4,7 +4,6 @@ import permissions.dispatcher.RuntimePermissions
 import permissions.dispatcher.processor.impl.javaProcessorUnits
 import permissions.dispatcher.processor.impl.kotlinProcessorUnits
 import permissions.dispatcher.processor.util.findAndValidateProcessorUnit
-import permissions.dispatcher.processor.util.kotlinMetadataClass
 import java.io.File
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.Filer
@@ -58,7 +57,7 @@ class PermissionsProcessor : AbstractProcessor() {
                 .sortedBy { it.simpleName.toString() }
                 .forEach {
                     val rpe = RuntimePermissionsElement(it as TypeElement)
-                    val kotlinMetadata = it.getAnnotation(kotlinMetadataClass)
+                    val kotlinMetadata = it.getAnnotation(Metadata::class.java)
                     if (kotlinMetadata != null) {
                         processKotlin(it, rpe, requestCodeProvider)
                     } else {

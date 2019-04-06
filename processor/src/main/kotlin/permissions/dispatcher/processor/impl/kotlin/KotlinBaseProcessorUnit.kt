@@ -110,6 +110,9 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         val builder = FunSpec.builder(withPermissionCheckMethodName(method))
                 .addTypeVariables(rpe.ktTypeVariables)
                 .receiver(rpe.ktTypeName)
+        if (method.enclosingElement.isInternal) {
+            builder.addModifiers(KModifier.INTERNAL)
+        }
         method.parameters.forEach {
             builder.addParameter(it.simpleString(), it.asPreparedType())
         }
@@ -255,6 +258,10 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
                 .receiver(rpe.ktTypeName)
                 .addParameter(requestCodeParam, INT)
 
+        if (rpe.element.isInternal) {
+            builder.addModifiers(KModifier.INTERNAL)
+        }
+
         builder.beginControlFlow("when (%N)", requestCodeParam)
         for (needsMethod in rpe.needsElements) {
             val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
@@ -278,6 +285,10 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
                 .receiver(rpe.ktTypeName)
                 .addParameter(requestCodeParam, INT)
                 .addParameter(grantResultsParam, INT_ARRAY)
+
+        if (rpe.element.isInternal) {
+            builder.addModifiers(KModifier.INTERNAL)
+        }
 
         builder.beginControlFlow("when (%N)", requestCodeParam)
         for (needsMethod in rpe.needsElements) {
