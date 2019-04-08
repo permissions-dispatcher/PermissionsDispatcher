@@ -1,5 +1,7 @@
 # ChangeLog
 
+- 4.3.1 2019/04/08
+  - Add: Add support for internal classes [#574](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/606)
 - 4.3.0 2018/12/31
   - Add: Conductor support [#574](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/574)
 - 4.2.0 2018/12/21
