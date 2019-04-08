@@ -21,6 +21,10 @@ android {
     packagingOptions {
         exclude 'META-INF/services/javax.annotation.processing.Processor'
     }
+
+    libraryVariants.all {
+        it.generateBuildConfig.enabled = false
+    }
 }
 
 configurations {
