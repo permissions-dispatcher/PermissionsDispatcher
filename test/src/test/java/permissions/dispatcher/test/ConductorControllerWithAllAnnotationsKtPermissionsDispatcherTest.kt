@@ -40,6 +40,7 @@ class ConductorWithAllAnnotationsKtPermissionsDispatcherTest {
     fun setUp() {
         controller = PowerMockito.mock(ConductorWithAllAnnotationsKt::class.java)
 
+        PowerMockito.mockStatic(ActivityCompat::class.java)
         PowerMockito.mockStatic(PermissionChecker::class.java)
     }
 

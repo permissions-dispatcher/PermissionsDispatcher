@@ -13,6 +13,7 @@ import androidx.fragment.app.Fragment
 import com.bluelinelabs.conductor.Controller
 import org.mockito.Matchers.any
 import org.mockito.Matchers.anyString
+import org.mockito.Matchers.same
 import org.powermock.api.mockito.PowerMockito
 import java.lang.reflect.Field
 import java.lang.reflect.Modifier
@@ -80,7 +81,7 @@ fun mockUriParse(result: Uri? = null) {
 }
 
 fun mockShouldShowRequestPermissionRationaleConductorController(controller: Controller, result: Boolean) {
-    PowerMockito.`when`(ActivityCompat.shouldShowRequestPermissionRationale(controller.activity!!, anyString())).thenReturn(result)
+    PowerMockito.`when`(ActivityCompat.shouldShowRequestPermissionRationale(same(controller.activity!!), anyString())).thenReturn(result)
 }
 
 fun mockGetActivity(controller: Controller, result: Activity) {
