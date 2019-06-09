@@ -10,7 +10,7 @@ import org.mockito.Mockito.mock
 
 class ExtensionsTest {
     @Test
-    fun `java Byte is converted into kotlin Byte`() {
+    fun `java Byte being converted into kotlin Byte`() {
         val typeName = mock(TypeName::class.java)
         `when`(typeName.toString()).thenReturn("java.lang.Byte")
         val expected = typeName.correctJavaTypeToKotlinType().toString()
@@ -18,7 +18,7 @@ class ExtensionsTest {
     }
 
     @Test
-    fun `java Double is converted into kotlin Double`() {
+    fun `java Double being converted into kotlin Double`() {
         val typeName = mock(TypeName::class.java)
         `when`(typeName.toString()).thenReturn("java.lang.Double")
         val expected = typeName.correctJavaTypeToKotlinType().toString()
@@ -26,7 +26,7 @@ class ExtensionsTest {
     }
 
     @Test
-    fun `java Object is converted into kotlin Any`() {
+    fun `java Object being converted into kotlin Any`() {
         val typeName = mock(TypeName::class.java)
         `when`(typeName.toString()).thenReturn("java.lang.Object")
         val expected = typeName.correctJavaTypeToKotlinType().toString()
@@ -34,7 +34,7 @@ class ExtensionsTest {
     }
 
     @Test
-    fun `java String is converted into kotlin String`() {
+    fun `java String being converted into kotlin String`() {
         val typeName = mock(TypeName::class.java)
         `when`(typeName.toString()).thenReturn("java.lang.String")
         val expected = typeName.correctJavaTypeToKotlinType().toString()
@@ -42,7 +42,7 @@ class ExtensionsTest {
     }
 
     @Test
-    fun `java String in List is converted into kotlin String`() {
+    fun `java String in parameter being converted into kotlin String`() {
         val parameterizedTypeName = mock(ParameterizedTypeName::class.java)
         val typeName = mock(TypeName::class.java)
         `when`(typeName.toString()).thenReturn("java.lang.String")
@@ -52,5 +52,21 @@ class ExtensionsTest {
         val expected = parameterizedTypeName.correctJavaTypeToKotlinType() as ParameterizedTypeName
         expected.typeArguments.first().toString()
         assertEquals( expected.typeArguments.first().toString(), "kotlin.String")
+    }
+
+    @Test
+    fun `kotlin ByteArray retain its type`() {
+        val typeName = mock(TypeName::class.java)
+        `when`(typeName.toString()).thenReturn("kotlin.ByteArray")
+        val expected = typeName.correctJavaTypeToKotlinType().toString()
+        assertEquals(expected, "kotlin.ByteArray")
+    }
+
+    @Test
+    fun `kotlin List retain its type`() {
+        val typeName = mock(TypeName::class.java)
+        `when`(typeName.toString()).thenReturn("kotlin.collections.List")
+        val expected = typeName.correctJavaTypeToKotlinType().toString()
+        assertEquals(expected, "kotlin.collections.List")
     }
 }
