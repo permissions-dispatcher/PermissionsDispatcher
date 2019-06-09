@@ -1,18 +1,16 @@
 package permissions.dispatcher
 
-import org.intellij.lang.annotations.Language
-import org.junit.Test
-
 import com.android.tools.lint.checks.infrastructure.TestFiles.java
 import com.android.tools.lint.checks.infrastructure.TestFiles.kt
 import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
+import org.intellij.lang.annotations.Language
+import org.junit.Test
 import permissions.dispatcher.Utils.onNeedsPermission
 import permissions.dispatcher.Utils.runtimePermission
 
 class CallNeedsPermissionDetectorKtTest {
 
     @Test
-    @Throws(Exception::class)
     fun callNeedsPermissionMethod() {
         @Language("kotlin") val foo = """
                 package com.example
@@ -52,7 +50,6 @@ class CallNeedsPermissionDetectorKtTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun callNeedsPermissionMethodNoError() {
         @Language("kotlin") val foo = """
                 package com.example
@@ -94,7 +91,6 @@ class CallNeedsPermissionDetectorKtTest {
     }
 
     @Test
-    @Throws(Exception::class)
     fun issues502() {
         @Language("kotlin") val foo = """
             package com.example
@@ -124,6 +120,44 @@ class CallNeedsPermissionDetectorKtTest {
                         java(runtimePermission),
                         java(onNeedsPermission),
                         kt(foo))
+                .issues(CallNeedsPermissionDetector.ISSUE)
+                .run()
+                .expectClean()
+    }
+
+    @Test
+    fun issues602() {
+        @Language("kotlin") val foo = """
+            package com.example
+
+            import permissions.dispatcher.NeedsPermission
+            import permissions.dispatcher.RuntimePermissions
+
+            @RuntimePermissions
+            class FirstActivity : AppCompatActivity() {
+                @NeedsPermission(Manifest.permission.CAMERA)
+                fun someFun() {
+                }
+            }
+
+            @RuntimePermissions
+            class SecondActivity : AppCompatActivity() {
+                override fun onCreate(savedInstanceState: Bundle?) {
+                    super.onCreate(savedInstanceState)
+                    someFun()
+                }
+
+                fun someFun() {
+                }
+
+                @NeedsPermission(Manifest.permission.CAMERA)
+                fun otherFun() {
+                }
+            }
+        """.trimMargin()
+
+        lint()
+                .files(java(runtimePermission), java(onNeedsPermission), kt(foo))
                 .issues(CallNeedsPermissionDetector.ISSUE)
                 .run()
                 .expectClean()
