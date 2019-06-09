@@ -128,6 +128,9 @@ fun TypeName.correctJavaTypeToKotlinType(): TypeName {
         "java.lang.Double" -> ClassName("kotlin", "Double")
         "java.lang.Object" -> ClassName("kotlin", "Any")
         "java.lang.String" -> ClassName("kotlin", "String")
+        // https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/599
+        // https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/619
+        "kotlin.ByteArray", "kotlin.collections.List" -> this
         else -> this
     }
 }
