@@ -67,9 +67,7 @@ fun VariableElement.isNullable(): Boolean =
 fun VariableElement.asPreparedType(): TypeName =
         this.asType()
                 .asTypeName()
-                .correctStringType()
-                .correctParameterStringType()
-                .correctAnyType()
+                .correctJavaTypeToKotlinType()
                 .mapToNullableTypeIf(this.isNullable())
 
 /**
@@ -118,29 +116,21 @@ fun FileSpec.Builder.addTypes(types: List<TypeSpec>): FileSpec.Builder {
 }
 
 /**
- * To avoid KotlinPoet bug that returns java.lang.String when type name is kotlin.String.
- * This method should be removed after addressing on KotlinPoet side.
+ * To avoid KotlinPoet bugs return java.lang.class when type name is in kotlin package.
+ * TODO: Remove this method after being addressed on KotlinPoet side.
  */
-fun TypeName.correctStringType() =
-        if (this.toString() == "java.lang.String") ClassName("kotlin", "String") else this
-
-/**
- * Convert [java.lang.String] to [kotlin.String] in a parameter.
- * ref: https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/427
- */
-fun TypeName.correctParameterStringType(): TypeName {
-    if (this is ParameterizedTypeName) {
-        val typeArguments = this.typeArguments.map { it.correctStringType() }.toTypedArray()
+fun TypeName.correctJavaTypeToKotlinType(): TypeName {
+    return if (this is ParameterizedTypeName) {
+        val typeArguments = this.typeArguments.map { it.correctJavaTypeToKotlinType() }.toTypedArray()
         return this.rawType.parameterizedBy(*typeArguments)
+    } else when (toString()) {
+        "java.lang.Byte" -> ClassName("kotlin", "Byte")
+        "java.lang.Double" -> ClassName("kotlin", "Double")
+        "java.lang.Object" -> ClassName("kotlin", "Any")
+        "java.lang.String" -> ClassName("kotlin", "String")
+        else -> this
     }
-    return this
 }
-
-/**
- * https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/545
- */
-fun TypeName.correctAnyType() =
-        if (this.toString() == "java.lang.Object") ClassName("kotlin", "Any") else this
 
 /**
  * Returns this TypeName as nullable or non-nullable based on the given condition.
