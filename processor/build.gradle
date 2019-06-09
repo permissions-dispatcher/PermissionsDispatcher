@@ -41,6 +41,7 @@ dependencies {
     testCompile androidJar()
     testCompile files(Jvm.current().getToolsJar())
     testCompile "junit:junit:$JUNIT_VERSION"
+    testCompile "org.mockito:mockito-core:$MOCKITO_VERSION"
     testCompile "com.google.testing.compile:compile-testing:$COMPILE_TESTING_VERSION"
     testCompile "commons-io:commons-io:$COMMONS_IO_VERSION"
     testCompile "com.squareup.okio:okio:2.1.0"
