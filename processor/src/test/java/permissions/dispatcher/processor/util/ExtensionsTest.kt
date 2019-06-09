@@ -55,7 +55,7 @@ class ExtensionsTest {
     }
 
     @Test
-    fun `kotlin ByteArray retain its type`() {
+    fun `kotlin ByteArray retains its type`() {
         val typeName = mock(TypeName::class.java)
         `when`(typeName.toString()).thenReturn("kotlin.ByteArray")
         val expected = typeName.correctJavaTypeToKotlinType().toString()
@@ -63,7 +63,7 @@ class ExtensionsTest {
     }
 
     @Test
-    fun `kotlin List retain its type`() {
+    fun `kotlin List retains its type`() {
         val typeName = mock(TypeName::class.java)
         `when`(typeName.toString()).thenReturn("kotlin.collections.List")
         val expected = typeName.correctJavaTypeToKotlinType().toString()
