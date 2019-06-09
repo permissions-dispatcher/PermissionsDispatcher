@@ -47,7 +47,7 @@ dependencies {
     testImplementation "junit:junit:$JUNIT_VERSION"
     testImplementation "org.jetbrains.kotlin:kotlin-reflect:1.3.11"
     testImplementation "org.mockito:mockito-core:$MOCKITO_VERSION"
-    testImplementation "org.powermock:powermock-api-mockito:$POWERMOCK_VERSION"
+    testImplementation "org.powermock:powermock-api-mockito2:$POWERMOCK_VERSION"
     testImplementation "org.powermock:powermock-module-junit4:$POWERMOCK_VERSION"
     testImplementation "org.powermock:powermock-module-junit4-rule:$POWERMOCK_VERSION"
     testImplementation "org.powermock:powermock-classloading-xstream:$POWERMOCK_VERSION"
