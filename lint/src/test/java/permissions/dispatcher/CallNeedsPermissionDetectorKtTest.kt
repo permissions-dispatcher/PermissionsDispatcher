@@ -136,7 +136,7 @@ class CallNeedsPermissionDetectorKtTest {
             @RuntimePermissions
             class FirstActivity : AppCompatActivity() {
                 @NeedsPermission(Manifest.permission.CAMERA)
-                fun someFun() {
+                fun someFun(a: Int) {
                 }
             }
 
@@ -147,7 +147,7 @@ class CallNeedsPermissionDetectorKtTest {
                     someFun()
                 }
 
-                fun someFun() {
+                fun someFun(a: Int) {
                 }
 
                 @NeedsPermission(Manifest.permission.CAMERA)

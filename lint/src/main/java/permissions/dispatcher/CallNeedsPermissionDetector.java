@@ -10,12 +10,14 @@ import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.uast.UAnnotation;
 import org.jetbrains.uast.UCallExpression;
 import org.jetbrains.uast.UClass;
 import org.jetbrains.uast.UElement;
 import org.jetbrains.uast.UFile;
 import org.jetbrains.uast.UMethod;
+import org.jetbrains.uast.UParameter;
 import org.jetbrains.uast.visitor.AbstractUastVisitor;
 
 import java.util.Collections;
@@ -75,7 +77,18 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
             if (isGeneratedFiles(context) || !hasRuntimePermissionAnnotation) {
                 return true;
             }
-            if (node.getReceiver() == null && annotatedMethods.contains(node.getMethodName())) {
+            UElement blockExpression = node.getUastParent();
+            if (blockExpression == null) {
+                return true;
+            }
+            UElement methodElement = blockExpression.getUastParent();
+            if (!(methodElement instanceof UMethod)) {
+                return true;
+            }
+            UMethod uMethod = (UMethod) methodElement;
+            String methodIdentifier = methodIdentifier(uMethod);
+
+            if (node.getReceiver() == null && annotatedMethods.contains(methodIdentifier)) {
                 context.report(ISSUE, node, context.getLocation(node), "Trying to access permission-protected method directly");
             }
             return true;
@@ -90,8 +103,29 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
             if (annotation == null) {
                 return super.visitMethod(node);
             }
-            annotatedMethods.add(node.getName());
+            String methodIdentifier = methodIdentifier(node);
+            if (methodIdentifier != null) {
+                annotatedMethods.add(methodIdentifier);
+            }
             return super.visitMethod(node);
+        }
+
+        @Nullable
+        private static String methodIdentifier(UMethod node) {
+            // check parent class name
+            UElement parent = node.getUastParent();
+            if (!(parent instanceof UClass)) {
+                return null;
+            }
+            UClass uClass = (UClass) parent;
+            // check parameters type
+            List<UParameter> parameters = node.getUastParameters();
+            StringBuilder builder = new StringBuilder();
+            for (UParameter parameter : parameters) {
+                String typeName = parameter.getType().getPresentableText();
+                builder.append(typeName).append(".");
+            }
+            return uClass.getName() + builder.toString() + node.getName();
         }
 
         private static boolean isGeneratedFiles(JavaContext context) {
