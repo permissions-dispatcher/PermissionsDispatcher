@@ -2,7 +2,6 @@ apply plugin: 'com.android.application'
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION
-    buildToolsVersion BUILD_TOOLS_VERSION
     defaultConfig {
         applicationId "permissions.dispatcher.sample"
         targetSdkVersion TARGET_SDK_VERSION
