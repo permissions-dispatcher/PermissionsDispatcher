@@ -109,6 +109,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
     private fun createWithPermissionCheckFun(rpe: RuntimePermissionsElement, method: ExecutableElement): FunSpec {
         val builder = FunSpec.builder(withPermissionCheckMethodName(method))
+                .addOriginatingElement(rpe.element)
                 .addTypeVariables(rpe.ktTypeVariables)
                 .receiver(rpe.ktTypeName)
         if (method.enclosingElement.isInternal) {
@@ -223,6 +224,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
     private fun createProceedPermissionRequestFun(rpe: RuntimePermissionsElement, needsMethod: ExecutableElement): FunSpec {
         val builder = FunSpec.builder(needsMethod.proceedOnShowRationaleMethodName())
+                .addOriginatingElement(rpe.element)
                 .addTypeVariables(rpe.ktTypeVariables)
                 .receiver(rpe.ktTypeName)
         val targetParam = "this"
@@ -234,6 +236,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
     private fun createCancelPermissionRequestFun(rpe: RuntimePermissionsElement, onDenied: ExecutableElement, needsMethod: ExecutableElement): FunSpec {
         return FunSpec.builder(needsMethod.cancelOnShowRationaleMethodName())
+                .addOriginatingElement(rpe.element)
                 .addTypeVariables(rpe.ktTypeVariables)
                 .receiver(rpe.ktTypeName)
                 .addStatement("this.%N()", onDenied.simpleString())
@@ -255,6 +258,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         val requestCodeParam = "requestCode"
         val grantResultsParam = "grantResults"
         val builder = FunSpec.builder("onActivityResult")
+                .addOriginatingElement(rpe.element)
                 .addTypeVariables(rpe.ktTypeVariables)
                 .receiver(rpe.ktTypeName)
                 .addParameter(requestCodeParam, INT)
@@ -282,6 +286,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         val requestCodeParam = "requestCode"
         val grantResultsParam = "grantResults"
         val builder = FunSpec.builder("onRequestPermissionsResult")
+                .addOriginatingElement(rpe.element)
                 .addTypeVariables(rpe.ktTypeVariables)
                 .receiver(rpe.ktTypeName)
                 .addParameter(requestCodeParam, INT)
@@ -307,7 +312,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
 
     private fun addResultCaseBody(builder: FunSpec.Builder, needsMethod: ExecutableElement, rpe: RuntimePermissionsElement, grantResultsParam: String) {
-        val onDenied  = rpe.findOnDeniedForNeeds(needsMethod)
+        val onDenied = rpe.findOnDeniedForNeeds(needsMethod)
         val hasDenied = onDenied != null
         val needsPermissionParameter = needsMethod.getAnnotation(NeedsPermission::class.java).value[0]
         val permissionField = permissionFieldName(needsMethod)
@@ -418,6 +423,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         val superInterfaceName = if (hasParameters) "GrantableRequest" else "PermissionRequest"
 
         val builder = TypeSpec.classBuilder(permissionRequestTypeName(rpe, needsMethod))
+                .addOriginatingElement(rpe.element)
                 .addTypeVariables(rpe.ktTypeVariables)
                 .addSuperinterface(ClassName("permissions.dispatcher", superInterfaceName))
                 .addModifiers(KModifier.PRIVATE)
@@ -447,6 +453,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
         // Add proceed() override
         val proceedFun = FunSpec.builder("proceed")
+                .addOriginatingElement(rpe.element)
                 .addModifiers(KModifier.OVERRIDE)
                 .addStatement("val target = %N.get() ?: return", propName)
         val requestCodeField = requestCodeFieldName(needsMethod)
@@ -456,6 +463,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
         // Add cancel() override method
         val cancelFun = FunSpec.builder("cancel")
+                .addOriginatingElement(rpe.element)
                 .addModifiers(KModifier.OVERRIDE)
         val onDenied = rpe.findOnDeniedForNeeds(needsMethod)
         if (onDenied != null) {
@@ -468,6 +476,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         // For classes with additional parameters, add a "grant()" method
         if (hasParameters) {
             val grantFun = FunSpec.builder("grant")
+                    .addOriginatingElement(rpe.element)
                     .addModifiers(KModifier.OVERRIDE)
                     .addStatement("val target = %N.get() ?: return", propName)
 
