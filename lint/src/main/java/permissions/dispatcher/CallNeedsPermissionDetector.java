@@ -8,9 +8,9 @@ import com.android.tools.lint.detector.api.Issue;
 import com.android.tools.lint.detector.api.JavaContext;
 import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
+import com.intellij.psi.PsiType;
 
 import org.jetbrains.annotations.NotNull;
-import org.jetbrains.annotations.Nullable;
 import org.jetbrains.uast.UAnnotation;
 import org.jetbrains.uast.UCallExpression;
 import org.jetbrains.uast.UClass;
@@ -77,16 +77,26 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
             if (isGeneratedFiles(context) || !hasRuntimePermissionAnnotation) {
                 return true;
             }
-            UElement blockExpression = node.getUastParent();
-            if (blockExpression == null) {
+
+            List<PsiType> psiTypes = node.getTypeArguments();
+            StringBuilder builder = new StringBuilder();
+            for (PsiType psiType : psiTypes) {
+                builder.append(psiType.getPresentableText()).append(".");
+            }
+            String params = builder.toString();
+
+            UElement element = node.getUastParent();
+            while (element != null) {
+                if (element instanceof UClass) {
+                    break;
+                }
+                element = element.getUastParent();
+            }
+            UClass uClass = (UClass) element;
+            if (uClass == null) {
                 return true;
             }
-            UElement methodElement = blockExpression.getUastParent();
-            if (!(methodElement instanceof UMethod)) {
-                return true;
-            }
-            UMethod uMethod = (UMethod) methodElement;
-            String methodIdentifier = methodIdentifier(uMethod);
+            String methodIdentifier = uClass.getName() + params + node.getMethodName();
 
             if (node.getReceiver() == null && annotatedMethods.contains(methodIdentifier)) {
                 context.report(ISSUE, node, context.getLocation(node), "Trying to access permission-protected method directly");
@@ -103,19 +113,10 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
             if (annotation == null) {
                 return super.visitMethod(node);
             }
-            String methodIdentifier = methodIdentifier(node);
-            if (methodIdentifier != null) {
-                annotatedMethods.add(methodIdentifier);
-            }
-            return super.visitMethod(node);
-        }
-
-        @Nullable
-        private static String methodIdentifier(UMethod node) {
             // check parent class name
             UElement parent = node.getUastParent();
             if (!(parent instanceof UClass)) {
-                return null;
+                return super.visitMethod(node);
             }
             UClass uClass = (UClass) parent;
             // check parameters type
@@ -125,7 +126,9 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
                 String typeName = parameter.getType().getPresentableText();
                 builder.append(typeName).append(".");
             }
-            return uClass.getName() + builder.toString() + node.getName();
+            String methodIdentifier = uClass.getName() + builder.toString() + node.getName();
+            annotatedMethods.add(methodIdentifier);
+            return super.visitMethod(node);
         }
 
         private static boolean isGeneratedFiles(JavaContext context) {
