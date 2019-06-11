@@ -126,7 +126,7 @@ class CallNeedsPermissionDetectorKtTest {
     }
 
     @Test
-    fun `same name methods in different class(issue 602)`() {
+    fun `same name methods in different class(issue602)`() {
         @Language("kotlin") val foo = """
             package com.example
 
@@ -164,7 +164,7 @@ class CallNeedsPermissionDetectorKtTest {
     }
 
     @Test
-    fun `same name methods with different signature(issue 602)`() {
+    fun `same name methods with different signature(issue602)`() {
         @Language("kotlin") val foo = """
             package com.example
 
@@ -173,6 +173,10 @@ class CallNeedsPermissionDetectorKtTest {
 
             @RuntimePermissions
             class FirstActivity : AppCompatActivity() {
+                override fun onCreate(savedInstanceState: Bundle?) {
+                    super.onCreate(savedInstanceState)
+                    someFun(1)
+                }
                 @NeedsPermission(Manifest.permission.CAMERA)
                 fun someFun() {
                 }
