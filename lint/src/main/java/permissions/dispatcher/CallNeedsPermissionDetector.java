@@ -11,6 +11,7 @@ import com.android.tools.lint.detector.api.Severity;
 import com.intellij.psi.PsiType;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.uast.UAnnotation;
 import org.jetbrains.uast.UCallExpression;
 import org.jetbrains.uast.UClass;
@@ -77,28 +78,7 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
             if (isGeneratedFiles(context) || !hasRuntimePermissionAnnotation) {
                 return true;
             }
-
-            List<PsiType> psiTypes = node.getTypeArguments();
-            StringBuilder builder = new StringBuilder();
-            for (PsiType psiType : psiTypes) {
-                builder.append(psiType.getPresentableText()).append(".");
-            }
-            String params = builder.toString();
-
-            UElement element = node.getUastParent();
-            while (element != null) {
-                if (element instanceof UClass) {
-                    break;
-                }
-                element = element.getUastParent();
-            }
-            UClass uClass = (UClass) element;
-            if (uClass == null) {
-                return true;
-            }
-            String methodIdentifier = uClass.getName() + params + node.getMethodName();
-
-            if (node.getReceiver() == null && annotatedMethods.contains(methodIdentifier)) {
+            if (node.getReceiver() == null && annotatedMethods.contains(methodIdentifier(node))) {
                 context.report(ISSUE, node, context.getLocation(node), "Trying to access permission-protected method directly");
             }
             return true;
@@ -113,22 +93,60 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
             if (annotation == null) {
                 return super.visitMethod(node);
             }
-            // check parent class name
-            UElement parent = node.getUastParent();
-            if (!(parent instanceof UClass)) {
+            String methodIdentifier = methodIdentifier(node);
+            if (methodIdentifier == null) {
                 return super.visitMethod(node);
             }
+            annotatedMethods.add(methodIdentifier);
+            return super.visitMethod(node);
+        }
+
+        /**
+         * Generate method identifier from method information.
+         *
+         * @param node UMethod
+         * @return className + methodName + parametersType
+         */
+        @Nullable
+        private static String methodIdentifier(@NotNull UMethod node) {
+            UElement parent = node.getUastParent();
+            if (!(parent instanceof UClass)) {
+                return null;
+            }
             UClass uClass = (UClass) parent;
-            // check parameters type
             List<UParameter> parameters = node.getUastParameters();
             StringBuilder builder = new StringBuilder();
             for (UParameter parameter : parameters) {
-                String typeName = parameter.getType().getPresentableText();
-                builder.append(typeName).append(".");
+                builder.append(parameter.getType().getPresentableText()).append(".");
             }
-            String methodIdentifier = uClass.getName() + builder.toString() + node.getName();
-            annotatedMethods.add(methodIdentifier);
-            return super.visitMethod(node);
+            return uClass.getName() + node.getName() + builder.toString();
+        }
+
+        /**
+         * Generate method identifier from method information.
+         *
+         * @param node UCallExpression
+         * @return className + methodName + parametersType
+         */
+        @Nullable
+        private static String methodIdentifier(@NotNull UCallExpression node) {
+            UElement element = node.getUastParent();
+            while (element != null) {
+                if (element instanceof UClass) {
+                    break;
+                }
+                element = element.getUastParent();
+            }
+            UClass uClass = (UClass) element;
+            if (uClass == null) {
+                return null;
+            }
+            List<PsiType> psiTypes = node.getTypeArguments();
+            StringBuilder builder = new StringBuilder();
+            for (PsiType psiType : psiTypes) {
+                builder.append(psiType.getPresentableText()).append(".");
+            }
+            return uClass.getName() + node.getMethodName() + builder.toString();
         }
 
         private static boolean isGeneratedFiles(JavaContext context) {

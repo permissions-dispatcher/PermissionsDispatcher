@@ -126,7 +126,7 @@ class CallNeedsPermissionDetectorKtTest {
     }
 
     @Test
-    fun issues602() {
+    fun `same name methods in different class(issue 602)`() {
         @Language("kotlin") val foo = """
             package com.example
 
@@ -136,7 +136,7 @@ class CallNeedsPermissionDetectorKtTest {
             @RuntimePermissions
             class FirstActivity : AppCompatActivity() {
                 @NeedsPermission(Manifest.permission.CAMERA)
-                fun someFun(a: Int) {
+                fun someFun() {
                 }
             }
 
@@ -147,11 +147,36 @@ class CallNeedsPermissionDetectorKtTest {
                     someFun()
                 }
 
-                fun someFun(a: Int) {
+                fun someFun() {
                 }
 
                 @NeedsPermission(Manifest.permission.CAMERA)
                 fun otherFun() {
+                }
+            }
+        """.trimMargin()
+
+        lint()
+                .files(java(runtimePermission), java(onNeedsPermission), kt(foo))
+                .issues(CallNeedsPermissionDetector.ISSUE)
+                .run()
+                .expectClean()
+    }
+
+    @Test
+    fun `same name methods with different signature(issue 602)`() {
+        @Language("kotlin") val foo = """
+            package com.example
+
+            import permissions.dispatcher.NeedsPermission
+            import permissions.dispatcher.RuntimePermissions
+
+            @RuntimePermissions
+            class FirstActivity : AppCompatActivity() {
+                @NeedsPermission(Manifest.permission.CAMERA)
+                fun someFun() {
+                }
+                fun someFun(param: Int) {
                 }
             }
         """.trimMargin()
