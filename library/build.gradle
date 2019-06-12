@@ -7,7 +7,6 @@ apply plugin: 'com.jfrog.bintray'
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION
-    buildToolsVersion BUILD_TOOLS_VERSION
     defaultConfig {
         minSdkVersion MIN_SDK_VERSION
         targetSdkVersion TARGET_SDK_VERSION
@@ -23,7 +22,7 @@ android {
     }
 
     libraryVariants.all {
-        it.generateBuildConfig.enabled = false
+        it.generateBuildConfigProvider.configure { enabled = false }
     }
 }
 

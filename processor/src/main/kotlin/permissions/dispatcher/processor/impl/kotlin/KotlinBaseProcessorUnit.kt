@@ -19,6 +19,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
     protected val PERMISSION_UTILS = ClassName("permissions.dispatcher", "PermissionUtils")
     private val BUILD = ClassName("android.os", "Build")
     private val INT_ARRAY = ClassName("kotlin", "IntArray")
+    private val WEAK_REFERENCE = ClassName("java.lang.ref", "WeakReference")
     private val MANIFEST_WRITE_SETTING = "android.permission.WRITE_SETTINGS"
     private val MANIFEST_SYSTEM_ALERT_WINDOW = "android.permission.SYSTEM_ALERT_WINDOW"
     private val ADD_WITH_CHECK_BODY_MAP = hashMapOf(MANIFEST_SYSTEM_ALERT_WINDOW to SystemAlertWindowHelper(), MANIFEST_WRITE_SETTING to WriteSettingsHelper())
@@ -82,14 +83,14 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
     }
 
     private fun createPermissionProperty(e: ExecutableElement): PropertySpec {
-        val permissionValue  = e.getAnnotation(NeedsPermission::class.java).permissionValue()
+        val permissionValue = e.getAnnotation(NeedsPermission::class.java).permissionValue()
         val formattedValue = permissionValue.joinToString(
                 separator = ", ",
                 transform = { "\"$it\"" }
         )
         val parameterType = ARRAY.plusParameter(ClassName("kotlin", "String"))
         return PropertySpec.builder(permissionFieldName(e), parameterType, KModifier.PRIVATE)
-                .initializer("%N", "arrayOf($formattedValue)")
+                .initializer("arrayOf(%L)", formattedValue)
                 .build()
     }
 
@@ -423,9 +424,9 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
         // Add required fields to the target
         val propName = "weakTarget"
-        val parameterType = ClassName("java.lang.ref", "WeakReference").plusParameter(rpe.ktTypeName)
+        val parameterType = WEAK_REFERENCE.plusParameter(rpe.ktTypeName)
         val propertySpec = PropertySpec.builder(propName, parameterType, KModifier.PRIVATE)
-        propertySpec.initializer("%N", "WeakReference(target)")
+        propertySpec.initializer("%T(target)", WEAK_REFERENCE)
         builder.addProperty(propertySpec.build())
 
         needsMethod.parameters.forEach {

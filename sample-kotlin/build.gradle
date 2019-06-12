@@ -4,7 +4,6 @@ apply plugin: 'kotlin-kapt'
 
 android {
     compileSdkVersion COMPILE_SDK_VERSION
-    buildToolsVersion BUILD_TOOLS_VERSION
     defaultConfig {
         applicationId "permissions.dispatcher.samplekotlin"
         targetSdkVersion TARGET_SDK_VERSION
