@@ -8,7 +8,6 @@ import com.android.tools.lint.detector.api.Issue;
 import com.android.tools.lint.detector.api.JavaContext;
 import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
-import com.intellij.psi.PsiType;
 
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
@@ -18,7 +17,6 @@ import org.jetbrains.uast.UClass;
 import org.jetbrains.uast.UElement;
 import org.jetbrains.uast.UFile;
 import org.jetbrains.uast.UMethod;
-import org.jetbrains.uast.UParameter;
 import org.jetbrains.uast.visitor.AbstractUastVisitor;
 
 import java.util.Collections;
@@ -28,6 +26,8 @@ import java.util.List;
 import java.util.Set;
 
 public final class CallNeedsPermissionDetector extends Detector implements Detector.UastScanner {
+
+    private static final String COLON = ":";
 
     static final Issue ISSUE = Issue.create("CallNeedsPermission",
             "Call the corresponding \"WithPermissionCheck\" method of the generated PermissionsDispatcher class instead",
@@ -84,6 +84,28 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
             return true;
         }
 
+        /**
+         * Generate method identifier from method information.
+         *
+         * @param node UCallExpression
+         * @return className + methodName + parametersType
+         */
+        @Nullable
+        private static String methodIdentifier(@NotNull UCallExpression node) {
+            UElement element = node.getUastParent();
+            while (element != null) {
+                if (element instanceof UClass) {
+                    break;
+                }
+                element = element.getUastParent();
+            }
+            UClass uClass = (UClass) element;
+            if (uClass == null || node.getMethodName() == null) {
+                return null;
+            }
+            return uClass.getName() + COLON + node.getMethodName();
+        }
+
         @Override
         public boolean visitMethod(@NotNull UMethod node) {
             if (isGeneratedFiles(context)) {
@@ -114,39 +136,7 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
                 return null;
             }
             UClass uClass = (UClass) parent;
-            List<UParameter> parameters = node.getUastParameters();
-            StringBuilder builder = new StringBuilder();
-            for (UParameter parameter : parameters) {
-                builder.append(parameter.getType().getPresentableText()).append(".");
-            }
-            return uClass.getName() + node.getName() + builder.toString();
-        }
-
-        /**
-         * Generate method identifier from method information.
-         *
-         * @param node UCallExpression
-         * @return className + methodName + parametersType
-         */
-        @Nullable
-        private static String methodIdentifier(@NotNull UCallExpression node) {
-            UElement element = node.getUastParent();
-            while (element != null) {
-                if (element instanceof UClass) {
-                    break;
-                }
-                element = element.getUastParent();
-            }
-            UClass uClass = (UClass) element;
-            if (uClass == null) {
-                return null;
-            }
-            List<PsiType> psiTypes = node.getTypeArguments();
-            StringBuilder builder = new StringBuilder();
-            for (PsiType psiType : psiTypes) {
-                builder.append(psiType.getPresentableText()).append(".");
-            }
-            return uClass.getName() + node.getMethodName() + builder.toString();
+            return uClass.getName() + COLON + node.getName();
         }
 
         private static boolean isGeneratedFiles(JavaContext context) {
