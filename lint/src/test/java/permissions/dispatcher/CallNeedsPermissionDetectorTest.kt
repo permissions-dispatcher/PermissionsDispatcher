@@ -1,10 +1,9 @@
 package permissions.dispatcher
 
-import org.intellij.lang.annotations.Language
-import org.junit.Test
-
 import com.android.tools.lint.checks.infrastructure.TestFiles.java
 import com.android.tools.lint.checks.infrastructure.TestLintTask.lint
+import org.intellij.lang.annotations.Language
+import org.junit.Test
 import permissions.dispatcher.Utils.onNeedsPermission
 import permissions.dispatcher.Utils.runtimePermission
 
@@ -122,6 +121,45 @@ class CallNeedsPermissionDetectorTest {
                         java(runtimePermission),
                         java(onNeedsPermission),
                         java(foo))
+                .issues(CallNeedsPermissionDetector.ISSUE)
+                .run()
+                .expectClean()
+    }
+
+    @Test
+    fun `same name methods in different class(issue602)`() {
+        @Language("java") val foo = """
+            package com.example;
+
+            import permissions.dispatcher.NeedsPermission;
+            import permissions.dispatcher.RuntimePermissions;
+
+            @RuntimePermissions
+            public class FirstActivity extends AppCompatActivity  {
+                @NeedsPermission({Manifest.permission.READ_SMS})
+                void someFun() {
+                }
+            }
+
+            @RuntimePermissions
+            public class SecondActivity extends AppCompatActivity  {
+                @Override
+                protected void onCreate(@Nullable Bundle savedInstanceState) {
+                    super.onCreate(savedInstanceState);
+                    someFun();
+                }
+
+                void someFun() {
+                }
+
+                @NeedsPermission({Manifest.permission.READ_SMS})
+                void otherFun() {
+                }
+            }
+        """.trimMargin()
+
+        lint()
+                .files(java(runtimePermission), java(onNeedsPermission), java(foo))
                 .issues(CallNeedsPermissionDetector.ISSUE)
                 .run()
                 .expectClean()

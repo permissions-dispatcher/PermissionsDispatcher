@@ -10,6 +10,7 @@ import com.android.tools.lint.detector.api.Scope;
 import com.android.tools.lint.detector.api.Severity;
 
 import org.jetbrains.annotations.NotNull;
+import org.jetbrains.annotations.Nullable;
 import org.jetbrains.uast.UAnnotation;
 import org.jetbrains.uast.UCallExpression;
 import org.jetbrains.uast.UClass;
@@ -25,6 +26,8 @@ import java.util.List;
 import java.util.Set;
 
 public final class CallNeedsPermissionDetector extends Detector implements Detector.UastScanner {
+
+    private static final String COLON = ":";
 
     static final Issue ISSUE = Issue.create("CallNeedsPermission",
             "Call the corresponding \"WithPermissionCheck\" method of the generated PermissionsDispatcher class instead",
@@ -75,10 +78,32 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
             if (isGeneratedFiles(context) || !hasRuntimePermissionAnnotation) {
                 return true;
             }
-            if (node.getReceiver() == null && annotatedMethods.contains(node.getMethodName())) {
+            if (node.getReceiver() == null && annotatedMethods.contains(methodIdentifier(node))) {
                 context.report(ISSUE, node, context.getLocation(node), "Trying to access permission-protected method directly");
             }
             return true;
+        }
+
+        /**
+         * Generate method identifier from method information.
+         *
+         * @param node UCallExpression
+         * @return className + methodName + parametersType
+         */
+        @Nullable
+        private static String methodIdentifier(@NotNull UCallExpression node) {
+            UElement element = node.getUastParent();
+            while (element != null) {
+                if (element instanceof UClass) {
+                    break;
+                }
+                element = element.getUastParent();
+            }
+            UClass uClass = (UClass) element;
+            if (uClass == null || node.getMethodName() == null) {
+                return null;
+            }
+            return uClass.getName() + COLON + node.getMethodName();
         }
 
         @Override
@@ -90,8 +115,28 @@ public final class CallNeedsPermissionDetector extends Detector implements Detec
             if (annotation == null) {
                 return super.visitMethod(node);
             }
-            annotatedMethods.add(node.getName());
+            String methodIdentifier = methodIdentifier(node);
+            if (methodIdentifier == null) {
+                return super.visitMethod(node);
+            }
+            annotatedMethods.add(methodIdentifier);
             return super.visitMethod(node);
+        }
+
+        /**
+         * Generate method identifier from method information.
+         *
+         * @param node UMethod
+         * @return className + methodName + parametersType
+         */
+        @Nullable
+        private static String methodIdentifier(@NotNull UMethod node) {
+            UElement parent = node.getUastParent();
+            if (!(parent instanceof UClass)) {
+                return null;
+            }
+            UClass uClass = (UClass) parent;
+            return uClass.getName() + COLON + node.getName();
         }
 
         private static boolean isGeneratedFiles(JavaContext context) {
