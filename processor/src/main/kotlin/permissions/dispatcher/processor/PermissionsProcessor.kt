@@ -4,7 +4,6 @@ import permissions.dispatcher.RuntimePermissions
 import permissions.dispatcher.processor.impl.javaProcessorUnits
 import permissions.dispatcher.processor.impl.kotlinProcessorUnits
 import permissions.dispatcher.processor.util.findAndValidateProcessorUnit
-import java.io.File
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.Filer
 import javax.annotation.processing.ProcessingEnvironment
@@ -14,7 +13,6 @@ import javax.lang.model.element.Element
 import javax.lang.model.element.TypeElement
 import javax.lang.model.util.Elements
 import javax.lang.model.util.Types
-import javax.tools.Diagnostic
 import kotlin.properties.Delegates
 
 /** Element Utilities, obtained from the processing environment */
@@ -23,11 +21,6 @@ var ELEMENT_UTILS: Elements by Delegates.notNull()
 var TYPE_UTILS: Types by Delegates.notNull()
 
 class PermissionsProcessor : AbstractProcessor() {
-
-    companion object {
-        // processingEnv.options[KAPT_KOTLIN_GENERATED_OPTION_NAME] returns generated/source/kaptKotlin/$sourceSetName
-        const val KAPT_KOTLIN_GENERATED_OPTION_NAME = "kapt.kotlin.generated"
-    }
 
     /* Processing Environment helpers */
     private var filer: Filer by Delegates.notNull()
@@ -68,21 +61,9 @@ class PermissionsProcessor : AbstractProcessor() {
     }
 
     private fun processKotlin(element: Element, rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider) {
-        // FIXME: weirdly under kaptKotlin files is not recognized as source file on AS or IntelliJ
-        // so as a workaround we generate .kt file in generated/source/kapt/$sourceSetName
-        // ref: https://github.com/hotchemi/PermissionsDispatcher/issues/320#issuecomment-316175775
-        val kaptGeneratedDirPath = processingEnv.options[KAPT_KOTLIN_GENERATED_OPTION_NAME]?.replace("kaptKotlin", "kapt")
-                ?: run {
-                    processingEnv.messager.printMessage(Diagnostic.Kind.ERROR, "Can't find the target directory for generated Kotlin files.")
-                    return
-                }
-        val kaptGeneratedDir = File(kaptGeneratedDirPath)
-        if (!kaptGeneratedDir.parentFile.exists()) {
-            kaptGeneratedDir.parentFile.mkdirs()
-        }
         val processorUnit = findAndValidateProcessorUnit(kotlinProcessorUnits, element)
         val kotlinFile = processorUnit.createFile(rpe, requestCodeProvider)
-        kotlinFile.writeTo(kaptGeneratedDir)
+        kotlinFile.writeTo(filer)
     }
 
     private fun processJava(element: Element, rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider) {
