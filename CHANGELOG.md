@@ -1,5 +1,10 @@
 # ChangeLog
 
+- 4.5.0 2019/07/01
+  - Improve: Incremental annotation processing for Kotlin [#626](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/626)
+  - Fix: lint CallNeedsPermission on same named function [#602](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/602)
+  - Fix: java-kotlin conversion issue [#603](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/603) [#620](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/620)
+  - Fix: Remove redundant BuildConfig file [#607](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/607)
 - 4.3.1 2019/04/08
   - Add: Add support for internal classes [#574](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/606)
 - 4.3.0 2018/12/31
