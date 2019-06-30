@@ -1,6 +1,6 @@
 # ChangeLog
 
-- 4.4.0 2019/07/01
+- 4.5.0 2019/07/01
   - Improve: Incremental annotation processing for Kotlin [#626](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/626)
   - Fix: lint CallNeedsPermission on same named function [#602](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/602)
   - Fix: java-kotlin conversion issue [#603](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/603) [#620](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/620)
