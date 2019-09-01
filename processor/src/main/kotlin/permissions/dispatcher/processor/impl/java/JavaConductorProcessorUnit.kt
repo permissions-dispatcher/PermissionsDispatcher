@@ -4,7 +4,7 @@ import com.squareup.javapoet.MethodSpec
 import permissions.dispatcher.processor.util.typeMirrorOf
 import javax.lang.model.type.TypeMirror
 
-class JavaConductorProcessorUnit() : JavaBaseProcessorUnit() {
+class JavaConductorProcessorUnit : JavaBaseProcessorUnit() {
 
     override fun getTargetType(): TypeMirror = typeMirrorOf("com.bluelinelabs.conductor.Controller")
 
