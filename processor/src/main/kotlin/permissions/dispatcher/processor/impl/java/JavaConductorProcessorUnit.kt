@@ -13,7 +13,7 @@ class JavaConductorProcessorUnit() : JavaBaseProcessorUnit() {
     override fun addShouldShowRequestPermissionRationaleCondition(builder: MethodSpec.Builder, targetParam: String, permissionField: String, isPositiveCondition: Boolean) {
         val condition = if (isPositiveCondition) "" else "!"
         val activity = getActivityName(targetParam)
-        builder.beginControlFlow("if (\$N\$T.shouldShowRequestPermissionRationale(\$N, \$N))", condition, PERMISSION_UTILS, activity, permissionField)
+        builder.beginControlFlow("if (\$N\$T.shouldShowRequestPermissionRationale(\$N, \$N))", condition, permissionUtils, activity, permissionField)
     }
 
     override fun addRequestPermissionsStatement(builder: MethodSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {
