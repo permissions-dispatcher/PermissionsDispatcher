@@ -15,7 +15,7 @@ class KotlinFragmentProcessorUnit : KotlinBaseProcessorUnit() {
 
     override fun addShouldShowRequestPermissionRationaleCondition(builder: FunSpec.Builder, permissionField: String, isPositiveCondition: Boolean) {
         val condition = if (isPositiveCondition) "" else "!"
-        builder.beginControlFlow("if (%L%T.shouldShowRequestPermissionRationale(%L, *%N))", condition, PERMISSION_UTILS, "this" /* Fragment */, permissionField)
+        builder.beginControlFlow("if (%L%T.shouldShowRequestPermissionRationale(%L, *%N))", condition, permissionUtils, "this" /* Fragment */, permissionField)
     }
 
     override fun addRequestPermissionsStatement(builder: FunSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {

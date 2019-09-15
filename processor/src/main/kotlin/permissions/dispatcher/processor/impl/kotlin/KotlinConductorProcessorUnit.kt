@@ -13,7 +13,7 @@ class KotlinConductorProcessorUnit : KotlinBaseProcessorUnit() {
     override fun addShouldShowRequestPermissionRationaleCondition(builder: FunSpec.Builder, permissionField: String, isPositiveCondition: Boolean) {
         val condition = if (isPositiveCondition) "" else "!"
         val activity = getActivityName("this")
-        builder.beginControlFlow("if (%L%T.shouldShowRequestPermissionRationale(%L, *%N))", condition, PERMISSION_UTILS, activity, permissionField)
+        builder.beginControlFlow("if (%L%T.shouldShowRequestPermissionRationale(%L, *%N))", condition, permissionUtils, activity, permissionField)
     }
 
     override fun addRequestPermissionsStatement(builder: FunSpec.Builder, targetParam: String, permissionField: String, requestCodeField: String) {
