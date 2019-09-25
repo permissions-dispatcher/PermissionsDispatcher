@@ -122,15 +122,19 @@ fun FileSpec.Builder.addTypes(types: List<TypeSpec>): FileSpec.Builder {
 fun TypeName.correctJavaTypeToKotlinType(): TypeName {
     return if (this is ParameterizedTypeName) {
         val typeArguments = this.typeArguments.map { it.correctJavaTypeToKotlinType() }.toTypedArray()
-        return this.rawType.parameterizedBy(*typeArguments)
+        val rawType = ClassName.bestGuess(this.rawType.correctJavaTypeToKotlinType().toString())
+        return rawType.parameterizedBy(*typeArguments)
     } else when (toString()) {
         "java.lang.Byte" -> ClassName("kotlin", "Byte")
         "java.lang.Double" -> ClassName("kotlin", "Double")
         "java.lang.Object" -> ClassName("kotlin", "Any")
         "java.lang.String" -> ClassName("kotlin", "String")
+        "java.util.Set" -> ClassName("kotlin.collections","MutableSet")
+        "java.util.List" -> ClassName("kotlin.collections", "MutableList")
         // https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/599
         // https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/619
-        "kotlin.ByteArray", "kotlin.collections.List" -> this
+        "kotlin.ByteArray", "kotlin.collections.List", "kotlin.collections.Set",
+        "kotlin.collections.MutableList", "kotlin.collections.MutableSet" -> this
         else -> this
     }
 }
