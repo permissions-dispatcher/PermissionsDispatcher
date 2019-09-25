@@ -129,7 +129,7 @@ fun TypeName.correctJavaTypeToKotlinType(): TypeName {
         "java.lang.Double" -> ClassName("kotlin", "Double")
         "java.lang.Object" -> ClassName("kotlin", "Any")
         "java.lang.String" -> ClassName("kotlin", "String")
-        "java.util.Set" -> ClassName("kotlin.collections","MutableSet")
+        "java.util.Set" -> ClassName("kotlin.collections", "MutableSet")
         "java.util.List" -> ClassName("kotlin.collections", "MutableList")
         // https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/599
         // https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/619

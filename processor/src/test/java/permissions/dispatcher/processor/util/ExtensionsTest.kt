@@ -96,7 +96,7 @@ class ExtensionsTest {
     }
 
     @Test
-    fun `java List being converted into kotlin List`() {
+    fun `java List being converted into kotlin MutableList`() {
         val string = ClassName.bestGuess("kotlin.String")
         val set = ClassName("java.util", "List")
         val actual = set.parameterizedBy(string).correctJavaTypeToKotlinType().toString()
@@ -104,7 +104,7 @@ class ExtensionsTest {
     }
 
     @Test
-    fun `java Set being converted into kotlin Set`() {
+    fun `java Set being converted into kotlin MutableSet`() {
         val string = ClassName.bestGuess("kotlin.String")
         val set = ClassName("java.util", "Set")
         val actual = set.parameterizedBy(string).correctJavaTypeToKotlinType().toString()
