@@ -2,6 +2,7 @@ package permissions.dispatcher.processor.util
 
 import com.squareup.kotlinpoet.ClassName
 import com.squareup.kotlinpoet.ParameterizedTypeName
+import com.squareup.kotlinpoet.ParameterizedTypeName.Companion.parameterizedBy
 import com.squareup.kotlinpoet.TypeName
 import org.junit.Assert.assertEquals
 import org.junit.Test
@@ -69,4 +70,45 @@ class ExtensionsTest {
         val expected = typeName.correctJavaTypeToKotlinType().toString()
         assertEquals(expected, "kotlin.collections.List")
     }
+
+    @Test
+    fun `kotlin Set retains its type`() {
+        val typeName = mock(TypeName::class.java)
+        `when`(typeName.toString()).thenReturn("kotlin.collections.Set")
+        val actual = typeName.correctJavaTypeToKotlinType().toString()
+        assertEquals("kotlin.collections.Set", actual)
+    }
+
+    @Test
+    fun `kotlin MutableList retains its type`() {
+        val typeName = mock(TypeName::class.java)
+        `when`(typeName.toString()).thenReturn("kotlin.collections.MutableList")
+        val actual = typeName.correctJavaTypeToKotlinType().toString()
+        assertEquals("kotlin.collections.MutableList", actual)
+    }
+
+    @Test
+    fun `kotlin MutableSet retains its type`() {
+        val typeName = mock(TypeName::class.java)
+        `when`(typeName.toString()).thenReturn("kotlin.collections.MutableSet")
+        val actual = typeName.correctJavaTypeToKotlinType().toString()
+        assertEquals("kotlin.collections.MutableSet", actual)
+    }
+
+    @Test
+    fun `java List being converted into kotlin MutableList`() {
+        val string = ClassName.bestGuess("kotlin.String")
+        val set = ClassName("java.util", "List")
+        val actual = set.parameterizedBy(string).correctJavaTypeToKotlinType().toString()
+        assertEquals("kotlin.collections.MutableList<kotlin.String>", actual)
+    }
+
+    @Test
+    fun `java Set being converted into kotlin MutableSet`() {
+        val string = ClassName.bestGuess("kotlin.String")
+        val set = ClassName("java.util", "Set")
+        val actual = set.parameterizedBy(string).correctJavaTypeToKotlinType().toString()
+        assertEquals("kotlin.collections.MutableSet<kotlin.String>", actual)
+    }
+
 }
