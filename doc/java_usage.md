@@ -16,7 +16,7 @@ PermissionsDispatcher introduces only a few annotations, keeping its general API
 
 |Annotation|Required|Description|
 |---|---|---|
-|`@RuntimePermissions`|**✓**|Register an `Activity`, `Fragment` or [Controller](https://github.com/bluelinelabs/Conductor) to handle permissions|
+|`@RuntimePermissions`|**✓**|Register an `Activity` or `Fragment` to handle permissions|
 |`@NeedsPermission`|**✓**|Annotate a method which performs the action that requires one or more permissions|
 |`@OnShowRationale`||Annotate a method which explains why the permissions are needed. It passes in a `PermissionRequest` object which can be used to continue or abort the current permission request upon user input. If you don't specify any argument for the method compiler will generate `process${NeedsPermissionMethodName}ProcessRequest` and `cancel${NeedsPermissionMethodName}ProcessRequest`. You can use those methods in place of `PermissionRequest`(ex: with `DialogFragment`)|
 |`@OnPermissionDenied`||Annotate a method which is invoked if the user doesn't grant the permissions|

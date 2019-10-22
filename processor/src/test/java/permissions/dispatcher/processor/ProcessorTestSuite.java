@@ -376,8 +376,4 @@ public class ProcessorTestSuite extends TestSuite {
     @Test public void onePermissionWithParamNoArgumentRationaleAndDeniedFragment() {
         assertJavaSource(Source.OnePermissionWithParamNoArgumentRationaleAndDeniedFragment);
     }
-
-    @Test public void onePermissionWithParamNoArgumentRationaleAndConductor() {
-        assertJavaSource(Source.OnePermissionWithParamNoArgumentRationaleAndConductor);
-    }
 }
