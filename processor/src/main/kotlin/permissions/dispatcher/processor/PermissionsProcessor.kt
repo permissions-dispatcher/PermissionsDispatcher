@@ -1,8 +1,10 @@
 package permissions.dispatcher.processor
 
 import permissions.dispatcher.RuntimePermissions
-import permissions.dispatcher.processor.impl.javaProcessorUnits
-import permissions.dispatcher.processor.impl.kotlinProcessorUnits
+import permissions.dispatcher.processor.impl.java.JavaActivityProcessorUnit
+import permissions.dispatcher.processor.impl.java.JavaFragmentProcessorUnit
+import permissions.dispatcher.processor.impl.kotlin.KotlinActivityProcessorUnit
+import permissions.dispatcher.processor.impl.kotlin.KotlinFragmentProcessorUnit
 import permissions.dispatcher.processor.util.findAndValidateProcessorUnit
 import javax.annotation.processing.AbstractProcessor
 import javax.annotation.processing.Filer
@@ -21,7 +23,8 @@ var ELEMENT_UTILS: Elements by Delegates.notNull()
 var TYPE_UTILS: Types by Delegates.notNull()
 
 class PermissionsProcessor : AbstractProcessor() {
-
+    private val javaProcessorUnits = listOf(JavaActivityProcessorUnit(), JavaFragmentProcessorUnit())
+    private val kotlinProcessorUnits = listOf(KotlinActivityProcessorUnit(), KotlinFragmentProcessorUnit())
     /* Processing Environment helpers */
     private var filer: Filer by Delegates.notNull()
 

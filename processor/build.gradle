@@ -35,7 +35,6 @@ dependencies {
     compile project(path: ':annotation')
 
     testCompileAar "androidx.legacy:legacy-support-v4:$ANDROIDX_LIBRARY_VERSION"
-    testCompileAar "com.bluelinelabs:conductor:$CONDUCTOR_VERSION"
     testCompileAar project(path: ":library", configuration: "default")
 
     testCompile androidJar()
@@ -46,7 +45,6 @@ dependencies {
     testCompile "commons-io:commons-io:$COMMONS_IO_VERSION"
     testCompile "com.squareup.okio:okio:2.1.0"
     testCompile "androidx.legacy:legacy-support-v4:$ANDROIDX_LIBRARY_VERSION"
-    testCompile "com.bluelinelabs:conductor:$CONDUCTOR_VERSION"
     testCompile "org.permissionsdispatcher:kompile-testing:$KOMPILE_TESTING_VERSION"
 }
 
