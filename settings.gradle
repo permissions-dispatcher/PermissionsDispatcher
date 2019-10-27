@@ -1,1 +1,1 @@
-include ':library', ':processor', ':sample', ':lint', ':sample-kotlin', ':test', ':annotation'
+include ':library', ':processor', ':lint', ':sample', ':test', ':annotation'

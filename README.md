@@ -82,7 +82,7 @@ Now generated functions become much more concise and intuitive than Java version
     }
 ```
 
-Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/sample-kotlin) for more details.
+Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/sample) for more details.
 
 ## Other features/plugins
 
