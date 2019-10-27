@@ -4,7 +4,7 @@
     <string name="button_allow">Allow</string>
     <string name="button_deny">Deny</string>
 
-    <string name="contacts_string">Total number of contacts: %1$,d\nFirst contact:<b>%2$s</b></string>
+    <string name="contacts_string">Total number of contacts: %1$d\nFirst contact:<b>%2$s</b></string>
     <string name="contacts_empty">Contacts not loaded.</string>
     <string name="add_contact">Add a contact</string>
     <string name="show_contact">Show first contact</string>
