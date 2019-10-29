@@ -1,5 +1,10 @@
 # ChangeLog
 
+- 4.6.0 2019/10/30
+  - Fix: lint CallNeedsPermission on same named function [#602](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/602)
+  - Fix: Remove Conductor support [#644](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/644) 
+  [#620](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/620)
+  - Fix: Java to Kotlin collections mapping [#643](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/643)
 - 4.5.0 2019/07/01
   - Improve: Incremental annotation processing for Kotlin [#626](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/626)
   - Fix: lint CallNeedsPermission on same named function [#602](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/602)
