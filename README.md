@@ -1,4 +1,4 @@
-# PermissionsDispatcher [![Build Status](https://travis-ci.org/permissions-dispatcher/PermissionsDispatcher.svg?branch=master)](https://travis-ci.org/permissions-dispatcher/PermissionsDispatcher)[![PermissionsDispatcher](https://www.appbrain.com/stats/libraries/shield/permissions_dispatcher.svg)](https://www.appbrain.com/stats/libraries/details/permissions_dispatcher/permissionsdispatcher)
+# PermissionsDispatcher [![Build Status](https://travis-ci.org/permissions-dispatcher/PermissionsDispatcher.svg?branch=master)](https://travis-ci.org/permissions-dispatcher/PermissionsDispatcher) [![PermissionsDispatcher](https://www.appbrain.com/stats/libraries/shield/permissions_dispatcher.svg)](https://www.appbrain.com/stats/libraries/details/permissions_dispatcher/permissionsdispatcher)
 
 - [**Kotlin support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_usage.md)
 - [**Special Permissions support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/special_permissions.md)
