@@ -1,4 +1,4 @@
-package permissions.dispatcher.samplekotlin.camera
+package permissions.dispatcher.sample.camera
 
 import android.annotation.SuppressLint
 import android.content.Context
@@ -94,7 +94,7 @@ class CameraPreview(context: Context,
     }
 
     companion object {
-        private val TAG = "CameraPreview"
+        private const val TAG = "CameraPreview"
 
         /**
          * Calculate the correct orientation for a [Camera] preview that is displayed on screen.

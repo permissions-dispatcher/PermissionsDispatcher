@@ -1,4 +1,4 @@
-package permissions.dispatcher.samplekotlin
+package permissions.dispatcher.sample
 
 import android.Manifest
 import android.os.Bundle
@@ -8,8 +8,8 @@ import androidx.annotation.StringRes
 import androidx.appcompat.app.AlertDialog
 import androidx.appcompat.app.AppCompatActivity
 import permissions.dispatcher.*
-import permissions.dispatcher.samplekotlin.camera.CameraPreviewFragment
-import permissions.dispatcher.samplekotlin.contacts.ContactsFragment
+import permissions.dispatcher.sample.camera.CameraPreviewFragment
+import permissions.dispatcher.sample.contacts.ContactsFragment
 
 @RuntimePermissions
 class MainActivity : AppCompatActivity() {
