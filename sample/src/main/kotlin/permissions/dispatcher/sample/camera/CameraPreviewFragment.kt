@@ -1,4 +1,4 @@
-package permissions.dispatcher.samplekotlin.camera
+package permissions.dispatcher.sample.camera
 
 import android.annotation.SuppressLint
 import android.hardware.Camera
@@ -10,7 +10,7 @@ import android.view.ViewGroup
 import android.widget.Button
 import android.widget.FrameLayout
 import androidx.fragment.app.Fragment
-import permissions.dispatcher.samplekotlin.R
+import permissions.dispatcher.sample.R
 
 /**
  * Displays a [CameraPreview] of the first [Camera].

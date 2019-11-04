@@ -1,4 +1,4 @@
-package permissions.dispatcher.samplekotlin.contacts
+package permissions.dispatcher.sample.contacts
 
 import android.content.ContentProviderOperation
 import android.content.OperationApplicationException
@@ -16,7 +16,7 @@ import androidx.fragment.app.Fragment
 import androidx.loader.app.LoaderManager
 import androidx.loader.content.CursorLoader
 import androidx.loader.content.Loader
-import permissions.dispatcher.samplekotlin.R
+import permissions.dispatcher.sample.R
 import kotlin.properties.Delegates
 
 /**
