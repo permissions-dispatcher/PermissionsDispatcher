@@ -13,18 +13,24 @@ import androidx.fragment.app.Fragment;
 public final class PermissionUtils {
     // Map of dangerous permissions introduced in later framework versions.
     // Used to conditionally bypass permission-hold checks on older devices.
+    // ref: https://developer.android.com/reference/android/Manifest.permission
     private static final SimpleArrayMap<String, Integer> MIN_SDK_PERMISSIONS;
 
     static {
-        MIN_SDK_PERMISSIONS = new SimpleArrayMap<String, Integer>(8);
+        MIN_SDK_PERMISSIONS = new SimpleArrayMap<String, Integer>(13);
         MIN_SDK_PERMISSIONS.put("com.android.voicemail.permission.ADD_VOICEMAIL", 14);
-        MIN_SDK_PERMISSIONS.put("android.permission.BODY_SENSORS", 20);
         MIN_SDK_PERMISSIONS.put("android.permission.READ_CALL_LOG", 16);
         MIN_SDK_PERMISSIONS.put("android.permission.READ_EXTERNAL_STORAGE", 16);
-        MIN_SDK_PERMISSIONS.put("android.permission.USE_SIP", 9);
         MIN_SDK_PERMISSIONS.put("android.permission.WRITE_CALL_LOG", 16);
+        MIN_SDK_PERMISSIONS.put("android.permission.BODY_SENSORS", 20);
         MIN_SDK_PERMISSIONS.put("android.permission.SYSTEM_ALERT_WINDOW", 23);
         MIN_SDK_PERMISSIONS.put("android.permission.WRITE_SETTINGS", 23);
+        MIN_SDK_PERMISSIONS.put("android.permission.READ_PHONE_NUMBERS", 26);
+        MIN_SDK_PERMISSIONS.put("android.permission.ANSWER_PHONE_CALLS", 26);
+        MIN_SDK_PERMISSIONS.put("android.permission.ACCEPT_HANDOVER", 28);
+        MIN_SDK_PERMISSIONS.put("android.permission.ACTIVITY_RECOGNITION", 29);
+        MIN_SDK_PERMISSIONS.put("android.permission.ACCESS_MEDIA_LOCATION", 29);
+        MIN_SDK_PERMISSIONS.put("android.permission.ACCESS_BACKGROUND_LOCATION", 29);
     }
 
     private PermissionUtils() {
