@@ -97,7 +97,7 @@ public final class PermissionUtils {
      */
     private static boolean hasSelfPermission(Context context, String permission) {
         try {
-            return PermissionChecker.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+            return PermissionChecker.checkSelfPermission(context, permission) == PermissionChecker.PERMISSION_GRANTED;
         } catch (RuntimeException t) {
             return false;
         }
