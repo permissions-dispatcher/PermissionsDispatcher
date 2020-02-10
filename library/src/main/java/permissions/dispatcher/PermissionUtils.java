@@ -2,7 +2,6 @@ package permissions.dispatcher;
 
 import android.app.Activity;
 import android.content.Context;
-import android.content.pm.PackageManager;
 import android.os.Build;
 
 import androidx.collection.SimpleArrayMap;
@@ -47,7 +46,7 @@ public final class PermissionUtils {
             return false;
         }
         for (int result : grantResults) {
-            if (result != PackageManager.PERMISSION_GRANTED) {
+            if (result != PermissionChecker.PERMISSION_GRANTED) {
                 return false;
             }
         }
@@ -97,7 +96,7 @@ public final class PermissionUtils {
      */
     private static boolean hasSelfPermission(Context context, String permission) {
         try {
-            return PermissionChecker.checkSelfPermission(context, permission) == PackageManager.PERMISSION_GRANTED;
+            return PermissionChecker.checkSelfPermission(context, permission) == PermissionChecker.PERMISSION_GRANTED;
         } catch (RuntimeException t) {
             return false;
         }
