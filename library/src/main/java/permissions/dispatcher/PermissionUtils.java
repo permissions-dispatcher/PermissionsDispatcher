@@ -47,7 +47,7 @@ public final class PermissionUtils {
             return false;
         }
         for (int result : grantResults) {
-            if (result != PackageManager.PERMISSION_GRANTED) {
+            if (result != PermissionChecker.PERMISSION_GRANTED) {
                 return false;
             }
         }
