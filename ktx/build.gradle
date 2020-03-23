@@ -1,0 +1,112 @@
+apply plugin: 'com.android.library'
+apply plugin: 'kotlin-android'
+apply plugin: 'maven-publish'
+apply plugin: 'com.jfrog.bintray'
+
+android {
+    compileSdkVersion COMPILE_SDK_VERSION
+    defaultConfig {
+        minSdkVersion MIN_SDK_VERSION
+        targetSdkVersion TARGET_SDK_VERSION
+    }
+
+    libraryVariants.all {
+        it.generateBuildConfigProvider.configure { enabled = false }
+    }
+}
+
+dependencies {
+    api project(':library')
+    implementation "androidx.core:core:$ANDROIDX_LIBRARY_VERSION"
+    implementation "androidx.appcompat:appcompat:$ANDROIDX_LIBRARY_VERSION"
+    implementation "androidx.fragment:fragment:$ANDROIDX_LIBRARY_VERSION"
+    implementation "androidx.collection:collection:$ANDROIDX_LIBRARY_VERSION"
+    implementation "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
+
+    testImplementation "junit:junit:$JUNIT_VERSION"
+    testImplementation "androidx.test:core:1.3.0-alpha05"
+    testImplementation "androidx.test.ext:junit:1.1.2-alpha05"
+    testImplementation "androidx.test:runner:1.3.0-alpha05"
+    testImplementation "io.mockk:mockk:1.9.3"
+    testImplementation "com.nhaarman.mockitokotlin2:mockito-kotlin:2.2.0"
+    testImplementation "org.robolectric:robolectric:4.3.1"
+}
+
+bintray {
+    publications = ['MyPublication']
+    user = bintrayUser
+    key = bintrayKey
+    dryRun = dryRun
+    publish = true
+
+    pkg {
+        repo = REPO
+        userOrg = USER
+        name = ARTIFACT_ID_KTX
+        vcsUrl = VCS_URL
+        licenses = LICENSES
+        websiteUrl = WEBSITE
+        version {
+            name = KTX_VERSION
+            desc = DESCRIPTION
+        }
+    }
+}
+
+publishing {
+    publications {
+        MyPublication(MavenPublication) {
+            artifact sourcesJar
+            artifact javadocJar
+            artifact "$buildDir/outputs/aar/ktx-release.aar"
+            groupId GROUP_ID
+            artifactId ARTIFACT_ID_KTX
+            version KTX_VERSION
+
+            pom.withXml {
+                def dependenciesNode = asNode().appendNode('dependencies')
+                // Iterate over the compile dependencies, adding a <dependency> node for each
+                configurations.implementation.allDependencies.each {
+                    if (it.group != null && it.name != null && it.version != null) {
+                        def dependencyNode = dependenciesNode.appendNode('dependency')
+                        dependencyNode.appendNode('groupId', it.group)
+                        // to change annotation module artifactId explicitly
+                        // ref: https://github.com/dcendents/android-maven-gradle-plugin/issues/9#issuecomment-73550293
+                        def artifactId = (it.group == GROUP_ID && it.name == "library") ? ARTIFACT_ID_LIBRARY : it.name
+                        dependencyNode.appendNode('artifactId', artifactId)
+                        dependencyNode.appendNode('version', it.version)
+                    }
+                }
+            }
+        }
+    }
+}
+
+task sourcesJar(type: Jar) {
+    from android.sourceSets.main.java.srcDirs
+    classifier = 'sources'
+}
+
+task javadoc(type: Javadoc) {
+    source = android.sourceSets.main.java.srcDirs
+    classpath += project.files(android.getBootClasspath().join(File.pathSeparator))
+}
+
+// Avoid Kotlin docs error
+tasks.withType(Javadoc) {
+    enabled = false
+}
+
+task javadocJar(type: Jar, dependsOn: javadoc) {
+    classifier = 'javadoc'
+    from javadoc.destinationDir
+}
+
+artifacts {
+    archives javadocJar
+    archives sourcesJar
+}
+
+// Android Library project: Artifactory Plugin adds 1 publication per Build Type
+project.ext.publicationName = "release"
+apply from: rootProject.file('gradle/gradle-artifactory-upload.gradle')
