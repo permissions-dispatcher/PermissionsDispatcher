@@ -39,7 +39,6 @@ Here you just define `showCamera` with the provided method and that's it! Don't 
  about `onRequestPermissionsResult` and so on.
 
 ```kotlin
-@RuntimePermissions
 class MainActivity: AppCompatActivity {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,13 +64,12 @@ class MainActivity: AppCompatActivity {
     }
 
     private fun onCameraNeverAskAgain() {
-        Toast.makeText(requireContext(), "onCameraNeverAskAgain", Toast.LENGTH_SHORT).show()
+        Toast.makeText(requireContext(), R.string.permission_camera_never_ask_again, Toast.LENGTH_SHORT).show()
     }
 }
 ```
 
-Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/ktx-sample) for
- more details.
+Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/ktx-sample) for more details.
  
 #### Special Permissions
 
