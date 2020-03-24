@@ -1,0 +1,30 @@
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    android:paddingBottom="@dimen/vertical_page_margin"
+    android:paddingLeft="@dimen/horizontal_page_margin"
+    android:paddingRight="@dimen/horizontal_page_margin"
+    android:paddingTop="@dimen/vertical_page_margin"
+    tools:context=".MainActivity">
+
+    <Button
+        android:id="@+id/button_camera"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/show_camera" />
+
+    <Button
+        android:id="@+id/button_contacts"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/show_contacts" />
+
+    <FrameLayout
+        android:id="@+id/sample_content_fragment"
+        android:layout_width="match_parent"
+        android:layout_height="0px"
+        android:layout_weight="2" />
+
+</LinearLayout>
