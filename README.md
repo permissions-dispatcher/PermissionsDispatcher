@@ -1,14 +1,17 @@
 # PermissionsDispatcher [![Build Status](https://travis-ci.org/permissions-dispatcher/PermissionsDispatcher.svg?branch=master)](https://travis-ci.org/permissions-dispatcher/PermissionsDispatcher) [![PermissionsDispatcher](https://www.appbrain.com/stats/libraries/shield/permissions_dispatcher.svg)](https://www.appbrain.com/stats/libraries/details/permissions_dispatcher/permissionsdispatcher)
 
-- [**Kotlin support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/kotlin_usage.md)
-- [**Special Permissions support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/special_permissions.md)
+- **Kotlin/Java support**
+- [**Special permissions support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/special_permissions.md)
 - **100% reflection-free**
 
 PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions.
 
 This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code clean and safe.
 
-## Usage([Java](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/java_usage.md))
+## Usage
+
+- if you're not a huge fun of kapt, you can try [ktx](https://github.com/permissions-dispatcher/PermissionsDispatcher/tree/master/ktx).
+- [Java](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/java_usage.md)
 
 Here's a minimum example, in which you register a `MainActivity` which requires `Manifest.permission.CAMERA`.
 
