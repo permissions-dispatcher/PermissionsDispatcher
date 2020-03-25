@@ -2,12 +2,11 @@
 
 **Note: the status of the module is now alpha and we're looking forward to your feedback!**
 
-permissionsdispatcher-ktx aims to let developers cope with runtime permissions handling in
- declarative way without using annotation processing(kapt).
+permissionsdispatcher-ktx aims to let developers cope with runtime permissions handling in declarative way without using annotation processing([kapt](https://kotlinlang.org/docs/reference/kapt.html)).
 
 Let's see a minimum example, in which you register a `MainActivity` which requires `Manifest.permission.CAMERA`.
 
-### 0. Prepare Manifest
+### 0. Declare a permission in AndroidManifest.xml
 
 Add the following line to `AndroidManifest.xml`:
  
