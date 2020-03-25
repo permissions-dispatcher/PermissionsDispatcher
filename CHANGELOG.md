@@ -1,5 +1,9 @@
 # ChangeLog
 
+- 4.7.0 2020/03/25
+  - Feat: [ktx module](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/665)
+  - Update: [Add missing dangerous permissions check in later versions](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/652)
+  - Update: [Use the constant from `PermissionChecker`](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/658)
 - 4.6.0 2019/10/30
   - Fix: lint CallNeedsPermission on same named function [#602](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/602)
   - Fix: Remove Conductor support [#644](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/644) 
