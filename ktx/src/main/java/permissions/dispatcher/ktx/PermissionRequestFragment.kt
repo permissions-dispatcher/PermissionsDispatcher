@@ -15,7 +15,7 @@ import java.util.*
 sealed class PermissionRequestFragment : Fragment() {
     protected val requestCode = Random().nextInt(1000)
     protected val viewModel: PermissionRequestViewModel by lazy {
-        ViewModelProvider(this).get(PermissionRequestViewModel::class.java)
+        ViewModelProvider(requireActivity()).get(PermissionRequestViewModel::class.java)
     }
 
     override fun onAttach(context: Context?) {
@@ -75,7 +75,9 @@ sealed class PermissionRequestFragment : Fragment() {
 
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
             if (requestCode == this.requestCode) {
-                if (Build.VERSION.SDK_INT >= 23 && Settings.canDrawOverlays(activity)) {
+                if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
+                    && Settings.canDrawOverlays(activity)
+                ) {
                     viewModel.postPermissionRequestResult(PermissionResult.GRANTED)
                 } else {
                     viewModel.postPermissionRequestResult(PermissionResult.DENIED)

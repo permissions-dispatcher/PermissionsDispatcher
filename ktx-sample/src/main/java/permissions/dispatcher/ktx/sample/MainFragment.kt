@@ -48,7 +48,6 @@ class MainFragment : Fragment() {
 
     private fun onCameraShowRationale(request: PermissionRequest) {
         request.proceed()
-        Toast.makeText(requireContext(), R.string.permission_camera_rationale, Toast.LENGTH_SHORT).show()
     }
 
     private fun onCameraNeverAskAgain() {
