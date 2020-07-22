@@ -8,21 +8,14 @@ import androidx.fragment.app.FragmentActivity
 import permissions.dispatcher.PermissionUtils.hasSelfPermissions
 import permissions.dispatcher.PermissionUtils.shouldShowRequestPermissionRationale
 
-internal sealed class PermissionRequestType {
-    object Others : PermissionRequestType() {
+sealed class PermissionRequestType {
+    object Normal : PermissionRequestType() {
         override fun checkPermissions(context: Context, permissions: Array<out String>): Boolean =
             hasSelfPermissions(context, *permissions)
 
-        override fun invokeRequest(fragment: PermissionsRequestFragment,
-                                   permissions: Array<out String>,
-                                   requiresPermission: Func,
-                                   onNeverAskAgain: Func?,
-                                   onPermissionDenied: Func?) =
-            fragment.requestPermissions(
-                permissions = permissions,
-                requiresPermission = requiresPermission,
-                onNeverAskAgain = onNeverAskAgain,
-                onPermissionDenied = onPermissionDenied
+        override fun createFragment(vararg permissions: String): PermissionRequestFragment =
+            PermissionRequestFragment.NormalRequestPermissionFragment.newInstance(
+                permissions
             )
     }
 
@@ -31,14 +24,9 @@ internal sealed class PermissionRequestType {
             Build.VERSION.SDK_INT < 23 || Settings.canDrawOverlays(context)
 
         @RequiresApi(Build.VERSION_CODES.M)
-        override fun invokeRequest(fragment: PermissionsRequestFragment,
-                                   permissions: Array<out String>,
-                                   requiresPermission: Func,
-                                   onNeverAskAgain: Func?,
-                                   onPermissionDenied: Func?) =
-            fragment.requestOverlayPermission(
-                requiresPermission = requiresPermission,
-                onPermissionDenied = onPermissionDenied
+        override fun createFragment(vararg permissions: String): PermissionRequestFragment =
+            PermissionRequestFragment.SpecialRequestPermissionFragment.newInstance(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION
             )
     }
 
@@ -47,75 +35,38 @@ internal sealed class PermissionRequestType {
             Build.VERSION.SDK_INT < 23 || Settings.System.canWrite(context)
 
         @RequiresApi(Build.VERSION_CODES.M)
-        override fun invokeRequest(fragment: PermissionsRequestFragment,
-                                   permissions: Array<out String>,
-                                   requiresPermission: Func,
-                                   onNeverAskAgain: Func?,
-                                   onPermissionDenied: Func?) =
-            fragment.requestWriteSettingsPermission(
-                requiresPermission = requiresPermission,
-                onPermissionDenied = onPermissionDenied
+        override fun createFragment(vararg permissions: String): PermissionRequestFragment =
+            PermissionRequestFragment.SpecialRequestPermissionFragment.newInstance(
+                Settings.ACTION_MANAGE_OVERLAY_PERMISSION
             )
     }
 
     abstract fun checkPermissions(context: Context, permissions: Array<out String>): Boolean
 
-    abstract fun invokeRequest(fragment: PermissionsRequestFragment,
-                               permissions: Array<out String>,
-                               requiresPermission: Func,
-                               onNeverAskAgain: Func?,
-                               onPermissionDenied: Func?)
+    abstract fun createFragment(vararg permissions: String): PermissionRequestFragment
 
-    internal fun requestPermissions(permissions: Array<out String>,
-                                   target: FragmentActivity,
-                                   requiresPermission: Func,
-                                   onNeverAskAgain: Func?,
-                                   onPermissionDenied: Func?) {
-        var fragment = target.supportFragmentManager
-            .findFragmentByTag(PermissionsRequestFragment.tag) as? PermissionsRequestFragment
-        if (fragment == null) {
-            fragment = PermissionsRequestFragment.newInstance()
-            target.supportFragmentManager.beginTransaction()
-                .add(fragment, PermissionsRequestFragment.tag)
-                .commitNowAllowingStateLoss()
-        }
-        invokeRequest(
-            fragment = fragment,
-            permissions = permissions,
-            requiresPermission = requiresPermission,
-            onNeverAskAgain = onNeverAskAgain,
-            onPermissionDenied = onPermissionDenied
-        )
-    }
-
-    fun invoke(permissions: Array<out String>,
-               activity: FragmentActivity,
-               onShowRationale: ShowRationaleFunc?,
-               onPermissionDenied: Func?,
-               onNeverAskAgain: Func?,
-               requiresPermission: Func) {
+    fun invoke(
+        permissions: Array<out String>,
+        activity: FragmentActivity,
+        onShowRationale: ShowRationaleFunc?,
+        onPermissionDenied: Func?,
+        requiresPermission: Func
+    ) {
         if (checkPermissions(activity, permissions)) {
             requiresPermission()
         } else {
+            val requestFun = { activity.commitFragment(createFragment(*permissions)) }
             if (shouldShowRequestPermissionRationale(activity, *permissions)) {
-                onShowRationale?.invoke(KtxPermissionRequest.create(onPermissionDenied) {
-                    requestPermissions(
-                        permissions = permissions,
-                        target = activity,
-                        requiresPermission = requiresPermission,
-                        onNeverAskAgain = onNeverAskAgain,
-                        onPermissionDenied = onPermissionDenied
-                    )
-                })
+                onShowRationale?.invoke(KtxPermissionRequest.create(onPermissionDenied, requestFun))
             } else {
-                requestPermissions(
-                    permissions = permissions,
-                    target = activity,
-                    requiresPermission = requiresPermission,
-                    onNeverAskAgain = onNeverAskAgain,
-                    onPermissionDenied = onPermissionDenied
-                )
+                requestFun.invoke()
             }
         }
     }
+
+    private fun FragmentActivity.commitFragment(fragment: PermissionRequestFragment) =
+        supportFragmentManager
+            .beginTransaction()
+            .replace(android.R.id.content, fragment)
+            .commitNowAllowingStateLoss()
 }

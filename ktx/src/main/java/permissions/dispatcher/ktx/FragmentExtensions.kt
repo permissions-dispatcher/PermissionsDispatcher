@@ -1,6 +1,8 @@
 package permissions.dispatcher.ktx
 
-import android.Manifest
+import android.os.Build
+import android.provider.Settings
+import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 
 /**
@@ -18,15 +20,16 @@ fun Fragment.withPermissionsCheck(
     onShowRationale: ShowRationaleFunc? = null,
     onPermissionDenied: Func? = null,
     onNeverAskAgain: Func? = null,
-    requiresPermission: Func) {
-    PermissionRequestType.Others.invoke(
-        permissions = permissions,
-        activity = requireActivity(),
-        onShowRationale = onShowRationale,
-        onPermissionDenied = onPermissionDenied,
-        onNeverAskAgain = onNeverAskAgain,
-        requiresPermission = requiresPermission)
-}
+    requiresPermission: Func
+) = PermissionsRequester(
+    permissions = permissions,
+    activity = requireActivity(),
+    onShowRationale = onShowRationale,
+    onPermissionDenied = onPermissionDenied,
+    onNeverAskAgain = onNeverAskAgain,
+    requiresPermission = requiresPermission,
+    permissionRequestType = PermissionRequestType.Normal
+)
 
 /**
  * Wraps [requiresPermission] in the dedicated runtime permission check for
@@ -36,18 +39,20 @@ fun Fragment.withPermissionsCheck(
  * @param onPermissionDenied the method invoked if the user doesn't grant the permissions.
  * @param requiresPermission the action requires [permissions].
  */
+@RequiresApi(Build.VERSION_CODES.M)
 fun Fragment.withWriteSettingsPermissionCheck(
     onShowRationale: ShowRationaleFunc? = null,
     onPermissionDenied: Func? = null,
-    requiresPermission: Func) {
-    PermissionRequestType.WriteSettings.invoke(
-        permissions = arrayOf(Manifest.permission.WRITE_SETTINGS),
-        activity = requireActivity(),
-        onShowRationale = onShowRationale,
-        onPermissionDenied = onPermissionDenied,
-        onNeverAskAgain = null,
-        requiresPermission = requiresPermission)
-}
+    requiresPermission: Func
+) = PermissionsRequester(
+    permissions = arrayOf(Settings.ACTION_MANAGE_WRITE_SETTINGS),
+    activity = requireActivity(),
+    onShowRationale = onShowRationale,
+    onPermissionDenied = onPermissionDenied,
+    onNeverAskAgain = null,
+    requiresPermission = requiresPermission,
+    permissionRequestType = PermissionRequestType.WriteSettings
+)
 
 /**
  * Wraps [requiresPermission] in the dedicated runtime permission check for
@@ -57,15 +62,17 @@ fun Fragment.withWriteSettingsPermissionCheck(
  * @param onPermissionDenied the method invoked if the user doesn't grant the permissions.
  * @param requiresPermission the action requires [permissions].
  */
+@RequiresApi(Build.VERSION_CODES.M)
 fun Fragment.withSystemAlertWindowPermissionCheck(
     onShowRationale: ShowRationaleFunc? = null,
     onPermissionDenied: Func? = null,
-    requiresPermission: Func) {
-    PermissionRequestType.SystemAlertWindow.invoke(
-        permissions = arrayOf(Manifest.permission.SYSTEM_ALERT_WINDOW),
-        activity = requireActivity(),
-        onShowRationale = onShowRationale,
-        onPermissionDenied = onPermissionDenied,
-        onNeverAskAgain = null,
-        requiresPermission = requiresPermission)
-}
+    requiresPermission: Func
+) = PermissionsRequester(
+    permissions = arrayOf(Settings.ACTION_MANAGE_OVERLAY_PERMISSION),
+    activity = requireActivity(),
+    onShowRationale = onShowRationale,
+    onPermissionDenied = onPermissionDenied,
+    onNeverAskAgain = null,
+    requiresPermission = requiresPermission,
+    permissionRequestType = PermissionRequestType.SystemAlertWindow
+)
