@@ -20,8 +20,7 @@ dependencies {
     implementation "androidx.core:core:$ANDROIDX_LIBRARY_VERSION"
     implementation "androidx.appcompat:appcompat:$ANDROIDX_LIBRARY_VERSION"
     implementation "androidx.fragment:fragment:$ANDROIDX_LIBRARY_VERSION"
-    def lifecycle_version = "2.2.0"
-    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$lifecycle_version"
+    implementation "androidx.lifecycle:lifecycle-viewmodel-ktx:$LIFECYCLE_VERSION"
     implementation "androidx.collection:collection:$ANDROIDX_LIBRARY_VERSION"
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
 
