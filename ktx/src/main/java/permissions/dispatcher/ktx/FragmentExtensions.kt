@@ -1,10 +1,12 @@
 package permissions.dispatcher.ktx
 
-import android.Manifest
+import android.annotation.SuppressLint
+import android.provider.Settings
 import androidx.fragment.app.Fragment
 
 /**
- * Wraps [requiresPermission] in runtime permissions check with the given arguments.
+ * Constructs a request for ordinary permissions that require a grant from the user.
+ * Be sure to invoke the method when an activity is created to capture the valid callbacks.
  *
  * @param permissions the permissions [requiresPermission] requires.
  * @param onShowRationale the method explains why the permissions are required.
@@ -12,60 +14,68 @@ import androidx.fragment.app.Fragment
  * @param onNeverAskAgain the method invoked if the user does not deny the permissions with
  * "never ask again" option.
  * @param requiresPermission the action requires [permissions].
+ * @see PermissionsRequester
  */
-fun Fragment.withPermissionsCheck(
+fun Fragment.constructPermissionsRequest(
     vararg permissions: String,
-    onShowRationale: ShowRationaleFunc? = null,
-    onPermissionDenied: Func? = null,
-    onNeverAskAgain: Func? = null,
-    requiresPermission: Func) {
-    PermissionRequestType.Others.invoke(
-        permissions = permissions,
-        activity = requireActivity(),
-        onShowRationale = onShowRationale,
-        onPermissionDenied = onPermissionDenied,
-        onNeverAskAgain = onNeverAskAgain,
-        requiresPermission = requiresPermission)
-}
+    onShowRationale: ShowRationaleFun? = null,
+    onPermissionDenied: Fun? = null,
+    onNeverAskAgain: Fun? = null,
+    requiresPermission: Fun
+): PermissionsRequester = PermissionsRequesterImpl(
+    permissions = permissions,
+    activity = requireActivity(),
+    onShowRationale = onShowRationale,
+    onPermissionDenied = onPermissionDenied,
+    onNeverAskAgain = onNeverAskAgain,
+    requiresPermission = requiresPermission,
+    permissionRequestType = PermissionRequestType.Normal
+)
 
 /**
- * Wraps [requiresPermission] in the dedicated runtime permission check for
- * [Manifest.permission.WRITE_SETTINGS] with the given arguments.
+ * Constructs a request for [android.Manifest.permission.WRITE_SETTINGS].
+ * Be sure to invoke the method when an activity is created to capture the valid callbacks.
  *
  * @param onShowRationale the method explains why the permissions are required.
  * @param onPermissionDenied the method invoked if the user doesn't grant the permissions.
  * @param requiresPermission the action requires [permissions].
+ * @see PermissionsRequester
  */
-fun Fragment.withWriteSettingsPermissionCheck(
-    onShowRationale: ShowRationaleFunc? = null,
-    onPermissionDenied: Func? = null,
-    requiresPermission: Func) {
-    PermissionRequestType.WriteSettings.invoke(
-        permissions = arrayOf(Manifest.permission.WRITE_SETTINGS),
-        activity = requireActivity(),
-        onShowRationale = onShowRationale,
-        onPermissionDenied = onPermissionDenied,
-        onNeverAskAgain = null,
-        requiresPermission = requiresPermission)
-}
+@SuppressLint("InlinedApi")
+fun Fragment.constructWriteSettingsPermissionRequest(
+    onShowRationale: ShowRationaleFun? = null,
+    onPermissionDenied: Fun? = null,
+    requiresPermission: Fun
+): PermissionsRequester = PermissionsRequesterImpl(
+    permissions = arrayOf(Settings.ACTION_MANAGE_WRITE_SETTINGS),
+    activity = requireActivity(),
+    onShowRationale = onShowRationale,
+    onPermissionDenied = onPermissionDenied,
+    onNeverAskAgain = null,
+    requiresPermission = requiresPermission,
+    permissionRequestType = PermissionRequestType.WriteSettings
+)
 
 /**
- * Wraps [requiresPermission] in the dedicated runtime permission check for
- * [Manifest.permission.SYSTEM_ALERT_WINDOW] with the given arguments.
+ * Constructs a request for [android.Manifest.permission.SYSTEM_ALERT_WINDOW].
+ * Be sure to invoke the method when an activity is created to capture the valid callbacks.
  *
  * @param onShowRationale the method explains why the permissions are required.
  * @param onPermissionDenied the method invoked if the user doesn't grant the permissions.
  * @param requiresPermission the action requires [permissions].
+ * @see PermissionsRequester
  */
-fun Fragment.withSystemAlertWindowPermissionCheck(
-    onShowRationale: ShowRationaleFunc? = null,
-    onPermissionDenied: Func? = null,
-    requiresPermission: Func) {
-    PermissionRequestType.SystemAlertWindow.invoke(
-        permissions = arrayOf(Manifest.permission.SYSTEM_ALERT_WINDOW),
-        activity = requireActivity(),
-        onShowRationale = onShowRationale,
-        onPermissionDenied = onPermissionDenied,
-        onNeverAskAgain = null,
-        requiresPermission = requiresPermission)
-}
+@SuppressLint("InlinedApi")
+fun Fragment.constructSystemAlertWindowPermissionRequest(
+    onShowRationale: ShowRationaleFun? = null,
+    onPermissionDenied: Fun? = null,
+    requiresPermission: Fun
+): PermissionsRequester = PermissionsRequesterImpl(
+    permissions = arrayOf(Settings.ACTION_MANAGE_OVERLAY_PERMISSION),
+    activity = requireActivity(),
+    onShowRationale = onShowRationale,
+    onPermissionDenied = onPermissionDenied,
+    onNeverAskAgain = null,
+    requiresPermission = requiresPermission,
+    permissionRequestType = PermissionRequestType.SystemAlertWindow
+)

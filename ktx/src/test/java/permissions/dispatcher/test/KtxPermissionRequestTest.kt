@@ -8,8 +8,8 @@ import org.mockito.Mockito.never
 import permissions.dispatcher.ktx.*
 
 class KtxPermissionRequestTest {
-    private lateinit var onPermissionDenied: Func
-    private lateinit var requiresPermission: Func
+    private lateinit var onPermissionDenied: Fun
+    private lateinit var requiresPermission: Fun
 
     @Before
     fun setUp() {
