@@ -1,8 +1,7 @@
 package permissions.dispatcher.ktx
 
-import android.os.Build
+import android.annotation.SuppressLint
 import android.provider.Settings
-import androidx.annotation.RequiresApi
 import androidx.fragment.app.Fragment
 
 /**
@@ -15,7 +14,7 @@ import androidx.fragment.app.Fragment
  * "never ask again" option.
  * @param requiresPermission the action requires [permissions].
  */
-fun Fragment.withPermissionsCheck(
+fun Fragment.constructPermissionsRequest(
     vararg permissions: String,
     onShowRationale: ShowRationaleFunc? = null,
     onPermissionDenied: Func? = null,
@@ -39,8 +38,8 @@ fun Fragment.withPermissionsCheck(
  * @param onPermissionDenied the method invoked if the user doesn't grant the permissions.
  * @param requiresPermission the action requires [permissions].
  */
-@RequiresApi(Build.VERSION_CODES.M)
-fun Fragment.withWriteSettingsPermissionCheck(
+@SuppressLint("InlinedApi")
+fun Fragment.constructWriteSettingsPermissionRequest(
     onShowRationale: ShowRationaleFunc? = null,
     onPermissionDenied: Func? = null,
     requiresPermission: Func
@@ -62,8 +61,8 @@ fun Fragment.withWriteSettingsPermissionCheck(
  * @param onPermissionDenied the method invoked if the user doesn't grant the permissions.
  * @param requiresPermission the action requires [permissions].
  */
-@RequiresApi(Build.VERSION_CODES.M)
-fun Fragment.withSystemAlertWindowPermissionCheck(
+@SuppressLint("InlinedApi")
+fun Fragment.constructSystemAlertWindowPermissionRequest(
     onShowRationale: ShowRationaleFunc? = null,
     onPermissionDenied: Func? = null,
     requiresPermission: Func
