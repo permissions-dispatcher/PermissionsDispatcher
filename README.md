@@ -10,8 +10,8 @@ This library lifts the burden that comes with writing a bunch of check statement
 
 ## Usage
 
-- if you're not a huge fun of kapt, you can try [ktx](https://github.com/permissions-dispatcher/PermissionsDispatcher/tree/master/ktx).
-- [Java](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/java_usage.md)
+- Kotlin: You can pick either of [ktx](https://github.com/permissions-dispatcher/PermissionsDispatcher/tree/master/ktx) or [kapt](https://github.com/permissions-dispatcher/PermissionsDispatcher#0-prepare-androidmanifest).
+- Java: [apt](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/java_usage.md)
 
 Here's a minimum example, in which you register a `MainActivity` which requires `Manifest.permission.CAMERA`.
 
