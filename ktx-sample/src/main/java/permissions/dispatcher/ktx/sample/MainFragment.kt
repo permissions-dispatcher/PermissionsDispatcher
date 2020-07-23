@@ -38,7 +38,7 @@ class MainFragment : Fragment() {
         super.onViewCreated(view, savedInstanceState)
         val buttonCamera: Button = view.findViewById(R.id.button_camera)
         buttonCamera.setOnClickListener {
-            permissionsRequester.request()
+            permissionsRequester.launch()
         }
     }
 

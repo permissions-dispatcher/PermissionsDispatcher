@@ -23,7 +23,7 @@ internal class PermissionsRequesterImpl(
         )
     }
 
-    override fun request() {
+    override fun launch() {
         if (permissionRequestType.checkPermissions(activity, permissions)) {
             requiresPermission()
         } else {

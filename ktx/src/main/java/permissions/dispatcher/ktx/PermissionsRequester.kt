@@ -1,9 +1,9 @@
 package permissions.dispatcher.ktx
 
 /**
- * An intermediate class that is able to open runtime permissions request process if necessary.
- * [request] method kicks off the actual process.
+ * An intermediate class that is able to launch permissions request process as appropriate.
+ * [launch] method kicks off the actual process.
  */
 interface PermissionsRequester {
-    fun request()
+    fun launch()
 }
