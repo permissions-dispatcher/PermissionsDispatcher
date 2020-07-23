@@ -6,7 +6,7 @@ import androidx.fragment.app.Fragment
 
 /**
  * Constructs a request for ordinary permissions that require a grant from the user.
- * Be sure invoking the method when an activity is created to capture the callbacks appropriately.
+ * Be sure to invoke the method when an activity is created to capture the valid callbacks.
  *
  * @param permissions the permissions [requiresPermission] requires.
  * @param onShowRationale the method explains why the permissions are required.
@@ -34,7 +34,7 @@ fun Fragment.constructPermissionsRequest(
 
 /**
  * Constructs a request for [android.Manifest.permission.WRITE_SETTINGS].
- * Be sure invoking the method when an activity is created to capture the callbacks appropriately.
+ * Be sure to invoke the method when an activity is created to capture the valid callbacks.
  *
  * @param onShowRationale the method explains why the permissions are required.
  * @param onPermissionDenied the method invoked if the user doesn't grant the permissions.
@@ -58,7 +58,7 @@ fun Fragment.constructWriteSettingsPermissionRequest(
 
 /**
  * Constructs a request for [android.Manifest.permission.SYSTEM_ALERT_WINDOW].
- * Be sure invoking the method when an activity is created to capture the callbacks appropriately.
+ * Be sure to invoke the method when an activity is created to capture the valid callbacks.
  *
  * @param onShowRationale the method explains why the permissions are required.
  * @param onPermissionDenied the method invoked if the user doesn't grant the permissions.

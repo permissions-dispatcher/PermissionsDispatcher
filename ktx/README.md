@@ -1,8 +1,6 @@
 ## permissionsdispatcher-ktx
 
-**Note: the status of the module is now alpha and we're looking forward to your feedback!**
-
-permissionsdispatcher-ktx aims to let developers cope with runtime permissions handling in declarative way without using annotation processing([kapt](https://kotlinlang.org/docs/reference/kapt.html)).
+`permissionsdispatcher-ktx` aims to let developers cope with runtime permissions handling in a declarative style without using annotation processing([kapt](https://kotlinlang.org/docs/reference/kapt.html)).
 
 Let's see a minimum example, in which you register a `MainActivity` which requires `Manifest.permission.CAMERA`.
 
@@ -12,10 +10,9 @@ Add the following line to `AndroidManifest.xml`:
  
 `<uses-permission android:name="android.permission.CAMERA" />`
 
-### 1. Define a method with `withPermissionsCheck`
+### 1. Define a requester with `constructPermissionsRequest`
 
-The library provides `withPermissionsCheck`, which you can delegate exact runtime
- permission handling and register several callback methods to be called in an appropriate situation.
+The library provides `constructPermissionsRequest` which you can construct a requester object with the given several callback functions to be called in an appropriate situation.
  
 ```kotlin
 /**
@@ -26,32 +23,34 @@ The library provides `withPermissionsCheck`, which you can delegate exact runtim
  * "never ask again" option.
  * @param requiresPermission the action requires [permissions].
  */
-fun FragmentActivity/*(or Fragment)*/.withPermissionsCheck(
+fun FragmentActivity/*(or Fragment)*/.constructPermissionsRequest(
     vararg permissions: String,
     onShowRationale: ShowRationaleFunc? = null,
     onPermissionDenied: Func? = null,
     onNeverAskAgain: Func? = null,
-    requiresPermission: Func)
+    requiresPermission: Func): PermissionsRequester
 ```
 
-Here you just define `showCamera` with the provided method and that's it! Don't have to take care
- about `onRequestPermissionsResult` and so on.
+Here you just define `showCamera` and basically that's it! With the library you don't need to manually override `onRequestPermissionsResult`.
+
+NOTE: Be sure to construct a requester every time an activity is created to capture the callbacks appropriately.
 
 ```kotlin
 class MainActivity: AppCompatActivity {
+    // constructPermissionsRequest must be invoked every time an activity is created 
+    private val showCamera = constructPermissionsRequest(Manifest.permission.CAMERA,
+        onShowRationale = ::onCameraShowRationale,
+        onPermissionDenied = ::onCameraDenied,
+        onNeverAskAgain = ::onCameraNeverAskAgain) {
+		    // do something here
+        }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         findViewById(R.id.button_camera).setOnClickListener {
-            showCamera()
+            showCamera.launch()
         }
-    }
-
-    private fun showCamera() = withPermissionsCheck(Manifest.permission.CAMERA,
-        onShowRationale = ::onCameraShowRationale,
-        onPermissionDenied = ::onCameraDenied,
-        onNeverAskAgain = ::onCameraNeverAskAgain) {
-        // do something here
     }
 
     private fun onCameraDenied() {
@@ -72,33 +71,27 @@ Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/ma
  
 #### Special Permissions
 
-The library also provides `withWriteSettingsPermissionCheck` and
- `withSystemAlertWindowPermissionCheck` to support `WRITE_SETTINGS` and `SYSTEM_ALERT_WINDOW` that
+The library also provides `constructWriteSettingsPermissionRequest` and
+ `constructSystemAlertWindowPermissionRequest` to support `WRITE_SETTINGS` and `SYSTEM_ALERT_WINDOW` that
  requires exceptional handling.
 
 ```kotlin
 /**
- * Wraps [requiresPermission] in the dedicated runtime permission check for
- * [Manifest.permission.WRITE_SETTINGS] with the given arguments.
- *
  * @param onShowRationale the method explains why the permissions are required.
  * @param onPermissionDenied the method invoked if the user doesn't grant the permissions.
  * @param requiresPermission the action requires [permissions].
  */
-fun FragmentActivity/*(or Fragment)*/.withWriteSettingsPermissionCheck(
+fun FragmentActivity/*(or Fragment)*/.constructWriteSettingsPermissionRequest(
     onShowRationale: ShowRationaleFunc? = null,
     onPermissionDenied: Func? = null,
     requiresPermission: Func)
 
-/**
- * Wraps [requiresPermission] in the dedicated runtime permission check for
- * [Manifest.permission.SYSTEM_ALERT_WINDOW] with the given arguments.
- *
+ /**
  * @param onShowRationale the method explains why the permissions are required.
  * @param onPermissionDenied the method invoked if the user doesn't grant the permissions.
  * @param requiresPermission the action requires [permissions].
  */
-fun FragmentActivity/*(or Fragment)*/.withSystemAlertWindowPermissionCheck(
+fun FragmentActivity/*(or Fragment)*/.constructSystemAlertWindowPermissionRequest(
     onShowRationale: ShowRationaleFunc? = null,
     onPermissionDenied: Func? = null,
     requiresPermission: Func)
