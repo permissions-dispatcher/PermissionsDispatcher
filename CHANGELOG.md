@@ -1,5 +1,7 @@
 # ChangeLog
 
+- ktx: 1.0.0-beta1
+  - Update: [rewrite internal implementation](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/678)
 - 4.7.0 2020/03/25
   - Feat: [ktx module](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/665)
   - Update: [Add missing dangerous permissions check in later versions](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/652)
