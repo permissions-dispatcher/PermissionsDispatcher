@@ -1,14 +1,28 @@
 package permissions.dispatcher.ktx
 
-import androidx.lifecycle.LiveData
-import androidx.lifecycle.MutableLiveData
-import androidx.lifecycle.ViewModel
+import androidx.lifecycle.*
 
 internal class PermissionRequestViewModel : ViewModel() {
-    private val _permissionRequestResult: MutableLiveData<PermissionResult> = MutableLiveData()
-
-    val permissionRequestResult: LiveData<PermissionResult> = _permissionRequestResult
+    private val permissionRequestResult: MutableLiveData<PermissionResult> = MutableLiveData()
 
     fun postPermissionRequestResult(permissionResult: PermissionResult) =
-        _permissionRequestResult.postValue(permissionResult)
+        permissionRequestResult.postValue(permissionResult)
+
+    inline fun observe(
+        owner: LifecycleOwner,
+        crossinline requiresPermission: Fun,
+        noinline onPermissionDenied: Fun?,
+        noinline onNeverAskAgain: Fun?
+    ) {
+        permissionRequestResult.observe(owner, Observer {
+            when (it) {
+                PermissionResult.GRANTED -> requiresPermission.invoke()
+                PermissionResult.DENIED -> onPermissionDenied?.invoke()
+                PermissionResult.DENIED_AND_DISABLED -> onNeverAskAgain?.invoke()
+                else -> Unit
+            }
+        })
+    }
+
+    fun removeObservers(owner: LifecycleOwner) = permissionRequestResult.removeObservers(owner)
 }

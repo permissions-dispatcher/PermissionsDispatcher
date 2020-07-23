@@ -15,7 +15,7 @@ internal class PermissionsRequesterImpl(
 ) : PermissionsRequester {
     init {
         val viewModel = ViewModelProvider(activity).get(PermissionRequestViewModel::class.java)
-        viewModel.permissionRequestResult.observe(
+        viewModel.observe(
             activity,
             requiresPermission,
             onPermissionDenied,
