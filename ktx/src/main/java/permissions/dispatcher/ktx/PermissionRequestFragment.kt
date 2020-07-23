@@ -12,15 +12,14 @@ import permissions.dispatcher.PermissionUtils
 import permissions.dispatcher.PermissionUtils.verifyPermissions
 import java.util.*
 
-sealed class PermissionRequestFragment : Fragment() {
+internal sealed class PermissionRequestFragment : Fragment() {
     protected val requestCode = Random().nextInt(1000)
-    protected val viewModel: PermissionRequestViewModel by lazy {
-        ViewModelProvider(requireActivity()).get(PermissionRequestViewModel::class.java)
-    }
+    protected lateinit var viewModel: PermissionRequestViewModel
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
         retainInstance = true
+        viewModel = ViewModelProvider(requireActivity()).get(PermissionRequestViewModel::class.java)
     }
 
     protected fun dismiss() =
@@ -70,7 +69,8 @@ sealed class PermissionRequestFragment : Fragment() {
             super.onCreate(savedInstanceState)
             val action = arguments?.getString(BUNDLE_ACTION_KEY) ?: return
             val packageName = context?.packageName ?: return
-            startActivityForResult(Intent(action, Uri.parse("package:$packageName")), requestCode)
+            val uri = Uri.parse("package:$packageName")
+            startActivityForResult(Intent(action, uri), requestCode)
         }
 
         override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {

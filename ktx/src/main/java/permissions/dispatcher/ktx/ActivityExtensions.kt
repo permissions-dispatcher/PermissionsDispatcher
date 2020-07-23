@@ -20,7 +20,7 @@ fun FragmentActivity.constructPermissionsRequest(
     onPermissionDenied: Func? = null,
     onNeverAskAgain: Func? = null,
     requiresPermission: Func
-) = PermissionsRequester(
+): PermissionsRequester = PermissionsRequesterImpl(
     permissions = permissions,
     activity = this,
     onShowRationale = onShowRationale,
@@ -43,7 +43,7 @@ fun FragmentActivity.constructWriteSettingsPermissionRequest(
     onShowRationale: ShowRationaleFunc? = null,
     onPermissionDenied: Func? = null,
     requiresPermission: Func
-) = PermissionsRequester(
+): PermissionsRequester = PermissionsRequesterImpl(
     permissions = arrayOf(Settings.ACTION_MANAGE_WRITE_SETTINGS),
     activity = this,
     onShowRationale = onShowRationale,
@@ -66,7 +66,7 @@ fun FragmentActivity.constructSystemAlertWindowPermissionRequest(
     onShowRationale: ShowRationaleFunc? = null,
     onPermissionDenied: Func? = null,
     requiresPermission: Func
-) = PermissionsRequester(
+): PermissionsRequester = PermissionsRequesterImpl(
     permissions = arrayOf(Settings.ACTION_MANAGE_OVERLAY_PERMISSION),
     activity = this,
     onShowRationale = onShowRationale,

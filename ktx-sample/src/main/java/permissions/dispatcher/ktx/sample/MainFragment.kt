@@ -12,14 +12,14 @@ import androidx.fragment.app.Fragment
 import permissions.dispatcher.PermissionRequest
 import permissions.dispatcher.ktx.PermissionsRequester
 import permissions.dispatcher.ktx.sample.camera.CameraPreviewFragment
-import permissions.dispatcher.ktx.withPermissionsCheck
+import permissions.dispatcher.ktx.constructPermissionsRequest
 
 class MainFragment : Fragment() {
     private lateinit var permissionsRequester: PermissionsRequester
 
     override fun onAttach(context: Context?) {
         super.onAttach(context)
-        permissionsRequester = withPermissionsCheck(Manifest.permission.CAMERA,
+        permissionsRequester = constructPermissionsRequest(Manifest.permission.CAMERA,
             onShowRationale = ::onCameraShowRationale,
             onPermissionDenied = ::onCameraDenied,
             onNeverAskAgain = ::onCameraNeverAskAgain) {

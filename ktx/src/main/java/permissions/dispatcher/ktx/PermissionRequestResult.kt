@@ -1,6 +1,6 @@
 package permissions.dispatcher.ktx
 
-enum class PermissionResult {
+internal enum class PermissionResult {
     /** Permission result: The permission is granted.  */
     GRANTED,
 
