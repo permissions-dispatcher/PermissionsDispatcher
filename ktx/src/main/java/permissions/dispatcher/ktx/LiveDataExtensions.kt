@@ -6,9 +6,9 @@ import androidx.lifecycle.Observer
 
 internal inline fun LiveData<PermissionResult>.observe(
     owner: LifecycleOwner,
-    crossinline requiresPermission: Func,
-    noinline onPermissionDenied: Func?,
-    noinline onNeverAskAgain: Func?
+    crossinline requiresPermission: Fun,
+    noinline onPermissionDenied: Fun?,
+    noinline onNeverAskAgain: Fun?
 ) {
     observe(owner, Observer {
         when (it) {

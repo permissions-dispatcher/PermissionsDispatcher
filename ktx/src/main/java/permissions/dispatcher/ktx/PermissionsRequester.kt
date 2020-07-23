@@ -15,10 +15,10 @@ interface PermissionsRequester {
 internal class PermissionsRequesterImpl(
     private val permissions: Array<out String>,
     private val activity: FragmentActivity,
-    private val onShowRationale: ShowRationaleFunc?,
-    private val onPermissionDenied: Func?,
-    private val requiresPermission: Func,
-    onNeverAskAgain: Func?,
+    private val onShowRationale: ShowRationaleFun?,
+    private val onPermissionDenied: Fun?,
+    private val requiresPermission: Fun,
+    onNeverAskAgain: Fun?,
     private val permissionRequestType: PermissionRequestType
 ): PermissionsRequester {
     init {

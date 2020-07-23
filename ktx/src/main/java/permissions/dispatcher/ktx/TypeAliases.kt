@@ -2,5 +2,5 @@ package permissions.dispatcher.ktx
 
 import permissions.dispatcher.PermissionRequest
 
-internal typealias Func = () -> Unit
-internal typealias ShowRationaleFunc = (PermissionRequest) -> Unit
+internal typealias Fun = () -> Unit
+internal typealias ShowRationaleFun = (PermissionRequest) -> Unit

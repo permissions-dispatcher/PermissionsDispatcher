@@ -18,10 +18,10 @@ import androidx.fragment.app.Fragment
  */
 fun Fragment.constructPermissionsRequest(
     vararg permissions: String,
-    onShowRationale: ShowRationaleFunc? = null,
-    onPermissionDenied: Func? = null,
-    onNeverAskAgain: Func? = null,
-    requiresPermission: Func
+    onShowRationale: ShowRationaleFun? = null,
+    onPermissionDenied: Fun? = null,
+    onNeverAskAgain: Fun? = null,
+    requiresPermission: Fun
 ): PermissionsRequester = PermissionsRequesterImpl(
     permissions = permissions,
     activity = requireActivity(),
@@ -43,9 +43,9 @@ fun Fragment.constructPermissionsRequest(
  */
 @SuppressLint("InlinedApi")
 fun Fragment.constructWriteSettingsPermissionRequest(
-    onShowRationale: ShowRationaleFunc? = null,
-    onPermissionDenied: Func? = null,
-    requiresPermission: Func
+    onShowRationale: ShowRationaleFun? = null,
+    onPermissionDenied: Fun? = null,
+    requiresPermission: Fun
 ): PermissionsRequester = PermissionsRequesterImpl(
     permissions = arrayOf(Settings.ACTION_MANAGE_WRITE_SETTINGS),
     activity = requireActivity(),
@@ -67,9 +67,9 @@ fun Fragment.constructWriteSettingsPermissionRequest(
  */
 @SuppressLint("InlinedApi")
 fun Fragment.constructSystemAlertWindowPermissionRequest(
-    onShowRationale: ShowRationaleFunc? = null,
-    onPermissionDenied: Func? = null,
-    requiresPermission: Func
+    onShowRationale: ShowRationaleFun? = null,
+    onPermissionDenied: Fun? = null,
+    requiresPermission: Fun
 ): PermissionsRequester = PermissionsRequesterImpl(
     permissions = arrayOf(Settings.ACTION_MANAGE_OVERLAY_PERMISSION),
     activity = requireActivity(),

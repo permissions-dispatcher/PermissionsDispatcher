@@ -4,8 +4,8 @@ import permissions.dispatcher.PermissionRequest
 import java.lang.ref.WeakReference
 
 internal class KtxPermissionRequest(
-    private val requestPermission: WeakReference<Func>,
-    private val permissionDenied: WeakReference<Func>?
+    private val requestPermission: WeakReference<Fun>,
+    private val permissionDenied: WeakReference<Fun>?
 ) : PermissionRequest {
     override fun proceed() {
         requestPermission.get()?.invoke()
@@ -16,7 +16,7 @@ internal class KtxPermissionRequest(
     }
 
     companion object {
-        fun create(onPermissionDenied: Func?, requestPermission: Func) = KtxPermissionRequest(
+        fun create(onPermissionDenied: Fun?, requestPermission: Fun) = KtxPermissionRequest(
             requestPermission = WeakReference(requestPermission),
             permissionDenied = onPermissionDenied?.let { WeakReference(it) }
         )
