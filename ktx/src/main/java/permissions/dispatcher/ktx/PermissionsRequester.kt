@@ -4,6 +4,10 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import permissions.dispatcher.PermissionUtils
 
+/**
+ * An intermediate class that is able to open runtime permissions request process if necessary.
+ * [request] method kicks off the actual process.
+ */
 interface PermissionsRequester {
     fun request()
 }
