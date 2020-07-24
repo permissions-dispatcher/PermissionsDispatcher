@@ -33,6 +33,31 @@ fun Fragment.constructPermissionsRequest(
 )
 
 /**
+ * Constructs a request for location permissions that require a grant from the user.
+ * Be sure to invoke the method when an activity is created to capture the valid callbacks.
+ *
+ * @param onShowRationale the method explains why the permissions are required.
+ * @param onPermissionDenied the method invoked if the user doesn't grant the permissions.
+ * @param requiresPermission the action requires [permissions].
+ * @see PermissionsRequester
+ */
+fun Fragment.constructLocationPermissionRequest(
+    vararg permissions: LocationPermission,
+    onShowRationale: ShowRationaleFun? = null,
+    onPermissionDenied: Fun? = null,
+    onNeverAskAgain: Fun? = null,
+    requiresPermission: Fun
+): PermissionsRequester = PermissionsRequesterImpl(
+    permissions = permissions.filterByApiLevel(),
+    activity = requireActivity(),
+    onShowRationale = onShowRationale,
+    onPermissionDenied = onPermissionDenied,
+    onNeverAskAgain = onNeverAskAgain,
+    requiresPermission = requiresPermission,
+    permissionRequestType = PermissionRequestType.Normal
+)
+
+/**
  * Constructs a request for [android.Manifest.permission.WRITE_SETTINGS].
  * Be sure to invoke the method when an activity is created to capture the valid callbacks.
  *

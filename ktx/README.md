@@ -68,6 +68,26 @@ class MainActivity: AppCompatActivity {
 ```
 
 Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/master/ktx-sample) for more details.
+
+#### Location Permissions
+
+Since the location permissions have been one of the most sensitive permission group to deal with, we provide a dedicated method `constructLocationPermissionRequest`.
+With the method you don't have to think of which API version you can ask [ACCESS_BACKGROUND_LOCATION](https://developer.android.com/about/versions/10/privacy/changes#app-access-device-location)(see the [issue](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/646) for more detail).
+
+```kotlin
+/**
+ * @param onShowRationale the method explains why the permissions are required.
+ * @param onPermissionDenied the method invoked if the user doesn't grant the permissions.
+ * @param requiresPermission the action requires [permissions].
+ */
+fun FragmentActivity/*(or Fragment)*/.constructLocationPermissionRequest(
+    vararg permissions: LocationPermission,
+    onShowRationale: ShowRationaleFun? = null,
+    onPermissionDenied: Fun? = null,
+    onNeverAskAgain: Fun? = null,
+    requiresPermission: Fun
+): PermissionsRequester
+```
  
 #### Special Permissions
 
@@ -84,7 +104,7 @@ The library also provides `constructWriteSettingsPermissionRequest` and
 fun FragmentActivity/*(or Fragment)*/.constructWriteSettingsPermissionRequest(
     onShowRationale: ShowRationaleFunc? = null,
     onPermissionDenied: Func? = null,
-    requiresPermission: Func)
+    requiresPermission: Func): PermissionsRequester
 
  /**
  * @param onShowRationale the method explains why the permissions are required.
@@ -94,7 +114,7 @@ fun FragmentActivity/*(or Fragment)*/.constructWriteSettingsPermissionRequest(
 fun FragmentActivity/*(or Fragment)*/.constructSystemAlertWindowPermissionRequest(
     onShowRationale: ShowRationaleFunc? = null,
     onPermissionDenied: Func? = null,
-    requiresPermission: Func)
+    requiresPermission: Func): PermissionsRequester
 ```
 
 ## Installation
