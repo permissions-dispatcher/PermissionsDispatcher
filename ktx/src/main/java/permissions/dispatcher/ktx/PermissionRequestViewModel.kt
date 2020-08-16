@@ -25,4 +25,6 @@ internal class PermissionRequestViewModel : ViewModel() {
     }
 
     fun removeObservers(owner: LifecycleOwner) = permissionRequestResult.removeObservers(owner)
+
+    fun hasActiveObservers(): Boolean = permissionRequestResult.hasActiveObservers()
 }

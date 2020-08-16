@@ -15,6 +15,9 @@ internal class PermissionsRequesterImpl(
 ) : PermissionsRequester {
     init {
         val viewModel = ViewModelProvider(activity).get(PermissionRequestViewModel::class.java)
+        if (viewModel.hasActiveObservers()) {
+            viewModel.removeObservers(activity) // allow only 1 observer to receive the event
+        }
         viewModel.observe(
             activity,
             requiresPermission,
