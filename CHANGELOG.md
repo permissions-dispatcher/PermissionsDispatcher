@@ -1,5 +1,7 @@
 # ChangeLog
 
+- 4.8.0 2020/08/31
+  - Feat: [Bug fix for NeedOnRequestPermissionsResult lint derector](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/680)
 - ktx: 1.0.0-beta1
   - Update: [rewrite internal implementation](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/678)
 - 4.7.0 2020/03/25
