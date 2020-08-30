@@ -10,23 +10,19 @@ internal class PermissionsRequesterImpl(
     private val onShowRationale: ShowRationaleFun?,
     private val onPermissionDenied: Fun?,
     private val requiresPermission: Fun,
-    onNeverAskAgain: Fun?,
+    private val onNeverAskAgain: Fun?,
     private val permissionRequestType: PermissionRequestType
 ) : PermissionsRequester {
-    init {
-        val viewModel = ViewModelProvider(activity).get(PermissionRequestViewModel::class.java)
-        viewModel.observe(
-            activity,
-            requiresPermission,
-            onPermissionDenied,
-            onNeverAskAgain
-        )
-    }
-
     override fun launch() {
         if (permissionRequestType.checkPermissions(activity, permissions)) {
             requiresPermission()
         } else {
+            ViewModelProvider(activity).get(PermissionRequestViewModel::class.java).observe(
+                activity,
+                requiresPermission,
+                onPermissionDenied,
+                onNeverAskAgain
+            )
             val requestFun = {
                 activity.supportFragmentManager
                     .beginTransaction()

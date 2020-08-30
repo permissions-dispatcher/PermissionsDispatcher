@@ -21,7 +21,6 @@ internal class PermissionRequestViewModel : ViewModel() {
                 PermissionResult.DENIED_AND_DISABLED -> onNeverAskAgain?.invoke()
                 else -> Unit
             }
-            removeObservers(owner)
         })
     }
 
