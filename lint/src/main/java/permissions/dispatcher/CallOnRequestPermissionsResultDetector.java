@@ -1,5 +1,7 @@
 package permissions.dispatcher;
 
+import androidx.annotation.Nullable;
+
 import com.android.tools.lint.client.api.UElementHandler;
 import com.android.tools.lint.detector.api.Category;
 import com.android.tools.lint.detector.api.Detector;
@@ -18,6 +20,7 @@ import org.jetbrains.uast.UExpression;
 import org.jetbrains.uast.UMethod;
 import org.jetbrains.uast.UQualifiedReferenceExpression;
 import org.jetbrains.uast.kotlin.KotlinUFunctionCallExpression;
+import org.jetbrains.uast.kotlin.KotlinUImplicitReturnExpression;
 import org.jetbrains.uast.kotlin.KotlinUQualifiedReferenceExpression;
 import org.jetbrains.uast.visitor.AbstractUastVisitor;
 
@@ -91,6 +94,10 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
             return true;
         }
 
+        private static boolean assertMethodName(@Nullable String name) {
+            return "onRequestPermissionsResult".equals(name);
+        }
+
         private static boolean isGeneratedMethodCalled(UMethod method, String className, boolean isKotlin) {
             UExpression methodBody = method.getUastBody();
             if (methodBody == null) {
@@ -102,8 +109,15 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
                 for (UExpression expression : expressions) {
                     if (isKotlin && expression instanceof KotlinUFunctionCallExpression) {
                         KotlinUFunctionCallExpression functionalExpression = (KotlinUFunctionCallExpression) expression;
-                        if ("onRequestPermissionsResult".equals(functionalExpression.getMethodName())) {
-                            return true;
+                        return assertMethodName(functionalExpression.getMethodName());
+                    } else if (isKotlin && expression instanceof KotlinUImplicitReturnExpression) {
+                        KotlinUImplicitReturnExpression returnExpression =
+                                (KotlinUImplicitReturnExpression) expression;
+                        UExpression uExpression = returnExpression.returnExpression;
+                        if (uExpression instanceof KotlinUFunctionCallExpression) {
+                            KotlinUFunctionCallExpression uFunctionCallExpression =
+                                    (KotlinUFunctionCallExpression) uExpression;
+                            return assertMethodName(uFunctionCallExpression.getMethodName());
                         }
                     }
 
@@ -124,12 +138,10 @@ public final class CallOnRequestPermissionsResultDetector extends Detector imple
                     }
 
                     if (isKotlin && referenceExpression instanceof KotlinUQualifiedReferenceExpression) {
-                        if ("onRequestPermissionsResult".equals(referenceExpression.getResolvedName())) {
-                            return true;
-                        }
+                        return assertMethodName(referenceExpression.getResolvedName());
                     } else {
                         String targetClassName = className + "PermissionsDispatcher";
-                        if (targetClassName.equals(receiverName) && "onRequestPermissionsResult".equals(referenceExpression.getResolvedName())) {
+                        if (targetClassName.equals(receiverName) && assertMethodName(referenceExpression.getResolvedName())) {
                             return true;
                         }
                     }
