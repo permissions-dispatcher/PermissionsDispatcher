@@ -1,5 +1,8 @@
 # ChangeLog
 
+- ktx: 1.0.0 2020/08/31
+  - fix: [observe ViewModel only when a permission has not been granted](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/681)
+  - feat: [Location dedicated permission methods](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/679)
 - 4.8.0 2020/08/31
   - Feat: [Bug fix for NeedOnRequestPermissionsResult lint derector](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/680)
 - ktx: 1.0.0-beta1
