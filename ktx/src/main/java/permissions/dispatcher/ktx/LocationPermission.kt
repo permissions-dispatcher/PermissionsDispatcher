@@ -18,4 +18,4 @@ enum class LocationPermission(internal val permission: String, internal val apiL
 }
 
 internal fun Array<out LocationPermission>.filterByApiLevel(sdkVer: Int = Build.VERSION.SDK_INT) =
-    mapNotNull { if (it.apiLevel <= sdkVer) it.permission else null }.toTypedArray()
+    filter { it.apiLevel <= sdkVer }.map { it.permission }.toTypedArray()
