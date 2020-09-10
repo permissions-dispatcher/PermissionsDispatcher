@@ -3,7 +3,7 @@ package permissions.dispatcher.ktx
 import androidx.lifecycle.*
 
 internal class PermissionRequestViewModel : ViewModel() {
-    private val permissionRequestResult: MutableLiveData<PermissionResult> = MutableLiveData()
+    private val permissionRequestResult: SingleLiveEvent<PermissionResult> = SingleLiveEvent()
 
     fun postPermissionRequestResult(permissionResult: PermissionResult) =
         permissionRequestResult.postValue(permissionResult)
