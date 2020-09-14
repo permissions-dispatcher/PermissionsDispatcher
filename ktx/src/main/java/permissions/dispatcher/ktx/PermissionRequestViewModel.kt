@@ -3,10 +3,10 @@ package permissions.dispatcher.ktx
 import androidx.lifecycle.*
 
 internal class PermissionRequestViewModel : ViewModel() {
-    private val permissionRequestResult: SingleLiveEvent<PermissionResult> = SingleLiveEvent()
+    private val permissionRequestResult: MutableLiveData<Event<PermissionResult>> = MutableLiveData()
 
     fun postPermissionRequestResult(permissionResult: PermissionResult) =
-        permissionRequestResult.postValue(permissionResult)
+        permissionRequestResult.postValue(Event(permissionResult))
 
     inline fun observe(
         owner: LifecycleOwner,
@@ -15,7 +15,10 @@ internal class PermissionRequestViewModel : ViewModel() {
         noinline onNeverAskAgain: Fun?
     ) {
         permissionRequestResult.observe(owner, Observer {
-            when (it) {
+            if (it.hasBeenHandled) {
+                return@Observer
+            }
+            when (it.getContentIfNotHandled()) {
                 PermissionResult.GRANTED -> requiresPermission.invoke()
                 PermissionResult.DENIED -> onPermissionDenied?.invoke()
                 PermissionResult.DENIED_AND_DISABLED -> onNeverAskAgain?.invoke()
