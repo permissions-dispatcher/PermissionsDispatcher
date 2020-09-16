@@ -1,5 +1,7 @@
 # ChangeLog
 
+- ktx: 1.0.1 2020/09/17
+  - Fix: [fix: wrap PermissionResult with Event](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/689)
 - ktx: 1.0.0 2020/08/31
   - fix: [observe ViewModel only when a permission has not been granted](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/681)
   - feat: [Location dedicated permission methods](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/679)
