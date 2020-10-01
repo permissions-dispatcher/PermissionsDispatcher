@@ -6,7 +6,7 @@
 
 PermissionsDispatcher provides a simple annotation-based API to handle runtime permissions.
 
-This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code clean and safe.
+This library lifts the burden that comes with writing a bunch of check statements whether a permission has been granted or not from you, in order to keep your code small and precise. 
 
 ## Usage
 
