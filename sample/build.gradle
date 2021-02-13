@@ -23,8 +23,6 @@ android {
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
     implementation "androidx.appcompat:appcompat:$ANDROIDX_LIBRARY_VERSION"
-    implementation "com.github.permissions-dispatcher:permissionsdispatcher:4.8.0"
-    kapt "com.github.permissions-dispatcher:permissionsdispatcher-processor:4.8.0"
-//    implementation project(':library')
-//    kapt project(':processor')
+    implementation project(':library')
+    kapt project(':processor')
 }
