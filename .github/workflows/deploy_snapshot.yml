@@ -23,4 +23,4 @@ jobs:
     - name: Build with Gradle
       run: ./gradlew clean build
     - name: Deploy snapshot
-      run: ./scripts/deploy_snapshot.sh
+      run: ./gradlew uploadArchives --no-daemon --no-parallel -PSONATYPE_NEXUS_USERNAME=${{secrets.SONATYPE_NEXUS_USERNAME}} -PSONATYPE_NEXUS_PASSWORD=${{secrets.SONATYPE_NEXUS_PASSWORD}}
