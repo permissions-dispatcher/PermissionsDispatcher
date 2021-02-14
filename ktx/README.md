@@ -119,10 +119,10 @@ fun FragmentActivity/*(or Fragment)*/.constructSystemAlertWindowPermissionReques
 
 ## Installation
 
-`${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/org.permissionsdispatcher/permissionsdispatcher-ktx/images/download.svg) ](https://bintray.com/hotchemi/org.permissionsdispatcher/permissionsdispatcher-ktx/_latestVersion)
+`${latest.version}` is [![Download](https://maven-badges.herokuapp.com/maven-central/com.github.permissions-dispatcher/permissionsdispatcher-ktx/badge.svg)](https://search.maven.org/search?q=a:permissionsdispatcher-ktx)
 
 ```groovy
 dependencies {
-  implementation "org.permissionsdispatcher:permissionsdispatcher-ktx:${latest.version}"
+  implementation "com.github.permissions-dispatcher:permissionsdispatcher-ktx:${latest.version}"
 }
 ```

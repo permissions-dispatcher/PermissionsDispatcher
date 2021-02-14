@@ -3,28 +3,13 @@ import permissions.dispatcher.AndroidJarDependencyPlugin
 import permissions.dispatcher.AarToJarConversionPlugin
 
 apply plugin: 'kotlin'
-apply plugin: 'maven-publish'
-apply plugin: 'com.jfrog.bintray'
+apply plugin: 'org.jetbrains.dokka'
+apply plugin: "com.vanniktech.maven.publish"
 apply plugin: AndroidJarDependencyPlugin
 apply plugin: AarToJarConversionPlugin
 
 // Connect sources & tests to library project
 convertAarsToJar.dependsOn ":library:assembleRelease"
-
-task sourcesJar(type: Jar) {
-    from sourceSets.main.java.srcDirs
-    classifier = 'sources'
-}
-
-task javadocJar(type: Jar, dependsOn: javadoc) {
-    classifier = 'javadoc'
-    from javadoc.destinationDir
-}
-
-artifacts {
-    archives javadocJar
-    archives sourcesJar
-}
 
 dependencies {
     compile "androidx.annotation:annotation:$ANDROIDX_LIBRARY_VERSION"
@@ -47,40 +32,3 @@ dependencies {
     testCompile "androidx.legacy:legacy-support-v4:$ANDROIDX_LIBRARY_VERSION"
     testCompile "org.permissionsdispatcher:kompile-testing:$KOMPILE_TESTING_VERSION"
 }
-
-publishing {
-    publications {
-        MyPublication(MavenPublication) {
-            from components.java
-            artifact sourcesJar
-            artifact javadocJar
-            groupId GROUP_ID
-            artifactId ARTIFACT_ID_PROCESSOR
-            version VERSION
-        }
-    }
-}
-
-bintray {
-    publications = ['MyPublication']
-    user = bintrayUser
-    key = bintrayKey
-    dryRun = dryRun
-    publish = true
-
-    pkg {
-        repo = REPO
-        userOrg = USER
-        name = ARTIFACT_ID_PROCESSOR
-        vcsUrl = VCS_URL
-        licenses = LICENSES
-        version {
-            name = VERSION
-            desc = DESCRIPTION
-        }
-    }
-}
-
-// Non-Android project: Artifactory Plugin adds only 1 publication
-project.ext.publicationName = "maven"
-apply from: rootProject.file('gradle/gradle-artifactory-upload.gradle')

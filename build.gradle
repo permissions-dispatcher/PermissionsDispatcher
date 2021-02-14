@@ -9,23 +9,15 @@ buildscript {
     dependencies {
         classpath "com.android.tools.build:gradle:$GRADLE_PLUGIN_VERSION"
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$KOTLIN_VERSION"
-        classpath "com.jfrog.bintray.gradle:gradle-bintray-plugin:$BINTRAY_PLUGIN_VERSION"
-        classpath "org.jfrog.buildinfo:build-info-extractor-gradle:$JFROG_PLUGIN_VERSION"
+        classpath "org.jetbrains.dokka:dokka-gradle-plugin:$DOKKA_VERSION"
+        classpath "com.vanniktech:gradle-maven-publish-plugin:$PUBLISH_PLUGIN_VERSION"
     }
 }
-
-def generatePomFilesTask = tasks.create("generatePomFiles")
 
 allprojects {
     repositories {
         mavenCentral()
         google()
         jcenter()
-    }
-
-    tasks.whenTaskAdded {
-        if (it.name.matches("generatePomFileFor([A-Z][a-zA-Z]*)Publication")) {
-            generatePomFilesTask.dependsOn it
-        }
     }
 }
