@@ -16,6 +16,8 @@ jobs:
         java-version: 1.8
     - name: Grant execute permission for gradlew
       run: chmod +x gradlew
+    - name: Prepare local.properties for testing
+      run: echo "sdk.dir=$ANDROID_HOME" > local.properties
     - name: Build with Gradle
       run: ./gradlew clean build
     - name: Decode the secret key and place the file
