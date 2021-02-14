@@ -1,8 +1,6 @@
-name: CI
+name: CI for pull request
 
 on:
-  push:
-    branches: [master]
   pull_request:
     types: [assigned, opened, synchronize, reopened]
 
