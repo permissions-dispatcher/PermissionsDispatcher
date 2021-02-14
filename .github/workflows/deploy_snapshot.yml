@@ -1,4 +1,4 @@
-name: Android CI
+name: Deploy snapshot
 
 on:
   pull_request:
