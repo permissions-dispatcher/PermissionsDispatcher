@@ -1,4 +1,4 @@
-# PermissionsDispatcher [![Build Status](https://travis-ci.org/permissions-dispatcher/PermissionsDispatcher.svg?branch=master)](https://travis-ci.org/permissions-dispatcher/PermissionsDispatcher) [![PermissionsDispatcher](https://www.appbrain.com/stats/libraries/shield/permissions_dispatcher.svg)](https://www.appbrain.com/stats/libraries/details/permissions_dispatcher/permissionsdispatcher)
+# PermissionsDispatcher ![CI for pull request](https://github.com/permissions-dispatcher/PermissionsDispatcher/workflows/CI%20for%20pull%20request/badge.svg?branch=master)
 
 - **Fully Kotlin/Java support**
 - [**Special permissions support**](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/special_permissions.md)
@@ -100,12 +100,12 @@ NOTE: 4.x only supports [Jetpack](https://developer.android.com/jetpack/). If yo
 
 To add PermissionsDispatcher to your project, include the following in your **app module** `build.gradle` file:
 
-`${latest.version}` is [![Download](https://api.bintray.com/packages/hotchemi/org.permissionsdispatcher/permissionsdispatcher/images/download.svg) ](https://bintray.com/hotchemi/org.permissionsdispatcher/permissionsdispatcher/_latestVersion)
+`${latest.version}` is [![Download]([https://maven-badges.herokuapp.com/maven-central/com.github.permissions-dispatcher/permissionsdispatcher/badge.svg)](https://search.maven.org/search?q=g:com.github.permissions-dispatcher)
 
 ```groovy
 dependencies {
-  implementation "org.permissionsdispatcher:permissionsdispatcher:${latest.version}"
-  annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:${latest.version}"
+  implementation "com.github.permissions-dispatcher:permissionsdispatcher:${latest.version}"
+  annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:${latest.version}"
 }
 ```
 
@@ -115,18 +115,8 @@ With Kotlin:
 apply plugin: 'kotlin-kapt'
 
 dependencies {
-  implementation "org.permissionsdispatcher:permissionsdispatcher:${latest.version}"
-  kapt "org.permissionsdispatcher:permissionsdispatcher-processor:${latest.version}"
-}
-```
-
-Snapshots of the development version are available in [JFrog's snapshots repository](https://oss.jfrog.org/oss-snapshot-local/). 
-Add the repo below to download `SNAPSHOT` releases.
-
-```groovy
-repositories {
-  jcenter()
-  maven { url 'http://oss.jfrog.org/artifactory/oss-snapshot-local/' }
+  implementation "com.github.permissions-dispatcher:permissionsdispatcher:${latest.version}"
+  kapt "com.github.permissions-dispatcher:permissionsdispatcher-processor:${latest.version}"
 }
 ```
 
