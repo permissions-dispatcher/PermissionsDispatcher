@@ -1,8 +1,33 @@
 # Migration guide
 
+- [Migrating to Maven Central](#migrating-to-maven-central)
 - [Migrating to 4.x](#migrating-to-4x)
 - [Migrating to 3.x](#migrating-to-3x)
 - [Migrating to 2.x](#migrating-to-2x)
+
+## Migrating to Maven Central
+
+Since Maven Central only accepts valid URL, we had no other choices but to change groupId again.
+
+```diff
+dependencies {
+-  implementation "org.permissionsdispatcher:permissionsdispatcher:${latest.version}"
++  implementation "com.github.permissions-dispatcher:permissionsdispatcher:${latest.version}"
+-  annotationProcessor "org.permissionsdispatcher:permissionsdispatcher-processor:${latest.version}"
++  annotationProcessor "com.github.permissions-dispatcher:permissionsdispatcher-processor:${latest.version}"
+}
+```
+
+#### KTX
+
+NOTE: Due to accidental mistake, the latest version number has become the same as other artefacts, from `1.0.1`.
+
+```diff
+dependencies {
+-  implementation "org.permissionsdispatcher:permissionsdispatcher-ktx:${latest.version}"
++  implementation "com.github.permissions-dispatcher:permissionsdispatcher-ktx:${latest.version}"
+}
+```
 
 ## Migrating to 4.x
 

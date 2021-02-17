@@ -96,11 +96,13 @@ Check out the [sample](https://github.com/hotchemi/PermissionsDispatcher/tree/ma
 
 ## Installation
 
-NOTE: 4.x only supports [Jetpack](https://developer.android.com/jetpack/). If you still use appcompat 3.x is the way to go.
+**NOTE:**
+  - If you're using jCenter we've moved on to MavenCentral, see [migration guide](https://github.com/hotchemi/PermissionsDispatcher/blob/master/doc/migration_guide.md).
+  - 4.x only supports [Jetpack](https://developer.android.com/jetpack/). If you still use appcompat 3.x is the way to go.
 
 To add PermissionsDispatcher to your project, include the following in your **app module** `build.gradle` file:
 
-`${latest.version}` is [![Download]([https://maven-badges.herokuapp.com/maven-central/com.github.permissions-dispatcher/permissionsdispatcher/badge.svg)](https://search.maven.org/search?q=g:com.github.permissions-dispatcher)
+`${latest.version}` is [![Download](https://maven-badges.herokuapp.com/maven-central/com.github.permissions-dispatcher/permissionsdispatcher/badge.svg)](https://search.maven.org/search?q=g:com.github.permissions-dispatcher)
 
 ```groovy
 dependencies {
