@@ -20,7 +20,7 @@ dependencies {
 
 #### KTX
 
-NOTE: Due to accidental mistake, the latest version number has become the same as other artefacts, from `1,0.1`.
+NOTE: Due to accidental mistake, the latest version number has become the same as other artefacts, from `1.0.1`.
 
 ```diff
 dependencies {
