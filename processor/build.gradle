@@ -19,7 +19,7 @@ dependencies {
     compile "com.squareup:kotlinpoet:$KOTLINPOET_VERSION"
     compile project(path: ':annotation')
 
-    testCompileAar "androidx.legacy:legacy-support-v4:$ANDROIDX_LIBRARY_VERSION"
+    testCompileAar "androidx.legacy:legacy-support-v4:$ANDROIDX_LEGACY_VERSION"
     testCompileAar project(path: ":library", configuration: "default")
 
     testCompile androidJar()
@@ -29,6 +29,6 @@ dependencies {
     testCompile "com.google.testing.compile:compile-testing:$COMPILE_TESTING_VERSION"
     testCompile "commons-io:commons-io:$COMMONS_IO_VERSION"
     testCompile "com.squareup.okio:okio:2.1.0"
-    testCompile "androidx.legacy:legacy-support-v4:$ANDROIDX_LIBRARY_VERSION"
+    testCompile "androidx.legacy:legacy-support-v4:$ANDROIDX_LEGACY_VERSION"
     testCompile "org.permissionsdispatcher:kompile-testing:$KOMPILE_TESTING_VERSION"
 }

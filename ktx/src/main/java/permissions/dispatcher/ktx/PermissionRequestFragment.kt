@@ -16,7 +16,7 @@ internal sealed class PermissionRequestFragment : Fragment() {
     protected val requestCode = Random().nextInt(1000)
     protected lateinit var viewModel: PermissionRequestViewModel
 
-    override fun onAttach(context: Context?) {
+    override fun onAttach(context: Context) {
         super.onAttach(context)
         retainInstance = true
         viewModel = ViewModelProvider(requireActivity()).get(PermissionRequestViewModel::class.java)
