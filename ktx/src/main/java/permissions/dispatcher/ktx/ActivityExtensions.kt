@@ -24,7 +24,7 @@ fun FragmentActivity.constructPermissionsRequest(
     requiresPermission: Fun
 ): PermissionsRequester = PermissionsRequesterImpl(
     permissions = permissions,
-    activity = this,
+    view = ActivityType(this),
     onShowRationale = onShowRationale,
     onPermissionDenied = onPermissionDenied,
     onNeverAskAgain = onNeverAskAgain,
@@ -49,7 +49,7 @@ fun FragmentActivity.constructLocationPermissionRequest(
     requiresPermission: Fun
 ): PermissionsRequester = PermissionsRequesterImpl(
     permissions = permissions.filterByApiLevel(),
-    activity = this,
+    view = ActivityType(this),
     onShowRationale = onShowRationale,
     onPermissionDenied = onPermissionDenied,
     onNeverAskAgain = onNeverAskAgain,
@@ -73,7 +73,7 @@ fun FragmentActivity.constructWriteSettingsPermissionRequest(
     requiresPermission: Fun
 ): PermissionsRequester = PermissionsRequesterImpl(
     permissions = arrayOf(Settings.ACTION_MANAGE_WRITE_SETTINGS),
-    activity = this,
+    view = ActivityType(this),
     onShowRationale = onShowRationale,
     onPermissionDenied = onPermissionDenied,
     onNeverAskAgain = null,
@@ -97,7 +97,7 @@ fun FragmentActivity.constructSystemAlertWindowPermissionRequest(
     requiresPermission: Fun
 ): PermissionsRequester = PermissionsRequesterImpl(
     permissions = arrayOf(Settings.ACTION_MANAGE_OVERLAY_PERMISSION),
-    activity = this,
+    view = ActivityType(this),
     onShowRationale = onShowRationale,
     onPermissionDenied = onPermissionDenied,
     onNeverAskAgain = null,
