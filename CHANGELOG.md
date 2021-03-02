@@ -1,5 +1,7 @@
 # ChangeLog
 
+- ktx: 1.0.2 2021/03/03
+  - Fix: [System dialog doesn't show up, after manually disable permission from setting](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/705)
 - ktx: 1.0.1 2020/09/17
   - Fix: [fix: wrap PermissionResult with Event](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/689)
 - ktx: 1.0.0 2020/08/31
