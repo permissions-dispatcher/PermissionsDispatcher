@@ -1,6 +1,4 @@
 buildscript {
-    apply from: "${rootDir.absolutePath}/ext.gradle"
-
     repositories {
         mavenCentral()
         google()

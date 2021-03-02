@@ -1,5 +1,0 @@
-ext {
-    bintrayUser = System.getenv("bintrayUser")
-    bintrayKey = System.getenv("bintrayKey")
-    dryRun = System.getenv("dryRun") == "true"
-}
