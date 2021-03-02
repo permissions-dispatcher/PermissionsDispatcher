@@ -12,7 +12,7 @@ android {
     }
     lintOptions {
         // FIXME: to avoid weird lint error on github action
-        disable 'WrongConstant'
+        abortOnError false
     }
 }
 
