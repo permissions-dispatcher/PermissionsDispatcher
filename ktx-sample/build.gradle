@@ -10,6 +10,10 @@ android {
         versionCode 1
         versionName "1.0"
     }
+    lintOptions {
+        // FIXME: to avoid weird lint error on github action
+        disable 'WrongConstant'
+    }
 }
 
 dependencies {

@@ -13,10 +13,6 @@ android {
     libraryVariants.all {
         it.generateBuildConfigProvider.configure { enabled = false }
     }
-    lintOptions {
-        // FIXME: to avoid weird lint error on github action
-        disable 'WrongConstant'
-    }
 }
 
 dependencies {
