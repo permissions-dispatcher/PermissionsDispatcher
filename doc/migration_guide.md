@@ -20,12 +20,12 @@ dependencies {
 
 #### KTX
 
-NOTE: Due to accidental mistake, the latest version number has become the same as other artefacts, from `1.0.1`.
+NOTE: Due to accidental mistake, artifact id `permissionsdispatcher-ktx` also exists on maven central but `ktx` is the correct one.
 
 ```diff
 dependencies {
 -  implementation "org.permissionsdispatcher:permissionsdispatcher-ktx:${latest.version}"
-+  implementation "com.github.permissions-dispatcher:permissionsdispatcher-ktx:${latest.version}"
++  implementation "com.github.permissions-dispatcher:ktx:${latest.version}"
 }
 ```
 
