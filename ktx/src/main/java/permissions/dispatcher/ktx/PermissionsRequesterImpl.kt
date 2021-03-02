@@ -23,11 +23,11 @@ internal class PermissionsRequesterImpl(
                 onPermissionDenied,
                 onNeverAskAgain
             )
-            val requestFun = {
+            val requestFun: Fun = {
                 activity.supportFragmentManager
                     .beginTransaction()
                     .replace(android.R.id.content, permissionRequestType.fragment(permissions))
-                    .commitNowAllowingStateLoss()
+                    .commitAllowingStateLoss()
             }
             if (PermissionUtils.shouldShowRequestPermissionRationale(activity, *permissions)) {
                 onShowRationale?.invoke(KtxPermissionRequest.create(onPermissionDenied, requestFun))
