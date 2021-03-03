@@ -1,5 +1,7 @@
 # ChangeLog
 
+- ktx: 1.0.3 2021/03/03
+  - Fix: stop depending on SNAPSHOT library module
 - ktx: 1.0.2 2021/03/03
   - Fix: [System dialog doesn't show up, after manually disable permission from setting](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/705)
 - ktx: 1.0.1 2020/09/17
