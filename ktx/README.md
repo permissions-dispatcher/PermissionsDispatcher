@@ -123,6 +123,6 @@ fun FragmentActivity/*(or Fragment)*/.constructSystemAlertWindowPermissionReques
 
 ```groovy
 dependencies {
-  implementation "com.github.permissions-dispatcher:permissionsdispatcher-ktx:${latest.version}"
+  implementation "com.github.permissions-dispatcher:ktx:${latest.version}"
 }
 ```

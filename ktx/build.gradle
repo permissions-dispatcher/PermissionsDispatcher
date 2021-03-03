@@ -16,7 +16,8 @@ android {
 }
 
 dependencies {
-    api project(':library')
+    api "com.github.permissions-dispatcher:permissionsdispatcher:4.8.0"
+
     implementation "androidx.core:core:$ANDROIDX_LIBRARY_VERSION"
     implementation "androidx.appcompat:appcompat:$ANDROIDX_LIBRARY_VERSION"
     implementation "androidx.fragment:fragment:$ANDROIDX_LIBRARY_VERSION"
