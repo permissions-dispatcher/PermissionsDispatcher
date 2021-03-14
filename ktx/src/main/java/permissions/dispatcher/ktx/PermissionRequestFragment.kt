@@ -39,13 +39,17 @@ internal sealed class PermissionRequestFragment : Fragment() {
         ) {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults)
             if (requestCode == this.requestCode) {
+                val key = permissions.contentToString()
                 if (verifyPermissions(*grantResults)) {
-                    viewModel.postPermissionRequestResult(PermissionResult.GRANTED)
+                    viewModel.postPermissionRequestResult(key, PermissionResult.GRANTED)
                 } else {
                     if (!PermissionUtils.shouldShowRequestPermissionRationale(this, *permissions)) {
-                        viewModel.postPermissionRequestResult(PermissionResult.DENIED_AND_DISABLED)
+                        viewModel.postPermissionRequestResult(
+                            key,
+                            PermissionResult.DENIED_AND_DISABLED
+                        )
                     } else {
-                        viewModel.postPermissionRequestResult(PermissionResult.DENIED)
+                        viewModel.postPermissionRequestResult(key, PermissionResult.DENIED)
                     }
                 }
             }
@@ -65,9 +69,11 @@ internal sealed class PermissionRequestFragment : Fragment() {
     }
 
     internal class SpecialRequestPermissionFragment : PermissionRequestFragment() {
+        private lateinit var action: String
+
         override fun onCreate(savedInstanceState: Bundle?) {
             super.onCreate(savedInstanceState)
-            val action = arguments?.getString(BUNDLE_ACTION_KEY) ?: return
+            action = arguments?.getString(BUNDLE_ACTION_KEY) ?: return
             val packageName = context?.packageName ?: return
             val uri = Uri.parse("package:$packageName")
             startActivityForResult(Intent(action, uri), requestCode)
@@ -78,9 +84,9 @@ internal sealed class PermissionRequestFragment : Fragment() {
                 if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M
                     && Settings.canDrawOverlays(activity)
                 ) {
-                    viewModel.postPermissionRequestResult(PermissionResult.GRANTED)
+                    viewModel.postPermissionRequestResult(action, PermissionResult.GRANTED)
                 } else {
-                    viewModel.postPermissionRequestResult(PermissionResult.DENIED)
+                    viewModel.postPermissionRequestResult(action, PermissionResult.DENIED)
                 }
             }
             dismiss()
