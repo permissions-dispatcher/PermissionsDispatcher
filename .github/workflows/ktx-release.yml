@@ -1,0 +1,30 @@
+name: KTX Release
+
+on:
+  push:
+    tags:
+      - 'ktx-*.*.*'
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+    - uses: actions/checkout@v2
+    - name: set up JDK 1.8
+      uses: actions/setup-java@v1
+      with:
+        java-version: 1.8
+    - name: Grant execute permission for gradlew
+      run: chmod +x gradlew
+    - name: Prepare local.properties for testing
+      run: echo "sdk.dir=$ANDROID_HOME" > local.properties
+    - name: Build with Gradle
+      run: ./gradlew clean build
+    - name: Decode the secret key and place the file
+      run: |
+        echo "${{secrets.SIGNING_SECRET_KEY_RING_FILE}}" > ~/.gradle/secring.gpg.b64
+        base64 -d ~/.gradle/secring.gpg.b64 > ~/.gradle/secring.gpg
+    - name: Publish project
+      run: ./gradlew ktx:uploadArchives --no-daemon --no-parallel -PSONATYPE_NEXUS_USERNAME=${{secrets.SONATYPE_NEXUS_USERNAME}} -PSONATYPE_NEXUS_PASSWORD=${{secrets.SONATYPE_NEXUS_PASSWORD}} -Psigning.keyId=${{secrets.SIGNING_KEY_ID}} -Psigning.password=${{secrets.SIGNING_PASSWORD}} -Psigning.secretKeyRingFile=$(echo ~/.gradle/secring.gpg)
+    - name: Close the repository
+      run: ./gradlew closeAndReleaseRepository
