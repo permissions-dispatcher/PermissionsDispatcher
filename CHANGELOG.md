@@ -1,5 +1,7 @@
 # ChangeLog
 
+- ktx: 1.0.4 2021/03/16
+  - Fix: [Wrong behaviour of ktx library when two permissions are requested in one screen](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/717)
 - ktx: 1.0.3 2021/03/03
   - Fix: stop depending on SNAPSHOT library module
 - ktx: 1.0.2 2021/03/03
