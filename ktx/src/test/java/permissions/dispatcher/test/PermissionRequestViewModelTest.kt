@@ -1,5 +1,6 @@
 package permissions.dispatcher.test
 
+import android.Manifest
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.LifecycleOwner
@@ -20,6 +21,7 @@ class PermissionRequestViewModelTest {
     @Rule
     @JvmField
     val instantTaskExecutorRule = InstantTaskExecutorRule()
+    private val permission = arrayOf(Manifest.permission.CAMERA).contentToString()
     private lateinit var viewModel: PermissionRequestViewModel
     private lateinit var lifecycleOwner: LifecycleOwner
     private lateinit var requiresPermission: Fun
@@ -49,11 +51,12 @@ class PermissionRequestViewModelTest {
     fun `GRANTED emits requiresPermission`() {
         viewModel.observe(
             lifecycleOwner,
+            permission,
             requiresPermission,
             onPermissionDenied,
             onNeverAskAgain
         )
-        viewModel.postPermissionRequestResult(PermissionResult.GRANTED)
+        viewModel.postPermissionRequestResult(permission, PermissionResult.GRANTED)
 
         verify(requiresPermission).invoke()
         verify(onPermissionDenied, never()).invoke()
@@ -64,11 +67,12 @@ class PermissionRequestViewModelTest {
     fun `DENIED emits onPermissionDenied`() {
         viewModel.observe(
             lifecycleOwner,
+            permission,
             requiresPermission,
             onPermissionDenied,
             onNeverAskAgain
         )
-        viewModel.postPermissionRequestResult(PermissionResult.DENIED)
+        viewModel.postPermissionRequestResult(permission, PermissionResult.DENIED)
 
         verify(requiresPermission, never()).invoke()
         verify(onPermissionDenied).invoke()
@@ -79,11 +83,12 @@ class PermissionRequestViewModelTest {
     fun `DENIED_AND_DISABLED emits onNeverAskAgain`() {
         viewModel.observe(
             lifecycleOwner,
+            permission,
             requiresPermission,
             onPermissionDenied,
             onNeverAskAgain
         )
-        viewModel.postPermissionRequestResult(PermissionResult.DENIED_AND_DISABLED)
+        viewModel.postPermissionRequestResult(permission, PermissionResult.DENIED_AND_DISABLED)
 
         verify(requiresPermission, never()).invoke()
         verify(onPermissionDenied, never()).invoke()

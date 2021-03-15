@@ -15,10 +15,10 @@
         android:layout_height="wrap_content"
         android:text="@string/show_camera" />
 
-    <FrameLayout
-        android:id="@+id/sample_content_fragment"
-        android:layout_width="match_parent"
-        android:layout_height="0px"
-        android:layout_weight="2" />
+    <Button
+        android:id="@+id/button_file_manager"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="@string/open_file_manager" />
 
 </LinearLayout>

@@ -6,7 +6,7 @@ android {
     defaultConfig {
         applicationId "permissions.dispatcher.sample"
         targetSdkVersion TARGET_SDK_VERSION
-        minSdkVersion MIN_SDK_VERSION
+        minSdkVersion SAMPLE_MIN_SDK_VERSION
         versionCode 1
         versionName "1.0"
     }

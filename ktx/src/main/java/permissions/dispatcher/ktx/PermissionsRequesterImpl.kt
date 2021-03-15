@@ -19,6 +19,7 @@ internal class PermissionsRequesterImpl(
         } else {
             ViewModelProvider(activity).get(PermissionRequestViewModel::class.java).observe(
                 activity,
+                permissions.contentToString(),
                 requiresPermission,
                 onPermissionDenied,
                 onNeverAskAgain
