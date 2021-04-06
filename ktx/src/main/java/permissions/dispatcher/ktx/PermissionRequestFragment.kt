@@ -23,7 +23,7 @@ internal sealed class PermissionRequestFragment : Fragment() {
     }
 
     protected fun dismiss() =
-        fragmentManager?.beginTransaction()?.remove(this)?.commitNowAllowingStateLoss()
+        fragmentManager?.beginTransaction()?.remove(this)?.commitAllowingStateLoss()
 
     internal class NormalRequestPermissionFragment : PermissionRequestFragment() {
         override fun onCreate(savedInstanceState: Bundle?) {
