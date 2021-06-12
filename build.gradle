@@ -17,5 +17,7 @@ allprojects {
         mavenCentral()
         google()
         jcenter()
+        // TODO: remove after publishing kompile-testing to Maven Central
+        maven { url 'https://jitpack.io' }
     }
 }
