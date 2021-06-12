@@ -11,9 +11,17 @@ apply plugin: AarToJarConversionPlugin
 // Connect sources & tests to library project
 convertAarsToJar.dependsOn ":library:assembleRelease"
 
+configurations.all {
+    resolutionStrategy.eachDependency { DependencyResolveDetails details ->
+        def requested = details.requested
+        if (requested.group == 'org.jetbrains.kotlin' && requested.name == 'kotlin-reflect') {
+            details.useVersion KOTLIN_VERSION
+        }
+    }
+}
+
 dependencies {
     compile "androidx.annotation:annotation:$ANDROIDX_LIBRARY_VERSION"
-    compile "org.jetbrains.kotlin:kotlin-stdlib:$KOTLIN_VERSION"
     compile "org.jetbrains.kotlinx:kotlinx-metadata-jvm:$KOTLIN_METADATA_VERSION"
     compile "com.squareup:javapoet:$JAVAPOET_VERSION"
     compile "com.squareup:kotlinpoet:$KOTLINPOET_VERSION"
@@ -30,5 +38,5 @@ dependencies {
     testCompile "commons-io:commons-io:$COMMONS_IO_VERSION"
     testCompile "com.squareup.okio:okio:2.1.0"
     testCompile "androidx.legacy:legacy-support-v4:$ANDROIDX_LIBRARY_VERSION"
-    testCompile "org.permissionsdispatcher:kompile-testing:$KOMPILE_TESTING_VERSION"
+    testImplementation project(path: ':kompile-testing')
 }

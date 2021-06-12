@@ -1,1 +1,1 @@
-include ':library', ':processor', ':lint', ':sample', ':test', ':annotation', ':ktx', ':ktx-sample'
+include ':library', ':processor', ':lint', ':sample', ':test', ':annotation', ':ktx', ':ktx-sample', 'kompile-testing'
