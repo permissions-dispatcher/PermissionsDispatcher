@@ -29,7 +29,7 @@ fun withPermissionCheckMethodName(e: ExecutableElement) = "${e.simpleString().tr
 
 fun Element.kotlinMetadata(): KotlinClassMetadata? =
         getAnnotation(Metadata::class.java)?.run {
-            KotlinClassMetadata.read(KotlinClassHeader(kind, metadataVersion, bytecodeVersion, data1, data2, extraString, packageName, extraInt))
+            KotlinClassMetadata.read(KotlinClassHeader(kind, metadataVersion, data1, data2, extraString, packageName, extraInt))
         }
 
 val Element.isInternal: Boolean
