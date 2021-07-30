@@ -35,7 +35,7 @@ internal sealed class PermissionRequestType {
         @RequiresApi(Build.VERSION_CODES.M)
         override fun fragment(permissions: Array<out String>): PermissionRequestFragment =
             PermissionRequestFragment.SpecialRequestPermissionFragment.newInstance(
-                Settings.ACTION_MANAGE_OVERLAY_PERMISSION
+                Settings.ACTION_MANAGE_WRITE_SETTINGS
             )
     }
 
