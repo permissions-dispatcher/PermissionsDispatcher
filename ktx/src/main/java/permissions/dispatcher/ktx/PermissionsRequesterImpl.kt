@@ -3,6 +3,7 @@ package permissions.dispatcher.ktx
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
 import permissions.dispatcher.PermissionUtils
+import java.lang.ref.WeakReference
 
 internal class PermissionsRequesterImpl(
     private val permissions: Array<out String>,
@@ -19,9 +20,9 @@ internal class PermissionsRequesterImpl(
         viewModel.observe(
             activity,
             permissions.contentToString(),
-            requiresPermission,
-            onPermissionDenied,
-            onNeverAskAgain
+            WeakReference(requiresPermission),
+            WeakReference(onPermissionDenied),
+            WeakReference(onNeverAskAgain)
         )
     }
 
