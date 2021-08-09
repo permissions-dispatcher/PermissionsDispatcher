@@ -1,5 +1,11 @@
 # ChangeLog
 
+- ktx: 1.0.5 2021/08/09
+  - Fix: [Avoid memory leak with ViewModel](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/741)
+  - Fix: [Support device orientation again](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/738)
+  - Fix: [Write settings action bug fix](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/737)
+- 4.9.1 2021/08/09
+  - Fix: [Address compile error on Kotlin 1.5](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/733)
 - ktx: 1.0.5 2021/04/14
   - Fix: [Use commitAllowingStateLoss() instead of commitNowAllowingStateLoss() in PermissionRequestFragment dismiss() to avoid exception when performing multiple transactions at same time](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/724)
 - ktx: 1.0.4 2021/03/16
