@@ -16,6 +16,7 @@ import org.junit.Test
 import permissions.dispatcher.ktx.Fun
 import permissions.dispatcher.ktx.PermissionRequestViewModel
 import permissions.dispatcher.ktx.PermissionResult
+import java.lang.ref.WeakReference
 
 class PermissionRequestViewModelTest {
     @Rule
@@ -52,9 +53,9 @@ class PermissionRequestViewModelTest {
         viewModel.observe(
             lifecycleOwner,
             permission,
-            requiresPermission,
-            onPermissionDenied,
-            onNeverAskAgain
+            WeakReference(requiresPermission),
+            WeakReference(onPermissionDenied),
+            WeakReference(onNeverAskAgain)
         )
         viewModel.postPermissionRequestResult(permission, PermissionResult.GRANTED)
 
@@ -68,9 +69,9 @@ class PermissionRequestViewModelTest {
         viewModel.observe(
             lifecycleOwner,
             permission,
-            requiresPermission,
-            onPermissionDenied,
-            onNeverAskAgain
+            WeakReference(requiresPermission),
+            WeakReference(onPermissionDenied),
+            WeakReference(onNeverAskAgain)
         )
         viewModel.postPermissionRequestResult(permission, PermissionResult.DENIED)
 
@@ -84,9 +85,9 @@ class PermissionRequestViewModelTest {
         viewModel.observe(
             lifecycleOwner,
             permission,
-            requiresPermission,
-            onPermissionDenied,
-            onNeverAskAgain
+            WeakReference(requiresPermission),
+            WeakReference(onPermissionDenied),
+            WeakReference(onNeverAskAgain)
         )
         viewModel.postPermissionRequestResult(permission, PermissionResult.DENIED_AND_DISABLED)
 
