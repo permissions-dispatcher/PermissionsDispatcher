@@ -18,10 +18,6 @@ android {
     sourceSets {
         main.java.srcDirs += "src/main/kotlin"
     }
-    lintOptions {
-        // FIXME: to avoid weird lint error on github action
-        abortOnError false
-    }
 }
 
 dependencies {
