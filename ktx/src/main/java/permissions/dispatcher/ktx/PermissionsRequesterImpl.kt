@@ -15,6 +15,12 @@ internal class PermissionsRequesterImpl(
     private val permissionRequestType: PermissionRequestType
 ) : PermissionsRequester {
     private val viewModel = ViewModelProvider(activity).get(PermissionRequestViewModel::class.java)
+    private val requestFun: Fun = {
+        activity.supportFragmentManager
+            .beginTransaction()
+            .replace(android.R.id.content, permissionRequestType.fragment(permissions))
+            .commitAllowingStateLoss()
+    }
 
     init {
         viewModel.observe(
@@ -31,12 +37,6 @@ internal class PermissionsRequesterImpl(
             viewModel.removeObservers(activity)
             requiresPermission()
         } else {
-            val requestFun: Fun = {
-                activity.supportFragmentManager
-                    .beginTransaction()
-                    .replace(android.R.id.content, permissionRequestType.fragment(permissions))
-                    .commitAllowingStateLoss()
-            }
             if (PermissionUtils.shouldShowRequestPermissionRationale(activity, *permissions)) {
                 onShowRationale?.invoke(KtxPermissionRequest.create(onPermissionDenied, requestFun))
             } else {
