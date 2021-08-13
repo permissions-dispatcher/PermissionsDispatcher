@@ -1,6 +1,8 @@
 # ChangeLog
 
-- ktx: 1.0.5 2021/08/09
+- ktx: 1.1.2 2021/08/14
+  - Fix: [permissionRequest proceed doesn't work due to KtxPermissionRequest.requestPermission being null](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/742)
+- ktx: 1.1.1 2021/08/09
   - Fix: [Avoid memory leak with ViewModel](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/741)
   - Fix: [Support device orientation again](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/738)
   - Fix: [Write settings action bug fix](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/737)
