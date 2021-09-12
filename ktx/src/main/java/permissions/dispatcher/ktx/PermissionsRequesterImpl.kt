@@ -2,7 +2,7 @@ package permissions.dispatcher.ktx
 
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModelProvider
-import permissions.dispatcher.PermissionUtils
+import permissions.dispatcher.PermissionUtils.shouldShowRequestPermissionRationale
 import java.lang.ref.WeakReference
 
 internal class PermissionsRequesterImpl(
@@ -37,8 +37,8 @@ internal class PermissionsRequesterImpl(
             viewModel.removeObservers(activity)
             requiresPermission()
         } else {
-            if (PermissionUtils.shouldShowRequestPermissionRationale(activity, *permissions)) {
-                onShowRationale?.invoke(KtxPermissionRequest.create(onPermissionDenied, requestFun))
+            if (shouldShowRequestPermissionRationale(activity, *permissions) && onShowRationale != null) {
+                onShowRationale.invoke(KtxPermissionRequest.create(onPermissionDenied, requestFun))
             } else {
                 requestFun.invoke()
             }
