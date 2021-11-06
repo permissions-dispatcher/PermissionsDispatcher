@@ -25,7 +25,8 @@ internal class PermissionsRequesterImpl(
     init {
         viewModel.observe(
             activity,
-            permissions.contentToString(),
+            // https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/729
+            permissions.sortedArray().contentToString(),
             WeakReference(requiresPermission),
             WeakReference(onPermissionDenied),
             WeakReference(onNeverAskAgain)
