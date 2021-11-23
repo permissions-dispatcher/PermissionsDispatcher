@@ -1,6 +1,7 @@
 package permissions.dispatcher.ktx
 
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import permissions.dispatcher.PermissionUtils.shouldShowRequestPermissionRationale
 import java.lang.ref.WeakReference
@@ -21,21 +22,25 @@ internal class PermissionsRequesterImpl(
             .replace(android.R.id.content, permissionRequestType.fragment(permissions))
             .commitAllowingStateLoss()
     }
+    private val observer: Observer<MutableMap<String, Event<PermissionResult>>>
 
     init {
-        viewModel.observe(
-            activity,
-            // https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/729
-            permissions.sortedArray().contentToString(),
-            WeakReference(requiresPermission),
-            WeakReference(onPermissionDenied),
-            WeakReference(onNeverAskAgain)
-        )
+        // https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/729
+        val key = permissions.sortedArray().contentToString()
+        observer = Observer<MutableMap<String, Event<PermissionResult>>> {
+            when (it[key]?.getContentIfNotHandled()) {
+                PermissionResult.GRANTED -> WeakReference(requiresPermission).get()?.invoke()
+                PermissionResult.DENIED -> WeakReference(onPermissionDenied).get()?.invoke()
+                PermissionResult.DENIED_AND_DISABLED -> WeakReference(onNeverAskAgain).get()?.invoke()
+                else -> Unit
+            }
+        }
+        viewModel.observe(activity, observer)
     }
 
     override fun launch() {
         if (permissionRequestType.checkPermissions(activity, permissions)) {
-            viewModel.removeObservers(activity)
+            viewModel.removeObserver(observer)
             requiresPermission()
         } else {
             if (shouldShowRequestPermissionRationale(activity, *permissions) && onShowRationale != null) {

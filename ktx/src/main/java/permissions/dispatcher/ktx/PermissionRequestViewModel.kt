@@ -3,8 +3,8 @@ package permissions.dispatcher.ktx
 import androidx.annotation.MainThread
 import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModel
-import java.lang.ref.WeakReference
 
 @MainThread
 internal class PermissionRequestViewModel : ViewModel() {
@@ -20,24 +20,15 @@ internal class PermissionRequestViewModel : ViewModel() {
         permissionRequestResult.notifyObserver()
     }
 
-    inline fun observe(
+    fun observe(
         owner: LifecycleOwner,
-        key: String,
-        requiresPermission: WeakReference<Fun>,
-        onPermissionDenied: WeakReference<Fun>?,
-        onNeverAskAgain: WeakReference<Fun>?
+        observer: Observer<MutableMap<String, Event<PermissionResult>>>,
     ) {
-        permissionRequestResult.observe(owner, {
-            when (it[key]?.getContentIfNotHandled()) {
-                PermissionResult.GRANTED -> requiresPermission.get()?.invoke()
-                PermissionResult.DENIED -> onPermissionDenied?.get()?.invoke()
-                PermissionResult.DENIED_AND_DISABLED -> onNeverAskAgain?.get()?.invoke()
-                else -> Unit
-            }
-        })
+        permissionRequestResult.observe(owner, observer)
     }
 
-    fun removeObservers(owner: LifecycleOwner) = permissionRequestResult.removeObservers(owner)
+    fun removeObserver(observer: Observer<MutableMap<String, Event<PermissionResult>>>) =
+        permissionRequestResult.removeObserver(observer)
 
     private fun <T> MutableLiveData<T>.notifyObserver() {
         this.value = this.value
