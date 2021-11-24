@@ -2,7 +2,7 @@ package permissions.dispatcher.test
 
 import android.content.pm.PackageManager
 import androidx.core.app.ActivityCompat
-import androidx.core.content.PermissionChecker
+import androidx.core.content.ContextCompat
 import org.junit.After
 import org.junit.Before
 import org.junit.BeforeClass
@@ -15,7 +15,7 @@ import org.powermock.modules.junit4.PowerMockRunner
 
 @Suppress("IllegalIdentifier")
 @RunWith(PowerMockRunner::class)
-@PrepareForTest(ActivityCompat::class, PermissionChecker::class)
+@PrepareForTest(ActivityCompat::class, ContextCompat::class)
 class ActivityOnlyNeedsPermissionPermissionsDispatcherTest {
 
     private lateinit var activity: ActivityOnlyNeedsPermission
@@ -34,7 +34,7 @@ class ActivityOnlyNeedsPermissionPermissionsDispatcherTest {
     fun setUp() {
         activity = Mockito.mock(ActivityOnlyNeedsPermission::class.java)
         PowerMockito.mockStatic(ActivityCompat::class.java)
-        PowerMockito.mockStatic(PermissionChecker::class.java)
+        PowerMockito.mockStatic(ContextCompat::class.java)
     }
 
     @After

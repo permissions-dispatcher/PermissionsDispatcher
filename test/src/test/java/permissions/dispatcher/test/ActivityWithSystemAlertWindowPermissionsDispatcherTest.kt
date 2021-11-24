@@ -5,7 +5,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
-import androidx.core.content.PermissionChecker
+import androidx.core.content.ContextCompat
 import org.junit.After
 import org.junit.Before
 import org.junit.BeforeClass
@@ -19,7 +19,7 @@ import org.powermock.modules.junit4.PowerMockRunner
 
 @Suppress("IllegalIdentifier")
 @RunWith(PowerMockRunner::class)
-@PrepareForTest(ActivityCompat::class, PermissionChecker::class, Settings::class, Build.VERSION::class, Uri::class)
+@PrepareForTest(ActivityCompat::class, ContextCompat::class, Settings::class, Build.VERSION::class, Uri::class)
 class ActivityWithSystemAlertWindowPermissionsDispatcherTest {
     private lateinit var activity: ActivityWithSystemAlertWindow
 
@@ -37,7 +37,7 @@ class ActivityWithSystemAlertWindowPermissionsDispatcherTest {
     fun setUp() {
         activity = Mockito.mock(ActivityWithSystemAlertWindow::class.java)
         PowerMockito.mockStatic(ActivityCompat::class.java)
-        PowerMockito.mockStatic(PermissionChecker::class.java)
+        PowerMockito.mockStatic(ContextCompat::class.java)
         PowerMockito.mockStatic(Settings::class.java)
         PowerMockito.mockStatic(Uri::class.java)
 
