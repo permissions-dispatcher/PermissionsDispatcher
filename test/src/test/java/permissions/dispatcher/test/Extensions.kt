@@ -8,7 +8,7 @@ import android.net.Uri
 import android.os.Build
 import android.provider.Settings
 import androidx.core.app.ActivityCompat
-import androidx.core.content.PermissionChecker
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import org.mockito.Matchers.any
 import org.mockito.Matchers.anyString
@@ -33,7 +33,7 @@ fun mockActivityCompatShouldShowRequestPermissionRationale(result: Boolean) {
 
 fun mockCheckSelfPermission(result: Boolean) {
     val value = if (result) PackageManager.PERMISSION_GRANTED else PackageManager.PERMISSION_DENIED
-    PowerMockito.`when`(PermissionChecker.checkSelfPermission(any(Context::class.java), anyString())).thenReturn(value)
+    PowerMockito.`when`(ContextCompat.checkSelfPermission(any(), anyString())).thenReturn(value)
 }
 
 fun mockCanDrawOverlays(result: Boolean) {

@@ -1,7 +1,7 @@
 package permissions.dispatcher.test
 
 import androidx.core.app.ActivityCompat
-import androidx.core.content.PermissionChecker
+import androidx.core.content.ContextCompat
 import org.junit.After
 import org.junit.Before
 import org.junit.Test
@@ -13,7 +13,7 @@ import org.powermock.modules.junit4.PowerMockRunner
 
 @Suppress("IllegalIdentifier")
 @RunWith(PowerMockRunner::class)
-@PrepareForTest(ActivityCompat::class, PermissionChecker::class)
+@PrepareForTest(ActivityCompat::class, ContextCompat::class)
 class ActivityWithStringParameterKtPermissionsDispatcherTest {
 
     private lateinit var activity: ActivityWithParametersKt
@@ -22,7 +22,7 @@ class ActivityWithStringParameterKtPermissionsDispatcherTest {
     fun setUp() {
         activity = Mockito.mock(ActivityWithParametersKt::class.java)
         PowerMockito.mockStatic(ActivityCompat::class.java)
-        PowerMockito.mockStatic(PermissionChecker::class.java)
+        PowerMockito.mockStatic(ContextCompat::class.java)
     }
 
     @After
