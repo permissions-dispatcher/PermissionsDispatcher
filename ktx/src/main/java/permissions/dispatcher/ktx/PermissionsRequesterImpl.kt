@@ -1,6 +1,7 @@
 package permissions.dispatcher.ktx
 
 import androidx.fragment.app.FragmentActivity
+import androidx.lifecycle.LifecycleOwner
 import androidx.lifecycle.ViewModelProvider
 import permissions.dispatcher.PermissionUtils.shouldShowRequestPermissionRationale
 import java.lang.ref.WeakReference
@@ -8,7 +9,8 @@ import java.lang.ref.WeakReference
 internal class PermissionsRequesterImpl(
     private val permissions: Array<out String>,
     private val activity: FragmentActivity,
-    private val onShowRationale: ShowRationaleFun?,
+    lifecycleOwner: LifecycleOwner = activity,
+    val onShowRationale: ShowRationaleFun?,
     private val onPermissionDenied: Fun?,
     private val requiresPermission: Fun,
     onNeverAskAgain: Fun?,
@@ -24,7 +26,7 @@ internal class PermissionsRequesterImpl(
 
     init {
         viewModel.observe(
-            activity,
+            lifecycleOwner,
             // https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/729
             permissions.sortedArray().contentToString(),
             WeakReference(requiresPermission),
