@@ -1,5 +1,7 @@
 # ChangeLog
 
+- 4.9.2 | ktx: 1.1.4 2022/04/04
+  - Fix: [fix: use ContextCompat instead of PermissionChecker](https://github.com/permissions-dispatcher/PermissionsDispatcher/pull/757)
 - ktx: 1.1.3 2021/11/07
   - Fix: [sort permissions to secure identification](https://github.com/permissions-dispatcher/PermissionsDispatcher/issues/729)
 - ktx: 1.1.2 2021/08/14
