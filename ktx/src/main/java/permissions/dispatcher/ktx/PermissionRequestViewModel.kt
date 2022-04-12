@@ -27,14 +27,14 @@ internal class PermissionRequestViewModel : ViewModel() {
         onPermissionDenied: WeakReference<Fun>?,
         onNeverAskAgain: WeakReference<Fun>?
     ) {
-        permissionRequestResult.observe(owner, {
+        permissionRequestResult.observe(owner) {
             when (it[key]?.getContentIfNotHandled()) {
                 PermissionResult.GRANTED -> requiresPermission.get()?.invoke()
                 PermissionResult.DENIED -> onPermissionDenied?.get()?.invoke()
                 PermissionResult.DENIED_AND_DISABLED -> onNeverAskAgain?.get()?.invoke()
                 else -> Unit
             }
-        })
+        }
     }
 
     fun removeObservers(owner: LifecycleOwner) = permissionRequestResult.removeObservers(owner)
