@@ -64,7 +64,11 @@ class MainActivity : AppCompatActivity(), View.OnClickListener {
 }
 ```
 
-### 2. Delegate to generated functions
+### 2. Build Project
+
+After adding the `@RuntimePermissions` annotation to your class, build the project to generate the `WithPermissionCheck` functions 
+
+### 3. Delegate to generated functions
 
 Now generated functions become much more concise and intuitive than Java version!
 
