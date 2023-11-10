@@ -19,7 +19,9 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         val buttonCamera: Button = findViewById(R.id.button_camera)
         buttonCamera.setOnClickListener {
-            showCameraWithPermissionCheck()
+            showCameraWithPermissionCheck(object : Callback {
+                override fun onSuccess() {}
+            })
         }
         val buttonContacts: Button = findViewById(R.id.button_contacts)
         buttonContacts.setOnClickListener {
@@ -34,12 +36,13 @@ class MainActivity : AppCompatActivity() {
     }
 
     @NeedsPermission(Manifest.permission.CAMERA)
-    fun showCamera() {
+    fun showCamera(callback: Callback) {
         // NOTE: Perform action that requires the permission. If this is run by PermissionsDispatcher, the permission will have been granted
         supportFragmentManager.beginTransaction()
                 .replace(R.id.sample_content_fragment, CameraPreviewFragment.newInstance())
                 .addToBackStack("camera")
                 .commitAllowingStateLoss()
+        callback.onSuccess()
     }
 
     @OnPermissionDenied(Manifest.permission.CAMERA)
@@ -58,6 +61,7 @@ class MainActivity : AppCompatActivity() {
 
     @OnNeverAskAgain(Manifest.permission.CAMERA)
     fun onCameraNeverAskAgain() {
+//        callback.onFailure()
         Toast.makeText(this, R.string.permission_camera_never_ask_again, Toast.LENGTH_SHORT).show()
     }
 

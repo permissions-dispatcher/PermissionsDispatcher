@@ -34,7 +34,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
 
     override fun createFile(rpe: RuntimePermissionsElement, requestCodeProvider: RequestCodeProvider): FileSpec {
         return FileSpec.builder(rpe.packageName, rpe.generatedClassName)
-                .addComment(FILE_COMMENT)
+                .addFileComment(FILE_COMMENT, arrayOf<Any>())
                 .addAnnotation(createJvmNameAnnotation(rpe.generatedClassName))
                 .addProperties(createProperties(rpe, requestCodeProvider))
                 .addFunctions(createWithPermissionCheckFuns(rpe))
@@ -449,7 +449,7 @@ abstract class KotlinBaseProcessorUnit : KtProcessorUnit {
         val targetParam = "target"
         val constructorSpec = FunSpec.constructorBuilder().addParameter(targetParam, rpe.ktTypeName)
         needsMethod.parameters.forEach {
-            constructorSpec.addParameter(it.simpleString(), it.asPreparedType(), KModifier.PRIVATE)
+            constructorSpec.addParameter(it.simpleString(), it.asPreparedType())
         }
         builder.primaryConstructor(constructorSpec.build())
 
